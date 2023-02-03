@@ -14,16 +14,16 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React Base Styles
-import colors from "assets/theme/base/colors";
+import colors from 'assets/theme/base/colors';
 
 const { transparent } = colors;
 
 const textField = {
   styleOverrides: {
     root: {
-      backgroundColor: transparent.main,
-    },
-  },
+      backgroundColor: transparent.main
+    }
+  }
 };
 
 export default textField;

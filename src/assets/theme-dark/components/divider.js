@@ -14,11 +14,11 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React base styles
-import colors from "assets/theme-dark/base/colors";
+import colors from 'assets/theme-dark/base/colors';
 
 // Material Dashboard 2 PRO React helper functions
-import rgba from "assets/theme-dark/functions/rgba";
-import pxToRem from "assets/theme-dark/functions/pxToRem";
+import rgba from 'assets/theme-dark/functions/rgba';
+import pxToRem from 'assets/theme-dark/functions/pxToRem';
 
 const { dark, transparent, white } = colors;
 
@@ -32,8 +32,8 @@ const divider = {
       )}) !important`,
       height: pxToRem(1),
       margin: `${pxToRem(16)} 0`,
-      borderBottom: "none",
-      opacity: 0.25,
+      borderBottom: 'none',
+      opacity: 0.25
     },
 
     vertical: {
@@ -43,26 +43,26 @@ const divider = {
         0
       )}) !important`,
       width: pxToRem(1),
-      height: "100%",
+      height: '100%',
       margin: `0 ${pxToRem(16)}`,
-      borderRight: "none",
+      borderRight: 'none'
     },
 
     light: {
       backgroundColor: transparent.main,
-      backgroundImage: `linear-gradient(to right, ${rgba(white.main, 0)}, ${rgba(
-        dark.main,
-        0.4
-      )}, ${rgba(white.main, 0)}) !important`,
+      backgroundImage: `linear-gradient(to right, ${rgba(white.main, 0)}, ${rgba(dark.main, 0.4)}, ${rgba(
+        white.main,
+        0
+      )}) !important`,
 
-      "&.MuiDivider-vertical": {
-        backgroundImage: `linear-gradient(to bottom, ${rgba(white.main, 0)}, ${rgba(
-          dark.main,
-          0.4
-        )}, ${rgba(white.main, 0)}) !important`,
-      },
-    },
-  },
+      '&.MuiDivider-vertical': {
+        backgroundImage: `linear-gradient(to bottom, ${rgba(white.main, 0)}, ${rgba(dark.main, 0.4)}, ${rgba(
+          white.main,
+          0
+        )}) !important`
+      }
+    }
+  }
 };
 
 export default divider;

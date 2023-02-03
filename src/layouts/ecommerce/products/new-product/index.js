@@ -13,33 +13,33 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState } from 'react';
 
 // @mui material components
-import Grid from "@mui/material/Grid";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Card from "@mui/material/Card";
+import Grid from '@mui/material/Grid';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Card from '@mui/material/Card';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDButton from "components/MDButton";
-import MDTypography from "components/MDTypography";
+import MDBox from 'components/MDBox';
+import MDButton from 'components/MDButton';
+import MDTypography from 'components/MDTypography';
 
 // Material Dashboard 2 PRO React examples
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import Footer from 'examples/Footer';
 
 // NewProduct page components
-import ProductInfo from "layouts/ecommerce/products/new-product/components/ProductInfo";
-import Media from "layouts/ecommerce/products/new-product/components/Media";
-import Socials from "layouts/ecommerce/products/new-product/components/Socials";
-import Pricing from "layouts/ecommerce/products/new-product/components/Pricing";
+import ProductInfo from 'layouts/ecommerce/products/new-product/components/ProductInfo';
+import Media from 'layouts/ecommerce/products/new-product/components/Media';
+import Socials from 'layouts/ecommerce/products/new-product/components/Socials';
+import Pricing from 'layouts/ecommerce/products/new-product/components/Pricing';
 
 function getSteps() {
-  return ["1. Product Info", "2. Media", "3. Social", "4. Pricing"];
+  return ['1. Product Info', '2. Media', '3. Social', '4. Pricing'];
 }
 
 function getStepContent(stepIndex) {
@@ -69,15 +69,15 @@ function NewProduct() {
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mt={5} mb={9}>
-        <Grid container justifyContent="center">
+        <Grid container justifyContent='center'>
           <Grid item xs={12} lg={8}>
-            <MDBox mt={6} mb={8} textAlign="center">
+            <MDBox mt={6} mb={8} textAlign='center'>
               <MDBox mb={1}>
-                <MDTypography variant="h3" fontWeight="bold">
+                <MDTypography variant='h3' fontWeight='bold'>
                   Add New Product
                 </MDTypography>
               </MDBox>
-              <MDTypography variant="h5" fontWeight="regular" color="secondary">
+              <MDTypography variant='h5' fontWeight='regular' color='secondary'>
                 This information will describe more about the product.
               </MDTypography>
             </MDBox>
@@ -94,20 +94,16 @@ function NewProduct() {
               <MDBox p={2}>
                 <MDBox>
                   {getStepContent(activeStep)}
-                  <MDBox mt={3} width="100%" display="flex" justifyContent="space-between">
+                  <MDBox mt={3} width='100%' display='flex' justifyContent='space-between'>
                     {activeStep === 0 ? (
                       <MDBox />
                     ) : (
-                      <MDButton variant="gradient" color="light" onClick={handleBack}>
+                      <MDButton variant='gradient' color='light' onClick={handleBack}>
                         back
                       </MDButton>
                     )}
-                    <MDButton
-                      variant="gradient"
-                      color="dark"
-                      onClick={!isLastStep ? handleNext : undefined}
-                    >
-                      {isLastStep ? "send" : "next"}
+                    <MDButton variant='gradient' color='dark' onClick={!isLastStep ? handleNext : undefined}>
+                      {isLastStep ? 'send' : 'next'}
                     </MDButton>
                   </MDBox>
                 </MDBox>

@@ -17,15 +17,15 @@ function configs(labels, datasets) {
   return {
     data: {
       labels,
-      datasets: [...datasets],
+      datasets: [...datasets]
     },
     options: {
       plugins: {
         legend: {
-          display: false,
-        },
-      },
-    },
+          display: false
+        }
+      }
+    }
   };
 }
 

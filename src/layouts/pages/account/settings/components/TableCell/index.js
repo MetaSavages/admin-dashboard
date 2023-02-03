@@ -14,16 +14,16 @@ Coded by www.creative-tim.com
 */
 
 // prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
 
 function TableCell({ width, align, padding, noBorder, children }) {
   return (
     <MDBox
-      component="th"
+      component='th'
       width={width}
       pt={padding[0]}
       pr={padding[1]}
@@ -32,10 +32,10 @@ function TableCell({ width, align, padding, noBorder, children }) {
       textAlign={align}
       sx={{
         border: ({ borders: { borderWidth }, palette: { light } }) =>
-          noBorder ? 0 : `${borderWidth[1]} solid ${light.main}`,
+          noBorder ? 0 : `${borderWidth[1]} solid ${light.main}`
       }}
     >
-      <MDTypography component="div" variant="body2" color="text">
+      <MDTypography component='div' variant='body2' color='text'>
         {children}
       </MDTypography>
     </MDBox>
@@ -44,10 +44,10 @@ function TableCell({ width, align, padding, noBorder, children }) {
 
 // Setting default values for the props of TableCell
 TableCell.defaultProps = {
-  width: "auto",
-  align: "left",
+  width: 'auto',
+  align: 'left',
   padding: [],
-  noBorder: false,
+  noBorder: false
 };
 
 // Typechecking props for TableCell
@@ -56,7 +56,7 @@ TableCell.propTypes = {
   children: PropTypes.node.isRequired,
   align: PropTypes.string,
   padding: PropTypes.arrayOf(PropTypes.number),
-  noBorder: PropTypes.bool,
+  noBorder: PropTypes.bool
 };
 
 export default TableCell;

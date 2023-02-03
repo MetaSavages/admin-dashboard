@@ -20,11 +20,11 @@ Coded by www.creative-tim.com
  */
 
 // Material Dashboard 2 PRO React Base Styles
-import colors from "assets/theme-dark/base/colors";
+import colors from 'assets/theme-dark/base/colors';
 
 // Material Dashboard 2 PRO React Helper Functions
-import pxToRem from "assets/theme-dark/functions/pxToRem";
-import rgba from "assets/theme-dark/functions/rgba";
+import pxToRem from 'assets/theme-dark/functions/pxToRem';
+import rgba from 'assets/theme-dark/functions/rgba';
 
 const { white } = colors;
 
@@ -37,7 +37,7 @@ const borders = {
     2: pxToRem(2),
     3: pxToRem(3),
     4: pxToRem(4),
-    5: pxToRem(5),
+    5: pxToRem(5)
   },
 
   borderRadius: {
@@ -47,8 +47,8 @@ const borders = {
     lg: pxToRem(8),
     xl: pxToRem(12),
     xxl: pxToRem(16),
-    section: pxToRem(160),
-  },
+    section: pxToRem(160)
+  }
 };
 
 export default borders;

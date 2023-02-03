@@ -14,8 +14,8 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React base styles
-import borders from "assets/theme-dark/base/borders";
-import boxShadows from "assets/theme-dark/base/boxShadows";
+import borders from 'assets/theme-dark/base/borders';
+import boxShadows from 'assets/theme-dark/base/boxShadows';
 
 const { borderRadius } = borders;
 const { xxl } = boxShadows;
@@ -24,13 +24,13 @@ const dialog = {
   styleOverrides: {
     paper: {
       borderRadius: borderRadius.lg,
-      boxShadow: xxl,
+      boxShadow: xxl
     },
 
     paperFullScreen: {
-      borderRadius: 0,
-    },
-  },
+      borderRadius: 0
+    }
+  }
 };
 
 export default dialog;

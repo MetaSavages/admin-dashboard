@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": ["plugin:react/recommended", "prettier"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    },
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "prettier"],
+  "rules": {
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": "off",
+    "quotes": [1, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "jsx-quotes": ["error", "prefer-single"]
+  }
+}

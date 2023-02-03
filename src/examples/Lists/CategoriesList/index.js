@@ -14,82 +14,82 @@ Coded by www.creative-tim.com
 */
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 // prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // @mui material components
-import Card from "@mui/material/Card";
-import Icon from "@mui/material/Icon";
+import Card from '@mui/material/Card';
+import Icon from '@mui/material/Icon';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
 
 function CategoriesList({ title, categories }) {
   const renderItems = categories.map(({ color, icon, name, description, route }, key) => (
     <MDBox
       key={name}
-      component="li"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      borderRadius="lg"
+      component='li'
+      display='flex'
+      justifyContent='space-between'
+      alignItems='center'
+      borderRadius='lg'
       py={1}
       pr={2}
       mb={categories.length - 1 === key ? 0 : 1}
     >
-      <MDBox display="flex" alignItems="center">
+      <MDBox display='flex' alignItems='center'>
         <MDBox
-          display="grid"
-          alignItems="center"
-          justifyContent="center"
+          display='grid'
+          alignItems='center'
+          justifyContent='center'
           bgColor={color}
-          borderRadius="lg"
-          shadow="md"
-          color="white"
-          width="2rem"
-          height="2rem"
+          borderRadius='lg'
+          shadow='md'
+          color='white'
+          width='2rem'
+          height='2rem'
           mr={2}
-          variant="gradient"
-          fontSize="0.875rem"
+          variant='gradient'
+          fontSize='0.875rem'
         >
           <Icon
             sx={{
-              display: "grid",
-              placeItems: "center",
+              display: 'grid',
+              placeItems: 'center'
             }}
           >
             {icon}
           </Icon>
         </MDBox>
-        <MDBox display="flex" flexDirection="column">
-          <MDTypography variant="button" color={color} fontWeight="medium" gutterBottom>
+        <MDBox display='flex' flexDirection='column'>
+          <MDTypography variant='button' color={color} fontWeight='medium' gutterBottom>
             {name}
           </MDTypography>
-          <MDTypography variant="caption" color="text">
+          <MDTypography variant='caption' color='text'>
             {description}
           </MDTypography>
         </MDBox>
       </MDBox>
-      <MDBox display="flex">
+      <MDBox display='flex'>
         <MDTypography
           component={Link}
-          variant="button"
+          variant='button'
           color={color}
           to={route}
           sx={{
             lineHeight: 0,
-            transition: "all 0.2s cubic-bezier(.34,1.61,.7,1.3)",
+            transition: 'all 0.2s cubic-bezier(.34,1.61,.7,1.3)',
             p: 0.5,
 
-            "&:hover, &:focus": {
-              transform: "translateX(5px)",
-            },
+            '&:hover, &:focus': {
+              transform: 'translateX(5px)'
+            }
           }}
         >
-          <Icon sx={{ fontWeight: "bold" }}>chevron_right</Icon>
+          <Icon sx={{ fontWeight: 'bold' }}>chevron_right</Icon>
         </MDTypography>
       </MDBox>
     </MDBox>
@@ -98,12 +98,12 @@ function CategoriesList({ title, categories }) {
   return (
     <Card>
       <MDBox pt={2} px={2}>
-        <MDTypography variant="h6" fontWeight="medium" textTransform="capitalize">
+        <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
           {title}
         </MDTypography>
       </MDBox>
       <MDBox p={2}>
-        <MDBox component="ul" display="flex" flexDirection="column" p={0} m={0}>
+        <MDBox component='ul' display='flex' flexDirection='column' p={0} m={0}>
           {renderItems}
         </MDBox>
       </MDBox>
@@ -114,7 +114,7 @@ function CategoriesList({ title, categories }) {
 // Typechecking props for the CategoriesList
 CategoriesList.propTypes = {
   title: PropTypes.string.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default CategoriesList;

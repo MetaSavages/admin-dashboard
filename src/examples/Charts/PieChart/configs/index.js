@@ -15,7 +15,7 @@ Coded by www.creative-tim.com
 
 /* eslint-disable no-dupe-keys */
 // Material Dashboard 2 PRO React base styles
-import colors from "assets/theme/base/colors";
+import colors from 'assets/theme/base/colors';
 
 const { gradients, dark } = colors;
 
@@ -24,9 +24,7 @@ function configs(labels, datasets) {
 
   if (datasets.backgroundColors) {
     datasets.backgroundColors.forEach((color) =>
-      gradients[color]
-        ? backgroundColors.push(gradients[color].state)
-        : backgroundColors.push(dark.main)
+      gradients[color] ? backgroundColors.push(gradients[color].state) : backgroundColors.push(dark.main)
     );
   } else {
     backgroundColors.push(dark.main);
@@ -45,21 +43,21 @@ function configs(labels, datasets) {
           borderWidth: 2,
           backgroundColor: backgroundColors,
           fill: false,
-          data: datasets.data,
-        },
-      ],
+          data: datasets.data
+        }
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false,
-        },
+          display: false
+        }
       },
       interaction: {
         intersect: false,
-        mode: "index",
+        mode: 'index'
       },
       scales: {
         y: {
@@ -67,25 +65,25 @@ function configs(labels, datasets) {
             drawBorder: false,
             display: false,
             drawOnChartArea: false,
-            drawTicks: false,
+            drawTicks: false
           },
           ticks: {
-            display: false,
-          },
+            display: false
+          }
         },
         x: {
           grid: {
             drawBorder: false,
             display: false,
             drawOnChartArea: false,
-            drawTicks: false,
+            drawTicks: false
           },
           ticks: {
-            display: false,
-          },
-        },
-      },
-    },
+            display: false
+          }
+        }
+      }
+    }
   };
 }
 

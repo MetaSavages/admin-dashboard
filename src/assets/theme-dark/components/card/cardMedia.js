@@ -14,10 +14,10 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React Base Styles
-import borders from "assets/theme-dark/base/borders";
+import borders from 'assets/theme-dark/base/borders';
 
 // Material Dashboard 2 PRO React Helper Functions
-import pxToRem from "assets/theme-dark/functions/pxToRem";
+import pxToRem from 'assets/theme-dark/functions/pxToRem';
 
 const { borderRadius } = borders;
 
@@ -25,13 +25,13 @@ const cardMedia = {
   styleOverrides: {
     root: {
       borderRadius: borderRadius.xl,
-      margin: `${pxToRem(16)} ${pxToRem(16)} 0`,
+      margin: `${pxToRem(16)} ${pxToRem(16)} 0`
     },
 
     media: {
-      width: "auto",
-    },
-  },
+      width: 'auto'
+    }
+  }
 };
 
 export default cardMedia;

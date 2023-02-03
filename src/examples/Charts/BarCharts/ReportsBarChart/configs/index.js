@@ -24,23 +24,23 @@ function configs(labels, datasets) {
           borderWidth: 0,
           borderRadius: 4,
           borderSkipped: false,
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
           data: datasets.data,
-          maxBarThickness: 6,
-        },
-      ],
+          maxBarThickness: 6
+        }
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false,
-        },
+          display: false
+        }
       },
       interaction: {
         intersect: false,
-        mode: "index",
+        mode: 'index'
       },
       scales: {
         y: {
@@ -50,7 +50,7 @@ function configs(labels, datasets) {
             drawOnChartArea: true,
             drawTicks: false,
             borderDash: [5, 5],
-            color: "rgba(255, 255, 255, .2)",
+            color: 'rgba(255, 255, 255, .2)'
           },
           ticks: {
             suggestedMin: 0,
@@ -60,12 +60,12 @@ function configs(labels, datasets) {
             font: {
               size: 14,
               weight: 300,
-              family: "Roboto",
-              style: "normal",
-              lineHeight: 2,
+              family: 'Roboto',
+              style: 'normal',
+              lineHeight: 2
             },
-            color: "#fff",
-          },
+            color: '#fff'
+          }
         },
         x: {
           grid: {
@@ -74,23 +74,23 @@ function configs(labels, datasets) {
             drawOnChartArea: true,
             drawTicks: false,
             borderDash: [5, 5],
-            color: "rgba(255, 255, 255, .2)",
+            color: 'rgba(255, 255, 255, .2)'
           },
           ticks: {
             display: true,
-            color: "#f8f9fa",
+            color: '#f8f9fa',
             padding: 10,
             font: {
               size: 14,
               weight: 300,
-              family: "Roboto",
-              style: "normal",
-              lineHeight: 2,
-            },
-          },
-        },
-      },
-    },
+              family: 'Roboto',
+              style: 'normal',
+              lineHeight: 2
+            }
+          }
+        }
+      }
+    }
   };
 }
 

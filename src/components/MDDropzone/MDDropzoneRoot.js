@@ -14,8 +14,8 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 
 export default styled(Box)(({ theme, ownerState }) => {
   const { palette, typography, borders, functions } = theme;
@@ -27,48 +27,48 @@ export default styled(Box)(({ theme, ownerState }) => {
   const { rgba } = functions;
 
   return {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     border: `${borderWidth[1]} solid ${inputBorderColor} !important`,
     borderRadius: borderRadius.md,
 
-    "&.dropzone": {
-      background: `${transparent.main} !important`,
+    '&.dropzone': {
+      background: `${transparent.main} !important`
     },
 
-    "& .dz-default": {
-      margin: "0 auto !important",
+    '& .dz-default': {
+      margin: '0 auto !important'
     },
 
-    "& .dz-default .dz-button": {
+    '& .dz-default .dz-button': {
       color: `${text.main} !important`,
-      fontSize: `${size.sm} !important`,
+      fontSize: `${size.sm} !important`
     },
 
-    "& .dz-preview.dz-image-preview": {
-      background: `${transparent.main} !important`,
+    '& .dz-preview.dz-image-preview': {
+      background: `${transparent.main} !important`
     },
 
-    "& .dz-preview .dz-details": {
+    '& .dz-preview .dz-details': {
       color: `${dark.main} !important`,
-      opacity: "1 !important",
+      opacity: '1 !important',
 
-      "& .dz-size span, & .dz-filename span": {
-        backgroundColor: `${rgba(white.main, 0.7)} !important`,
-      },
+      '& .dz-size span, & .dz-filename span': {
+        backgroundColor: `${rgba(white.main, 0.7)} !important`
+      }
     },
 
-    "& .dz-error-message": {
-      display: "none !important",
+    '& .dz-error-message': {
+      display: 'none !important'
     },
 
-    "& .dz-remove": {
+    '& .dz-remove': {
       color: `${darkMode ? white.main : dark.main} !important`,
-      textDecoration: "none",
+      textDecoration: 'none',
 
-      "&:hover, &:focus": {
-        textDecoration: "none !important",
-      },
-    },
+      '&:hover, &:focus': {
+        textDecoration: 'none !important'
+      }
+    }
   };
 });

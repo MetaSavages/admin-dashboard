@@ -14,8 +14,8 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import Badge from "@mui/material/Badge";
-import { styled } from "@mui/material/styles";
+import Badge from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
 
 export default styled(Badge)(({ theme, ownerState }) => {
   const { palette, typography, borders, functions } = theme;
@@ -28,17 +28,17 @@ export default styled(Badge)(({ theme, ownerState }) => {
 
   // padding values
   const paddings = {
-    xs: "0.45em 0.775em",
-    sm: "0.55em 0.9em",
-    md: "0.65em 1em",
-    lg: "0.85em 1.375em",
+    xs: '0.45em 0.775em',
+    sm: '0.55em 0.9em',
+    md: '0.65em 1em',
+    lg: '0.85em 1.375em'
   };
 
   // fontSize value
-  const fontSizeValue = size === "xs" ? fontSize.xxs : fontSize.xs;
+  const fontSizeValue = size === 'xs' ? fontSize.xxs : fontSize.xs;
 
   // border value
-  const borderValue = border ? `${borderWidth[3]} solid ${white.main}` : "none";
+  const borderValue = border ? `${borderWidth[3]} solid ${white.main}` : 'none';
 
   // borderRadius value
   const borderRadiusValue = circular ? borderRadius.section : borderRadius.md;
@@ -48,10 +48,10 @@ export default styled(Badge)(({ theme, ownerState }) => {
     let widthValue = pxToRem(20);
     let heightValue = pxToRem(20);
 
-    if (sizeProp === "medium") {
+    if (sizeProp === 'medium') {
       widthValue = pxToRem(24);
       heightValue = pxToRem(24);
-    } else if (sizeProp === "large") {
+    } else if (sizeProp === 'large') {
       widthValue = pxToRem(32);
       heightValue = pxToRem(32);
     }
@@ -59,12 +59,12 @@ export default styled(Badge)(({ theme, ownerState }) => {
     return {
       width: widthValue,
       height: heightValue,
-      display: "grid",
-      placeItems: "center",
-      textAlign: "center",
-      borderRadius: "50%",
+      display: 'grid',
+      placeItems: 'center',
+      textAlign: 'center',
+      borderRadius: '50%',
       padding: 0,
-      border: borderValue,
+      border: borderValue
     };
   };
 
@@ -73,62 +73,60 @@ export default styled(Badge)(({ theme, ownerState }) => {
     const backgroundValue = gradients[colorProp]
       ? linearGradient(gradients[colorProp].main, gradients[colorProp].state)
       : linearGradient(gradients.info.main, gradients.info.state);
-    const colorValue = colorProp === "light" ? dark.main : white.main;
+    const colorValue = colorProp === 'light' ? dark.main : white.main;
 
     return {
       background: backgroundValue,
-      color: colorValue,
+      color: colorValue
     };
   };
 
   // styles for the badge with variant="contained"
   const containedStyles = (colorProp) => {
-    const backgroundValue = badgeColors[colorProp]
-      ? badgeColors[colorProp].background
-      : badgeColors.info.background;
+    const backgroundValue = badgeColors[colorProp] ? badgeColors[colorProp].background : badgeColors.info.background;
     let colorValue = badgeColors[colorProp] ? badgeColors[colorProp].text : badgeColors.info.text;
 
-    if (colorProp === "light") {
+    if (colorProp === 'light') {
       colorValue = dark.main;
     }
     return {
       background: backgroundValue,
-      color: colorValue,
+      color: colorValue
     };
   };
 
   // styles for the badge with no children and container={false}
   const standAloneStyles = () => ({
-    position: "static",
+    position: 'static',
     marginLeft: pxToRem(8),
-    transform: "none",
-    fontSize: pxToRem(9),
+    transform: 'none',
+    fontSize: pxToRem(9)
   });
 
   // styles for the badge with container={true}
   const containerStyles = () => ({
-    position: "relative",
-    transform: "none",
+    position: 'relative',
+    transform: 'none'
   });
 
   return {
-    "& .MuiBadge-badge": {
-      height: "auto",
+    '& .MuiBadge-badge': {
+      height: 'auto',
       padding: paddings[size] || paddings.xs,
       fontSize: fontSizeValue,
       fontWeight: fontWeightBold,
-      textTransform: "uppercase",
+      textTransform: 'uppercase',
       lineHeight: 1,
-      textAlign: "center",
-      whiteSpace: "nowrap",
-      verticalAlign: "baseline",
+      textAlign: 'center',
+      whiteSpace: 'nowrap',
+      verticalAlign: 'baseline',
       border: borderValue,
       borderRadius: borderRadiusValue,
       ...(indicator && indicatorStyles(size)),
-      ...(variant === "gradient" && gradientStyles(color)),
-      ...(variant === "contained" && containedStyles(color)),
+      ...(variant === 'gradient' && gradientStyles(color)),
+      ...(variant === 'contained' && containedStyles(color)),
       ...(!children && !container && standAloneStyles(color)),
-      ...(container && containerStyles(color)),
-    },
+      ...(container && containerStyles(color))
+    }
   };
 });

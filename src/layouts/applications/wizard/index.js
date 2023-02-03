@@ -13,32 +13,32 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState } from 'react';
 
 // @mui material components
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import MDButton from 'components/MDButton';
 
 // Material Dashboard 2 PRO React examples
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import Footer from 'examples/Footer';
 
 // Wizard page components
-import About from "layouts/applications/wizard/components/About";
-import Account from "layouts/applications/wizard/components/Account";
-import Address from "layouts/applications/wizard/components/Address";
+import About from 'layouts/applications/wizard/components/About';
+import Account from 'layouts/applications/wizard/components/Account';
+import Address from 'layouts/applications/wizard/components/Address';
 
 function getSteps() {
-  return ["About", "Account", "Address"];
+  return ['About', 'Account', 'Address'];
 }
 
 function getStepContent(stepIndex) {
@@ -66,15 +66,15 @@ function Wizard() {
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox pt={3} pb={8}>
-        <Grid container justifyContent="center" sx={{ my: 4 }}>
+        <Grid container justifyContent='center' sx={{ my: 4 }}>
           <Grid item xs={12} lg={8}>
-            <MDBox mt={6} mb={8} textAlign="center">
+            <MDBox mt={6} mb={8} textAlign='center'>
               <MDBox mb={1}>
-                <MDTypography variant="h3" fontWeight="bold">
+                <MDTypography variant='h3' fontWeight='bold'>
                   Build Your Profile
                 </MDTypography>
               </MDBox>
-              <MDTypography variant="h5" fontWeight="regular" color="secondary">
+              <MDTypography variant='h5' fontWeight='regular' color='secondary'>
                 This information will let us know more about you.
               </MDTypography>
             </MDBox>
@@ -91,20 +91,16 @@ function Wizard() {
               <MDBox p={2}>
                 <MDBox>
                   {getStepContent(activeStep)}
-                  <MDBox mt={3} width="100%" display="flex" justifyContent="space-between">
+                  <MDBox mt={3} width='100%' display='flex' justifyContent='space-between'>
                     {activeStep === 0 ? (
                       <MDBox />
                     ) : (
-                      <MDButton variant="outlined" color="dark" onClick={handleBack}>
+                      <MDButton variant='outlined' color='dark' onClick={handleBack}>
                         back
                       </MDButton>
                     )}
-                    <MDButton
-                      variant="gradient"
-                      color="dark"
-                      onClick={!isLastStep ? handleNext : undefined}
-                    >
-                      {isLastStep ? "send" : "next"}
+                    <MDButton variant='gradient' color='dark' onClick={!isLastStep ? handleNext : undefined}>
+                      {isLastStep ? 'send' : 'next'}
                     </MDButton>
                   </MDBox>
                 </MDBox>

@@ -14,76 +14,66 @@ Coded by www.creative-tim.com
 */
 
 // @material-ui core components
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import Autocomplete from "@mui/material/Autocomplete";
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
+import Autocomplete from '@mui/material/Autocomplete';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
 
 // Settings page components
-import FormField from "layouts/pages/account/components/FormField";
+import FormField from 'layouts/pages/account/components/FormField';
 
 // Data
-import selectData from "layouts/pages/account/settings/components/BasicInfo/data/selectData";
+import selectData from 'layouts/pages/account/settings/components/BasicInfo/data/selectData';
 
 function BasicInfo() {
   return (
-    <Card id="basic-info" sx={{ overflow: "visible" }}>
+    <Card id='basic-info' sx={{ overflow: 'visible' }}>
       <MDBox p={3}>
-        <MDTypography variant="h5">Basic Info</MDTypography>
+        <MDTypography variant='h5'>Basic Info</MDTypography>
       </MDBox>
-      <MDBox component="form" pb={3} px={3}>
+      <MDBox component='form' pb={3} px={3}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
-            <FormField label="First Name" placeholder="Alec" />
+            <FormField label='First Name' placeholder='Alec' />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormField label="Last Name" placeholder="Thompson" />
+            <FormField label='Last Name' placeholder='Thompson' />
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={4}>
                 <Autocomplete
-                  defaultValue="Male"
+                  defaultValue='Male'
                   options={selectData.gender}
-                  renderInput={(params) => (
-                    <FormField {...params} label="I'm" InputLabelProps={{ shrink: true }} />
-                  )}
+                  renderInput={(params) => <FormField {...params} label="I'm" InputLabelProps={{ shrink: true }} />}
                 />
               </Grid>
               <Grid item xs={12} sm={8}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={5}>
                     <Autocomplete
-                      defaultValue="February"
+                      defaultValue='February'
                       options={selectData.birthDate}
                       renderInput={(params) => (
-                        <FormField
-                          {...params}
-                          label="Birth Date"
-                          InputLabelProps={{ shrink: true }}
-                        />
+                        <FormField {...params} label='Birth Date' InputLabelProps={{ shrink: true }} />
                       )}
                     />
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <Autocomplete
-                      defaultValue="1"
+                      defaultValue='1'
                       options={selectData.days}
-                      renderInput={(params) => (
-                        <FormField {...params} InputLabelProps={{ shrink: true }} />
-                      )}
+                      renderInput={(params) => <FormField {...params} InputLabelProps={{ shrink: true }} />}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3}>
                     <Autocomplete
-                      defaultValue="2021"
+                      defaultValue='2021'
                       options={selectData.years}
-                      renderInput={(params) => (
-                        <FormField {...params} InputLabelProps={{ shrink: true }} />
-                      )}
+                      renderInput={(params) => <FormField {...params} InputLabelProps={{ shrink: true }} />}
                     />
                   </Grid>
                 </Grid>
@@ -91,36 +81,24 @@ function BasicInfo() {
             </Grid>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormField
-              label="Email"
-              placeholder="example@email.com"
-              inputProps={{ type: "email" }}
-            />
+            <FormField label='Email' placeholder='example@email.com' inputProps={{ type: 'email' }} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormField
-              label="confirmation email"
-              placeholder="example@email.com"
-              inputProps={{ type: "email" }}
-            />
+            <FormField label='confirmation email' placeholder='example@email.com' inputProps={{ type: 'email' }} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormField label="your location" placeholder="Sydney, A" />
+            <FormField label='your location' placeholder='Sydney, A' />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormField
-              label="Phone Number"
-              placeholder="+40 735 631 620"
-              inputProps={{ type: "number" }}
-            />
+            <FormField label='Phone Number' placeholder='+40 735 631 620' inputProps={{ type: 'number' }} />
           </Grid>
           <Grid item xs={12} md={6}>
-            <FormField label="Language" placeholder="English" />
+            <FormField label='Language' placeholder='English' />
           </Grid>
           <Grid item xs={12} md={6}>
             <Autocomplete
               multiple
-              defaultValue={["react", "angular"]}
+              defaultValue={['react', 'angular']}
               options={selectData.skills}
               renderInput={(params) => <FormField {...params} InputLabelProps={{ shrink: true }} />}
             />

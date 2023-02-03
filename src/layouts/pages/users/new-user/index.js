@@ -13,40 +13,40 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState } from 'react';
 
 // formik components
-import { Formik, Form } from "formik";
+import { Formik, Form } from 'formik';
 
 // @mui material components
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDButton from "components/MDButton";
+import MDBox from 'components/MDBox';
+import MDButton from 'components/MDButton';
 
 // Material Dashboard 2 PRO React examples
-import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
-import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
+import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import Footer from 'examples/Footer';
 
 // NewUser page components
-import UserInfo from "layouts/pages/users/new-user/components/UserInfo";
-import Address from "layouts/pages/users/new-user/components/Address";
-import Socials from "layouts/pages/users/new-user/components/Socials";
-import Profile from "layouts/pages/users/new-user/components/Profile";
+import UserInfo from 'layouts/pages/users/new-user/components/UserInfo';
+import Address from 'layouts/pages/users/new-user/components/Address';
+import Socials from 'layouts/pages/users/new-user/components/Socials';
+import Profile from 'layouts/pages/users/new-user/components/Profile';
 
 // NewUser layout schemas for form and form feilds
-import validations from "layouts/pages/users/new-user/schemas/validations";
-import form from "layouts/pages/users/new-user/schemas/form";
-import initialValues from "layouts/pages/users/new-user/schemas/initialValues";
+import validations from 'layouts/pages/users/new-user/schemas/validations';
+import form from 'layouts/pages/users/new-user/schemas/form';
+import initialValues from 'layouts/pages/users/new-user/schemas/initialValues';
 
 function getSteps() {
-  return ["User Info", "Address", "Social", "Profile"];
+  return ['User Info', 'Address', 'Social', 'Profile'];
 }
 
 function getStepContent(stepIndex, formData) {
@@ -102,17 +102,13 @@ function NewUser() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox py={3} mb={20} height="65vh">
-        <Grid container justifyContent="center" alignItems="center" sx={{ height: "100%", mt: 8 }}>
+      <MDBox py={3} mb={20} height='65vh'>
+        <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
           <Grid item xs={12} lg={8}>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={currentValidation}
-              onSubmit={handleSubmit}
-            >
+            <Formik initialValues={initialValues} validationSchema={currentValidation} onSubmit={handleSubmit}>
               {({ values, errors, touched, isSubmitting }) => (
-                <Form id={formId} autoComplete="off">
-                  <Card sx={{ height: "100%" }}>
+                <Form id={formId} autoComplete='off'>
+                  <Card sx={{ height: '100%' }}>
                     <MDBox mx={2} mt={-3}>
                       <Stepper activeStep={activeStep} alternativeLabel>
                         {steps.map((label) => (
@@ -128,23 +124,18 @@ function NewUser() {
                           values,
                           touched,
                           formField,
-                          errors,
+                          errors
                         })}
-                        <MDBox mt={2} width="100%" display="flex" justifyContent="space-between">
+                        <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
                           {activeStep === 0 ? (
                             <MDBox />
                           ) : (
-                            <MDButton variant="gradient" color="light" onClick={handleBack}>
+                            <MDButton variant='gradient' color='light' onClick={handleBack}>
                               back
                             </MDButton>
                           )}
-                          <MDButton
-                            disabled={isSubmitting}
-                            type="submit"
-                            variant="gradient"
-                            color="dark"
-                          >
-                            {isLastStep ? "send" : "next"}
+                          <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
+                            {isLastStep ? 'send' : 'next'}
                           </MDButton>
                         </MDBox>
                       </MDBox>

@@ -14,28 +14,28 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import MDButton from 'components/MDButton';
 
 function Header() {
   return (
-    <MDBox display="flex" justifyContent="space-between" alignItems="center">
+    <MDBox display='flex' justifyContent='space-between' alignItems='center'>
       <MDBox>
         <MDBox mb={1}>
-          <MDTypography variant="h6" fontWeight="medium">
+          <MDTypography variant='h6' fontWeight='medium'>
             Order Details
           </MDTypography>
         </MDBox>
-        <MDTypography component="p" variant="button" color="text">
+        <MDTypography component='p' variant='button' color='text'>
           Order no. <b>241342</b> from
           <b>23.02.2021</b>
         </MDTypography>
-        <MDTypography component="p" variant="button" fontWeight="regular" color="text">
+        <MDTypography component='p' variant='button' fontWeight='regular' color='text'>
           Code: <b>KF332</b>
         </MDTypography>
       </MDBox>
-      <MDButton variant="gradient" color="dark">
+      <MDButton variant='gradient' color='dark'>
         invoice
       </MDButton>
     </MDBox>

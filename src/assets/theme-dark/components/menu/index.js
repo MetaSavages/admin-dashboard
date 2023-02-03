@@ -14,13 +14,13 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React base styles
-import boxShadows from "assets/theme-dark/base/boxShadows";
-import typography from "assets/theme-dark/base/typography";
-import colors from "assets/theme-dark/base/colors";
-import borders from "assets/theme-dark/base/borders";
+import boxShadows from 'assets/theme-dark/base/boxShadows';
+import typography from 'assets/theme-dark/base/typography';
+import colors from 'assets/theme-dark/base/colors';
+import borders from 'assets/theme-dark/base/borders';
 
 // Material Dashboard 2 PRO React helper functions
-import pxToRem from "assets/theme-dark/functions/pxToRem";
+import pxToRem from 'assets/theme-dark/functions/pxToRem';
 
 const { md } = boxShadows;
 const { size } = typography;
@@ -29,7 +29,7 @@ const { borderRadius } = borders;
 
 const menu = {
   defaultProps: {
-    disableAutoFocusItem: true,
+    disableAutoFocusItem: true
   },
 
   styleOverrides: {
@@ -39,11 +39,11 @@ const menu = {
       padding: `${pxToRem(16)} ${pxToRem(8)}`,
       fontSize: size.sm,
       color: text.main,
-      textAlign: "left",
+      textAlign: 'left',
       backgroundColor: `${background.card} !important`,
-      borderRadius: borderRadius.md,
-    },
-  },
+      borderRadius: borderRadius.md
+    }
+  }
 };
 
 export default menu;

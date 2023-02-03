@@ -13,16 +13,16 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 // react-quill components
-import ReactQuill from "react-quill";
+import ReactQuill from 'react-quill';
 
 // react-quill styles
-import "react-quill/dist/quill.snow.css";
+import 'react-quill/dist/quill.snow.css';
 
 // Custom styles for the MDEditor
-import MDEditorRoot from "components/MDEditor/MDEditorRoot";
+import MDEditorRoot from 'components/MDEditor/MDEditorRoot';
 
 // Material Dashboard 2 PRO React context
-import { useMaterialUIController } from "context";
+import { useMaterialUIController } from 'context';
 
 function MDEditor(props) {
   const [controller] = useMaterialUIController();
@@ -30,7 +30,7 @@ function MDEditor(props) {
 
   return (
     <MDEditorRoot ownerState={{ darkMode }}>
-      <ReactQuill theme="snow" {...props} />
+      <ReactQuill theme='snow' {...props} />
     </MDEditorRoot>
   );
 }

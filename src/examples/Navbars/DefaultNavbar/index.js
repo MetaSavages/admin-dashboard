@@ -14,48 +14,48 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment } from 'react';
 
 // prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // react-router components
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 // @mui material components
-import Icon from "@mui/material/Icon";
-import Popper from "@mui/material/Popper";
-import Grow from "@mui/material/Grow";
-import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
-import MuiLink from "@mui/material/Link";
-import Container from "@mui/material/Container";
+import Icon from '@mui/material/Icon';
+import Popper from '@mui/material/Popper';
+import Grow from '@mui/material/Grow';
+import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
+import MuiLink from '@mui/material/Link';
+import Container from '@mui/material/Container';
 
 // Material Dashboard 2 PRO React TS components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import MDButton from 'components/MDButton';
 
 // Material Dashboard 2 PRO React TS examples components
-import DefaultNavbarDropdown from "examples/Navbars/DefaultNavbar/DefaultNavbarDropdown";
-import DefaultNavbarMobile from "examples/Navbars/DefaultNavbar/DefaultNavbarMobile";
+import DefaultNavbarDropdown from 'examples/Navbars/DefaultNavbar/DefaultNavbarDropdown';
+import DefaultNavbarMobile from 'examples/Navbars/DefaultNavbar/DefaultNavbarMobile';
 
 // Material Dashboard 2 PRO React TS Base Styles
-import breakpoints from "assets/theme/base/breakpoints";
+import breakpoints from 'assets/theme/base/breakpoints';
 
 // Material Dashboard 2 PRO React context
-import { useMaterialUIController } from "context";
+import { useMaterialUIController } from 'context';
 
 function DefaultNavbar({ routes, brand, transparent, light, action }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
-  const [dropdown, setDropdown] = useState("");
-  const [dropdownEl, setDropdownEl] = useState("");
-  const [dropdownName, setDropdownName] = useState("");
-  const [nestedDropdown, setNestedDropdown] = useState("");
-  const [nestedDropdownEl, setNestedDropdownEl] = useState("");
-  const [nestedDropdownName, setNestedDropdownName] = useState("");
+  const [dropdown, setDropdown] = useState('');
+  const [dropdownEl, setDropdownEl] = useState('');
+  const [dropdownName, setDropdownName] = useState('');
+  const [nestedDropdown, setNestedDropdown] = useState('');
+  const [nestedDropdownEl, setNestedDropdownEl] = useState('');
+  const [nestedDropdownName, setNestedDropdownName] = useState('');
   const [arrowRef, setArrowRef] = useState(null);
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
@@ -78,13 +78,13 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
      The event listener that's calling the displayMobileNavbar function when 
      resizing the window.
     */
-    window.addEventListener("resize", displayMobileNavbar);
+    window.addEventListener('resize', displayMobileNavbar);
 
     // Call the displayMobileNavbar function to set the state with the initial value.
     displayMobileNavbar();
 
     // Remove event listener on cleanup
-    return () => window.removeEventListener("resize", displayMobileNavbar);
+    return () => window.removeEventListener('resize', displayMobileNavbar);
   }, []);
 
   const renderNavbarItems = routes.map(({ name, icon, href, route, collapse }) => (
@@ -132,36 +132,25 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
             const dividerKey = `divider-${key}`;
 
             return (
-              <Grid key={gridKey} item xs={12 / columns} sx={{ position: "relative" }}>
+              <Grid key={gridKey} item xs={12 / columns} sx={{ position: 'relative' }}>
                 {cols.map((col, index) => (
                   <Fragment key={col.name}>
-                    <MDBox
-                      width="100%"
-                      display="flex"
-                      alignItems="center"
-                      py={1}
-                      mt={index !== 0 ? 2 : 0}
-                    >
+                    <MDBox width='100%' display='flex' alignItems='center' py={1} mt={index !== 0 ? 2 : 0}>
                       <MDBox
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        width="1.5rem"
-                        height="1.5rem"
-                        borderRadius="md"
-                        color="text"
+                        display='flex'
+                        justifyContent='center'
+                        alignItems='center'
+                        width='1.5rem'
+                        height='1.5rem'
+                        borderRadius='md'
+                        color='text'
                         mr={1}
-                        fontSize="1rem"
+                        fontSize='1rem'
                         lineHeight={1}
                       >
                         {col.icon}
                       </MDBox>
-                      <MDTypography
-                        display="block"
-                        variant="button"
-                        fontWeight="bold"
-                        textTransform="capitalize"
-                      >
+                      <MDTypography display='block' variant='button' fontWeight='bold' textTransform='capitalize'>
                         {col.name}
                       </MDTypography>
                     </MDBox>
@@ -169,27 +158,27 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
                       <MDTypography
                         key={item.name}
                         component={item.route ? Link : MuiLink}
-                        to={item.route ? item.route : ""}
+                        to={item.route ? item.route : ''}
                         href={item.href ? item.href : (e) => e.preventDefault()}
-                        target={item.href ? "_blank" : ""}
-                        rel={item.href ? "noreferrer" : "noreferrer"}
-                        minWidth="11.25rem"
-                        display="block"
-                        variant="button"
-                        color="text"
-                        textTransform="capitalize"
-                        fontWeight="regular"
+                        target={item.href ? '_blank' : ''}
+                        rel={item.href ? 'noreferrer' : 'noreferrer'}
+                        minWidth='11.25rem'
+                        display='block'
+                        variant='button'
+                        color='text'
+                        textTransform='capitalize'
+                        fontWeight='regular'
                         py={0.625}
                         px={2}
                         sx={({ palette: { grey, dark }, borders: { borderRadius } }) => ({
                           borderRadius: borderRadius.md,
-                          cursor: "pointer",
-                          transition: "all 300ms linear",
+                          cursor: 'pointer',
+                          transition: 'all 300ms linear',
 
-                          "&:hover": {
+                          '&:hover': {
                             backgroundColor: grey[200],
-                            color: dark.main,
-                          },
+                            color: dark.main
+                          }
                         })}
                       >
                         {item.name}
@@ -200,13 +189,13 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
                 {key !== 0 && (
                   <Divider
                     key={dividerKey}
-                    orientation="vertical"
+                    orientation='vertical'
                     sx={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "-4px",
-                      transform: "translateY(-45%)",
-                      height: "90%",
+                      position: 'absolute',
+                      top: '50%',
+                      left: '-4px',
+                      transform: 'translateY(-45%)',
+                      height: '90%'
                     }}
                   />
                 )}
@@ -222,42 +211,42 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
         const linkComponent = {
           component: MuiLink,
           href: item.href,
-          target: "_blank",
-          rel: "noreferrer",
+          target: '_blank',
+          rel: 'noreferrer'
         };
 
         const routeComponent = {
           component: Link,
-          to: item.route,
+          to: item.route
         };
 
         return (
           <MDTypography
             key={item.name}
             {...(item.route ? routeComponent : linkComponent)}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            variant="button"
-            textTransform="capitalize"
-            minWidth={item.description ? "14rem" : "12rem"}
-            color={item.description ? "dark" : "text"}
-            fontWeight={item.description ? "bold" : "regular"}
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'
+            variant='button'
+            textTransform='capitalize'
+            minWidth={item.description ? '14rem' : '12rem'}
+            color={item.description ? 'dark' : 'text'}
+            fontWeight={item.description ? 'bold' : 'regular'}
             py={item.description ? 1 : 0.625}
             px={2}
             sx={({ palette: { grey, dark }, borders: { borderRadius } }) => ({
               borderRadius: borderRadius.md,
-              cursor: "pointer",
-              transition: "all 300ms linear",
+              cursor: 'pointer',
+              transition: 'all 300ms linear',
 
-              "&:hover": {
+              '&:hover': {
                 backgroundColor: grey[200],
                 color: dark.main,
 
-                "& *": {
-                  color: dark.main,
-                },
-              },
+                '& *': {
+                  color: dark.main
+                }
+              }
             })}
             onMouseEnter={({ currentTarget }) => {
               if (item.dropdown) {
@@ -273,36 +262,29 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
             }}
           >
             {item.description ? (
-              <MDBox display="flex" py={0.25} fontSize="1rem" color="text">
-                {typeof item.icon === "string" ? (
-                  <Icon color="inherit">{item.icon}</Icon>
+              <MDBox display='flex' py={0.25} fontSize='1rem' color='text'>
+                {typeof item.icon === 'string' ? (
+                  <Icon color='inherit'>{item.icon}</Icon>
                 ) : (
-                  <MDBox color="inherit">{item.icon}</MDBox>
+                  <MDBox color='inherit'>{item.icon}</MDBox>
                 )}
                 <MDBox pl={1} lineHeight={0}>
-                  <MDTypography
-                    variant="button"
-                    display="block"
-                    fontWeight="bold"
-                    textTransform="capitalize"
-                  >
+                  <MDTypography variant='button' display='block' fontWeight='bold' textTransform='capitalize'>
                     {item.name}
                   </MDTypography>
-                  <MDTypography variant="button" fontWeight="regular" color="text">
+                  <MDTypography variant='button' fontWeight='regular' color='text'>
                     {item.description}
                   </MDTypography>
                 </MDBox>
               </MDBox>
             ) : (
-              <MDBox display="flex" alignItems="center" color="text">
+              <MDBox display='flex' alignItems='center' color='text'>
                 <Icon sx={{ mr: 1 }}>{item.icon}</Icon>
                 {item.name}
               </MDBox>
             )}
             {item.collapse && (
-              <Icon sx={{ fontWeight: "normal", verticalAlign: "middle", mr: -0.5 }}>
-                keyboard_arrow_right
-              </Icon>
+              <Icon sx={{ fontWeight: 'normal', verticalAlign: 'middle', mr: -0.5 }}>keyboard_arrow_right</Icon>
             )}
           </MDTypography>
         );
@@ -318,23 +300,23 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
       anchorEl={dropdown}
       popperRef={null}
       open={Boolean(dropdown)}
-      placement="top-start"
+      placement='top-start'
       transition
       style={{ zIndex: 999 }}
       modifiers={[
         {
-          name: "arrow",
+          name: 'arrow',
           enabled: true,
           options: {
-            element: arrowRef,
-          },
-        },
+            element: arrowRef
+          }
+        }
       ]}
       onMouseEnter={() => setDropdown(dropdownEl)}
       onMouseLeave={() => {
         if (!nestedDropdown) {
           setDropdown(null);
-          setDropdownName("");
+          setDropdownName('');
         }
       }}
     >
@@ -342,17 +324,17 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
         <Grow
           {...TransitionProps}
           sx={{
-            transformOrigin: "left top",
-            background: ({ palette: { white } }) => white.main,
+            transformOrigin: 'left top',
+            background: ({ palette: { white } }) => white.main
           }}
         >
-          <MDBox borderRadius="lg">
-            <MDTypography variant="h1" color="white">
+          <MDBox borderRadius='lg'>
+            <MDTypography variant='h1' color='white'>
               <Icon ref={setArrowRef} sx={{ mt: -3 }}>
                 arrow_drop_up
               </Icon>
             </MDTypography>
-            <MDBox shadow="lg" borderRadius="lg" p={1.625} mt={1}>
+            <MDBox shadow='lg' borderRadius='lg' p={1.625} mt={1}>
               {renderRoutes}
             </MDBox>
           </MDBox>
@@ -374,53 +356,53 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
                 const linkComponent = {
                   component: MuiLink,
                   href: item.href,
-                  target: "_blank",
-                  rel: "noreferrer",
+                  target: '_blank',
+                  rel: 'noreferrer'
                 };
 
                 const routeComponent = {
                   component: Link,
-                  to: item.route,
+                  to: item.route
                 };
 
                 return (
                   <MDTypography
                     key={item.name}
                     {...(item.route ? routeComponent : linkComponent)}
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    variant="button"
-                    textTransform="capitalize"
-                    minWidth={item.description ? "14rem" : "12rem"}
-                    color={item.description ? "dark" : "text"}
-                    fontWeight={item.description ? "bold" : "regular"}
+                    display='flex'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    variant='button'
+                    textTransform='capitalize'
+                    minWidth={item.description ? '14rem' : '12rem'}
+                    color={item.description ? 'dark' : 'text'}
+                    fontWeight={item.description ? 'bold' : 'regular'}
                     py={item.description ? 1 : 0.625}
                     px={2}
                     sx={({ palette: { grey, dark }, borders: { borderRadius } }) => ({
                       borderRadius: borderRadius.md,
-                      cursor: "pointer",
-                      transition: "all 300ms linear",
+                      cursor: 'pointer',
+                      transition: 'all 300ms linear',
 
-                      "&:hover": {
+                      '&:hover': {
                         backgroundColor: grey[200],
                         color: dark.main,
 
-                        "& *": {
-                          color: dark.main,
-                        },
-                      },
+                        '& *': {
+                          color: dark.main
+                        }
+                      }
                     })}
                   >
                     {item.description ? (
                       <MDBox>
                         {item.name}
                         <MDTypography
-                          display="block"
-                          variant="button"
-                          color="text"
-                          fontWeight="regular"
-                          sx={{ transition: "all 300ms linear" }}
+                          display='block'
+                          variant='button'
+                          color='text'
+                          fontWeight='regular'
+                          sx={{ transition: 'all 300ms linear' }}
                         >
                           {item.description}
                         </MDTypography>
@@ -429,10 +411,7 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
                       item.name
                     )}
                     {item.collapse && (
-                      <Icon
-                        fontSize="small"
-                        sx={{ fontWeight: "normal", verticalAlign: "middle", mr: -0.5 }}
-                      >
+                      <Icon fontSize='small' sx={{ fontWeight: 'normal', verticalAlign: 'middle', mr: -0.5 }}>
                         keyboard_arrow_right
                       </Icon>
                     )}
@@ -452,7 +431,7 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
       anchorEl={nestedDropdown}
       popperRef={null}
       open={Boolean(nestedDropdown)}
-      placement="right-start"
+      placement='right-start'
       transition
       style={{ zIndex: 999 }}
       onMouseEnter={() => {
@@ -460,7 +439,7 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
       }}
       onMouseLeave={() => {
         setNestedDropdown(null);
-        setNestedDropdownName("");
+        setNestedDropdownName('');
         setDropdown(null);
       }}
     >
@@ -468,12 +447,12 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
         <Grow
           {...TransitionProps}
           sx={{
-            transformOrigin: "left top",
-            background: ({ palette: { white } }) => white.main,
+            transformOrigin: 'left top',
+            background: ({ palette: { white } }) => white.main
           }}
         >
-          <MDBox ml={2.5} mt={-2.5} borderRadius="lg">
-            <MDBox shadow="lg" borderRadius="lg" py={1.5} px={1} mt={2}>
+          <MDBox ml={2.5} mt={-2.5} borderRadius='lg'>
+            <MDBox shadow='lg' borderRadius='lg' py={1.5} px={1} mt={2}>
               {renderNestedRoutes}
             </MDBox>
           </MDBox>
@@ -489,61 +468,50 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
         px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
         my={3}
         mx={3}
-        width="calc(100% - 48px)"
-        borderRadius="lg"
-        shadow={transparent ? "none" : "md"}
-        color={light ? "white" : "dark"}
-        position="absolute"
+        width='calc(100% - 48px)'
+        borderRadius='lg'
+        shadow={transparent ? 'none' : 'md'}
+        color={light ? 'white' : 'dark'}
+        position='absolute'
         left={0}
         zIndex={99}
-        sx={({
-          palette: { transparent: transparentColor, white, background },
-          functions: { rgba },
-        }) => ({
-          backgroundColor: transparent
-            ? transparentColor.main
-            : rgba(darkMode ? background.sidenav : white.main, 0.8),
-          backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
+        sx={({ palette: { transparent: transparentColor, white, background }, functions: { rgba } }) => ({
+          backgroundColor: transparent ? transparentColor.main : rgba(darkMode ? background.sidenav : white.main, 0.8),
+          backdropFilter: transparent ? 'none' : `saturate(200%) blur(30px)`
         })}
       >
-        <MDBox display="flex" justifyContent="space-between" alignItems="center">
-          <MDBox
-            component={Link}
-            to="/"
-            py={transparent ? 1.5 : 0.75}
-            lineHeight={1}
-            pl={{ xs: 0, lg: 1 }}
-          >
-            <MDTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
+        <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+          <MDBox component={Link} to='/' py={transparent ? 1.5 : 0.75} lineHeight={1} pl={{ xs: 0, lg: 1 }}>
+            <MDTypography variant='button' fontWeight='bold' color={light ? 'white' : 'dark'}>
               {brand}
             </MDTypography>
           </MDBox>
-          <MDBox color="inherit" display={{ xs: "none", lg: "flex" }} m={0} p={0}>
+          <MDBox color='inherit' display={{ xs: 'none', lg: 'flex' }} m={0} p={0}>
             {renderNavbarItems}
           </MDBox>
           {action &&
-            (action.type === "internal" ? (
-              <MDBox display={{ xs: "none", lg: "inline-block" }}>
+            (action.type === 'internal' ? (
+              <MDBox display={{ xs: 'none', lg: 'inline-block' }}>
                 <MDButton
                   component={Link}
                   to={action.route}
-                  variant="gradient"
-                  color={action.color ? action.color : "info"}
-                  size="small"
+                  variant='gradient'
+                  color={action.color ? action.color : 'info'}
+                  size='small'
                 >
                   {action.label}
                 </MDButton>
               </MDBox>
             ) : (
-              <MDBox display={{ xs: "none", lg: "inline-block" }}>
+              <MDBox display={{ xs: 'none', lg: 'inline-block' }}>
                 <MDButton
-                  component="a"
+                  component='a'
                   href={action.route}
-                  target="_blank"
-                  rel="noreferrer"
-                  variant="gradient"
-                  color={action.color ? action.color : "info"}
-                  size="small"
+                  target='_blank'
+                  rel='noreferrer'
+                  variant='gradient'
+                  color={action.color ? action.color : 'info'}
+                  size='small'
                   sx={{ mt: -0.3 }}
                 >
                   {action.label}
@@ -551,21 +519,21 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
               </MDBox>
             ))}
           <MDBox
-            display={{ xs: "inline-block", lg: "none" }}
+            display={{ xs: 'inline-block', lg: 'none' }}
             lineHeight={0}
             py={1.5}
             pl={1.5}
-            color={transparent ? "white" : "inherit"}
-            sx={{ cursor: "pointer" }}
+            color={transparent ? 'white' : 'inherit'}
+            sx={{ cursor: 'pointer' }}
             onClick={openMobileNavbar}
           >
-            <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
+            <Icon fontSize='default'>{mobileNavbar ? 'close' : 'menu'}</Icon>
           </MDBox>
         </MDBox>
         <MDBox
-          bgColor={transparent ? "white" : "transparent"}
-          shadow={transparent ? "lg" : "none"}
-          borderRadius="md"
+          bgColor={transparent ? 'white' : 'transparent'}
+          shadow={transparent ? 'lg' : 'none'}
+          borderRadius='md'
           px={transparent ? 2 : 0}
         >
           {mobileView && <DefaultNavbarMobile routes={routes} open={mobileNavbar} />}
@@ -579,10 +547,10 @@ function DefaultNavbar({ routes, brand, transparent, light, action }) {
 
 // Declaring default props for DefaultNavbar
 DefaultNavbar.defaultProps = {
-  brand: "Material Dashboard PRO",
+  brand: 'Material Dashboard PRO',
   transparent: false,
   light: false,
-  action: false,
+  action: false
 };
 
 // Typechecking props for the DefaultNavbar
@@ -594,23 +562,23 @@ DefaultNavbar.propTypes = {
   action: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.shape({
-      type: PropTypes.oneOf(["external", "internal"]).isRequired,
+      type: PropTypes.oneOf(['external', 'internal']).isRequired,
       route: PropTypes.string.isRequired,
       color: PropTypes.oneOf([
-        "primary",
-        "secondary",
-        "info",
-        "success",
-        "warning",
-        "error",
-        "dark",
-        "light",
-        "default",
-        "white",
+        'primary',
+        'secondary',
+        'info',
+        'success',
+        'warning',
+        'error',
+        'dark',
+        'light',
+        'default',
+        'white'
       ]),
-      label: PropTypes.string.isRequired,
-    }),
-  ]),
+      label: PropTypes.string.isRequired
+    })
+  ])
 };
 
 export default DefaultNavbar;

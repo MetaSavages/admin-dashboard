@@ -14,17 +14,17 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React base styles
-import colors from "assets/theme/base/colors";
+import colors from 'assets/theme/base/colors';
 
 const { white } = colors;
 
 function configs(backgroundColor) {
   return {
     data: {
-      labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       datasets: [
         {
-          label: "Visitors",
+          label: 'Visitors',
           tension: 0.5,
           pointRadius: 0,
           borderColor: white.main,
@@ -32,21 +32,21 @@ function configs(backgroundColor) {
           backgroundColor,
           data: [50, 45, 60, 60, 80, 65, 90, 80, 100],
           maxBarThickness: 6,
-          fill: true,
-        },
-      ],
+          fill: true
+        }
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          display: false,
-        },
+          display: false
+        }
       },
       interaction: {
         intersect: false,
-        mode: "index",
+        mode: 'index'
       },
       scales: {
         y: {
@@ -54,25 +54,25 @@ function configs(backgroundColor) {
             drawBorder: false,
             display: false,
             drawOnChartArea: false,
-            drawTicks: false,
+            drawTicks: false
           },
           ticks: {
-            display: false,
-          },
+            display: false
+          }
         },
         x: {
           grid: {
             drawBorder: false,
             display: false,
             drawOnChartArea: false,
-            drawTicks: false,
+            drawTicks: false
           },
           ticks: {
-            display: false,
-          },
-        },
-      },
-    },
+            display: false
+          }
+        }
+      }
+    }
   };
 }
 

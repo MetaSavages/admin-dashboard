@@ -14,11 +14,11 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React Base Styles
-import colors from "assets/theme/base/colors";
-import typography from "assets/theme/base/typography";
+import colors from 'assets/theme/base/colors';
+import typography from 'assets/theme/base/typography';
 
 // Material Dashboard 2 PRO React Helper Functions
-import pxToRem from "assets/theme/functions/pxToRem";
+import pxToRem from 'assets/theme/functions/pxToRem';
 
 const { white, text, info, secondary } = colors;
 const { size } = typography;
@@ -30,17 +30,17 @@ const contained = {
     color: text.main,
     padding: `${pxToRem(10)} ${pxToRem(24)}`,
 
-    "&:hover": {
-      backgroundColor: white.main,
+    '&:hover': {
+      backgroundColor: white.main
     },
 
-    "&:active, &:active:focus, &:active:hover": {
-      opacity: 0.85,
+    '&:active, &:active:focus, &:active:hover': {
+      opacity: 0.85
     },
 
-    "& .material-icon, .material-icons-round, svg": {
-      fontSize: `${pxToRem(16)} !important`,
-    },
+    '& .material-icon, .material-icons-round, svg': {
+      fontSize: `${pxToRem(16)} !important`
+    }
   },
 
   small: {
@@ -48,9 +48,9 @@ const contained = {
     padding: `${pxToRem(6)} ${pxToRem(16)}`,
     fontSize: size.xs,
 
-    "& .material-icon, .material-icons-round, svg": {
-      fontSize: `${pxToRem(12)} !important`,
-    },
+    '& .material-icon, .material-icons-round, svg': {
+      fontSize: `${pxToRem(12)} !important`
+    }
   },
 
   large: {
@@ -58,34 +58,34 @@ const contained = {
     padding: `${pxToRem(12)} ${pxToRem(28)}`,
     fontSize: size.sm,
 
-    "& .material-icon, .material-icons-round, svg": {
-      fontSize: `${pxToRem(22)} !important`,
-    },
+    '& .material-icon, .material-icons-round, svg': {
+      fontSize: `${pxToRem(22)} !important`
+    }
   },
 
   primary: {
     backgroundColor: info.main,
 
-    "&:hover": {
-      backgroundColor: info.main,
+    '&:hover': {
+      backgroundColor: info.main
     },
 
-    "&:focus:not(:hover)": {
-      backgroundColor: info.focus,
-    },
+    '&:focus:not(:hover)': {
+      backgroundColor: info.focus
+    }
   },
 
   secondary: {
     backgroundColor: secondary.main,
 
-    "&:hover": {
-      backgroundColor: secondary.main,
+    '&:hover': {
+      backgroundColor: secondary.main
     },
 
-    "&:focus:not(:hover)": {
-      backgroundColor: secondary.focus,
-    },
-  },
+    '&:focus:not(:hover)': {
+      backgroundColor: secondary.focus
+    }
+  }
 };
 
 export default contained;

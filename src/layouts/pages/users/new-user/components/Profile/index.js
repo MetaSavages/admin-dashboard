@@ -14,17 +14,17 @@ Coded by www.creative-tim.com
 */
 
 // prop-type is a library for typechecking of props
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // @mui material components
-import Grid from "@mui/material/Grid";
+import Grid from '@mui/material/Grid';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
 
 // NewUser page components
-import FormField from "layouts/pages/users/new-user/components/FormField";
+import FormField from 'layouts/pages/users/new-user/components/FormField';
 
 function Profile({ formData }) {
   const { formField, values } = formData;
@@ -33,7 +33,7 @@ function Profile({ formData }) {
 
   return (
     <MDBox>
-      <MDTypography variant="h5" fontWeight="bold">
+      <MDTypography variant='h5' fontWeight='bold'>
         Profile
       </MDTypography>
       <MDBox mt={1.625}>
@@ -66,7 +66,7 @@ function Profile({ formData }) {
 
 // typechecking props for Profile
 Profile.propTypes = {
-  formData: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  formData: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired
 };
 
 export default Profile;

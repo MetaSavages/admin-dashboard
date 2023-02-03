@@ -15,9 +15,9 @@ Coded by www.creative-tim.com
 
 const link = {
   defaultProps: {
-    underline: "none",
-    color: "inherit",
-  },
+    underline: 'none',
+    color: 'inherit'
+  }
 };
 
 export default link;

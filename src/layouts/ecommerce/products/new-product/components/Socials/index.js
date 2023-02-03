@@ -14,31 +14,31 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import Grid from "@mui/material/Grid";
+import Grid from '@mui/material/Grid';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
 
 // NewProduct page components
-import FormField from "layouts/ecommerce/products/new-product/components/FormField";
+import FormField from 'layouts/ecommerce/products/new-product/components/FormField';
 
 function Socials() {
   return (
     <MDBox>
-      <MDTypography variant="h5" fontWeight="bold">
+      <MDTypography variant='h5' fontWeight='bold'>
         Socials
       </MDTypography>
       <MDBox mt={2}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <FormField type="text" label="Shoppify Handle" />
+            <FormField type='text' label='Shoppify Handle' />
           </Grid>
           <Grid item xs={12}>
-            <FormField type="text" label="Facebook Account" />
+            <FormField type='text' label='Facebook Account' />
           </Grid>
           <Grid item xs={12}>
-            <FormField type="text" label="Instagram Account" />
+            <FormField type='text' label='Instagram Account' />
           </Grid>
         </Grid>
       </MDBox>

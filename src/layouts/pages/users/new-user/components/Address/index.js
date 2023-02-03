@@ -14,19 +14,19 @@ Coded by www.creative-tim.com
 */
 
 // prop-type is a library for typechecking of props
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // @mui material components
-import Grid from "@mui/material/Grid";
-import Autocomplete from "@mui/material/Autocomplete";
+import Grid from '@mui/material/Grid';
+import Autocomplete from '@mui/material/Autocomplete';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import MDInput from 'components/MDInput';
 
 // NewUser page components
-import FormField from "layouts/pages/users/new-user/components/FormField";
+import FormField from 'layouts/pages/users/new-user/components/FormField';
 
 function Address({ formData }) {
   const { formField, values, errors, touched } = formData;
@@ -35,7 +35,7 @@ function Address({ formData }) {
 
   return (
     <MDBox>
-      <MDTypography variant="h5" fontWeight="bold">
+      <MDTypography variant='h5' fontWeight='bold'>
         Address
       </MDTypography>
       <MDBox mt={1.625}>
@@ -77,8 +77,8 @@ function Address({ formData }) {
           </Grid>
           <Grid item xs={6} sm={3}>
             <Autocomplete
-              options={["State 1", "State 2", "State 3"]}
-              renderInput={(params) => <MDInput {...params} variant="standard" label="State" />}
+              options={['State 1', 'State 2', 'State 3']}
+              renderInput={(params) => <MDInput {...params} variant='standard' label='State' />}
             />
           </Grid>
           <Grid item xs={6} sm={3}>
@@ -100,7 +100,7 @@ function Address({ formData }) {
 
 // typechecking props for Address
 Address.propTypes = {
-  formData: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  formData: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired
 };
 
 export default Address;

@@ -14,17 +14,17 @@ Coded by www.creative-tim.com
 */
 
 // prop-types is a library for typechecking of props.
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // @mui material components
-import Collapse from "@mui/material/Collapse";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Icon from "@mui/material/Icon";
+import Collapse from '@mui/material/Collapse';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Icon from '@mui/material/Icon';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
+import MDBox from 'components/MDBox';
 
 // Custom styles for the SidenavCollapse
 import {
@@ -32,11 +32,11 @@ import {
   collapseIconBox,
   collapseIcon,
   collapseText,
-  collapseArrow,
-} from "examples/Sidenav/styles/sidenavCollapse";
+  collapseArrow
+} from 'examples/Sidenav/styles/sidenavCollapse';
 
 // Material Dashboard 2 PRO React context
-import { useMaterialUIController } from "context";
+import { useMaterialUIController } from 'context';
 
 function SidenavCollapse({ icon, name, children, active, noCollapse, open, ...rest }) {
   const [controller] = useMaterialUIController();
@@ -44,21 +44,10 @@ function SidenavCollapse({ icon, name, children, active, noCollapse, open, ...re
 
   return (
     <>
-      <ListItem component="li">
-        <MDBox
-          {...rest}
-          sx={(theme) =>
-            collapseItem(theme, { active, transparentSidenav, whiteSidenav, darkMode })
-          }
-        >
-          <ListItemIcon
-            sx={(theme) => collapseIconBox(theme, { transparentSidenav, whiteSidenav, darkMode })}
-          >
-            {typeof icon === "string" ? (
-              <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon>
-            ) : (
-              icon
-            )}
+      <ListItem component='li'>
+        <MDBox {...rest} sx={(theme) => collapseItem(theme, { active, transparentSidenav, whiteSidenav, darkMode })}>
+          <ListItemIcon sx={(theme) => collapseIconBox(theme, { transparentSidenav, whiteSidenav, darkMode })}>
+            {typeof icon === 'string' ? <Icon sx={(theme) => collapseIcon(theme, { active })}>{icon}</Icon> : icon}
           </ListItemIcon>
 
           <ListItemText
@@ -68,7 +57,7 @@ function SidenavCollapse({ icon, name, children, active, noCollapse, open, ...re
                 miniSidenav,
                 transparentSidenav,
                 whiteSidenav,
-                active,
+                active
               })
             }
           />
@@ -82,7 +71,7 @@ function SidenavCollapse({ icon, name, children, active, noCollapse, open, ...re
                 miniSidenav,
                 open,
                 active,
-                darkMode,
+                darkMode
               })
             }
           >
@@ -104,7 +93,7 @@ SidenavCollapse.defaultProps = {
   active: false,
   noCollapse: false,
   children: false,
-  open: false,
+  open: false
 };
 
 // Typechecking props for the SidenavCollapse
@@ -114,7 +103,7 @@ SidenavCollapse.propTypes = {
   children: PropTypes.node,
   active: PropTypes.bool,
   noCollapse: PropTypes.bool,
-  open: PropTypes.bool,
+  open: PropTypes.bool
 };
 
 export default SidenavCollapse;

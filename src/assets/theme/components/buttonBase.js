@@ -15,8 +15,8 @@ Coded by www.creative-tim.com
 
 const buttonBase = {
   defaultProps: {
-    disableRipple: false,
-  },
+    disableRipple: false
+  }
 };
 
 export default buttonBase;

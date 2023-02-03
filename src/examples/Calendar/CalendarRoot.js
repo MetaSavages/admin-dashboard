@@ -14,8 +14,8 @@ Coded by www.creative-tim.com
 */
 
 // @mui material components
-import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
 
 export default styled(Box)(({ theme, ownerState }) => {
   const { palette, typography, functions, boxShadows } = theme;
@@ -27,148 +27,148 @@ export default styled(Box)(({ theme, ownerState }) => {
   const { md } = boxShadows;
 
   return {
-    height: "100%",
+    height: '100%',
 
-    "& .fc-media-screen": {
-      height: "100%",
-      color: dark.main,
+    '& .fc-media-screen': {
+      height: '100%',
+      color: dark.main
     },
 
-    "& .fc-theme-standard .fc-scrollgrid": {
-      border: "none",
+    '& .fc-theme-standard .fc-scrollgrid': {
+      border: 'none'
     },
 
-    "& .fc-theme-standard thead tr th": {
-      borderLeft: "none",
-      borderRight: "none",
+    '& .fc-theme-standard thead tr th': {
+      borderLeft: 'none',
+      borderRight: 'none'
     },
 
-    "& .fc-theme-standard td, .fc-theme-standard th": {
-      borderColor: light.main,
+    '& .fc-theme-standard td, .fc-theme-standard th': {
+      borderColor: light.main
     },
 
-    "& .fc th": {
-      textAlign: "center",
+    '& .fc th': {
+      textAlign: 'center'
     },
 
-    "& .fc .fc-col-header-cell-cushion": {
+    '& .fc .fc-col-header-cell-cushion': {
       fontSize: size.sm,
       fontWeight: fontWeightMedium,
-      color: darkMode ? white.main : grey[500],
+      color: darkMode ? white.main : grey[500]
     },
 
-    "& .fc .fc-daygrid-day-number": {
+    '& .fc .fc-daygrid-day-number': {
       color: darkMode ? white.main : grey[700],
       fontSize: size.sm,
       fontWeight: fontWeightLight,
-      width: "100%",
-      textAlign: "center",
+      width: '100%',
+      textAlign: 'center'
     },
 
-    "& .fc-scrollgrid-section.fc-scrollgrid-section-header > td": {
-      border: "none",
+    '& .fc-scrollgrid-section.fc-scrollgrid-section-header > td': {
+      border: 'none'
     },
 
-    "& .fc-scrollgrid-section.fc-scrollgrid-section-body.fc-scrollgrid-section-liquid > td": {
-      border: "none",
+    '& .fc-scrollgrid-section.fc-scrollgrid-section-body.fc-scrollgrid-section-liquid > td': {
+      border: 'none'
     },
 
-    "& .fc-scrollgrid-sync-table": {
-      height: "auto !important",
+    '& .fc-scrollgrid-sync-table': {
+      height: 'auto !important'
     },
 
-    "& .fc .fc-view-harness-active > .fc-view": {
-      position: "static",
-      height: "100%",
+    '& .fc .fc-view-harness-active > .fc-view': {
+      position: 'static',
+      height: '100%'
     },
 
-    "& .fc .fc-scroller-liquid-absolute": {
-      position: "static",
+    '& .fc .fc-scroller-liquid-absolute': {
+      position: 'static'
     },
 
-    "& .fc-daygrid-event": {
+    '& .fc-daygrid-event': {
       margin: `${pxToRem(0.5)} ${pxToRem(2)}`,
-      border: "none",
+      border: 'none',
       borderRadius: pxToRem(5.6),
       fontSize: size.sm,
-      fontWeight: fontWeightMedium,
+      fontWeight: fontWeightMedium
     },
 
-    "& .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events": {
-      minHeight: pxToRem(32),
+    '& .fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events': {
+      minHeight: pxToRem(32)
     },
 
-    "& .fc-event-title": {
+    '& .fc-event-title': {
       fontSize: `${size.xs} !important`,
       fontWeight: `${fontWeightRegular} !important`,
-      padding: `${pxToRem(2)} ${pxToRem(4.8)} ${pxToRem(1.5)} !important`,
+      padding: `${pxToRem(2)} ${pxToRem(4.8)} ${pxToRem(1.5)} !important`
     },
 
-    "& .fc-button, .fc-today-button, .fc-button:disabled": {
+    '& .fc-button, .fc-today-button, .fc-button:disabled': {
       backgroundColor: `${info.main} !important`,
       borderColor: `${info.main} !important`,
       fontSize: `${size.sm} !important`,
       boxShadow: `${md} !important`,
-      opacity: "1 !important",
+      opacity: '1 !important',
       transition: `all 150ms ease-in`,
 
-      "&:hover, &:focus, &:active": {
-        transform: "scale(1.02)",
+      '&:hover, &:focus, &:active': {
+        transform: 'scale(1.02)',
         boxShadow: `${md} !important`,
         backgroundColor: `${info.main} !important`,
-        borderColor: `${info.main} !important`,
-      },
+        borderColor: `${info.main} !important`
+      }
     },
 
-    "& .fc .fc-button .fc-icon": {
-      fontSize: size.sm,
+    '& .fc .fc-button .fc-icon': {
+      fontSize: size.sm
     },
 
-    "& .fc-toolbar-title": {
+    '& .fc-toolbar-title': {
       fontSize: `${size.lg} !important`,
       fontWeight: `${fontWeightBold} !important`,
-      color: darkMode ? white.main : dark.main,
+      color: darkMode ? white.main : dark.main
     },
 
-    "& .event-primary": {
+    '& .event-primary': {
       backgroundImage: linearGradient(gradients.primary.main, gradients.primary.state),
-      "& *": { color: white.main },
+      '& *': { color: white.main }
     },
 
-    "& .event-secondary": {
+    '& .event-secondary': {
       backgroundImage: linearGradient(gradients.secondary.main, gradients.secondary.state),
-      "& *": { color: white.main },
+      '& *': { color: white.main }
     },
 
-    "& .event-info": {
+    '& .event-info': {
       backgroundImage: linearGradient(gradients.info.main, gradients.info.state),
-      "& *": { color: white.main },
+      '& *': { color: white.main }
     },
 
-    "& .event-success": {
+    '& .event-success': {
       backgroundImage: linearGradient(gradients.success.main, gradients.success.state),
-      "& *": { color: white.main },
+      '& *': { color: white.main }
     },
 
-    "& .event-warning": {
+    '& .event-warning': {
       backgroundImage: linearGradient(gradients.warning.main, gradients.warning.state),
-      "& *": { color: white.main },
+      '& *': { color: white.main }
     },
 
-    "& .event-error": {
+    '& .event-error': {
       backgroundImage: linearGradient(gradients.error.main, gradients.error.state),
-      "& *": { color: white.main },
+      '& *': { color: white.main }
     },
 
-    "& .event-light": {
+    '& .event-light': {
       backgroundImage: linearGradient(gradients.light.main, gradients.light.state),
 
-      "& *": { color: dark.main },
+      '& *': { color: dark.main }
     },
 
-    "& .event-dark": {
+    '& .event-dark': {
       backgroundImage: linearGradient(gradients.dark.main, gradients.dark.state),
-      "& *": { color: white.main },
-    },
+      '& *': { color: white.main }
+    }
   };
 });

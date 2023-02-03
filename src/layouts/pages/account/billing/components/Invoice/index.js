@@ -14,41 +14,41 @@ Coded by www.creative-tim.com
 */
 
 // prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // @mui material components
-import Icon from "@mui/material/Icon";
+import Icon from '@mui/material/Icon';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
 
 function Invoice({ date, id, price, noGutter }) {
   return (
     <MDBox
-      component="li"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
+      component='li'
+      display='flex'
+      justifyContent='space-between'
+      alignItems='center'
       py={1}
       pr={1}
       mb={noGutter ? 0 : 1}
     >
       <MDBox lineHeight={1.125}>
-        <MDTypography display="block" variant="button" fontWeight="medium">
+        <MDTypography display='block' variant='button' fontWeight='medium'>
           {date}
         </MDTypography>
-        <MDTypography variant="caption" fontWeight="regular" color="text">
+        <MDTypography variant='caption' fontWeight='regular' color='text'>
           {id}
         </MDTypography>
       </MDBox>
-      <MDBox display="flex" alignItems="center">
-        <MDTypography variant="button" fontWeight="regular" color="text">
+      <MDBox display='flex' alignItems='center'>
+        <MDTypography variant='button' fontWeight='regular' color='text'>
           {price}
         </MDTypography>
-        <MDBox display="flex" alignItems="center" lineHeight={1} ml={3} sx={{ cursor: "pointer" }}>
-          <Icon fontSize="small">picture_as_pdf</Icon>
-          <MDTypography variant="button" fontWeight="bold">
+        <MDBox display='flex' alignItems='center' lineHeight={1} ml={3} sx={{ cursor: 'pointer' }}>
+          <Icon fontSize='small'>picture_as_pdf</Icon>
+          <MDTypography variant='button' fontWeight='bold'>
             &nbsp;PDF
           </MDTypography>
         </MDBox>
@@ -59,7 +59,7 @@ function Invoice({ date, id, price, noGutter }) {
 
 // Setting default values for the props of Invoice
 Invoice.defaultProps = {
-  noGutter: false,
+  noGutter: false
 };
 
 // Typechecking props for the Invoice
@@ -67,7 +67,7 @@ Invoice.propTypes = {
   date: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
-  noGutter: PropTypes.bool,
+  noGutter: PropTypes.bool
 };
 
 export default Invoice;

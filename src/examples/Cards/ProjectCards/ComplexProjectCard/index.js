@@ -14,17 +14,17 @@ Coded by www.creative-tim.com
 */
 
 // prop-types is library for typechecking of props
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 // @mui material components
-import Card from "@mui/material/Card";
-import Divider from "@mui/material/Divider";
-import Icon from "@mui/material/Icon";
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
+import Icon from '@mui/material/Icon';
 
 // Material Dashboard 2 PRO React components
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import MDAvatar from "components/MDAvatar";
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import MDAvatar from 'components/MDAvatar';
 
 // Custom styles for ComplexProjectCard
 function ComplexProjectCard({ color, image, title, dateTime, description, members, dropdown }) {
@@ -35,20 +35,20 @@ function ComplexProjectCard({ color, image, title, dateTime, description, member
       <MDAvatar
         key={memberKey}
         src={member}
-        alt="member profile"
-        size="xs"
+        alt='member profile'
+        size='xs'
         sx={({ borders: { borderWidth }, palette: { white } }) => ({
           border: `${borderWidth[2]} solid ${white.main}`,
-          cursor: "pointer",
-          position: "relative",
+          cursor: 'pointer',
+          position: 'relative',
 
-          "&:not(:first-of-type)": {
-            ml: -1.25,
+          '&:not(:first-of-type)': {
+            ml: -1.25
           },
 
-          "&:hover, &:focus": {
-            zIndex: "10",
-          },
+          '&:hover, &:focus': {
+            zIndex: '10'
+          }
         })}
       />
     );
@@ -57,33 +57,33 @@ function ComplexProjectCard({ color, image, title, dateTime, description, member
   return (
     <Card>
       <MDBox p={2}>
-        <MDBox display="flex" alignItems="center">
+        <MDBox display='flex' alignItems='center'>
           <MDAvatar
             src={image}
             alt={title}
-            size="xl"
-            variant="rounded"
+            size='xl'
+            variant='rounded'
             bgColor={color}
             sx={{ p: 1, mt: -6, borderRadius: ({ borders: { borderRadius } }) => borderRadius.xl }}
           />
           <MDBox ml={2} mt={-2} lineHeight={0}>
-            <MDTypography variant="h6" textTransform="capitalize" fontWeight="medium">
+            <MDTypography variant='h6' textTransform='capitalize' fontWeight='medium'>
               {title}
             </MDTypography>
-            {members.length > -1 ? <MDBox display="flex">{renderMembers}</MDBox> : null}
+            {members.length > -1 ? <MDBox display='flex'>{renderMembers}</MDBox> : null}
           </MDBox>
           {dropdown && (
             <MDTypography
-              color="secondary"
+              color='secondary'
               onClick={dropdown.action}
               sx={{
-                ml: "auto",
+                ml: 'auto',
                 mt: -1,
-                alignSelf: "flex-start",
-                py: 1.25,
+                alignSelf: 'flex-start',
+                py: 1.25
               }}
             >
-              <Icon fontSize="default" sx={{ cursor: "pointer", fontWeight: "bold" }}>
+              <Icon fontSize='default' sx={{ cursor: 'pointer', fontWeight: 'bold' }}>
                 more_vert
               </Icon>
             </MDTypography>
@@ -91,28 +91,28 @@ function ComplexProjectCard({ color, image, title, dateTime, description, member
           {dropdown.menu}
         </MDBox>
         <MDBox my={2} lineHeight={1}>
-          <MDTypography variant="button" fontWeight="light" color="text">
+          <MDTypography variant='button' fontWeight='light' color='text'>
             {description}
           </MDTypography>
         </MDBox>
         <Divider />
-        <MDBox display="flex" justifyContent="space-between" alignItems="center">
+        <MDBox display='flex' justifyContent='space-between' alignItems='center'>
           {members.length > -1 ? (
-            <MDBox display="flex" flexDirection="column" lineHeight={0}>
-              <MDTypography variant="button" fontWeight="medium">
+            <MDBox display='flex' flexDirection='column' lineHeight={0}>
+              <MDTypography variant='button' fontWeight='medium'>
                 {members.length}
               </MDTypography>
-              <MDTypography variant="button" fontWeight="regular" color="secondary">
+              <MDTypography variant='button' fontWeight='regular' color='secondary'>
                 Participants
               </MDTypography>
             </MDBox>
           ) : null}
           {dateTime ? (
-            <MDBox display="flex" flexDirection="column" lineHeight={0}>
-              <MDTypography variant="button" fontWeight="medium">
+            <MDBox display='flex' flexDirection='column' lineHeight={0}>
+              <MDTypography variant='button' fontWeight='medium'>
                 {dateTime}
               </MDTypography>
-              <MDTypography variant="button" fontWeight="regular" color="secondary">
+              <MDTypography variant='button' fontWeight='regular' color='secondary'>
                 Due date
               </MDTypography>
             </MDBox>
@@ -125,24 +125,15 @@ function ComplexProjectCard({ color, image, title, dateTime, description, member
 
 // Setting default values for the props of ComplexProjectCard
 ComplexProjectCard.defaultProps = {
-  color: "dark",
-  dateTime: "",
+  color: 'dark',
+  dateTime: '',
   members: [],
-  dropdown: false,
+  dropdown: false
 };
 
 // Typechecking props for the ProfileInfoCard
 ComplexProjectCard.propTypes = {
-  color: PropTypes.oneOf([
-    "primary",
-    "secondary",
-    "info",
-    "success",
-    "warning",
-    "error",
-    "dark",
-    "light",
-  ]),
+  color: PropTypes.oneOf(['primary', 'secondary', 'info', 'success', 'warning', 'error', 'dark', 'light']),
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   dateTime: PropTypes.string,
@@ -152,9 +143,9 @@ ComplexProjectCard.propTypes = {
     PropTypes.bool,
     PropTypes.shape({
       action: PropTypes.func,
-      menu: PropTypes.node,
-    }),
-  ]),
+      menu: PropTypes.node
+    })
+  ])
 };
 
 export default ComplexProjectCard;

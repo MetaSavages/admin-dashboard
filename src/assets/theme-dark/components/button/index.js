@@ -14,14 +14,14 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React Button Styles
-import root from "assets/theme-dark/components/button/root";
-import contained from "assets/theme-dark/components/button/contained";
-import outlined from "assets/theme-dark/components/button/outlined";
-import buttonText from "assets/theme-dark/components/button/text";
+import root from 'assets/theme-dark/components/button/root';
+import contained from 'assets/theme-dark/components/button/contained';
+import outlined from 'assets/theme-dark/components/button/outlined';
+import buttonText from 'assets/theme-dark/components/button/text';
 
 const button = {
   defaultProps: {
-    disableRipple: false,
+    disableRipple: false
   },
   styleOverrides: {
     root: { ...root },
@@ -39,8 +39,8 @@ const button = {
     textSizeSmall: { ...buttonText.small },
     textSizeLarge: { ...buttonText.large },
     textPrimary: { ...buttonText.primary },
-    textSecondary: { ...buttonText.secondary },
-  },
+    textSecondary: { ...buttonText.secondary }
+  }
 };
 
 export default button;
