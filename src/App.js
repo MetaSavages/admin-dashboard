@@ -39,7 +39,7 @@ import themeDark from 'assets/theme-dark';
 import themeDarkRTL from 'assets/theme-dark/theme-rtl';
 
 // RTL plugins
-import rtlPlugin from 'stylis-plugin-rtl';
+// import rtlPlugin from 'stylis-plugin-rtl'; // Commented this line to don't show the error
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 
@@ -65,7 +65,7 @@ export default function App() {
   useMemo(() => {
     const cacheRtl = createCache({
       key: 'rtl',
-      stylisPlugins: [rtlPlugin]
+      // stylisPlugins: [rtlPlugin] // Commented this line to don't show the error
     });
 
     setRtlCache(cacheRtl);
