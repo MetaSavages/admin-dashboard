@@ -50,8 +50,7 @@ import routes from 'routes';
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from 'context';
 
 // Images
-import brandWhite from 'assets/images/logo-ct.png';
-import brandDark from 'assets/images/logo-ct-dark.png';
+import brand from 'assets/images/logo.png';
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -64,7 +63,7 @@ export default function App() {
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
-      key: 'rtl',
+      key: 'rtl'
       // stylisPlugins: [rtlPlugin] // Commented this line to don't show the error
     });
 
@@ -106,7 +105,6 @@ export default function App() {
       if (route.collapse) {
         return getRoutes(route.collapse);
       }
-
       if (route.route) {
         return <Route exact path={route.route} element={route.component} key={route.key} />;
       }
@@ -137,7 +135,6 @@ export default function App() {
       </Icon>
     </MDBox>
   );
-
   return direction === 'rtl' ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -146,7 +143,7 @@ export default function App() {
           <>
             <Sidenav
               color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+              brand={brand}
               brandName='Material Dashboard PRO'
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
@@ -170,8 +167,8 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName='Material Dashboard PRO'
+            brand={brand}
+            brandName='Toka City'
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

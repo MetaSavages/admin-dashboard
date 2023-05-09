@@ -28,7 +28,7 @@ import MDButton from 'components/MDButton';
 
 // Material Dashboard 2 PRO React examples
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
-import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 import ComplexProjectCard from 'examples/Cards/ProjectCards/ComplexProjectCard';
 
