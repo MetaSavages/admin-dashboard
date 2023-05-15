@@ -265,7 +265,7 @@ function DataTable({
             )}
             {canFilter && (
               <MDBox display='flex' alignItems='center' justifyContent='space-between' width='5rem' ml='auto'>
-                <MDButton color='secondary' onClick={handleOpenFilters}>
+                <MDButton variant='text' onClick={handleOpenFilters}>
                   <Icon>filter_alt</Icon>
                   Filter
                 </MDButton>
@@ -283,8 +283,10 @@ function DataTable({
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
-                    <MDButton onClick={handleOpenFilters}>Disagree</MDButton>
-                    <MDButton onClick={handleOpenFilters} autoFocus>
+                    <MDButton variant='text' onClick={handleOpenFilters}>
+                      Disagree
+                    </MDButton>
+                    <MDButton variant='text' onClick={handleOpenFilters}>
                       Agree
                     </MDButton>
                   </DialogActions>

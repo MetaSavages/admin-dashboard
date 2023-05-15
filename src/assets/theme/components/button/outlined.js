@@ -28,7 +28,7 @@ const outlined = {
     minHeight: pxToRem(40),
     color: light.main,
     borderColor: light.main,
-    padding: `${pxToRem(10)} ${pxToRem(24)}`,
+    padding: `${pxToRem(9)} ${pxToRem(24)}`,
 
     '&:hover': {
       opacity: 0.75,

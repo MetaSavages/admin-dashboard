@@ -151,9 +151,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
               {miniSidenav ? 'menu_open' : 'menu'}
             </Icon>
           </IconButton>
-          <MDBox pr={1}>
-            <MDInput label='Search here' />
-          </MDBox>
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>

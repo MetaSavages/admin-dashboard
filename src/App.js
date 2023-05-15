@@ -37,7 +37,7 @@ import themeRTL from 'assets/theme/theme-rtl';
 // Material Dashboard 2 PRO React Dark Mode themes
 import themeDark from 'assets/theme-dark';
 import themeDarkRTL from 'assets/theme-dark/theme-rtl';
-
+import axios from 'axios';
 // RTL plugins
 // import rtlPlugin from 'stylis-plugin-rtl'; // Commented this line to don't show the error
 import { CacheProvider } from '@emotion/react';
@@ -93,6 +93,23 @@ export default function App() {
         setUser(dispatch, null);
       });
   }, [dispatch]);
+  // useEffect(() => {
+  //   for (let i = 1; i <= 199; i++) {
+  //     setTimeout(() => {
+  //       axios.post(
+  //         'http://localhost:3001/api/v1/users',
+  //         {
+  //           email: `test${i}@mail.com`,
+  //           password: '12345678'
+  //         },
+  //         {
+  //           withCredentials: true
+  //         }
+  //       );
+  //     }, 100);
+  //   }
+  // }, []);
+
   // useEffect(() => {
   //   // Function to fetch data from the API
   //   const fetchUserSessiondata = () =>

@@ -14,26 +14,30 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React base styles
+import typography from 'assets/theme-dark/base/typography';
 import borders from 'assets/theme-dark/base/borders';
-import boxShadows from 'assets/theme-dark/base/boxShadows';
 import colors from 'assets/theme-dark/base/colors';
 
+// Material Dashboard 2 PRO React helper functions
+import pxToRem from 'assets/theme-dark/functions/pxToRem';
 import rgba from 'assets/theme-dark/functions/rgba';
-const { borderRadius } = borders;
-const { xxl } = boxShadows;
+
+const { size } = typography;
 const { dark } = colors;
-const dialog = {
+const { borderWidth, borderColor } = borders;
+
+const chip = {
   styleOverrides: {
-    paper: {
-      borderRadius: borderRadius.lg,
-      boxShadow: xxl,
-      backgroundColor: rgba(dark.main, 0.9)
+    root: {
+      fontSize: size.sm,
+      color: rgba(dark.main, 0.8)
     },
 
-    paperFullScreen: {
-      borderRadius: 0
+    dividers: {
+      borderTop: `${borderWidth[1]} solid ${rgba(borderColor, 0.6)}`,
+      borderBottom: `${borderWidth[1]} solid ${rgba(borderColor, 0.6)}`
     }
   }
 };
 
-export default dialog;
+export default chip;
