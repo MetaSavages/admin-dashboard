@@ -37,7 +37,7 @@ import DefaultStatisticsCard from 'examples/Cards/StatisticsCards/DefaultStatist
 import DefaultLineChart from 'examples/Charts/LineCharts/DefaultLineChart';
 import HorizontalBarChart from 'examples/Charts/BarCharts/HorizontalBarChart';
 import SalesTable from 'examples/Tables/SalesTable';
-import DataTable from 'examples/Tables/DataTable';
+import DataTable from 'layouts/data-table/components/DataTable';
 
 // Sales dashboard components
 import ChannelsChart from 'layouts/sales/components/ChannelsChart';

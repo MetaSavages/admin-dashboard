@@ -48,18 +48,23 @@ import {
 } from 'components/DashboardNavbar/styles';
 
 // Material Dashboard 2 PRO React context
-import { useMaterialUIController, setTransparentNavbar, setMiniSidenav, setOpenConfigurator } from 'context';
+import {
+  useMaterialUIController,
+  setTransparentNavbar,
+  setMiniSidenav,
+  setOpenConfigurator,
+  setDarkMode
+} from 'context';
 import MDAvatar from 'components/MDAvatar';
-import { Typography } from '@mui/material';
+import { Switch } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
+  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode, user, role } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split('/').slice(1);
-
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -68,16 +73,22 @@ function DashboardNavbar({ absolute, light, isMini }) {
       setNavbarType('static');
     }
 
+    let prevScroll = window.scrollY;
+
     // A function that sets the transparent state of the navbar.
     function handleTransparentNavbar() {
-      setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
+      const currentScroll = window.scrollY;
+      if ((currentScroll === 0 && prevScroll !== 0) || (currentScroll !== 0 && prevScroll === 0)) {
+        setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
+        prevScroll = currentScroll;
+      }
     }
 
-    /** 
-     The event listener that's calling the handleTransparentNavbar function when 
-     scrolling the window.
-    */
-    window.addEventListener('scroll', handleTransparentNavbar);
+    // /**
+    //  The event listener that's calling the handleTransparentNavbar function when
+    //  scrolling the window.
+    // */
+    window.addEventListener('scroll', handleTransparentNavbar); // BAD LOGIC
 
     // Call the handleTransparentNavbar function to set the state with the initial value.
     handleTransparentNavbar();
@@ -86,6 +97,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
     return () => window.removeEventListener('scroll', handleTransparentNavbar);
   }, [dispatch, fixedNavbar]);
 
+  const handleDarkMode = () => {
+    localStorage.setItem('darkMode', !darkMode);
+    setDarkMode(dispatch, !darkMode);
+  };
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
@@ -122,7 +137,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
       return colorValue;
     }
   });
-
   return (
     <AppBar
       position={absolute ? 'absolute' : navbarType}
@@ -144,6 +158,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox color={light ? 'white' : 'inherit'}>
+              <Switch checked={darkMode} onChange={handleDarkMode} />
               <IconButton
                 size='small'
                 disableRipple
@@ -180,8 +195,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 </Icon>
               </IconButton>
               <MDBox>
-                <MDTypography variant='h6'>Name goes here</MDTypography>
-                <MDTypography variant='subtitle2'> Role goes here</MDTypography>
+                <MDTypography variant='h6'>{user}</MDTypography>
+                <MDTypography variant='subtitle2'>{role}</MDTypography>
               </MDBox>
             </MDBox>
             {renderMenu()}

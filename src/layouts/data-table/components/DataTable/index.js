@@ -13,14 +13,14 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo, useEffect, useState, useReducer } from 'react';
 
 // prop-types is a library for typechecking of props
 import PropTypes from 'prop-types';
 
 // react-table components
-import { useTable, usePagination, useGlobalFilter, useAsyncDebounce, useSortBy } from 'react-table';
-
+import { useAsyncDebounce } from 'react-table';
+import { Skeleton } from '@mui/material';
 // @mui material components
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -36,48 +36,138 @@ import MDInput from 'components/MDInput';
 import MDPagination from 'components/MDPagination';
 
 // Material Dashboard 2 PRO React examples
-import DataTableHeadCell from 'examples/Tables/DataTable/DataTableHeadCell';
-import DataTableBodyCell from 'examples/Tables/DataTable/DataTableBodyCell';
+import DataTableHeadCell from 'layouts/data-table/components/DataTable/DataTableHeadCell';
+import DataTableBodyCell from 'layouts/data-table/components/DataTable/DataTableBodyCell';
+import MDButton from 'components/MDButton';
+import { Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton } from '@mui/material';
+import userColumnsData from 'data/usersColumnData';
+import useReactTableInstance from 'hooks/useReactTableInstance';
+import useFetchData from 'hooks/useFetchData';
+import { useNavigate } from 'react-router-dom';
 
-function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, pagination, isSorted, noEndBorder }) {
-  const defaultValue = entriesPerPage.defaultValue ? entriesPerPage.defaultValue : 10;
-  const entries = entriesPerPage.entries
-    ? entriesPerPage.entries.map((el) => el.toString())
-    : ['5', '10', '15', '20', '25'];
-  const columns = useMemo(() => table.columns, [table]);
-  const data = useMemo(() => table.rows, [table]);
+const ACTION = {
+  PAGE_CHANGED: 'page-changed',
+  PAGE_SIZE_CHANGED: 'page-sized-changed',
+  TOTAL_COUNT_CHANGED: 'total-count-changed',
+  SEARCH_CHANGED: 'search-changed'
+};
 
-  const tableInstance = useTable(
-    { columns, data, initialState: { pageIndex: 0 } },
-    useGlobalFilter,
-    useSortBy,
-    usePagination
+const defaultState = {
+  queryPageIndex: 0,
+  queryPageSize: 20,
+  queryTotalCount: 0,
+  search: ''
+};
+
+const tableReducer = (state, action) => {
+  switch (action.type) {
+    case ACTION.PAGE_CHANGED:
+      return { ...state, queryPageIndex: action.pageIndexValue };
+    case ACTION.PAGE_SIZE_CHANGED:
+      return { ...state, queryPageSize: action.pageSizeChangedValue };
+    case ACTION.TOTAL_COUNT_CHANGED:
+      return { ...state, queryTotalCount: action.totalCountChangedValue };
+    case ACTION.SEARCH_CHANGED:
+      return { ...state, search: action.searchChangedValue };
+    default:
+      return state;
+  }
+};
+
+function DataTable({
+  canSearch,
+  showTotalEntries,
+  pagination,
+  isSorted,
+  noEndBorder,
+  canFilter = false,
+  fetchData,
+  queryKey
+}) {
+  const [tableState, dispatchTableAction] = useReducer(tableReducer, defaultState);
+
+  const setQueryPageIndexHandler = ({ pageIndexValue }) => {
+    dispatchTableAction({
+      type: ACTION.PAGE_CHANGED,
+      pageIndexValue
+    });
+  };
+
+  const setQueryPageSizeHandler = ({ pageSizeChangedValue }) => {
+    dispatchTableAction({
+      type: ACTION.PAGE_SIZE_CHANGED,
+      pageSizeChangedValue
+    });
+  };
+
+  const setTotalCountHandler = ({ totalCountChangedValue }) => {
+    dispatchTableAction({
+      type: ACTION.TOTAL_COUNT_CHANGED,
+      totalCountChangedValue
+    });
+  };
+
+  const setSearchHandler = ({ searchChangedValue }) => {
+    dispatchTableAction({
+      type: ACTION.SEARCH_CHANGED,
+      searchChangedValue
+    });
+  };
+
+  const { queryPageIndex, queryPageSize, queryTotalCount, search: searchParam } = tableState;
+
+  const queryTotalPageCount = Math.ceil(queryTotalCount / queryPageSize);
+
+  const {
+    data: RES_DATA,
+    error,
+    isLoading,
+    isFetched
+  } = useFetchData(
+    queryPageIndex,
+    queryPageSize,
+    queryTotalPageCount,
+    queryKey,
+    fetchData,
+    searchParam,
+    setTotalCountHandler
   );
-
+  const tableColumns = useMemo(() => userColumnsData, []);
+  const tableData = useMemo(() => RES_DATA.data, [RES_DATA]);
+  const navigate = useNavigate();
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    rows,
     page,
-    pageOptions,
     canPreviousPage,
     canNextPage,
+    pageOptions,
+    pageCount,
     gotoPage,
     nextPage,
     previousPage,
     setPageSize,
-    setGlobalFilter,
-    state: { pageIndex, pageSize, globalFilter }
-  } = tableInstance;
+    pageIndex,
+    pageSize,
+    globalFilter,
+    setGlobalFilter
+  } = useReactTableInstance(tableColumns, tableData, queryPageIndex, queryPageSize, queryTotalPageCount);
+  const [openFilters, setOpenFilters] = useState(false);
+  const [search, setSearch] = useState(globalFilter);
+  const handleOpenFilters = () => setOpenFilters(!openFilters);
+  useEffect(() => {
+    setQueryPageIndexHandler({ pageIndexValue: pageIndex });
+  }, [pageIndex]);
 
-  // Set the default value for the entries per page when component mounts
-  useEffect(() => setPageSize(defaultValue || 10), [defaultValue]);
+  useEffect(() => {
+    setQueryPageSizeHandler({ pageSizeChangedValue: pageSize });
+  }, [pageSize]);
 
+  const entries = ['5', '10', '15', '20', '25'];
   // Set the entries per page value based on the select value
   const setEntriesPerPage = (value) => setPageSize(value);
-
   // Render the paginations
   const renderPagination = pageOptions.map((option) => (
     <MDPagination item key={option} onClick={() => gotoPage(Number(option))} active={pageIndex === option}>
@@ -85,9 +175,10 @@ function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, paginat
     </MDPagination>
   ));
 
-  // Handler for the input to set the pagination index
-  const handleInputPagination = ({ target: { value } }) =>
-    value > pageOptions.length || value < 0 ? gotoPage(0) : gotoPage(Number(value));
+  // // Handler for the input to set the pagination index
+  const handleInputPagination = ({ target: { value } }) => {
+    return value > pageOptions.length || value < 0 ? gotoPage(0) : gotoPage(Number(value));
+  };
 
   // Customized page options starting from 1
   const customizedPageOptions = pageOptions.map((option) => option + 1);
@@ -96,17 +187,17 @@ function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, paginat
   const handleInputPaginationValue = ({ target: value }) => gotoPage(Number(value.value - 1));
 
   // Search input value state
-  const [search, setSearch] = useState(globalFilter);
 
-  // Search input state handle
+  // // Search input state handle
   const onSearchChange = useAsyncDebounce((value) => {
+    setSearchHandler({ searchChangedValue: value || '' });
+    setQueryPageIndexHandler({ pageIndexValue: 0 });
     setGlobalFilter(value || undefined);
   }, 100);
 
   // A function that sets the sorted value for the table
   const setSortedValue = (column) => {
     let sortedValue;
-
     if (isSorted && column.isSorted) {
       sortedValue = column.isSortedDesc ? 'desc' : 'asce';
     } else if (isSorted) {
@@ -122,21 +213,24 @@ function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, paginat
   const entriesStart = pageIndex === 0 ? pageIndex + 1 : pageIndex * pageSize + 1;
 
   // Setting the entries ending point
-  let entriesEnd;
+  let entriesEnd = pageSize * (pageIndex + 1) > queryTotalCount ? queryTotalCount : pageSize * (pageIndex + 1);
 
-  if (pageIndex === 0) {
-    entriesEnd = pageSize;
-  } else if (pageIndex === pageOptions.length - 1) {
-    entriesEnd = rows.length;
-  } else {
-    entriesEnd = pageSize * (pageIndex + 1);
+  // if (pageIndex === 0) {
+  //   entriesEnd = pageSize;
+  // } else if (pageIndex === pageOptions.length - 1) {
+  //   entriesEnd = totalItems;
+  // } else {
+  //   entriesEnd = pageSize * (pageIndex + 1);
+  // }
+  // console.log(pageIndex);
+  if (isLoading) {
+    return <Skeleton variant='rounded' animation='wave' sx={{ borderRadius: 5 }} height={600} />;
   }
-
   return (
     <TableContainer sx={{ boxShadow: 'none' }}>
-      {entriesPerPage || canSearch ? (
+      {queryPageSize || canSearch ? (
         <MDBox display='flex' justifyContent='space-between' alignItems='center' p={3}>
-          {entriesPerPage && (
+          {queryPageSize && (
             <MDBox display='flex' alignItems='center'>
               <Autocomplete
                 disableClearable
@@ -154,20 +248,50 @@ function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, paginat
               </MDTypography>
             </MDBox>
           )}
-          {canSearch && (
-            <MDBox width='12rem' ml='auto'>
-              <MDInput
-                placeholder='Search...'
-                value={search}
-                size='small'
-                fullWidth
-                onChange={({ currentTarget }) => {
-                  setSearch(search);
-                  onSearchChange(currentTarget.value);
-                }}
-              />
-            </MDBox>
-          )}
+          <MDBox display='flex' alignItems='center' justifyContent='space-between' width='20rem'>
+            {canSearch && (
+              <MDBox width='12rem' ml='auto'>
+                <MDInput
+                  placeholder='Search...'
+                  value={search}
+                  size='small'
+                  fullWidth
+                  onChange={({ currentTarget }) => {
+                    setSearch(search);
+                    onSearchChange(currentTarget.value);
+                  }}
+                />
+              </MDBox>
+            )}
+            {canFilter && (
+              <MDBox display='flex' alignItems='center' justifyContent='space-between' width='5rem' ml='auto'>
+                <MDButton color='secondary' onClick={handleOpenFilters}>
+                  <Icon>filter_alt</Icon>
+                  Filter
+                </MDButton>
+                <Dialog
+                  open={openFilters}
+                  onClose={handleOpenFilters}
+                  aria-labelledby='alert-dialog-title'
+                  aria-describedby='alert-dialog-description'
+                >
+                  <DialogTitle id='alert-dialog-title'>{"Use Google's location service?"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id='alert-dialog-description'>
+                      Let Google help apps determine location. This means sending anonymous location data to Google,
+                      even when no apps are running.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <MDButton onClick={handleOpenFilters}>Disagree</MDButton>
+                    <MDButton onClick={handleOpenFilters} autoFocus>
+                      Agree
+                    </MDButton>
+                  </DialogActions>
+                </Dialog>
+              </MDBox>
+            )}
+          </MDBox>
         </MDBox>
       ) : null}
       <Table {...getTableProps()}>
@@ -184,6 +308,9 @@ function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, paginat
                   {column.render('Header')}
                 </DataTableHeadCell>
               ))}
+              <DataTableHeadCell width='0.5rem' align='left' sorted={false}>
+                Actions
+              </DataTableHeadCell>
             </TableRow>
           ))}
         </MDBox>
@@ -201,6 +328,14 @@ function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, paginat
                     {cell.render('Cell')}
                   </DataTableBodyCell>
                 ))}
+                <DataTableBodyCell noBorder={noEndBorder && rows.length - 1 === key} width='0.5rem' align='left'>
+                  <IconButton color='info' onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}>
+                    <Icon>visibility</Icon>
+                  </IconButton>
+                  <IconButton color='info' onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}>
+                    <Icon>edit</Icon>
+                  </IconButton>
+                </DataTableBodyCell>
               </TableRow>
             );
           })}
@@ -217,7 +352,7 @@ function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, paginat
         {showTotalEntries && (
           <MDBox mb={{ xs: 3, sm: 0 }}>
             <MDTypography variant='button' color='secondary' fontWeight='regular'>
-              Showing {entriesStart} to {entriesEnd} of {rows.length} entries
+              Showing {entriesStart} to {entriesEnd} of {queryTotalCount} entries
             </MDTypography>
           </MDBox>
         )}
@@ -256,7 +391,6 @@ function DataTable({ entriesPerPage, canSearch, showTotalEntries, table, paginat
 
 // Setting default values for the props of DataTable
 DataTable.defaultProps = {
-  entriesPerPage: { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
   canSearch: false,
   showTotalEntries: true,
   pagination: { variant: 'gradient', color: 'info' },
@@ -266,16 +400,8 @@ DataTable.defaultProps = {
 
 // Typechecking props for the DataTable
 DataTable.propTypes = {
-  entriesPerPage: PropTypes.oneOfType([
-    PropTypes.shape({
-      defaultValue: PropTypes.number,
-      entries: PropTypes.arrayOf(PropTypes.number)
-    }),
-    PropTypes.bool
-  ]),
   canSearch: PropTypes.bool,
   showTotalEntries: PropTypes.bool,
-  table: PropTypes.objectOf(PropTypes.array).isRequired,
   pagination: PropTypes.shape({
     variant: PropTypes.oneOf(['contained', 'gradient']),
     color: PropTypes.oneOf(['primary', 'secondary', 'info', 'success', 'warning', 'error', 'dark', 'light'])
