@@ -41,24 +41,15 @@ function VerticalBarChart({ icon, title, description, height, chart }) {
         ...dataset,
         weight: 5,
         borderWidth: 0,
-        borderRadius: 100,
+        borderRadius: 4,
         backgroundColor: colors[dataset.color] ? colors[dataset.color || 'dark'].main : colors.dark.main,
         fill: false,
-        maxBarThickness: 15
+        maxBarThickness: 35
       }))
     : [];
 
   const { data, options } = configs(chart.labels || [], chartDatasets);
-  options.scales = {
-    y: {
-      ...options.scales.y,
-      stacked: true
-    },
-    x: {
-      ...options.scales.x,
-      stacked: true
-    }
-  };
+
   const renderChart = (
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
       {title || description ? (

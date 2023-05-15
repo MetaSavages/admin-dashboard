@@ -47,29 +47,19 @@ import createCache from '@emotion/cache';
 import routes from 'routes';
 
 // Material Dashboard 2 PRO React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator, setUser, setRole } from 'context';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from 'context';
+
 // Images
 import brand from 'assets/images/logo.png';
-import { getCurrentUser } from 'services/auth';
-import { useNavigate } from 'react-router-dom';
+
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
-  const {
-    miniSidenav,
-    direction,
-    layout,
-    openConfigurator,
-    sidenavColor,
-    transparentSidenav,
-    whiteSidenav,
-    user,
-    darkMode
-  } = controller;
+  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, transparentSidenav, whiteSidenav, darkMode } =
+    controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-  const navigate = useNavigate();
+
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -79,53 +69,7 @@ export default function App() {
 
     setRtlCache(cacheRtl);
   }, []);
-  const queryClient = new QueryClient();
-  console.log('rerendering app');
-  useMemo(() => {
-    getCurrentUser()
-      .then((user) => {
-        console.log('fetching user data');
-        setUser(dispatch, user.data.email);
-        // setRole(dispatch, user.data?.role); // no role yet
-      })
-      .catch((err) => {
-        console.log(err);
-        setUser(dispatch, null);
-      });
-  }, [dispatch]);
-  // useEffect(() => {
-  //   // Function to fetch data from the API
-  //   const fetchUserSessiondata = () =>
-  //     getCurrentUser()
-  //       .then((user) => {
-  //         console.log('fetching user data');
-  //         setUser(dispatch, user.data.email);
-  //         // setRole(dispatch, user.data?.role); // no role yet
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         setUser(dispatch, null);
-  //       });
 
-  //   // Interval time (in milliseconds) for polling
-  //   const interval = 5000; // 5 seconds
-
-  //   // Start polling when the component mounts
-  //   const timerId = setInterval(fetchUserSessiondata, interval);
-
-  //   // Stop polling and clean up when the component unmounts
-  //   return () => {
-  //     clearInterval(timerId);
-  //   };
-  // }, []);
-  useEffect(() => {
-    if (user !== null) {
-      console.log('user is logged in');
-    } else {
-      console.log('user is not logged in');
-      navigate('/authentication/sign-in/basic');
-    }
-  }, [user]);
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
@@ -192,54 +136,52 @@ export default function App() {
     </MDBox>
   );
   return direction === 'rtl' ? (
-    <QueryClientProvider client={queryClient}>
-      <CacheProvider value={rtlCache}>
-        <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
-          <CssBaseline />
-          {layout === 'dashboard' && (
-            <>
-              <Sidenav
-                color={sidenavColor}
-                brand={brand}
-                brandName='Toka City'
-                routes={routes}
-                onMouseEnter={handleOnMouseEnter}
-                onMouseLeave={handleOnMouseLeave}
-              />
-              <Configurator />
-            </>
-          )}
-          {layout === 'vr' && <Configurator />}
-          <Routes>
-            {getRoutes(routes)}
-            <Route path='*' element={<Navigate to='/dashboard' />} />
-          </Routes>
-        </ThemeProvider>
-      </CacheProvider>
-    </QueryClientProvider>
-  ) : (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={darkMode ? themeDark : theme}>
+    <CacheProvider value={rtlCache}>
+      <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
         <CssBaseline />
         {layout === 'dashboard' && (
           <>
             <Sidenav
               color={sidenavColor}
               brand={brand}
-              brandName='Toka City'
+              brandName='Material Dashboard PRO'
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
             <Configurator />
+            {configsButton}
           </>
         )}
         {layout === 'vr' && <Configurator />}
         <Routes>
           {getRoutes(routes)}
-          <Route path='*' element={<Navigate to='/dashboard' />} />
+          <Route path='*' element={<Navigate to='/dashboards/analytics' />} />
         </Routes>
       </ThemeProvider>
-    </QueryClientProvider>
+    </CacheProvider>
+  ) : (
+    <ThemeProvider theme={darkMode ? themeDark : theme}>
+      <CssBaseline />
+      {layout === 'dashboard' && (
+        <>
+          <Sidenav
+            color={sidenavColor}
+            brand={brand}
+            brandName='Toka City'
+            routes={routes}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+          <Configurator />
+          {configsButton}
+        </>
+      )}
+      {layout === 'vr' && <Configurator />}
+      <Routes>
+        {getRoutes(routes)}
+        <Route path='*' element={<Navigate to='/dashboards/analytics' />} />
+      </Routes>
+    </ThemeProvider>
   );
 }

@@ -38,15 +38,16 @@ import configs from 'examples/Charts/LineCharts/GradientLineChart/configs';
 // Material Dashboard 2 PRO React base styles
 import colors from 'assets/theme/base/colors';
 
-function GradientLineChart({ icon, title, description, height, chart, tension = 0 }) {
+function GradientLineChart({ icon, title, description, height, chart }) {
   const chartRef = useRef(null);
   const [chartData, setChartData] = useState({});
   const { data, options } = chartData;
+
   useEffect(() => {
     const chartDatasets = chart.datasets
       ? chart.datasets.map((dataset) => ({
           ...dataset,
-          tension: tension,
+          tension: 0,
           pointRadius: 0,
           borderWidth: 4,
           borderColor: colors[dataset.color] ? colors[dataset.color || 'dark'].main : colors.dark.main,
@@ -61,6 +62,7 @@ function GradientLineChart({ icon, title, description, height, chart, tension = 
 
     setChartData(configs(chart.labels || [], chartDatasets));
   }, [chart]);
+
   const renderChart = (
     <MDBox py={2} pr={2} pl={icon.component ? 1 : 2}>
       {title || description ? (

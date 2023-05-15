@@ -54,9 +54,6 @@ import RTL from 'layouts/pages/rtl';
 import Dashboard from 'layouts/dashboard';
 import RoleManagement from 'layouts/role-management';
 import NewRole from 'layouts/role-management/new-role';
-import EditUser from 'layouts/user-management/edit-user';
-import Logout from 'layouts/authentication/logout';
-import ShowUser from 'layouts/user-management/show-user';
 
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
@@ -76,7 +73,7 @@ const routes = [
     name: 'Player management',
     key: 'player-management',
     icon: <Icon fontSize='medium'>people</Icon>,
-    route: '/player-management',
+    route: '/pages/player-management',
     component: <PlayerManagement />
   },
   {
@@ -85,7 +82,7 @@ const routes = [
     name: 'User management',
     key: 'user-mangement',
     icon: <Icon fontSize='medium'>people</Icon>,
-    route: '/user-management',
+    route: '/pages/user-management',
     component: <UserManagement />
   },
   {
@@ -94,7 +91,7 @@ const routes = [
     name: 'Role management',
     key: 'role-mangement',
     icon: <Icon fontSize='medium'>manageAccounts</Icon>,
-    route: '/role-management',
+    route: '/pages/role-management',
     component: <RoleManagement />
   },
   {
@@ -189,31 +186,10 @@ const routes = [
     component: <NewUser />
   },
   {
-    name: 'Show User',
-    key: 'show-user',
-    route: '/user-management/show/:id',
-    component: <ShowUser />
-  },
-  {
-    name: 'Edit User',
-    key: 'edit-user',
-    route: '/user-management/edit/:id',
-    component: <EditUser />
-  },
-  {
     name: 'New Role',
     key: 'new-role',
     route: '/role-management/new-role',
     component: <NewRole />
-  },
-  {
-    type: 'collapse',
-    noCollapse: true,
-    icon: <Icon fontSize='medium'>logout</Icon>,
-    name: 'Logout',
-    key: 'logout',
-    route: '/authentication/logout',
-    component: <Logout />
   }
 ];
 
