@@ -28,6 +28,7 @@ import FormField from 'layouts/user-management/new-user/components/FormField';
 import { FormControl } from '@mui/material';
 import { ErrorMessage, Field } from 'formik';
 import MultiSelect from '../MultiSelect';
+
 function RoleInfo({ formData }) {
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { roleName, rolePermissions } = formField;

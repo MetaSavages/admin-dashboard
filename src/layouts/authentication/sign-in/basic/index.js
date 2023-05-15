@@ -13,39 +13,48 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from 'react';
-
-// react-router-dom components
-import { Link } from 'react-router-dom';
-
 // @mui material components
 import Card from '@mui/material/Card';
-import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Grid';
-import MuiLink from '@mui/material/Link';
-
-// @mui icons
-import FacebookIcon from '@mui/icons-material/Facebook';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import GoogleIcon from '@mui/icons-material/Google';
 
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
-import MDInput from 'components/MDInput';
 import MDButton from 'components/MDButton';
-
+import { Formik, Form } from 'formik';
 // Authentication layout components
 import BasicLayout from 'layouts/authentication/components/BasicLayout';
-
+import UserInfo from 'layouts/authentication/sign-in/basic/components/SignInForm';
+import initialValues from 'layouts/authentication/sign-in/basic/schemas/initialValues';
+import validations from 'layouts/authentication/sign-in/basic/schemas/validations';
+import form from 'layouts/authentication/sign-in/basic/schemas/form';
+import { login, getCurrentUser } from 'services/auth';
 // Images
 import bgImage from 'assets/images/bg-sign-in-basic.jpeg';
-
+import { setUser, setRole, useMaterialUIController } from 'context';
+import { useNavigate } from 'react-router-dom';
 function Basic() {
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
+  const [, dispatch] = useMaterialUIController();
+  const handleSubmit = (values, actions) =>
+    login(values.email, values.password)
+      .then((res) => {
+        console.log(res);
+        actions.setSubmitting(false);
+        actions.resetForm();
+        getCurrentUser().then((res) => {
+          console.log(res);
+          setUser(dispatch, res.data.email);
+          // setRole(dispatch, res.data.role); // no role yet
+          navigate('/dashboard', { replace: true });
+        });
+      })
+      .catch((err) => {
+        alert('Email or password is incorrect');
+        actions.setSubmitting(false);
+        actions.resetForm();
+      });
+  const navigate = useNavigate();
+  const { formId, formField } = form;
   return (
     <BasicLayout image={bgImage}>
       <Card>
@@ -63,31 +72,41 @@ function Basic() {
           <MDTypography variant='h4' fontWeight='medium' color='white' mt={1}>
             Sign in
           </MDTypography>
-          <Grid container spacing={3} justifyContent='center' sx={{ mt: 1, mb: 2 }}>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href='#' variant='body1' color='white'>
-                <FacebookIcon color='inherit' />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href='#' variant='body1' color='white'>
-                <GitHubIcon color='inherit' />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href='#' variant='body1' color='white'>
-                <GoogleIcon color='inherit' />
-              </MDTypography>
-            </Grid>
-          </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component='form' role='form'>
+          <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
+            <Grid item xs={12} lg={8}>
+              <Formik initialValues={initialValues} validationSchema={validations} onSubmit={handleSubmit}>
+                {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+                  <Form id={formId} autoComplete='off'>
+                    <MDBox>
+                      <UserInfo
+                        formData={{
+                          values,
+                          touched,
+                          formField,
+                          errors,
+                          setFieldValue,
+                          isSubmitting
+                        }}
+                      />
+                      <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
+                        <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='info' fullWidth>
+                          Sign in
+                        </MDButton>
+                      </MDBox>
+                    </MDBox>
+                  </Form>
+                )}
+              </Formik>
+            </Grid>
+          </Grid>
+          {/* <MDBox component='form' role='form'>
             <MDBox mb={2}>
-              <MDInput type='email' label='Email' fullWidth />
+              <MDInput type='email' label='Email' fullWidth inputRef={email} />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type='password' label='Password' fullWidth />
+              <MDInput type='password' label='Password' fullWidth inputRef={password} />
             </MDBox>
             <MDBox display='flex' alignItems='center' ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -102,26 +121,11 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant='gradient' color='info' fullWidth>
+              <MDButton variant='gradient' color='info' fullWidth onClick={handleSubmit}>
                 sign in
               </MDButton>
             </MDBox>
-            <MDBox mt={3} mb={1} textAlign='center'>
-              <MDTypography variant='button' color='text'>
-                Don&apos;t have an account?{' '}
-                <MDTypography
-                  component={Link}
-                  to='/authentication/sign-up/cover'
-                  variant='button'
-                  color='info'
-                  fontWeight='medium'
-                  textGradient
-                >
-                  Sign up
-                </MDTypography>
-              </MDTypography>
-            </MDBox>
-          </MDBox>
+          </MDBox> */}
         </MDBox>
       </Card>
     </BasicLayout>

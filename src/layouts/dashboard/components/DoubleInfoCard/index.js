@@ -18,37 +18,31 @@ import PropTypes from 'prop-types';
 
 // @mui material components
 import Card from '@mui/material/Card';
-import Icon from '@mui/material/Icon';
 
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
+import { Divider } from '@mui/material';
 
-function InfoCard({ color, icon, title, description }) {
+function DoubleInfoCard({ title1, cap1, title2, cap2 }) {
   return (
-    <Card>
-      <MDBox p={2} display='flex' justifyContent='space-between' alignItems='center'>
-        <MDBox
-          display='grid'
-          justifyContent='center'
-          alignItems='center'
-          bgColor={color}
-          color='white'
-          width='2.5rem'
-          height='2.5rem'
-          shadow='md'
-          borderRadius='lg'
-          variant='gradient'
-          mr={2}
-        >
-          <Icon fontSize='default'>{icon}</Icon>
-        </MDBox>
-        <MDBox mt={1}>
+    <Card display='flex'>
+      <MDBox p={3} display='flex' justifyContent='space-between' alignItems='center'>
+        <MDBox display='flex' flexDirection='column' alignItems='center'>
           <MDTypography variant='h5' fontWeight='medium' textTransform='capitalize'>
-            {title}
+            {title1}
           </MDTypography>
           <MDTypography variant='body2' color='text' fontWeight='regular'>
-            {description}
+            {cap1}
+          </MDTypography>
+        </MDBox>
+        <Divider flexItem sx={{ height: '5rem', width: 2 }} orientation='vertical' variant='middle' />
+        <MDBox display='flex' flexDirection='column' alignItems='center'>
+          <MDTypography variant='h5' fontWeight='medium' textTransform='capitalize'>
+            {title2}
+          </MDTypography>
+          <MDTypography variant='body2' color='text' fontWeight='regular'>
+            {cap2}
           </MDTypography>
         </MDBox>
       </MDBox>
@@ -57,16 +51,16 @@ function InfoCard({ color, icon, title, description }) {
 }
 
 // Setting default values for the props of MiniInfoCard
-InfoCard.defaultProps = {
+DoubleInfoCard.defaultProps = {
   color: 'info'
 };
 
 // Typechecking props for the MiniInfoCard
-InfoCard.propTypes = {
-  color: PropTypes.oneOf(['primary', 'secondary', 'info', 'success', 'warning', 'error', 'dark']),
-  icon: PropTypes.node.isRequired,
-  title: PropTypes.node.isRequired,
-  description: PropTypes.string.isRequired
+DoubleInfoCard.propTypes = {
+  title1: PropTypes.node.isRequired,
+  cap1: PropTypes.string.isRequired,
+  title2: PropTypes.node.isRequired,
+  cap2: PropTypes.string.isRequired
 };
 
-export default InfoCard;
+export default DoubleInfoCard;
