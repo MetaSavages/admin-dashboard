@@ -31,7 +31,8 @@ import form from 'layouts/authentication/sign-in/basic/schemas/form';
 import { login, getCurrentUser } from 'services/auth';
 // Images
 import bgImage from 'assets/images/bg-sign-in-basic.jpeg';
-import { setUser, setRole, useMaterialUIController } from 'context';
+import { setUser, setRole, useMaterialUIController, setAbility } from 'context';
+import { getUserAbilities } from 'conig/ability';
 import { useNavigate } from 'react-router-dom';
 function Basic() {
   console.log('Basic');
@@ -46,6 +47,8 @@ function Basic() {
           console.log(res);
           setUser(dispatch, res.data.email);
           setRole(dispatch, res.data.role); // no role yet
+          console.log('resdasdasasasdd', res.data);
+          setAbility(dispatch, getUserAbilities(res.data.role));
           navigate('/dashboard', { replace: true });
         });
       })

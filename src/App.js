@@ -46,7 +46,7 @@ import createCache from '@emotion/cache';
 import routes from 'routes';
 
 // Material Dashboard 2 PRO React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator, setUser, setRole } from 'context';
+import { useMaterialUIController, setMiniSidenav, setOpenConfigurator, setUser, setRole, setAbility } from 'context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Images
 import brand from 'assets/images/logo.png';
@@ -65,11 +65,11 @@ export default function App() {
     sidenavColor,
     transparentSidenav,
     whiteSidenav,
+    ability,
     user,
     darkMode
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [ability, setAbility] = useState(null);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -87,10 +87,10 @@ export default function App() {
   useMemo(() => {
     getCurrentUser()
       .then((user) => {
-        console.log('fetching user data');
+        console.log('fetching user data', user);
         setUser(dispatch, user.data.email);
         setRole(dispatch, user.data.role); // no role yet
-        setAbility(getUserAbilities(user.data.role));
+        setAbility(dispatch, getUserAbilities(user.data.role));
       })
       .catch((err) => {
         console.log(err);

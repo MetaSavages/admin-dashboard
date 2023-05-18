@@ -72,6 +72,9 @@ function reducer(state, action) {
     case 'ROLE': {
       return { ...state, role: action.value };
     }
+    case 'ABILITY': {
+      return { ...state, ability: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -92,6 +95,7 @@ function MaterialUIControllerProvider({ children }) {
     layout: 'dashboard',
     user: '',
     role: '',
+    ability: null,
     darkMode: localStorage.getItem('darkMode') === 'true'
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -130,6 +134,7 @@ const setLayout = (dispatch, value) => dispatch({ type: 'LAYOUT', value });
 const setDarkMode = (dispatch, value) => dispatch({ type: 'DARKMODE', value });
 const setUser = (dispatch, value) => dispatch({ type: 'USER', value });
 const setRole = (dispatch, value) => dispatch({ type: 'ROLE', value });
+const setAbility = (dispatch, value) => dispatch({ type: 'ABILITY', value });
 
 export {
   MaterialUIControllerProvider,
@@ -146,6 +151,7 @@ export {
   setDarkMode,
   setUser,
   setRole,
+  setAbility,
   Can,
   AbilityContext
 };
