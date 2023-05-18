@@ -1,7 +1,8 @@
-import DataTablePage from 'layouts/data-table';
-import dataTableUsersData from 'assets/mockData/dataTableUsers';
+import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
 import { useNavigate } from 'react-router-dom';
+import { getRoles } from 'services/roles';
+import rolesColumnData from 'data/rolesColumnData';
 function RoleManagement() {
   const navigate = useNavigate();
   return (
@@ -12,9 +13,11 @@ function RoleManagement() {
           Add Role
         </MDButton>
       }
-      data={dataTableUsersData}
       canSearch
       canFilter
+      fetchData={getRoles}
+      queryKey='roles'
+      columnData={rolesColumnData}
     />
   );
 }

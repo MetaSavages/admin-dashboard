@@ -6,7 +6,7 @@ function Logout() {
   const [, dispatch] = useMaterialUIController();
   logout().then(() => {
     setUser(dispatch, '');
-    // setRole(dispatch, '');
+    setRole(dispatch, '');
     navigate('/authentication/sign-in/basic');
   });
 

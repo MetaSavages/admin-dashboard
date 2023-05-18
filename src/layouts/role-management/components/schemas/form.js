@@ -13,16 +13,22 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import * as Yup from 'yup';
-import checkout from 'layouts/authentication/sign-in/basic/schemas/form';
+const form = {
+  formId: 'new-user-form',
+  formField: {
+    roleName: {
+      name: 'roleName',
+      label: 'Role Name',
+      type: 'text',
+      errorMsg: 'Role name is required.'
+    },
+    rolePermissions: {
+      name: 'rolePermissions',
+      label: 'Role Permissions',
+      type: 'select',
+      errorMsg: 'Role permissions is required.'
+    }
+  }
+};
 
-const {
-  formField: { email, password }
-} = checkout;
-
-const validations = Yup.object().shape({
-  [email.name]: Yup.string().required(email.errorMsg).email(email.invalidMsg),
-  [password.name]: Yup.string().required(password.errorMsg).min(4, password.invalidMsg)
-});
-
-export default validations;
+export default form;

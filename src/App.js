@@ -27,7 +27,7 @@ import Icon from '@mui/material/Icon';
 import MDBox from 'components/MDBox';
 
 // Material Dashboard 2 PRO React examples
-import Sidenav from 'examples/Sidenav';
+import Sidenav from 'components/Sidenav';
 import Configurator from 'examples/Configurator';
 
 // Material Dashboard 2 PRO React themes
@@ -37,7 +37,6 @@ import themeRTL from 'assets/theme/theme-rtl';
 // Material Dashboard 2 PRO React Dark Mode themes
 import themeDark from 'assets/theme-dark';
 import themeDarkRTL from 'assets/theme-dark/theme-rtl';
-import axios from 'axios';
 // RTL plugins
 // import rtlPlugin from 'stylis-plugin-rtl'; // Commented this line to don't show the error
 import { CacheProvider } from '@emotion/react';
@@ -53,6 +52,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import brand from 'assets/images/logo.png';
 import { getCurrentUser } from 'services/auth';
 import { useNavigate } from 'react-router-dom';
+import { AbilityContext } from 'context';
+import { getUserAbilities } from 'conig/ability';
+
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -67,6 +69,7 @@ export default function App() {
     darkMode
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
+  const [ability, setAbility] = useState(null);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -86,7 +89,8 @@ export default function App() {
       .then((user) => {
         console.log('fetching user data');
         setUser(dispatch, user.data.email);
-        // setRole(dispatch, user.data?.role); // no role yet
+        setRole(dispatch, user.data.role); // no role yet
+        setAbility(getUserAbilities(user.data.role));
       })
       .catch((err) => {
         console.log(err);
@@ -208,10 +212,41 @@ export default function App() {
       </Icon>
     </MDBox>
   );
+  if (ability === null && user) {
+    return <></>;
+  }
   return direction === 'rtl' ? (
-    <QueryClientProvider client={queryClient}>
-      <CacheProvider value={rtlCache}>
-        <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+    <AbilityContext.Provider value={ability}>
+      <QueryClientProvider client={queryClient}>
+        <CacheProvider value={rtlCache}>
+          <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+            <CssBaseline />
+            {layout === 'dashboard' && (
+              <>
+                <Sidenav
+                  color={sidenavColor}
+                  brand={brand}
+                  brandName='Toka City'
+                  routes={routes}
+                  onMouseEnter={handleOnMouseEnter}
+                  onMouseLeave={handleOnMouseLeave}
+                />
+                <Configurator />
+              </>
+            )}
+            {layout === 'vr' && <Configurator />}
+            <Routes>
+              {getRoutes(routes)}
+              <Route path='*' element={<Navigate to='/dashboard' />} />
+            </Routes>
+          </ThemeProvider>
+        </CacheProvider>
+      </QueryClientProvider>
+    </AbilityContext.Provider>
+  ) : (
+    <AbilityContext.Provider value={ability}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={darkMode ? themeDark : theme}>
           <CssBaseline />
           {layout === 'dashboard' && (
             <>
@@ -232,31 +267,7 @@ export default function App() {
             <Route path='*' element={<Navigate to='/dashboard' />} />
           </Routes>
         </ThemeProvider>
-      </CacheProvider>
-    </QueryClientProvider>
-  ) : (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={darkMode ? themeDark : theme}>
-        <CssBaseline />
-        {layout === 'dashboard' && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={brand}
-              brandName='Toka City'
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-          </>
-        )}
-        {layout === 'vr' && <Configurator />}
-        <Routes>
-          {getRoutes(routes)}
-          <Route path='*' element={<Navigate to='/dashboard' />} />
-        </Routes>
-      </ThemeProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </AbilityContext.Provider>
   );
 }

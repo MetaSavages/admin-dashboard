@@ -30,12 +30,12 @@ import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
 // EditUser page components
-import UserInfo from 'layouts/user-management/new-user/components/UserInfo';
+import UserInfo from 'layouts/user-management/components/UserInfo';
 
 // EditUser layout schemas for form and form feilds
-import validations from 'layouts/user-management/new-user/schemas/validations';
-import form from 'layouts/user-management/new-user/schemas/form';
-import initialValues from 'layouts/user-management/new-user/schemas/initialValues';
+import validations from 'layouts/user-management/schemas/validations';
+import form from 'layouts/user-management/schemas/form';
+import initialValues from 'layouts/user-management/schemas/initialValues';
 
 import { getUser } from 'services/users';
 import { useState, useEffect } from 'react';

@@ -56,7 +56,7 @@ import {
   setDarkMode
 } from 'context';
 import MDAvatar from 'components/MDAvatar';
-import { Switch } from '@mui/material';
+import { Skeleton, Switch } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -191,10 +191,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   {miniSidenav ? 'menu_open' : 'menu'}
                 </Icon>
               </IconButton>
-              <MDBox>
-                <MDTypography variant='h6'>{user}</MDTypography>
-                <MDTypography variant='subtitle2'>{role}</MDTypography>
-              </MDBox>
+              {!(user && role) ? (
+                <Skeleton variant='text' width={100} height={20} />
+              ) : (
+                <MDBox>
+                  <MDTypography variant='h6'>{user}</MDTypography>
+                  <MDTypography variant='subtitle2'>{role.name}</MDTypography>
+                </MDBox>
+              )}
             </MDBox>
             {renderMenu()}
           </MDBox>

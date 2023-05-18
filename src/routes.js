@@ -57,7 +57,10 @@ import NewRole from 'layouts/role-management/new-role';
 import EditUser from 'layouts/user-management/edit-user';
 import Logout from 'layouts/authentication/logout';
 import ShowUser from 'layouts/user-management/show-user';
-
+import PermissionManagement from 'layouts/permission-management';
+import NewPermission from 'layouts/permission-management/new-permission';
+import EditPermession from 'layouts/permission-management/edit-permission';
+import EditRole from 'layouts/role-management/edit-role';
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -72,6 +75,39 @@ const routes = [
   { type: 'title', title: 'Sections', key: 'title-sections' },
   {
     type: 'collapse',
+    name: 'Admin management',
+    // action: 'manage',
+    // object: 'all',
+    key: 'admin-management',
+    icon: <Icon fontSize='medium'>manageAccounts</Icon>,
+    collapse: [
+      {
+        name: 'User management',
+        key: 'user-mangement',
+        action: 'read',
+        object: 'user',
+        icon: <Icon fontSize='medium'>people</Icon>,
+        route: '/user-management',
+        component: <UserManagement />
+      },
+      {
+        name: 'Role management',
+        key: 'role-mangement',
+        icon: <Icon fontSize='medium'>manageAccounts</Icon>,
+        route: '/role-management',
+        component: <RoleManagement />
+      },
+      {
+        name: 'Permission management',
+        key: 'permission-mangement',
+        icon: <Icon fontSize='medium'>check_circle</Icon>,
+        route: '/permission-management',
+        component: <PermissionManagement />
+      }
+    ]
+  },
+  {
+    type: 'collapse',
     noCollapse: true,
     name: 'Player management',
     key: 'player-management',
@@ -79,24 +115,7 @@ const routes = [
     route: '/player-management',
     component: <PlayerManagement />
   },
-  {
-    type: 'collapse',
-    noCollapse: true,
-    name: 'User management',
-    key: 'user-mangement',
-    icon: <Icon fontSize='medium'>people</Icon>,
-    route: '/user-management',
-    component: <UserManagement />
-  },
-  {
-    type: 'collapse',
-    noCollapse: true,
-    name: 'Role management',
-    key: 'role-mangement',
-    icon: <Icon fontSize='medium'>manageAccounts</Icon>,
-    route: '/role-management',
-    component: <RoleManagement />
-  },
+
   {
     type: 'collapse',
     name: 'Analytics',
@@ -205,6 +224,24 @@ const routes = [
     key: 'new-role',
     route: '/role-management/new-role',
     component: <NewRole />
+  },
+  {
+    name: 'Edit Role',
+    key: 'edit-role',
+    route: '/role-management/edit/:id',
+    component: <EditRole />
+  },
+  {
+    name: 'New Permission',
+    key: 'new-permission',
+    route: '/permission-management/new-permission',
+    component: <NewPermission />
+  },
+  {
+    name: 'Edit Permission',
+    key: 'edit-permission',
+    route: '/permission-management/edit/:id',
+    component: <EditPermession />
   },
   {
     type: 'collapse',

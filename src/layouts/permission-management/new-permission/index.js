@@ -30,32 +30,29 @@ import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
 // NewUser page components
-import RoleInfo from 'layouts/role-management/components/RoleInfo';
+import PermissionInfo from 'layouts/permission-management/components/PermissionInfo';
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/role-management/schemas/validations';
-import form from 'layouts/role-management/schemas/form';
-import initialValues from 'layouts/role-management/schemas/initialValues';
-import { createRole } from 'services/roles';
+import validations from 'layouts/permission-management/schemas/validations';
+import form from 'layouts/permission-management/schemas/form';
+import initialValues from 'layouts/permission-management/schemas/initialValues';
+import { createPermission } from 'services/permissions';
 import { useNavigate } from 'react-router-dom';
 
-function NewRole() {
+function NewPermission() {
   const { formId, formField } = form;
-  const currentValidation = validations[0];
   const navigate = useNavigate();
   const submitForm = async (values, actions) => {
-    const response = await createRole(values.roleName, values.rolePermissions);
-    console.log(response);
+    const response = await createPermission(values.action, values.object);
     if (response.status === 201) {
-      alert('Role created successfully');
+      alert('Permission created successfully');
     } else {
-      alert('Role creation failed');
+      alert('Permission creation failed');
     }
     // eslint-disable-next-line no-alert
-
     actions.setSubmitting(false);
     actions.resetForm();
-    navigate('/role-management');
+    navigate('/permission-management');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
@@ -67,13 +64,13 @@ function NewRole() {
       <MDBox py={3} mb={20} height='65vh'>
         <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
           <Grid item xs={12} lg={8}>
-            <Formik initialValues={initialValues} validationSchema={currentValidation} onSubmit={handleSubmit}>
+            <Formik initialValues={initialValues} validationSchema={validations} onSubmit={handleSubmit}>
               {({ values, errors, touched, isSubmitting, setFieldValue }) => (
                 <Form id={formId} autoComplete='off'>
                   <Card sx={{ height: '100%' }}>
                     <MDBox p={3}>
                       <MDBox>
-                        <RoleInfo
+                        <PermissionInfo
                           formData={{
                             values,
                             touched,
@@ -82,6 +79,7 @@ function NewRole() {
                             setFieldValue,
                             isSubmitting
                           }}
+                          title='New Permission'
                         />
                         <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
                           <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
@@ -102,4 +100,4 @@ function NewRole() {
   );
 }
 
-export default NewRole;
+export default NewPermission;

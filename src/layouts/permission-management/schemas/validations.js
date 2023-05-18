@@ -14,15 +14,15 @@ Coded by www.creative-tim.com
 */
 
 import * as Yup from 'yup';
-import checkout from 'layouts/authentication/sign-in/basic/schemas/form';
+import checkout from 'layouts/permission-management/schemas/form';
 
 const {
-  formField: { email, password }
+  formField: { action, object }
 } = checkout;
 
 const validations = Yup.object().shape({
-  [email.name]: Yup.string().required(email.errorMsg).email(email.invalidMsg),
-  [password.name]: Yup.string().required(password.errorMsg).min(4, password.invalidMsg)
+  [action.name]: Yup.string().required(`${action.errorMsg}`),
+  [object.name]: Yup.string().required(`${object.errorMsg}`)
 });
 
 export default validations;

@@ -43,7 +43,7 @@ import casino from 'assets/images/casino.png';
 import InfoCard from './components/InfoCard';
 import CasinoCard from './components/CasinoCard';
 import GradientLineChart from 'examples/Charts/LineCharts/GradientLineChart';
-import DataTable from 'layouts/data-table/components/DataTable';
+import DataTable from 'components/DataTablePage/components/DataTable';
 import VerticalBarChart from 'examples/Charts/BarCharts/VerticalBarChart';
 import MultiLayerPieChart from 'examples/Charts/MultiLayerPieChart';
 import DoubleInfoCard from './components/DoubleInfoCard';
@@ -150,12 +150,12 @@ function Dashboard() {
                   <VerticalBarChart title='Conversions' description='24 Hours performance' chart={gradientData} />
                 </Grid>
                 <Grid item xs={12}>
-                  <DataTable
+                  {/* <DataTable
                     table={dataTablePlayersData}
                     sx={{ height: '50%' }}
                     entriesPerPage={{ defaultValue: 5 }}
                     isSorted={false}
-                  />
+                  /> */}
                 </Grid>
               </Grid>
             </Grid>

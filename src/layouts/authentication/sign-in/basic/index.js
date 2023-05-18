@@ -34,6 +34,7 @@ import bgImage from 'assets/images/bg-sign-in-basic.jpeg';
 import { setUser, setRole, useMaterialUIController } from 'context';
 import { useNavigate } from 'react-router-dom';
 function Basic() {
+  console.log('Basic');
   const [, dispatch] = useMaterialUIController();
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
@@ -44,7 +45,7 @@ function Basic() {
         getCurrentUser().then((res) => {
           console.log(res);
           setUser(dispatch, res.data.email);
-          // setRole(dispatch, res.data.role); // no role yet
+          setRole(dispatch, res.data.role); // no role yet
           navigate('/dashboard', { replace: true });
         });
       })
@@ -101,31 +102,6 @@ function Basic() {
               </Formik>
             </Grid>
           </Grid>
-          {/* <MDBox component='form' role='form'>
-            <MDBox mb={2}>
-              <MDInput type='email' label='Email' fullWidth inputRef={email} />
-            </MDBox>
-            <MDBox mb={2}>
-              <MDInput type='password' label='Password' fullWidth inputRef={password} />
-            </MDBox>
-            <MDBox display='flex' alignItems='center' ml={-1}>
-              <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-              <MDTypography
-                variant='button'
-                fontWeight='regular'
-                color='text'
-                onClick={handleSetRememberMe}
-                sx={{ cursor: 'pointer', userSelect: 'none', ml: -1 }}
-              >
-                &nbsp;&nbsp;Remember me
-              </MDTypography>
-            </MDBox>
-            <MDBox mt={4} mb={1}>
-              <MDButton variant='gradient' color='info' fullWidth onClick={handleSubmit}>
-                sign in
-              </MDButton>
-            </MDBox>
-          </MDBox> */}
         </MDBox>
       </Card>
     </BasicLayout>

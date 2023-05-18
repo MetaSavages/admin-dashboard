@@ -24,7 +24,9 @@ import { createContext, useContext, useMemo, useReducer } from 'react';
 import PropTypes from 'prop-types';
 
 import { getCurrentUser } from 'services/auth';
-
+import { createContextualCan } from '@casl/react';
+const AbilityContext = createContext();
+const Can = createContextualCan(AbilityContext.Consumer);
 // The Material Dashboard 2 PRO React main context
 const MaterialUI = createContext();
 
@@ -88,8 +90,8 @@ function MaterialUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: 'ltr',
     layout: 'dashboard',
-    user: 'Username goes here',
-    role: 'Admin',
+    user: '',
+    role: '',
     darkMode: localStorage.getItem('darkMode') === 'true'
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -143,5 +145,7 @@ export {
   setLayout,
   setDarkMode,
   setUser,
-  setRole
+  setRole,
+  Can,
+  AbilityContext
 };

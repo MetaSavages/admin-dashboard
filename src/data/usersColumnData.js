@@ -1,4 +1,4 @@
-const userColumnsData = [
+const userColumnData = [
   {
     Header: 'Id',
     accessor: 'id'
@@ -6,6 +6,10 @@ const userColumnsData = [
   {
     Header: 'Email',
     accessor: 'email'
+  },
+  {
+    Header: 'Role',
+    accessor: 'role'
   },
   {
     Header: 'Created At',
@@ -16,4 +20,4 @@ const userColumnsData = [
     accessor: 'updatedAt'
   }
 ];
-export default userColumnsData;
+export default userColumnData;
