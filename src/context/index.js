@@ -95,7 +95,7 @@ function MaterialUIControllerProvider({ children }) {
     layout: 'dashboard',
     user: '',
     role: '',
-    ability: null,
+    ability: undefined,
     darkMode: localStorage.getItem('darkMode') === 'true'
   };
   const [controller, dispatch] = useReducer(reducer, initialState);

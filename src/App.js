@@ -88,13 +88,14 @@ export default function App() {
     getCurrentUser()
       .then((user) => {
         console.log('fetching user data', user);
+        setAbility(dispatch, getUserAbilities(user.data.role));
         setUser(dispatch, user.data.email);
         setRole(dispatch, user.data.role); // no role yet
-        setAbility(dispatch, getUserAbilities(user.data.role));
       })
       .catch((err) => {
         console.log(err);
         setUser(dispatch, null);
+        setAbility(dispatch, null);
       });
   }, [dispatch]);
   // useEffect(() => {
@@ -212,7 +213,7 @@ export default function App() {
       </Icon>
     </MDBox>
   );
-  if (ability === null && user) {
+  if ((ability === null && user) || (user === '' && ability === undefined)) {
     return <></>;
   }
   return direction === 'rtl' ? (
