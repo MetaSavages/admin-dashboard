@@ -155,7 +155,15 @@ function DashboardNavbar({ absolute, light, isMini }) {
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox color={light ? 'white' : 'inherit'}>
-              <Switch checked={darkMode} onChange={handleDarkMode} />
+              <IconButton
+                size='small'
+                color='inherit'
+                sx={navbarIconButton}
+                variant='contained'
+                onClick={handleDarkMode}
+              >
+                {darkMode ? <Icon sx={iconsStyle}>light_mode</Icon> : <Icon sx={iconsStyle}>dark_mode</Icon>}
+              </IconButton>
               <IconButton
                 size='small'
                 disableRipple
