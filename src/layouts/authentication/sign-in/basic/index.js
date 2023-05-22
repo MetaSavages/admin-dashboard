@@ -32,7 +32,7 @@ import { login, getCurrentUser } from 'services/auth';
 // Images
 import bgImage from 'assets/images/bg-sign-in-basic.jpeg';
 import { setUser, setRole, useMaterialUIController, setAbility } from 'context';
-import { getUserAbilities } from 'conig/ability';
+import { getUserAbilities } from 'config/ability';
 import { useNavigate } from 'react-router-dom';
 function Basic() {
   console.log('Basic');

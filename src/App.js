@@ -53,7 +53,7 @@ import brand from 'assets/images/logo.png';
 import { getCurrentUser } from 'services/auth';
 import { useNavigate } from 'react-router-dom';
 import { AbilityContext } from 'context';
-import { getUserAbilities } from 'conig/ability';
+import { getUserAbilities } from 'config/ability';
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
