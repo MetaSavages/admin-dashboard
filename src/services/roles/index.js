@@ -33,28 +33,58 @@ export const getRoles = async (limit = 20, page = 1, search = '') => {
   }
 };
 
-export const getRole = (id) => {
-  return axios.get(`${process.env.REACT_APP_BACKEND_URL}/auth/roles/${id}`, {
-    withCredentials: true
-  });
+export const getRole = async (id) => {
+  try {
+    return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/auth/roles/${id}`, {
+      withCredentials: true
+    });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        name: '',
+        permissions: []
+      }
+    };
+  }
 };
 
-export const createRole = (name, permissions) => {
-  return axios.post(
-    `${process.env.REACT_APP_BACKEND_URL}/auth/roles`,
-    { name: name, permissionIds: permissions },
-    {
-      withCredentials: true
-    }
-  );
+export const createRole = async (name, permissions) => {
+  try {
+    return await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/auth/roles`,
+      { name: name, permissionIds: permissions },
+      {
+        withCredentials: true
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        name: '',
+        permissions: []
+      }
+    };
+  }
 };
 
-export const updateRole = (id, name, permissions) => {
-  return axios.put(
-    `${process.env.REACT_APP_BACKEND_URL}/auth/roles/${id}`,
-    { name: name, permissionIds: permissions },
-    {
-      withCredentials: true
-    }
-  );
+export const updateRole = async (id, name, permissions) => {
+  try {
+    return await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/auth/roles/${id}`,
+      { name: name, permissionIds: permissions },
+      {
+        withCredentials: true
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        name: '',
+        permissions: []
+      }
+    };
+  }
 };

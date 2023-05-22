@@ -30,8 +30,23 @@ export const getUsers = async (limit = 20, page = 1, search = '') => {
   }
 };
 
-export const getUser = (id) => {
-  return axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/${id}`, {
-    withCredentials: true
-  });
+export const getUser = async (id) => {
+  try {
+    return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/${id}`, {
+      withCredentials: true
+    });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        role: {
+          id: '',
+          name: ''
+        }
+      }
+    };
+  }
 };

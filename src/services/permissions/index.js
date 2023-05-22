@@ -25,28 +25,58 @@ export const getPermissions = async (limit = 20, page = 1, search = '') => {
   }
 };
 
-export const getPermission = (id) => {
-  return axios.get(`${process.env.REACT_APP_BACKEND_URL}/auth/permissions/${id}`, {
-    withCredentials: true
-  });
+export const getPermission = async (id) => {
+  try {
+    return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/auth/permissions/${id}`, {
+      withCredentials: true
+    });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        action: '',
+        object: ''
+      }
+    };
+  }
 };
 
-export const createPermission = (action, object) => {
-  return axios.post(
-    `${process.env.REACT_APP_BACKEND_URL}/auth/permissions`,
-    { action: action, object: object },
-    {
-      withCredentials: true
-    }
-  );
+export const createPermission = async (action, object) => {
+  try {
+    return await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/auth/permissions`,
+      { action: action, object: object },
+      {
+        withCredentials: true
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        action: '',
+        object: ''
+      }
+    };
+  }
 };
 
-export const updatePermission = (id, action, object) => {
-  return axios.put(
-    `${process.env.REACT_APP_BACKEND_URL}/auth/permissions/${id}`,
-    { action: action, object: object },
-    {
-      withCredentials: true
-    }
-  );
+export const updatePermission = async (id, action, object) => {
+  try {
+    return await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/auth/permissions/${id}`,
+      { action: action, object: object },
+      {
+        withCredentials: true
+      }
+    );
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        action: '',
+        object: ''
+      }
+    };
+  }
 };
