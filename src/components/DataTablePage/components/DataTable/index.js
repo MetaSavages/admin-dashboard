@@ -225,14 +225,7 @@ function DataTable({
   // Setting the entries ending point
   let entriesEnd = pageSize * (pageIndex + 1) > queryTotalCount ? queryTotalCount : pageSize * (pageIndex + 1);
 
-  // if (pageIndex === 0) {
-  //   entriesEnd = pageSize;
-  // } else if (pageIndex === pageOptions.length - 1) {
-  //   entriesEnd = totalItems;
-  // } else {
-  //   entriesEnd = pageSize * (pageIndex + 1);
-  // }
-  // console.log(pageIndex);
+
   if (isLoading) {
     return <Skeleton variant='rounded' animation='wave' sx={{ borderRadius: 5 }} height={600} />;
   }

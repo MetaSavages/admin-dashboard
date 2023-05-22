@@ -65,7 +65,6 @@ function itemContent(theme, ownerState) {
   const { white, dark } = palette;
   const { size, fontWeightRegular, fontWeightLight } = typography;
   const { pxToRem } = functions;
-  console.log(pxToRem(12), pxToRem(16));
   return {
     display: 'flex',
     alignItems: 'center',

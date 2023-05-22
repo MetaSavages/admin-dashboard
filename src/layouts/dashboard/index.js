@@ -97,7 +97,6 @@ function Dashboard() {
       }
     ]
   };
-  console.log(pieData);
   // Action buttons for the BookingCard
   const actionButtons = (
     <>

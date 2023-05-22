@@ -35,19 +35,15 @@ import { setUser, setRole, useMaterialUIController, setAbility } from 'context';
 import { getUserAbilities } from 'config/ability';
 import { useNavigate } from 'react-router-dom';
 function Basic() {
-  console.log('Basic');
   const [, dispatch] = useMaterialUIController();
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
-        console.log(res);
         actions.setSubmitting(false);
         actions.resetForm();
         getCurrentUser().then((res) => {
-          console.log(res);
           setUser(dispatch, res.data.email);
           setRole(dispatch, res.data.role); // no role yet
-          console.log('resdasdasasasdd', res.data);
           setAbility(dispatch, getUserAbilities(res.data.role));
           navigate('/dashboard', { replace: true });
         });

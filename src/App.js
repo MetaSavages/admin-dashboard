@@ -83,11 +83,9 @@ export default function App() {
     setRtlCache(cacheRtl);
   }, []);
   const queryClient = new QueryClient();
-  console.log('rerendering app');
   useMemo(() => {
     getCurrentUser()
       .then((user) => {
-        console.log('fetching user data', user);
         setAbility(dispatch, getUserAbilities(user.data.role));
         setUser(dispatch, user.data.email);
         setRole(dispatch, user.data.role); // no role yet
@@ -98,53 +96,9 @@ export default function App() {
         setAbility(dispatch, null);
       });
   }, [dispatch]);
-  // useEffect(() => {
-  //   for (let i = 1; i <= 199; i++) {
-  //     setTimeout(() => {
-  //       axios.post(
-  //         'http://localhost:3001/api/v1/users',
-  //         {
-  //           email: `test${i}@mail.com`,
-  //           password: '12345678'
-  //         },
-  //         {
-  //           withCredentials: true
-  //         }
-  //       );
-  //     }, 100);
-  //   }
-  // }, []);
 
-  // useEffect(() => {
-  //   // Function to fetch data from the API
-  //   const fetchUserSessiondata = () =>
-  //     getCurrentUser()
-  //       .then((user) => {
-  //         console.log('fetching user data');
-  //         setUser(dispatch, user.data.email);
-  //         // setRole(dispatch, user.data?.role); // no role yet
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         setUser(dispatch, null);
-  //       });
-
-  //   // Interval time (in milliseconds) for polling
-  //   const interval = 5000; // 5 seconds
-
-  //   // Start polling when the component mounts
-  //   const timerId = setInterval(fetchUserSessiondata, interval);
-
-  //   // Stop polling and clean up when the component unmounts
-  //   return () => {
-  //     clearInterval(timerId);
-  //   };
-  // }, []);
   useEffect(() => {
-    if (user !== null) {
-      console.log('user is logged in');
-    } else {
-      console.log('user is not logged in');
+    if (user === null) {
       navigate('/authentication/sign-in/basic');
     }
   }, [user]);

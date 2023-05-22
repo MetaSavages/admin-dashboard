@@ -34,7 +34,6 @@ import { useMaterialUIController } from 'context';
 function SidenavItem({ color, name, active, nested, children, open, icon, ...rest }) {
   const [controller] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
-  console.log('name', name);
   return (
     <>
       <ListItem

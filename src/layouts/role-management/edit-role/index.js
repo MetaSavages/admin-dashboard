@@ -74,7 +74,6 @@ function EditRole() {
 
   const submitForm = async (values, actions) => {
     const response = await updateRole(id, values.roleName, values.rolePermissions);
-    console.log(response);
     if (response.status === 201 || response.status === 200) {
       alert('Role edited successfully');
     } else {
@@ -121,7 +120,6 @@ function EditRole() {
                               type='button'
                               onClick={async () => {
                                 const errs = await validateForm();
-                                console.log(errs);
                                 setStatus(errs);
                                 if (!errs?.length) {
                                   handleOpen();

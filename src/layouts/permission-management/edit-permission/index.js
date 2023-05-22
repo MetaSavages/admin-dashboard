@@ -105,7 +105,6 @@ function EditPermession() {
                               type='button'
                               onClick={async () => {
                                 const errs = await validateForm();
-                                console.log(errs);
                                 setStatus(errs);
                                 if (!errs?.length) {
                                   handleOpen();

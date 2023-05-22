@@ -48,7 +48,6 @@ function EditUser() {
   const [user, setUser] = useState(null);
 
   const { id } = useParams();
-  console.log(formField);
   useEffect(() => {
     getUser(id)
       .then((res) => {

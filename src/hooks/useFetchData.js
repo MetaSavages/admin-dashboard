@@ -53,7 +53,6 @@ const useFetchData = (
       setData(resData);
     }
   }, [isSuccess, resData]);
-  // console.log(data, queryPageSize);
   return { data, ...rest };
 };
 
