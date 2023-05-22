@@ -123,12 +123,26 @@ function Dashboard() {
           </MDTypography>
         </MDBox>
         <MDBox px={6} display='flex' justifyContent='space-between' alignItems='center'>
-          <InfoCard color='info' icon='trending_up' title='Total sales' description='$560K' />
-          <InfoCard color='info' icon='trending_up' title='Total profit' description='$23K' />
-          <InfoCard color='info' icon='trending_up' title='Total cost' description='$12K' />
-          <InfoCard color='info' icon='trending_up' title='Total users' description='2.3K' />
-          <InfoCard color='info' icon='trending_up' title='Total clicks' description='1.2M' />
-          <InfoCard color='info' icon='trending_up' title='Today' description='1.5M' />
+          <Grid container spacing={4} direction='row' justify='center' alignItems='stretch'>
+            <Grid item xs={2}>
+              <InfoCard color='info' icon='trending_up' title='Total sales' description='$560K' />
+            </Grid>
+            <Grid item xs={2}>
+              <InfoCard color='info' icon='trending_up' title='Total profit' description='$23K' />
+            </Grid>
+            <Grid item xs={2}>
+              <InfoCard color='info' icon='trending_up' title='Total cost' description='$12K' />
+            </Grid>
+            <Grid item xs={2}>
+              <InfoCard color='info' icon='trending_up' title='Total users' description='2.3K' />
+            </Grid>
+            <Grid item xs={2}>
+              <InfoCard color='info' icon='trending_up' title='Total clicks' description='1.2M' />
+            </Grid>
+            <Grid item xs={2}>
+              <InfoCard color='info' icon='trending_up' title='Today' description='1.5M' />
+            </Grid>
+          </Grid>
         </MDBox>
         <MDBox mt={6}>
           <Grid container spacing={3} direction='row' justify='center' alignItems='stretch'>
