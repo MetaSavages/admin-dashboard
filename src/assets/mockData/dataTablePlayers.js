@@ -1,14 +1,39 @@
+import { Icon } from '@mui/material';
+
 const dataTablePlayersData = {
   columns: [
-    { Header: 'username', accessor: 'username' },
-    { Header: 'wallet', accessor: 'wallet' },
-    { Header: 'time_spent', accessor: 'time_spent' },
-    { Header: 'current_balance', accessor: 'current_balance' },
-    { Header: 'spent', accessor: 'spent' },
-    { Header: 'starting_balance', accessor: 'starting_balance' },
-    { Header: 'cashout', accessor: 'cashout' },
-    { Header: 'location', accessor: 'location' },
-    { Header: 'kyc_status', accessor: 'kyc_status' }
+    {
+      width: 5,
+      Header: () => null,
+      id: 'expander',
+      Cell: ({ row }) => (
+        // Use Cell to render an expander for each row.
+        // We can use the getToggleRowExpandedProps prop-getter
+        // to build the expander.
+        <Icon {...row.getToggleRowExpandedProps()}>{row.isExpanded ? 'expand_less' : 'expand_more'}</Icon>
+      ),
+      // We can override the cell renderer with a SubCell to be used with an expanded row
+      SubCell: () => null
+    },
+    { Header: 'Username', accessor: 'username', width: 100 },
+    { Header: 'Time Spent', accessor: 'time_spent', width: 100, SubCell: (cellProps) => <>{cellProps.value}</> },
+    {
+      Header: 'Current Balance',
+      accessor: 'current_balance',
+      width: 100,
+      SubCell: (cellProps) => <>{cellProps.value}</>
+    },
+    { Header: 'Spent', accessor: 'spent', width: 100, SubCell: (cellProps) => <>{cellProps.value}</> },
+    {
+      Header: 'Starting Balance',
+      accessor: 'starting_balance',
+      width: 100,
+      SubCell: (cellProps) => <>{cellProps.value}</>
+    },
+    { Header: 'Cashout', accessor: 'cashout', width: 100, SubCell: (cellProps) => <>{cellProps.value}</> },
+    { Header: 'wallet', accessor: 'wallet', width: 300 },
+    { Header: 'location', accessor: 'location', width: 200 },
+    { Header: 'kyc_status', accessor: 'kyc_status', width: 100 }
   ],
   rows: [
     {

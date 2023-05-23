@@ -13,14 +13,14 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useMemo, useEffect, useState, useReducer } from 'react';
+import { useMemo, useEffect, useState, useReducer, useCallback, Fragment } from 'react';
 
 // prop-types is a library for typechecking of props
 import PropTypes from 'prop-types';
 
 // react-table components
 import { useAsyncDebounce } from 'react-table';
-import { Skeleton } from '@mui/material';
+import { Skeleton, TableHead } from '@mui/material';
 // @mui material components
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -36,15 +36,16 @@ import MDInput from 'components/MDInput';
 import MDPagination from 'components/MDPagination';
 
 // Material Dashboard 2 PRO React examples
-import DataTableHeadCell from 'components/DataTablePage/components/DataTable/DataTableHeadCell';
-import DataTableBodyCell from 'components/DataTablePage/components/DataTable/DataTableBodyCell';
+import PlayerDataTableHeadCell from './PlayerDataTableHeadCell';
+import PlayerDataTableBodyRow from './PlayerDataTableBodyRow';
 import MDButton from 'components/MDButton';
 import { Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton } from '@mui/material';
-import userColumnsData from 'data/usersColumnData';
 import useReactTableInstance from 'hooks/useReactTableInstance';
 import useFetchData from 'hooks/useFetchData';
 import { useNavigate } from 'react-router-dom';
 import { Can } from 'context';
+import useExpandableReactTableInsance from 'hooks/useExpandableReactTableInstance';
+import SubRows from './SubRows';
 
 const ACTION = {
   PAGE_CHANGED: 'page-changed',
@@ -75,7 +76,7 @@ const tableReducer = (state, action) => {
   }
 };
 
-function DataTable({
+function PlayerDataTable({
   canSearch,
   showTotalEntries,
   pagination,
@@ -88,9 +89,6 @@ function DataTable({
   object,
   onDelete
 }) {
-  const [openDelete, setOpenDelete] = useState(false);
-  const handleOpenDelete = () => setOpenDelete(true);
-  const handleCloseDelete = () => setOpenDelete(false);
   const [tableState, dispatchTableAction] = useReducer(tableReducer, defaultState);
   const setQueryPageIndexHandler = ({ pageIndexValue }) => {
     dispatchTableAction({
@@ -147,6 +145,7 @@ function DataTable({
     headerGroups,
     prepareRow,
     page,
+    rows,
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -158,11 +157,17 @@ function DataTable({
     pageIndex,
     pageSize,
     globalFilter,
-    setGlobalFilter
-  } = useReactTableInstance(tableColumns, tableData, queryPageIndex, queryPageSize, queryTotalPageCount);
+    setGlobalFilter,
+    visibleColumns
+  } = useExpandableReactTableInsance(tableColumns, tableData, queryPageIndex, queryPageSize, queryTotalPageCount);
   const [openFilters, setOpenFilters] = useState(false);
   const [search, setSearch] = useState(globalFilter);
   const handleOpenFilters = () => setOpenFilters(!openFilters);
+
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => setOpenDelete(false);
+
   useEffect(() => {
     setQueryPageIndexHandler({ pageIndexValue: pageIndex });
   }, [pageIndex]);
@@ -208,17 +213,20 @@ function DataTable({
   // A function that sets the sorted value for the table
   const setSortedValue = (column) => {
     let sortedValue;
-    if (isSorted && column.isSorted) {
+    if (isSorted && column.isSorted && column?.id !== 'expander' && column?.id !== 'action') {
       sortedValue = column.isSortedDesc ? 'desc' : 'asce';
-    } else if (isSorted) {
+    } else if (isSorted && column?.id !== 'expander' && column?.id !== 'action') {
       sortedValue = 'none';
-    } else {
+    } else if (!isSorted || column?.id === 'expander' || column?.id === 'action') {
       sortedValue = false;
     }
 
     return sortedValue;
   };
-
+  const renderRowSubComponent = useCallback(
+    ({ row, rowProps, visibleColumns }) => <SubRows row={row} rowProps={rowProps} visibleColumns={visibleColumns} />,
+    []
+  );
   // Setting the entries starting point
   const entriesStart = pageIndex === 0 ? pageIndex + 1 : pageIndex * pageSize + 1;
 
@@ -303,79 +311,27 @@ function DataTable({
           {headerGroups.map((headerGroup) => (
             <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <DataTableHeadCell
+                <PlayerDataTableHeadCell
                   {...column.getHeaderProps(isSorted && column.getSortByToggleProps())}
                   width={column.width ? column.width : 'auto'}
                   align={column.align ? column.align : 'left'}
                   sorted={setSortedValue(column)}
                 >
                   {column.render('Header')}
-                </DataTableHeadCell>
+                </PlayerDataTableHeadCell>
               ))}
-              <DataTableHeadCell width='0.5rem' align='left' sorted={false}>
-                Actions
-              </DataTableHeadCell>
             </TableRow>
           ))}
         </MDBox>
         <TableBody {...getTableBodyProps()}>
           {page.map((row, key) => {
             prepareRow(row);
+            const rowProps = row.getRowProps();
             return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <DataTableBodyCell
-                    noBorder={noEndBorder && rows.length - 1 === key}
-                    align={cell.column.align ? cell.column.align : 'left'}
-                    {...cell.getCellProps()}
-                  >
-                    {cell.render('Cell')}
-                  </DataTableBodyCell>
-                ))}
-
-                <DataTableBodyCell noBorder={noEndBorder && rows.length - 1 === key} width='0.5rem' align='left'>
-                  <Can I='read' a={object}>
-                    <IconButton color='info' onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}>
-                      <Icon>visibility</Icon>
-                    </IconButton>
-                  </Can>
-                  <Can I='update' a={object}>
-                    <IconButton color='info' onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}>
-                      <Icon>edit</Icon>
-                    </IconButton>
-                  </Can>
-                  <Can I='delete' a={object}>
-                    <IconButton
-                      color='error'
-                      onClick={() => handleDelete(row.cells[0].value)}
-                      // onClick={handleOpenDelete}
-                    >
-                      <Icon>delete</Icon>
-                    </IconButton>
-                    <Dialog
-                      open={openDelete}
-                      onClose={handleCloseDelete}
-                      aria-labelledby='alert-dialog-title'
-                      aria-describedby='alert-dialog-description'
-                    >
-                      <DialogTitle id='alert-dialog-title'>{`Delete ${object}`}</DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id='alert-dialog-description'>
-                          Are you sure you want to delete this {object}?
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <MDButton variant='text' onClick={handleCloseDelete}>
-                          No
-                        </MDButton>
-                        <MDButton variant='text' color='error' onClick={() => handleDelete(row.cells[0].value)}>
-                          yes
-                        </MDButton>
-                      </DialogActions>
-                    </Dialog>
-                  </Can>
-                </DataTableBodyCell>
-              </TableRow>
+              <Fragment key={key}>
+                <PlayerDataTableBodyRow row={row} noEndBorder={noEndBorder} object={object} />
+                {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
+              </Fragment>
             );
           })}
         </TableBody>
@@ -429,7 +385,7 @@ function DataTable({
 }
 
 // Setting default values for the props of DataTable
-DataTable.defaultProps = {
+PlayerDataTable.defaultProps = {
   canSearch: false,
   showTotalEntries: true,
   pagination: { variant: 'gradient', color: 'info' },
@@ -438,7 +394,7 @@ DataTable.defaultProps = {
 };
 
 // Typechecking props for the DataTable
-DataTable.propTypes = {
+PlayerDataTable.propTypes = {
   canSearch: PropTypes.bool,
   showTotalEntries: PropTypes.bool,
   pagination: PropTypes.shape({
@@ -449,4 +405,4 @@ DataTable.propTypes = {
   noEndBorder: PropTypes.bool
 };
 
-export default DataTable;
+export default PlayerDataTable;
