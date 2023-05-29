@@ -23,6 +23,10 @@ import { createContext, useContext, useMemo, useReducer } from 'react';
 // prop-types is a library for typechecking of props
 import PropTypes from 'prop-types';
 
+import { getCurrentUser } from 'services/auth';
+import { createContextualCan } from '@casl/react';
+const AbilityContext = createContext();
+const Can = createContextualCan(AbilityContext.Consumer);
 // The Material Dashboard 2 PRO React main context
 const MaterialUI = createContext();
 
@@ -62,6 +66,15 @@ function reducer(state, action) {
     case 'DARKMODE': {
       return { ...state, darkMode: action.value };
     }
+    case 'USER': {
+      return { ...state, user: action.value };
+    }
+    case 'ROLE': {
+      return { ...state, role: action.value };
+    }
+    case 'ABILITY': {
+      return { ...state, ability: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -80,9 +93,11 @@ function MaterialUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: 'ltr',
     layout: 'dashboard',
-    darkMode: false
+    user: '',
+    role: '',
+    ability: undefined,
+    darkMode: localStorage.getItem('darkMode') === 'true'
   };
-
   const [controller, dispatch] = useReducer(reducer, initialState);
 
   const value = useMemo(() => [controller, dispatch], [controller, dispatch]);
@@ -117,6 +132,9 @@ const setOpenConfigurator = (dispatch, value) => dispatch({ type: 'OPEN_CONFIGUR
 const setDirection = (dispatch, value) => dispatch({ type: 'DIRECTION', value });
 const setLayout = (dispatch, value) => dispatch({ type: 'LAYOUT', value });
 const setDarkMode = (dispatch, value) => dispatch({ type: 'DARKMODE', value });
+const setUser = (dispatch, value) => dispatch({ type: 'USER', value });
+const setRole = (dispatch, value) => dispatch({ type: 'ROLE', value });
+const setAbility = (dispatch, value) => dispatch({ type: 'ABILITY', value });
 
 export {
   MaterialUIControllerProvider,
@@ -130,5 +148,10 @@ export {
   setOpenConfigurator,
   setDirection,
   setLayout,
-  setDarkMode
+  setDarkMode,
+  setUser,
+  setRole,
+  setAbility,
+  Can,
+  AbilityContext
 };

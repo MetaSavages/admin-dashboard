@@ -27,7 +27,7 @@ import Icon from '@mui/material/Icon';
 import MDBox from 'components/MDBox';
 
 // Material Dashboard 2 PRO React examples
-import Sidenav from 'examples/Sidenav';
+import Sidenav from 'components/Sidenav';
 import Configurator from 'examples/Configurator';
 
 // Material Dashboard 2 PRO React themes
@@ -37,7 +37,6 @@ import themeRTL from 'assets/theme/theme-rtl';
 // Material Dashboard 2 PRO React Dark Mode themes
 import themeDark from 'assets/theme-dark';
 import themeDarkRTL from 'assets/theme-dark/theme-rtl';
-
 // RTL plugins
 // import rtlPlugin from 'stylis-plugin-rtl'; // Commented this line to don't show the error
 import { CacheProvider } from '@emotion/react';
@@ -47,30 +46,62 @@ import createCache from '@emotion/cache';
 import routes from 'routes';
 
 // Material Dashboard 2 PRO React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from 'context';
-
+import { useMaterialUIController, setMiniSidenav, setOpenConfigurator, setUser, setRole, setAbility } from 'context';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Images
-import brandWhite from 'assets/images/logo-ct.png';
-import brandDark from 'assets/images/logo-ct-dark.png';
+import brand from 'assets/images/logo.png';
+import { getCurrentUser } from 'services/auth';
+import { useNavigate } from 'react-router-dom';
+import { AbilityContext } from 'context';
+import { getUserAbilities } from 'config/ability';
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, direction, layout, openConfigurator, sidenavColor, transparentSidenav, whiteSidenav, darkMode } =
-    controller;
+  const {
+    miniSidenav,
+    direction,
+    layout,
+    openConfigurator,
+    sidenavColor,
+    transparentSidenav,
+    whiteSidenav,
+    ability,
+    user,
+    darkMode
+  } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-
+  const navigate = useNavigate();
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
-      key: 'rtl',
+      key: 'rtl'
       // stylisPlugins: [rtlPlugin] // Commented this line to don't show the error
     });
 
     setRtlCache(cacheRtl);
   }, []);
+  const queryClient = new QueryClient();
+  useMemo(() => {
+    getCurrentUser()
+      .then((user) => {
+        setAbility(dispatch, getUserAbilities(user.data.role));
+        setUser(dispatch, user.data.email);
+        setRole(dispatch, user.data.role); // no role yet
+      })
+      .catch((err) => {
+        console.log(err);
+        setUser(dispatch, null);
+        setAbility(dispatch, null);
+      });
+  }, [dispatch]);
 
+  useEffect(() => {
+    if (user === null) {
+      navigate('/authentication/sign-in/basic');
+    }
+  }, [user]);
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
@@ -106,7 +137,6 @@ export default function App() {
       if (route.collapse) {
         return getRoutes(route.collapse);
       }
-
       if (route.route) {
         return <Route exact path={route.route} element={route.component} key={route.key} />;
       }
@@ -137,54 +167,62 @@ export default function App() {
       </Icon>
     </MDBox>
   );
-
+  if ((ability === null && user) || (user === '' && ability === undefined)) {
+    return <></>;
+  }
   return direction === 'rtl' ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
-        <CssBaseline />
-        {layout === 'dashboard' && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-              brandName='Material Dashboard PRO'
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
-        )}
-        {layout === 'vr' && <Configurator />}
-        <Routes>
-          {getRoutes(routes)}
-          <Route path='*' element={<Navigate to='/dashboards/analytics' />} />
-        </Routes>
-      </ThemeProvider>
-    </CacheProvider>
+    <AbilityContext.Provider value={ability}>
+      <QueryClientProvider client={queryClient}>
+        <CacheProvider value={rtlCache}>
+          <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+            <CssBaseline />
+            {layout === 'dashboard' && (
+              <>
+                <Sidenav
+                  color={sidenavColor}
+                  brand={brand}
+                  brandName='Toka City'
+                  routes={routes}
+                  onMouseEnter={handleOnMouseEnter}
+                  onMouseLeave={handleOnMouseLeave}
+                />
+                <Configurator />
+              </>
+            )}
+            {layout === 'vr' && <Configurator />}
+            <Routes>
+              {getRoutes(routes)}
+              <Route path='*' element={<Navigate to='/dashboard' />} />
+            </Routes>
+          </ThemeProvider>
+        </CacheProvider>
+      </QueryClientProvider>
+    </AbilityContext.Provider>
   ) : (
-    <ThemeProvider theme={darkMode ? themeDark : theme}>
-      <CssBaseline />
-      {layout === 'dashboard' && (
-        <>
-          <Sidenav
-            color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName='Material Dashboard PRO'
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          <Configurator />
-          {configsButton}
-        </>
-      )}
-      {layout === 'vr' && <Configurator />}
-      <Routes>
-        {getRoutes(routes)}
-        <Route path='*' element={<Navigate to='/dashboards/analytics' />} />
-      </Routes>
-    </ThemeProvider>
+    <AbilityContext.Provider value={ability}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={darkMode ? themeDark : theme}>
+          <CssBaseline />
+          {layout === 'dashboard' && (
+            <>
+              <Sidenav
+                color={sidenavColor}
+                brand={brand}
+                brandName='Toka City'
+                routes={routes}
+                onMouseEnter={handleOnMouseEnter}
+                onMouseLeave={handleOnMouseLeave}
+              />
+              <Configurator />
+            </>
+          )}
+          {layout === 'vr' && <Configurator />}
+          <Routes>
+            {getRoutes(routes)}
+            <Route path='*' element={<Navigate to='/dashboard' />} />
+          </Routes>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </AbilityContext.Provider>
   );
 }

@@ -84,6 +84,7 @@ import dialogTitle from 'assets/theme-dark/components/dialog/dialogTitle';
 import dialogContent from 'assets/theme-dark/components/dialog/dialogContent';
 import dialogContentText from 'assets/theme-dark/components/dialog/dialogContentText';
 import dialogActions from 'assets/theme-dark/components/dialog/dialogActions';
+import chip from 'assets/theme-dark/components/chip';
 
 export default createTheme({
   direction: 'rtl',
@@ -149,6 +150,7 @@ export default createTheme({
     MuiAutocomplete: { ...autocomplete },
     MuiPopover: { ...popover },
     MuiButtonBase: { ...buttonBase },
+
     MuiIcon: { ...icon },
     MuiSvgIcon: { ...svgIcon },
     MuiLink: { ...link },
@@ -156,6 +158,7 @@ export default createTheme({
     MuiDialogTitle: { ...dialogTitle },
     MuiDialogContent: { ...dialogContent },
     MuiDialogContentText: { ...dialogContentText },
-    MuiDialogActions: { ...dialogActions }
+    MuiDialogActions: { ...dialogActions },
+    MuiChip: { ...chip }
   }
 });

@@ -25,7 +25,7 @@ import MDTypography from 'components/MDTypography';
 
 // Material Dashboard 2 PRO React examples
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
-import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 import MiniStatisticsCard from 'examples/Cards/StatisticsCards/MiniStatisticsCard';
 import ProgressLineChart from 'examples/Charts/LineCharts/ProgressLineChart';

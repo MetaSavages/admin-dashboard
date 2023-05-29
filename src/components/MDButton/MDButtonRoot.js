@@ -22,7 +22,7 @@ export default styled(Button)(({ theme, ownerState }) => {
   const { palette, functions, borders, boxShadows } = theme;
   const { color, variant, size, circular, iconOnly, darkMode } = ownerState;
 
-  const { white, text, transparent, gradients, grey } = palette;
+  const { white, text, transparent, gradients, dark, light, grey } = palette;
   const { boxShadow, linearGradient, pxToRem, rgba } = functions;
   const { borderRadius } = borders;
   const { colored } = boxShadows;
@@ -57,7 +57,6 @@ export default styled(Button)(({ theme, ownerState }) => {
 
     // color value
     let colorValue = white.main;
-
     if (!darkMode && (color === 'white' || color === 'light' || !palette[color])) {
       colorValue = text.main;
     } else if (darkMode && (color === 'white' || color === 'light' || !palette[color])) {
@@ -205,8 +204,12 @@ export default styled(Button)(({ theme, ownerState }) => {
   // styles for the button with variant="text"
   const textStyles = () => {
     // color value
-    const colorValue = palette[color] ? palette[color].main : white.main;
-
+    let colorValue = palette[color] ? palette[color].main : light.main;
+    if (!darkMode && (color === 'white' || color === 'light' || !palette[color])) {
+      colorValue = dark.main;
+    } else if (darkMode && (color === 'white' || color === 'light' || !palette[color])) {
+      colorValue = light.main;
+    }
     // color value when button is focused
     const focusedColorValue = palette[color] ? palette[color].focus : white.focus;
 

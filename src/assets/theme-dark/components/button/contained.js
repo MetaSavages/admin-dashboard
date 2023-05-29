@@ -26,7 +26,7 @@ const { size } = typography;
 const contained = {
   base: {
     backgroundColor: white.main,
-    minHeight: pxToRem(37),
+    minHeight: pxToRem(40),
     color: text.main,
     padding: `${pxToRem(9)} ${pxToRem(24)}`,
 

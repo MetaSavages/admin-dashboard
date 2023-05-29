@@ -84,6 +84,7 @@ import dialogTitle from 'assets/theme-dark/components/dialog/dialogTitle';
 import dialogContent from 'assets/theme-dark/components/dialog/dialogContent';
 import dialogContentText from 'assets/theme-dark/components/dialog/dialogContentText';
 import dialogActions from 'assets/theme-dark/components/dialog/dialogActions';
+import chip from 'assets/theme-dark/components/chip';
 
 export default createTheme({
   breakpoints: { ...breakpoints },
@@ -155,6 +156,7 @@ export default createTheme({
     MuiDialogTitle: { ...dialogTitle },
     MuiDialogContent: { ...dialogContent },
     MuiDialogContentText: { ...dialogContentText },
-    MuiDialogActions: { ...dialogActions }
+    MuiDialogActions: { ...dialogActions },
+    MuiChip: { ...chip }
   }
 });

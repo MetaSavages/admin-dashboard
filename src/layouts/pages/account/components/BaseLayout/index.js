@@ -32,7 +32,7 @@ import breakpoints from 'assets/theme/base/breakpoints';
 
 // Material Dashboard 2 PRO React examples
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
-import DashboardNavbar from 'examples/Navbars/DashboardNavbar';
+import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
 function BaseLayout({ stickyNavbar, children }) {
