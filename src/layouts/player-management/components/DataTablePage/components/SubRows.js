@@ -1,4 +1,4 @@
-import { TableRow, Table, TableBody, TableHead } from '@mui/material';
+import { TableRow, Table, TableBody, TableHead, Typography } from '@mui/material';
 import DataTableBodyCell from './PlayerDataTableBodyCell';
 import MDBox from 'components/MDBox';
 import DataTableHeadCell from './PlayerDataTableHeadCell';
@@ -75,10 +75,12 @@ function SubRows({ row, rowProps, visibleColumns }) {
             {row.cells.map((cell) => {
               return (
                 <DataTableBodyCell {...cell.getCellProps()}>
-                  {cell.render(cell.column.SubCell ? 'SubCell' : 'Cell', {
-                    value: cell.column.accessor && cell.column.accessor(x, i),
-                    row: { ...row, original: x }
-                  })}
+                  <Typography variant='body3' fontWeight='light'>
+                    {cell.render(cell.column.SubCell ? 'SubCell' : 'Cell', {
+                      value: cell.column.accessor && cell.column.accessor(x, i),
+                      row: { ...row, original: x }
+                    })}
+                  </Typography>
                 </DataTableBodyCell>
               );
             })}
