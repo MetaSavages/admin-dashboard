@@ -160,6 +160,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 color='inherit'
                 sx={navbarIconButton}
                 variant='contained'
+                disableRipple
                 onClick={handleDarkMode}
               >
                 {darkMode ? <Icon sx={iconsStyle}>light_mode</Icon> : <Icon sx={iconsStyle}>dark_mode</Icon>}

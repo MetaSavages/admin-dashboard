@@ -1,9 +1,9 @@
-import axios from 'axios';
+import useAxios from 'hooks/useAxios';
 
 export const getRoles = async (limit = 20, page = 1, search = '') => {
+  const api = useAxios();
   try {
-    const unformattedData = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/auth/roles`, {
-      withCredentials: true,
+    const unformattedData = await api.get('/auth/roles', {
       params: { limit: limit, page: page, search: search }
     });
     unformattedData.data.data = unformattedData.data.data.map((role) => {
@@ -34,10 +34,9 @@ export const getRoles = async (limit = 20, page = 1, search = '') => {
 };
 
 export const getRole = async (id) => {
+  const api = useAxios();
   try {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/auth/roles/${id}`, {
-      withCredentials: true
-    });
+    return await api.get('/auth/roles/${id}', {});
   } catch (err) {
     console.log(err);
     return {
@@ -50,14 +49,12 @@ export const getRole = async (id) => {
 };
 
 export const createRole = async (name, permissions) => {
+  const api = useAxios();
   try {
-    return await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/roles`,
-      { name: name, permissionIds: permissions },
-      {
-        withCredentials: true
-      }
-    );
+    return await api.post('/auth/roles', {
+      name: name,
+      permissionIds: permissions
+    });
   } catch (err) {
     console.log(err);
     return {
@@ -70,14 +67,12 @@ export const createRole = async (name, permissions) => {
 };
 
 export const updateRole = async (id, name, permissions) => {
+  const api = useAxios();
   try {
-    return await axios.put(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/roles/${id}`,
-      { name: name, permissionIds: permissions },
-      {
-        withCredentials: true
-      }
-    );
+    return await api.put('/auth/roles/${id}', {
+      name: name,
+      permissionIds: permissions
+    });
   } catch (err) {
     console.log(err);
     return {

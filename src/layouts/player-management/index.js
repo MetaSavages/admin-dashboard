@@ -3,6 +3,7 @@ import dataTablePlayersData from 'assets/mockData/dataTablePlayers';
 import MDButton from 'components/MDButton';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Can } from 'context';
+import PlayerDataTablePage from './components/DataTablePage';
 function PlayerManagement() {
   const navigate = useNavigate();
   const onDelete = (id) => {
@@ -17,14 +18,14 @@ function PlayerManagement() {
             totalItems: 100
           }
         });
-      }, 1000);
+      }, 100);
     });
   };
 
   return (
     <>
       <Can I='read' a='user'>
-        <DataTablePage
+        <PlayerDataTablePage
           title='Player Management'
           createButton={
             <Can I='create' a='user'>

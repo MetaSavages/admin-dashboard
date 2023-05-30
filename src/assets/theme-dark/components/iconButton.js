@@ -17,8 +17,10 @@ Coded by www.creative-tim.com
 import colors from 'assets/theme-dark/base/colors';
 
 const { transparent } = colors;
-
 const iconButton = {
+  defaultProps: {
+    color: 'light'
+  },
   styleOverrides: {
     root: {
       '&:hover': {

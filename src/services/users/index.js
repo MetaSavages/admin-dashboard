@@ -1,9 +1,9 @@
-import axios from 'axios';
+import useAxios from 'hooks/useAxios';
 
 export const getUsers = async (limit = 20, page = 1, search = '') => {
+  const api = useAxios();
   try {
-    const unformattedData = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users`, {
-      withCredentials: true,
+    const unformattedData = await api.get('/users', {
       params: { limit: limit, page: page, search: search }
     });
     return {
@@ -31,10 +31,9 @@ export const getUsers = async (limit = 20, page = 1, search = '') => {
 };
 
 export const getUser = async (id) => {
+  const api = useAxios();
   try {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/${id}`, {
-      withCredentials: true
-    });
+    return await api.get('/users/${id}');
   } catch (err) {
     console.log(err);
     return {
