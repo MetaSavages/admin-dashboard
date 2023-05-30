@@ -6,8 +6,9 @@ import { useState } from 'react';
 function PlayerDataTableBodyRow({ row, noEndBorder, object, ...rest }) {
   return (
     <TableRow {...row.getRowProps()}>
-      {row.cells.map((cell) => (
+      {row.cells.map((cell, index) => (
         <DataTableBodyCell
+          key={`player-data-${index}`}
           noBorder={noEndBorder && rows.length - 1 === key}
           align={cell.column.align ? cell.column.align : 'left'}
           {...cell.getCellProps()}
