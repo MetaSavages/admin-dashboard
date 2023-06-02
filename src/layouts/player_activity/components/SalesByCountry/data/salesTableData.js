@@ -22,23 +22,20 @@ import BR from 'assets/images/icons/flags/BR.png';
 const salesTableData = [
   {
     country: [US, 'united state'],
-    sales: 2500,
-    value: '$230,900',
-    bounce: '29.9%'
+    registered: 2500,
+    active: 125
   },
   {
     country: [DE, 'germany'],
-    sales: '3.900',
-    value: '$440,000',
-    bounce: '40.22%'
+    registered: 390,
+    active: 125
   },
   {
     country: [GB, 'great britain'],
-    sales: '1.400',
-    value: '$190,700',
-    bounce: '23.44%'
+    registered: 1400,
+    active: 125
   },
-  { country: [BR, 'brasil'], sales: 562, value: '$143,960', bounce: '32.14%' }
+  { country: [BR, 'brasil'], registered: 562, active: 125 }
 ];
 
 export default salesTableData;

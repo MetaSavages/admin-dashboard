@@ -36,7 +36,7 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React layouts
-import Analytics from 'layouts/analytics';
+import Analytics from 'layouts/player_activity';
 import Sales from 'layouts/sales';
 import NewUser from 'layouts/user-management/new-user';
 
@@ -121,8 +121,22 @@ const routes = [
     name: 'Analytics',
     key: 'analytics',
     icon: <Icon fontSize='medium'>analytics</Icon>,
-    route: '/dashboards/analytics',
-    component: <Analytics />
+    collapse: [
+      {
+        name: 'Player Activity',
+        key: 'player_activity',
+        icon: <Icon fontSize='medium'>timeline</Icon>,
+        route: '/analytics',
+        component: <Analytics />
+      },
+      {
+        name: 'Events',
+        key: 'events',
+        icon: <Icon fontSize='medium'>event</Icon>,
+        route: '/events',
+        component: <Analytics />
+      }
+    ]
   },
   {
     type: 'collapse',

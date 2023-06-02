@@ -86,11 +86,14 @@ function DataTable({
   fetchData,
   queryKey,
   object,
-  onDelete
+  onDelete,
+  noActions,
+  defaultPageSize = 20
 }) {
   const [openDelete, setOpenDelete] = useState(false);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
+  defaultState.queryPageSize = defaultPageSize;
   const [tableState, dispatchTableAction] = useReducer(tableReducer, defaultState);
   const setQueryPageIndexHandler = ({ pageIndexValue }) => {
     dispatchTableAction({
@@ -312,9 +315,11 @@ function DataTable({
                   {column.render('Header')}
                 </DataTableHeadCell>
               ))}
-              <DataTableHeadCell width='0.5rem' align='left' sorted={false}>
-                Actions
-              </DataTableHeadCell>
+              {!noActions && (
+                <DataTableHeadCell width='0.5rem' align='left' sorted={false}>
+                  Actions
+                </DataTableHeadCell>
+              )}
             </TableRow>
           ))}
         </MDBox>
@@ -332,49 +337,56 @@ function DataTable({
                     {cell.render('Cell')}
                   </DataTableBodyCell>
                 ))}
-
-                <DataTableBodyCell noBorder={noEndBorder && rows.length - 1 === key} width='0.5rem' align='left'>
-                  <Can I='read' a={object}>
-                    <IconButton color='info' onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}>
-                      <Icon>visibility</Icon>
-                    </IconButton>
-                  </Can>
-                  <Can I='update' a={object}>
-                    <IconButton color='info' onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}>
-                      <Icon>edit</Icon>
-                    </IconButton>
-                  </Can>
-                  <Can I='delete' a={object}>
-                    <IconButton
-                      color='error'
-                      onClick={() => handleDelete(row.cells[0].value)}
-                      // onClick={handleOpenDelete}
-                    >
-                      <Icon>delete</Icon>
-                    </IconButton>
-                    <Dialog
-                      open={openDelete}
-                      onClose={handleCloseDelete}
-                      aria-labelledby='alert-dialog-title'
-                      aria-describedby='alert-dialog-description'
-                    >
-                      <DialogTitle id='alert-dialog-title'>{`Delete ${object}`}</DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id='alert-dialog-description'>
-                          Are you sure you want to delete this {object}?
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <MDButton variant='text' onClick={handleCloseDelete}>
-                          No
-                        </MDButton>
-                        <MDButton variant='text' color='error' onClick={() => handleDelete(row.cells[0].value)}>
-                          yes
-                        </MDButton>
-                      </DialogActions>
-                    </Dialog>
-                  </Can>
-                </DataTableBodyCell>
+                {!noActions && (
+                  <DataTableBodyCell noBorder={noEndBorder && rows.length - 1 === key} width='0.5rem' align='left'>
+                    <Can I='read' a={object}>
+                      <IconButton
+                        color='info'
+                        onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}
+                      >
+                        <Icon>visibility</Icon>
+                      </IconButton>
+                    </Can>
+                    <Can I='update' a={object}>
+                      <IconButton
+                        color='info'
+                        onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}
+                      >
+                        <Icon>edit</Icon>
+                      </IconButton>
+                    </Can>
+                    <Can I='delete' a={object}>
+                      <IconButton
+                        color='error'
+                        onClick={() => handleDelete(row.cells[0].value)}
+                        // onClick={handleOpenDelete}
+                      >
+                        <Icon>delete</Icon>
+                      </IconButton>
+                      <Dialog
+                        open={openDelete}
+                        onClose={handleCloseDelete}
+                        aria-labelledby='alert-dialog-title'
+                        aria-describedby='alert-dialog-description'
+                      >
+                        <DialogTitle id='alert-dialog-title'>{`Delete ${object}`}</DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id='alert-dialog-description'>
+                            Are you sure you want to delete this {object}?
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <MDButton variant='text' onClick={handleCloseDelete}>
+                            No
+                          </MDButton>
+                          <MDButton variant='text' color='error' onClick={() => handleDelete(row.cells[0].value)}>
+                            yes
+                          </MDButton>
+                        </DialogActions>
+                      </Dialog>
+                    </Can>
+                  </DataTableBodyCell>
+                )}
               </TableRow>
             );
           })}

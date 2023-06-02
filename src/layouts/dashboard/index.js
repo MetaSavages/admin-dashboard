@@ -32,8 +32,8 @@ import TimelineList from 'examples/Timeline/TimelineList';
 
 import dataTablePlayersData from 'assets/mockData/dataTablePlayers';
 // Data
-import reportsBarChartData from 'layouts/analytics/data/reportsBarChartData';
-import reportsLineChartData from 'layouts/analytics/data/reportsLineChartData';
+import reportsBarChartData from 'layouts/player_activity/data/reportsBarChartData';
+import reportsLineChartData from 'layouts/player_activity/data/reportsLineChartData';
 
 // Images
 import booking1 from 'assets/images/products/product-1-min.jpg';
