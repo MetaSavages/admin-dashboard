@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useMemo, useEffect, useState, useReducer } from 'react';
+import { useMemo, useEffect, useState, useReducer, useCallback, Fragment } from 'react';
 
 // prop-types is a library for typechecking of props
 import PropTypes from 'prop-types';
@@ -45,7 +45,8 @@ import useReactTableInstance from 'hooks/useReactTableInstance';
 import useFetchData from 'hooks/useFetchData';
 import { useNavigate } from 'react-router-dom';
 import { Can } from 'context';
-
+import DataTableBodyRow from './DataTableBodyRow';
+import SubRows from './SubRows';
 const ACTION = {
   PAGE_CHANGED: 'page-changed',
   PAGE_SIZE_CHANGED: 'page-sized-changed',
@@ -76,12 +77,12 @@ const tableReducer = (state, action) => {
 };
 
 function DataTable({
-  canSearch,
   showTotalEntries,
   pagination,
   isSorted,
   noEndBorder,
   canFilter = false,
+  filtersComponent,
   columnData,
   fetchData,
   queryKey,
@@ -159,13 +160,8 @@ function DataTable({
     previousPage,
     setPageSize,
     pageIndex,
-    pageSize,
-    globalFilter,
-    setGlobalFilter
+    pageSize
   } = useReactTableInstance(tableColumns, tableData, queryPageIndex, queryPageSize, queryTotalPageCount);
-  const [openFilters, setOpenFilters] = useState(false);
-  const [search, setSearch] = useState(globalFilter);
-  const handleOpenFilters = () => setOpenFilters(!openFilters);
   useEffect(() => {
     setQueryPageIndexHandler({ pageIndexValue: pageIndex });
   }, [pageIndex]);
@@ -202,11 +198,8 @@ function DataTable({
   // Search input value state
 
   // // Search input state handle
-  const onSearchChange = useAsyncDebounce((value) => {
-    setSearchHandler({ searchChangedValue: value || '' });
-    setQueryPageIndexHandler({ pageIndexValue: 0 });
-    setGlobalFilter(value || undefined);
-  }, 100);
+
+  const renderRowSubComponent = useCallback(({ row, rowProps }) => <SubRows row={row} rowProps={rowProps} />, []);
 
   // A function that sets the sorted value for the table
   const setSortedValue = (column) => {
@@ -254,50 +247,7 @@ function DataTable({
             </MDBox>
           )}
           <MDBox display='flex' alignItems='center' justifyContent='space-between' width='20rem'>
-            {canSearch && (
-              <MDBox width='12rem' ml='auto'>
-                <MDInput
-                  placeholder='Search...'
-                  value={search}
-                  size='small'
-                  fullWidth
-                  onChange={({ currentTarget }) => {
-                    setSearch(search);
-                    onSearchChange(currentTarget.value);
-                  }}
-                />
-              </MDBox>
-            )}
-            {canFilter && (
-              <MDBox display='flex' alignItems='center' justifyContent='space-between' width='5rem' ml='auto'>
-                <MDButton variant='text' onClick={handleOpenFilters}>
-                  <Icon>filter_alt</Icon>
-                  Filter
-                </MDButton>
-                <Dialog
-                  open={openFilters}
-                  onClose={handleOpenFilters}
-                  aria-labelledby='alert-dialog-title'
-                  aria-describedby='alert-dialog-description'
-                >
-                  <DialogTitle id='alert-dialog-title'>{"Use Google's location service?"}</DialogTitle>
-                  <DialogContent>
-                    <DialogContentText id='alert-dialog-description'>
-                      Let Google help apps determine location. This means sending anonymous location data to Google,
-                      even when no apps are running.
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <MDButton variant='text' onClick={handleOpenFilters}>
-                      Disagree
-                    </MDButton>
-                    <MDButton variant='text' onClick={handleOpenFilters}>
-                      Agree
-                    </MDButton>
-                  </DialogActions>
-                </Dialog>
-              </MDBox>
-            )}
+            {canFilter && filtersComponent ? <>{filtersComponent()}</> : null}
           </MDBox>
         </MDBox>
       ) : null}
@@ -326,68 +276,22 @@ function DataTable({
         <TableBody {...getTableBodyProps()}>
           {page.map((row, key) => {
             prepareRow(row);
+
+            const rowProps = row.getRowProps();
             return (
-              <TableRow {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <DataTableBodyCell
-                    noBorder={noEndBorder && rows.length - 1 === key}
-                    align={cell.column.align ? cell.column.align : 'left'}
-                    {...cell.getCellProps()}
-                  >
-                    {cell.render('Cell')}
-                  </DataTableBodyCell>
-                ))}
-                {!noActions && (
-                  <DataTableBodyCell noBorder={noEndBorder && rows.length - 1 === key} width='0.5rem' align='left'>
-                    <Can I='read' a={object}>
-                      <IconButton
-                        color='info'
-                        onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}
-                      >
-                        <Icon>visibility</Icon>
-                      </IconButton>
-                    </Can>
-                    <Can I='update' a={object}>
-                      <IconButton
-                        color='info'
-                        onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}
-                      >
-                        <Icon>edit</Icon>
-                      </IconButton>
-                    </Can>
-                    <Can I='delete' a={object}>
-                      <IconButton
-                        color='error'
-                        onClick={() => handleDelete(row.cells[0].value)}
-                        // onClick={handleOpenDelete}
-                      >
-                        <Icon>delete</Icon>
-                      </IconButton>
-                      <Dialog
-                        open={openDelete}
-                        onClose={handleCloseDelete}
-                        aria-labelledby='alert-dialog-title'
-                        aria-describedby='alert-dialog-description'
-                      >
-                        <DialogTitle id='alert-dialog-title'>{`Delete ${object}`}</DialogTitle>
-                        <DialogContent>
-                          <DialogContentText id='alert-dialog-description'>
-                            Are you sure you want to delete this {object}?
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <MDButton variant='text' onClick={handleCloseDelete}>
-                            No
-                          </MDButton>
-                          <MDButton variant='text' color='error' onClick={() => handleDelete(row.cells[0].value)}>
-                            yes
-                          </MDButton>
-                        </DialogActions>
-                      </Dialog>
-                    </Can>
-                  </DataTableBodyCell>
-                )}
-              </TableRow>
+              <Fragment key={key}>
+                <DataTableBodyRow
+                  row={row}
+                  noEndBorder={noEndBorder}
+                  object={object}
+                  noActions={noActions}
+                  openDelete={openDelete}
+                  handleCloseDelete={handleCloseDelete}
+                  handleDelete={handleDelete}
+                  rowsLength={page.length}
+                />
+                {row?.isExpanded && renderRowSubComponent({ row, rowProps })}
+              </Fragment>
             );
           })}
         </TableBody>

@@ -28,13 +28,14 @@ import { useMaterialUIController } from 'context';
 function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-
   return (
     <MDBox
       component='th'
       width={width}
       py={1.5}
-      px={3}
+      px={typeof children === 'string' ? 3 : 0}
+      pl={typeof children === 'string' ? 3 : 0}
+      pr={typeof children === 'string' ? 3 : 0}
       sx={({ palette: { light }, borders: { borderWidth } }) => ({
         borderBottom: `${borderWidth[1]} solid ${light.main}`
       })}
@@ -54,11 +55,11 @@ function DataTableHeadCell({ width, children, sorted, align, ...rest }) {
         })}
       >
         {children}
-        {sorted && (
+        {sorted && typeof children === 'string' && (
           <MDBox
             position='absolute'
             top={0}
-            right={align !== 'right' ? '16px' : 0}
+            right={align !== 'right' ? '16px' : 'unset'}
             left={align === 'right' ? '-5px' : 'unset'}
             sx={({ typography: { size } }) => ({
               fontSize: size.lg

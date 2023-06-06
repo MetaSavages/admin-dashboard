@@ -10,12 +10,13 @@ function DataTablePage({
   title,
   createButton = false,
   canFilter = false,
-  canSearch = false,
+  filtersComponent = null,
   fetchData,
   queryKey,
   columnData,
   object,
-  onDelete
+  onDelete,
+  noActions = false
 }) {
   return (
     <DashboardLayout>
@@ -29,13 +30,14 @@ function DataTablePage({
             {createButton ? createButton : null}
           </MDBox>
           <DataTable
-            canSearch={canSearch}
             canFilter={canFilter}
+            filtersComponent={filtersComponent}
             fetchData={fetchData}
             queryKey={queryKey}
             columnData={columnData}
             object={object}
             onDelete={onDelete}
+            noActions={noActions}
           />
         </Card>
       </MDBox>

@@ -1,37 +1,9 @@
-import { TableRow, Table, TableBody, TableHead, Typography } from '@mui/material';
-import DataTableBodyCell from './PlayerDataTableBodyCell';
-import MDBox from 'components/MDBox';
-import DataTableHeadCell from './PlayerDataTableHeadCell';
-import { useTable } from 'react-table';
+import { TableRow, Typography } from '@mui/material';
+import DataTableBodyCell from './DataTableBodyCell';
 
-function SubRows({ row, rowProps, visibleColumns }) {
+function SubRows({ row, rowProps }) {
+  //fetch rows from api
   const casinos = {
-    columns: [
-      {
-        Header: 'Casino',
-        accessor: 'casino'
-      },
-      {
-        Header: 'Time Spent',
-        accessor: 'time_spent'
-      },
-      {
-        Header: 'Balance',
-        accessor: 'balance'
-      },
-      {
-        Header: 'Spent',
-        accessor: 'spent'
-      },
-      {
-        Header: 'Starting Balance',
-        accessor: 'starting_balance'
-      },
-      {
-        Header: 'Cashout',
-        accessor: 'cashout'
-      }
-    ],
     rows: [
       {
         username: 'Casino 1',

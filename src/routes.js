@@ -61,6 +61,8 @@ import PermissionManagement from 'layouts/permission-management';
 import NewPermission from 'layouts/permission-management/new-permission';
 import EditPermession from 'layouts/permission-management/edit-permission';
 import EditRole from 'layouts/role-management/edit-role';
+import EventsAnalytics from 'layouts/events_analytics';
+import PlayerActivity from 'layouts/player_activity';
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -83,7 +85,7 @@ const routes = [
     collapse: [
       {
         name: 'User management',
-        key: 'user-mangement',
+        key: 'user-management',
         action: 'read',
         object: 'user',
         icon: <Icon fontSize='medium'>people</Icon>,
@@ -92,14 +94,14 @@ const routes = [
       },
       {
         name: 'Role management',
-        key: 'role-mangement',
+        key: 'role-management',
         icon: <Icon fontSize='medium'>manageAccounts</Icon>,
         route: '/role-management',
         component: <RoleManagement />
       },
       {
         name: 'Permission management',
-        key: 'permission-mangement',
+        key: 'permission-management',
         icon: <Icon fontSize='medium'>check_circle</Icon>,
         route: '/permission-management',
         component: <PermissionManagement />
@@ -123,18 +125,18 @@ const routes = [
     icon: <Icon fontSize='medium'>analytics</Icon>,
     collapse: [
       {
-        name: 'Player Activity',
-        key: 'player_activity',
+        name: 'Player Analytics',
+        key: 'player-analytics',
         icon: <Icon fontSize='medium'>timeline</Icon>,
-        route: '/analytics',
-        component: <Analytics />
+        route: '/analytics/player-analytics',
+        component: <PlayerActivity />
       },
       {
         name: 'Events',
         key: 'events',
         icon: <Icon fontSize='medium'>event</Icon>,
-        route: '/events',
-        component: <Analytics />
+        route: '/analytics/events',
+        component: <EventsAnalytics />
       }
     ]
   },
