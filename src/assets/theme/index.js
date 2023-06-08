@@ -71,7 +71,6 @@ import formLabel from 'assets/theme/components/form/formLabel';
 import checkbox from 'assets/theme/components/form/checkbox';
 import radio from 'assets/theme/components/form/radio';
 import autocomplete from 'assets/theme/components/form/autocomplete';
-import flatpickr from 'assets/theme/components/flatpickr';
 import container from 'assets/theme/components/container';
 import popover from 'assets/theme/components/popover';
 import buttonBase from 'assets/theme/components/buttonBase';
@@ -84,6 +83,10 @@ import dialogContent from 'assets/theme/components/dialog/dialogContent';
 import dialogContentText from 'assets/theme/components/dialog/dialogContentText';
 import dialogActions from 'assets/theme/components/dialog/dialogActions';
 import chip from 'assets/theme/components/chip';
+import flatpickr from 'assets/theme/components/flatpickr';
+import dateCalendar from 'assets/theme/components/dateCalendar';
+import pickersLayout from 'assets/theme/components/pickersLayout';
+import timePicker from 'assets/theme/components/timePicker';
 export default createTheme({
   breakpoints: { ...breakpoints },
   palette: { ...colors },
@@ -155,6 +158,9 @@ export default createTheme({
     MuiDialogContent: { ...dialogContent },
     MuiDialogContentText: { ...dialogContentText },
     MuiDialogActions: { ...dialogActions },
-    MuiChip: { ...chip }
+    MuiChip: { ...chip },
+    MuiDateCalendar: { ...dateCalendar },
+    MuiPickersLayout: { ...pickersLayout },
+    MuiMultiSectionDigitalClock: { ...timePicker }
   }
 });

@@ -1,10 +1,114 @@
-import React from 'react'
+import { Autocomplete, Checkbox, Grid, TextField } from '@mui/material';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import MDBox from 'components/MDBox';
+import React, { useState } from 'react';
+import MDButton from 'components/MDButton';
 
-const filters =  () => {
-    return (
-        <div>searches</div>
-    )
-        
-}
+const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
+const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-export default filters;
+const Filters = () => {
+  const [open, setOpen] = useState(false);
+  const options = ['Option 1', 'Option 2'];
+  const setOptions = (value) => {
+    console.log(value);
+  };
+  return (
+    <MDBox
+      sx={{
+        width: '100%',
+        flexGrow: 1
+      }}
+    >
+      <Grid container spacing={2}>
+        <Grid item xs={4} sm={4} md={3}>
+          <MDBox>
+            <Autocomplete
+              multiple
+              //   open={open}
+              //   onOpen={() => {
+              //     setOpen(true);
+              //   }}
+              //   onClose={() => {
+              //     setOpen(false);
+              //   }}
+              options={options}
+              disableCloseOnSelect
+              //   value={rolePermissionNames}
+              onChange={setOptions}
+              isOptionEqualToValue={(option, value) => option === value}
+              getOptionLabel={(option) => option}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option}
+                </li>
+              )}
+              renderInput={(params) => <TextField {...params} label='Event type' variant='standard' />}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <MDBox>
+            <Autocomplete
+              multiple
+              //   open={open}
+              //   onOpen={() => {
+              //     setOpen(true);
+              //   }}
+              //   onClose={() => {
+              //     setOpen(false);
+              //   }}
+              options={options}
+              disableCloseOnSelect
+              //   value={rolePermissionNames}
+              onChange={setOptions}
+              isOptionEqualToValue={(option, value) => option === value}
+              getOptionLabel={(option) => option}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option}
+                </li>
+              )}
+              renderInput={(params) => <TextField {...params} label='Event type' variant='standard' />}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+          <MDBox>
+            <Autocomplete
+              multiple
+              //   open={open}
+              //   onOpen={() => {
+              //     setOpen(true);
+              //   }}
+              //   onClose={() => {
+              //     setOpen(false);
+              //   }}
+              options={options}
+              disableCloseOnSelect
+              //   value={rolePermissionNames}
+              onChange={setOptions}
+              isOptionEqualToValue={(option, value) => option === value}
+              getOptionLabel={(option) => option}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option}
+                </li>
+              )}
+              renderInput={(params) => <TextField {...params} label='Event type' variant='standard' />}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={3}>
+          <MDButton variant='text'>Apply</MDButton>
+        </Grid>
+      </Grid>
+    </MDBox>
+  );
+};
+
+export default Filters;

@@ -20,7 +20,6 @@ import PropTypes from 'prop-types';
 import MDBox from 'components/MDBox';
 
 function DataTableBodyCell({ noBorder, align, children, expanded = false }) {
-  console.log(children?.props?.column?.id === 'expander' && 2);
   return (
     <MDBox
       component='td'

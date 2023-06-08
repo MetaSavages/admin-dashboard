@@ -85,6 +85,10 @@ import dialogContent from 'assets/theme-dark/components/dialog/dialogContent';
 import dialogContentText from 'assets/theme-dark/components/dialog/dialogContentText';
 import dialogActions from 'assets/theme-dark/components/dialog/dialogActions';
 import chip from 'assets/theme-dark/components/chip';
+import datePicker from 'assets/theme/components/dateCalendar';
+import dateCalendar from './components/dateCalendar';
+import pickersLayout from './components/pickersLayout';
+import timePicker from './components/timePicker';
 
 export default createTheme({
   breakpoints: { ...breakpoints },
@@ -157,6 +161,9 @@ export default createTheme({
     MuiDialogContent: { ...dialogContent },
     MuiDialogContentText: { ...dialogContentText },
     MuiDialogActions: { ...dialogActions },
-    MuiChip: { ...chip }
+    MuiChip: { ...chip },
+    MuiDateCalendar: { ...dateCalendar },
+    MuiPickersLayout: { ...pickersLayout },
+    MuiMultiSectionDigitalClock: { ...timePicker }
   }
 });

@@ -246,8 +246,8 @@ function DataTable({
               </MDTypography>
             </MDBox>
           )}
-          <MDBox display='flex' alignItems='center' justifyContent='space-between' width='20rem'>
-            {canFilter && filtersComponent ? <>{filtersComponent()}</> : null}
+          <MDBox display='flex' alignItems='center' justifyContent='space-between' width='80%'>
+            {canFilter && filtersComponent ? <>{filtersComponent}</> : null}
           </MDBox>
         </MDBox>
       ) : null}

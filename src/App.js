@@ -175,7 +175,7 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <CacheProvider value={rtlCache}>
           <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
-            <CssBaseline />
+            <CssBaseline enableColorScheme />
             {layout === 'dashboard' && (
               <>
                 <Sidenav
@@ -202,7 +202,7 @@ export default function App() {
     <AbilityContext.Provider value={ability}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={darkMode ? themeDark : theme}>
-          <CssBaseline />
+          <CssBaseline enableColorScheme />
           {layout === 'dashboard' && (
             <>
               <Sidenav

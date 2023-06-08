@@ -63,6 +63,10 @@ import EditPermession from 'layouts/permission-management/edit-permission';
 import EditRole from 'layouts/role-management/edit-role';
 import EventsAnalytics from 'layouts/events_analytics';
 import PlayerActivity from 'layouts/player_activity';
+import EventHistory from 'layouts/event_history';
+import WaitingPayouts from 'layouts/waiting_payouts';
+import SuccessfullPayouts from 'layouts/successfull_payouts';
+import FailedPayouts from 'layouts/failed_payouts';
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -137,6 +141,13 @@ const routes = [
         icon: <Icon fontSize='medium'>event</Icon>,
         route: '/analytics/events',
         component: <EventsAnalytics />
+      },
+      {
+        name: 'Event History',
+        key: 'event-history',
+        icon: <Icon fontSize='medium'>history</Icon>,
+        route: '/analytics/event-history',
+        component: <EventHistory />
       }
     ]
   },
@@ -161,8 +172,29 @@ const routes = [
     name: 'Payouts',
     key: 'payouts',
     icon: <Icon fontSize='medium'>payments</Icon>,
-    route: '/sales',
-    component: <Sales />
+    collapse: [
+      {
+        name: 'Successful Payouts',
+        key: 'successful_payouts',
+        icon: <Icon fontSize='medium'>done</Icon>,
+        route: '/payouts/successful-payouts',
+        component: <SuccessfullPayouts />
+      },
+      {
+        name: 'Failed Payouts',
+        key: 'failed_payouts',
+        icon: <Icon fontSize='medium'>clear</Icon>,
+        route: '/payouts/failed-payouts',
+        component: <FailedPayouts />
+      },
+      {
+        name: 'Waiting Payouts',
+        key: 'waiting_payouts',
+        icon: <Icon fontSize='medium'>pending</Icon>,
+        route: '/payouts/waiting-payouts',
+        component: <WaitingPayouts />
+      }
+    ]
   },
   {
     type: 'collapse',

@@ -43,7 +43,7 @@ import { Card } from '@mui/material';
 import booking1 from 'assets/images/products/product-1-min.jpg';
 import booking2 from 'assets/images/products/product-2-min.jpg';
 import booking3 from 'assets/images/products/product-3-min.jpg';
-import filters from './components/Filters';
+import Filters from './components/Filters';
 
 function EventsAnalytics() {
   const { sales, tasks } = reportsLineChartData;
@@ -117,7 +117,7 @@ function EventsAnalytics() {
                 </MDBox>
                 <DataTable
                   canFilter={true}
-                  filtersComponent={filters}
+                  filtersComponent={<Filters />}
                   fetchData={fetchData}
                   queryKey={'event'}
                   columnData={dataTableEventsData.columns}
