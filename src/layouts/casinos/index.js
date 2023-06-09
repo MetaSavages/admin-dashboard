@@ -1,9 +1,11 @@
 import DataTablePage from 'components/DataTablePage';
-import dataTablePlayersData from 'assets/mockData/dataTablePlayers';
 import MDButton from 'components/MDButton';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+
+import dataCasinos from 'assets/mockData/dataCasinos';
+
 import { Can } from 'context';
-function PlayerManagement() {
+function CasinoManagement() {
   const navigate = useNavigate();
   const onDelete = (id) => {
     console.log(id);
@@ -12,7 +14,7 @@ function PlayerManagement() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve({
-          data: dataTablePlayersData.rows,
+          data: dataCasinos.rows,
           meta: {
             totalItems: 100
           }
@@ -25,23 +27,23 @@ function PlayerManagement() {
     <>
       <Can I='read' a='user'>
         <DataTablePage
-          title='Player Management'
-          // createButton={
-          //   <Can I='create' a='user'>
-          //     <MDButton variant='contained' color='info' onClick={() => navigate('/player-management/new-player')}>
-          //       Add Player
-          //     </MDButton>
-          //   </Can>
-          // }
+          title='Casino Management'
+          createButton={
+            <Can I='create' a='user'>
+              <MDButton variant='contained' color='info' onClick={() => navigate('/casinos/new-casino')}>
+                Add Casino
+              </MDButton>
+            </Can>
+          }
           canSearch
           canFilter
           fetchData={fetchData}
-          queryKey='players'
-          columnData={dataTablePlayersData.columns}
-          object={'player'}
+          queryKey='casinos'
+          columnData={dataCasinos.columns}
+          object={'casino'}
           onDelete={onDelete}
           noActions
-        />{' '}
+        />
       </Can>
       <Can not I='read' a='user'>
         <Navigate to='/dashboard' />
@@ -50,4 +52,4 @@ function PlayerManagement() {
   );
 }
 
-export default PlayerManagement;
+export default CasinoManagement;

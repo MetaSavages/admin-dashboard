@@ -22,7 +22,7 @@ const FailedPayouts = () => {
       queryKey='failed_payouts'
       columnData={dataTableFailedPayouts.columns}
       object={'failed_payouts'}
-      noActions={true}
+      noActions
     />
   );
 };

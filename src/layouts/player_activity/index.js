@@ -124,7 +124,7 @@ function PlayerActivity() {
                   queryKey={'new_payer'}
                   columnData={dataTableNewPlayersData.columns}
                   object={'new_payer'}
-                  noActions={true}
+                  noActions
                   defaultPageSize={10}
                 />
               </Card>

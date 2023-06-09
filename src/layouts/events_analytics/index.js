@@ -116,13 +116,13 @@ function EventsAnalytics() {
                   </MDTypography>
                 </MDBox>
                 <DataTable
-                  canFilter={true}
+                  canFilter
                   filtersComponent={<Filters />}
                   fetchData={fetchData}
                   queryKey={'event'}
                   columnData={dataTableEventsData.columns}
                   object={'event'}
-                  noActions={true}
+                  noActions
                 />
               </Card>
             </Grid>

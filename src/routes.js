@@ -64,9 +64,13 @@ import EditRole from 'layouts/role-management/edit-role';
 import EventsAnalytics from 'layouts/events_analytics';
 import PlayerActivity from 'layouts/player_activity';
 import EventHistory from 'layouts/event_history';
-import WaitingPayouts from 'layouts/waiting_payouts';
+import WaitingPayouts from 'layouts/pending_payouts';
 import SuccessfullPayouts from 'layouts/successfull_payouts';
 import FailedPayouts from 'layouts/failed_payouts';
+import PendingPayouts from 'layouts/pending_payouts';
+import CasinoManagement from 'layouts/casinos';
+import NewCasino from 'layouts/casinos/new-casino';
+import EditCasino from 'layouts/casinos/edit-permission';
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -153,11 +157,12 @@ const routes = [
   },
   {
     type: 'collapse',
-    name: 'Casino',
-    key: 'casino',
+    noCollapse: true,
+    name: 'Casinos',
+    key: 'casinos',
     icon: <Icon fontSize='medium'>casino</Icon>,
-    route: '/casino',
-    component: <Sales />
+    route: '/casinos',
+    component: <CasinoManagement />
   },
   {
     type: 'collapse',
@@ -188,11 +193,11 @@ const routes = [
         component: <FailedPayouts />
       },
       {
-        name: 'Waiting Payouts',
-        key: 'waiting-payouts',
+        name: 'Pending Payouts',
+        key: 'pending-payouts',
         icon: <Icon fontSize='medium'>pending</Icon>,
-        route: '/payouts/waiting-payouts',
-        component: <WaitingPayouts />
+        route: '/payouts/pending-payouts',
+        component: <PendingPayouts />
       }
     ]
   },
@@ -290,6 +295,18 @@ const routes = [
     key: 'edit-permission',
     route: '/permission-management/edit/:id',
     component: <EditPermession />
+  },
+  {
+    name: 'New Casino',
+    key: 'new-casino',
+    route: '/casinos/new-casino',
+    component: <NewCasino />
+  },
+  {
+    name: 'Edit Casino',
+    key: 'edit-casino',
+    route: '/casinos/edit/:id',
+    component: <EditCasino />
   },
   {
     type: 'collapse',

@@ -72,13 +72,13 @@ function EventHistory() {
                     </MDTypography>
                   </MDBox>
                   <DataTable
-                    canFilter={true}
+                    canFilter
                     filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
                     fetchData={fetchData}
                     queryKey={'event_history'}
                     columnData={dataTableEventHistory.columns}
                     object={'event_history'}
-                    noActions={true}
+                    noActions
                   />
                 </Card>
               </Grid>

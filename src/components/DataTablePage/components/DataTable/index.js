@@ -260,7 +260,7 @@ function DataTable({
                   {...column.getHeaderProps(isSorted && column.getSortByToggleProps())}
                   width={column.width ? column.width : 'auto'}
                   align={column.align ? column.align : 'left'}
-                  sorted={setSortedValue(column)}
+                  sorted={column?.sorted !== null ? column?.sorted : setSortedValue(column)}
                 >
                   {column.render('Header')}
                 </DataTableHeadCell>

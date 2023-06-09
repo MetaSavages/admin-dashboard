@@ -1,4 +1,4 @@
-import { TableRow } from '@mui/material';
+import { TableRow, Tooltip } from '@mui/material';
 import DataTableBodyCell from './DataTableBodyCell';
 import { Can } from 'context';
 import { useNavigate } from 'react-router-dom';
@@ -32,23 +32,29 @@ function DataTableBodyRow({
       {!noActions && (
         <DataTableBodyCell noBorder={noEndBorder && rowsLength - 1 === key} width='0.5rem' align='left'>
           <Can I='read' a={object}>
-            <IconButton color='info' onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}>
-              <Icon>visibility</Icon>
-            </IconButton>
+            <Tooltip title='View'>
+              <IconButton color='info' onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}>
+                <Icon>visibility</Icon>
+              </IconButton>
+            </Tooltip>
           </Can>
           <Can I='update' a={object}>
-            <IconButton color='info' onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}>
-              <Icon>edit</Icon>
-            </IconButton>
+            <Tooltip title='Edit'>
+              <IconButton color='info' onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}>
+                <Icon>edit</Icon>
+              </IconButton>
+            </Tooltip>
           </Can>
           <Can I='delete' a={object}>
-            <IconButton
-              color='error'
-              onClick={() => handleDelete(row.cells[0].value)}
-              // onClick={handleOpenDelete}
-            >
-              <Icon>delete</Icon>
-            </IconButton>
+            <Tooltip title='Delete'>
+              <IconButton
+                color='error'
+                onClick={() => handleDelete(row.cells[0].value)}
+                // onClick={handleOpenDelete}
+              >
+                <Icon>delete</Icon>
+              </IconButton>
+            </Tooltip>
             <Dialog
               open={openDelete}
               onClose={handleCloseDelete}

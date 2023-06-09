@@ -60,6 +60,10 @@ const Filters = ({ filters, setFilters }) => {
 
   const casinoOptions = [
     {
+      label: 'No casino',
+      value: '0'
+    },
+    {
       label: 'Casino 1',
       value: '1'
     },
@@ -175,6 +179,8 @@ const Filters = ({ filters, setFilters }) => {
               //   onClose={() => {
               //     setOpen(false);
               //   }}
+
+              limitTags={2}
               options={eventTypeOptions}
               disableCloseOnSelect
               value={eventTypes}
@@ -202,6 +208,8 @@ const Filters = ({ filters, setFilters }) => {
               //   onClose={() => {
               //     setOpen(false);
               //   }}
+
+              limitTags={2}
               options={casinoOptions}
               disableCloseOnSelect
               value={casinos}
@@ -229,6 +237,7 @@ const Filters = ({ filters, setFilters }) => {
               //   onClose={() => {
               //     setOpen(false);
               //   }}
+              limitTags={2}
               options={usernameOptions}
               disableCloseOnSelect
               value={playerUsernames}
@@ -251,7 +260,7 @@ const Filters = ({ filters, setFilters }) => {
               label='From'
               ampmInClock={false}
               ampm={false}
-              showDaysOutsideCurrentMonth={true}
+              showDaysOutsideCurrentMonth
               format='DD/MM/YYYY hh:mm'
               value={from}
               onChange={handleFromChange}
@@ -273,7 +282,7 @@ const Filters = ({ filters, setFilters }) => {
               label='To'
               ampmInClock={false}
               ampm={false}
-              showDaysOutsideCurrentMonth={true}
+              showDaysOutsideCurrentMonth
               format='DD/MM/YYYY hh:mm'
               value={to}
               onChange={handleToChange}

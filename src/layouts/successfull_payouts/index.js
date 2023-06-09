@@ -25,7 +25,7 @@ const SuccessfullPayouts = () => {
       queryKey='successful_payouts'
       columnData={dataTableSuccessfullPayouts.columns}
       object={'successful_payouts'}
-      noActions={true}
+      noActions
     />
   );
 };
