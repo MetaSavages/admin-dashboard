@@ -80,6 +80,19 @@ const Filters = ({ filters, setFilters }) => {
   const setOptions = (value) => {
     console.log(value);
   };
+
+  const updateUsernames = (event, value) => {
+    setPlayerUsernames(value);
+  };
+
+  const updateEventTypes = (event, value) => {
+    setEventTypes(value);
+  };
+
+  const updateCasinos = (event, value) => {
+    setCasinos(value);
+  };
+
   const [eventTypes, setEventTypes] = useState([]);
   const [casinos, setCasinos] = useState([]);
   const [playerUsernames, setPlayerUsernames] = useState([]);
@@ -165,7 +178,7 @@ const Filters = ({ filters, setFilters }) => {
               options={eventTypeOptions}
               disableCloseOnSelect
               value={eventTypes}
-              onChange={setOptions}
+              onChange={updateEventTypes}
               isOptionEqualToValue={(option, value) => option.value === value.value}
               getOptionLabel={(option) => option.label}
               renderOption={(props, option, { selected }) => (
@@ -192,7 +205,7 @@ const Filters = ({ filters, setFilters }) => {
               options={casinoOptions}
               disableCloseOnSelect
               value={casinos}
-              onChange={setOptions}
+              onChange={updateCasinos}
               isOptionEqualToValue={(option, value) => option.value === value.value}
               getOptionLabel={(option) => option.label}
               renderOption={(props, option, { selected }) => (
@@ -219,7 +232,7 @@ const Filters = ({ filters, setFilters }) => {
               options={usernameOptions}
               disableCloseOnSelect
               value={playerUsernames}
-              onChange={setOptions}
+              onChange={updateUsernames}
               isOptionEqualToValue={(option, value) => option.value === value.value}
               getOptionLabel={(option) => option.label}
               renderOption={(props, option, { selected }) => (
