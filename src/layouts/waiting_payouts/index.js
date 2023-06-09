@@ -15,7 +15,8 @@ const WaitingPayouts = () => {
       amount: 100,
       casino: 'casino1',
       player: 'player1',
-      player_id: 1
+      player_id: 1,
+      casino_id: 1
     },
     {
       id: 2,
@@ -23,7 +24,8 @@ const WaitingPayouts = () => {
       amount: 100,
       casino: 'casino1',
       player: 'player1',
-      player_id: 1
+      player_id: 1,
+      casino_id: 1
     }
   ];
   return (
@@ -32,7 +34,8 @@ const WaitingPayouts = () => {
       <Grid container spacing={3}>
         {payouts.map((payout) => {
           const filters = {
-            users: [payout.player_id]
+            users: [payout.player_id],
+            casinos: [payout.casino_id]
           };
           const queryStringParams = queryString.stringify(filters);
           console.log('queryStringParams', filters);

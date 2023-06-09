@@ -11,6 +11,7 @@ const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const Filters = ({ filters, setFilters }) => {
+  console.log(filters);
   const [open, setOpen] = useState(false);
   const [usernameOptions, setUsernameOptions] = useState([
     {
@@ -56,10 +57,31 @@ const Filters = ({ filters, setFilters }) => {
       value: '6'
     }
   ]);
+
+  const casinoOptions = [
+    {
+      label: 'Casino 1',
+      value: '1'
+    },
+    {
+      label: 'Casino 2',
+      value: '2'
+    },
+    {
+      label: 'Casino 3',
+      value: '3'
+    },
+    {
+      label: 'Casino 4',
+      value: '4'
+    }
+  ];
+
   const setOptions = (value) => {
     console.log(value);
   };
   const [eventTypes, setEventTypes] = useState([]);
+  const [casinos, setCasinos] = useState([]);
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
@@ -104,6 +126,13 @@ const Filters = ({ filters, setFilters }) => {
         }
       }
     });
+    casinoOptions.forEach((casino) => {
+      if (filters?.casinos) {
+        if (filters.casinos.includes(casino.value)) {
+          setCasinos((prev) => [...prev, casino]);
+        }
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -122,7 +151,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2}>
-        <Grid item xs={4} sm={4} md={3}>
+        <Grid item xs={4} sm={4} md={2}>
           <MDBox>
             <Autocomplete
               multiple
@@ -149,7 +178,34 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid item xs={4} sm={4} md={2}>
+          <MDBox>
+            <Autocomplete
+              multiple
+              //   open={open}
+              //   onOpen={() => {
+              //     setOpen(true);
+              //   }}
+              //   onClose={() => {
+              //     setOpen(false);
+              //   }}
+              options={casinoOptions}
+              disableCloseOnSelect
+              value={casinos}
+              onChange={setOptions}
+              isOptionEqualToValue={(option, value) => option.value === value.value}
+              getOptionLabel={(option) => option.label}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option.label}
+                </li>
+              )}
+              renderInput={(params) => <TextField {...params} label='Casino' variant='standard' />}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} sm={4} md={2}>
           <MDBox>
             <Autocomplete
               multiple
