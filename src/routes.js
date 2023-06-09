@@ -175,21 +175,21 @@ const routes = [
     collapse: [
       {
         name: 'Successful Payouts',
-        key: 'successful_payouts',
+        key: 'successful-payouts',
         icon: <Icon fontSize='medium'>done</Icon>,
         route: '/payouts/successful-payouts',
         component: <SuccessfullPayouts />
       },
       {
         name: 'Failed Payouts',
-        key: 'failed_payouts',
+        key: 'failed-payouts',
         icon: <Icon fontSize='medium'>clear</Icon>,
         route: '/payouts/failed-payouts',
         component: <FailedPayouts />
       },
       {
         name: 'Waiting Payouts',
-        key: 'waiting_payouts',
+        key: 'waiting-payouts',
         icon: <Icon fontSize='medium'>pending</Icon>,
         route: '/payouts/waiting-payouts',
         component: <WaitingPayouts />
