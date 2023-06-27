@@ -11,6 +11,7 @@ import Footer from 'examples/Footer';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import Grid from '@mui/material/Grid';
+import DataTablePage from 'components/DataTablePage';
 
 const PendingPayouts = () => {
   const [filters, setFilters] = React.useState({});
@@ -28,34 +29,16 @@ const PendingPayouts = () => {
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DashboardLayout>
-        <DashboardNavbar />
-        <MDBox py={3}>
-          <MDBox>
-            <Grid container spacing={3} mb={3}>
-              <Grid item xs={12}>
-                <Card>
-                  <MDBox p={3} lineHeight={1} display='flex' justifyContent='space-between'>
-                    <MDTypography variant='h5' fontWeight='medium'>
-                      Pending payouts
-                    </MDTypography>
-                  </MDBox>
-                  <DataTable
-                    canFilter
-                    fetchData={fetchData}
-                    queryKey='payouts'
-                    columnData={dataPendingPayouts.columns}
-                    object={'payout'}
-                    noActions
-                    filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
-                  />
-                </Card>
-              </Grid>
-            </Grid>
-          </MDBox>
-        </MDBox>
-        <Footer />
-      </DashboardLayout>
+      <DataTablePage
+        title='Pending Payouts'
+        canFilter
+        fetchData={fetchData}
+        queryKey='payouts'
+        columnData={dataPendingPayouts.columns}
+        object={'payout'}
+        noActions
+        filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+      />
     </LocalizationProvider>
   );
 };

@@ -44,7 +44,9 @@ import booking1 from 'assets/images/products/product-1-min.jpg';
 import booking2 from 'assets/images/products/product-2-min.jpg';
 import booking3 from 'assets/images/products/product-3-min.jpg';
 import Filters from './components/Filters';
-
+import DataTablePage from 'components/DataTablePage';
+import { eventsColumnData } from 'data/eventsColumnData';
+import { getEventsAggregated } from 'services/analytics';
 function EventsAnalytics() {
   const { sales, tasks } = reportsLineChartData;
   const fetchData = () => {
@@ -77,60 +79,15 @@ function EventsAnalytics() {
   );
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3}>
-        {/* <MDBox mt={5}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={6}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color='dark'
-                  title='Average event calls per day'
-                  description='The average times of event calls per day'
-                  date='just updated'
-                  chart={tasks}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color='info'
-                  title='User activity rate'
-                  description='User activity rate'
-                  date='just updated'
-                  chart={tasks}
-                />
-              </MDBox>
-            </Grid>
-          </Grid>
-        </MDBox> */}
-        <MDBox>
-          <Grid container spacing={3} mb={3}>
-            <Grid item xs={12}>
-              <Card>
-                <MDBox p={3} lineHeight={1} display='flex' justifyContent='space-between'>
-                  <MDTypography variant='h5' fontWeight='medium'>
-                    Event calls
-                  </MDTypography>
-                </MDBox>
-                <DataTable
-                  canFilter
-                  filtersComponent={<Filters />}
-                  fetchData={fetchData}
-                  queryKey={'event'}
-                  columnData={dataTableEventsData.columns}
-                  object={'event'}
-                  noActions
-                />
-              </Card>
-            </Grid>
-          </Grid>
-        </MDBox>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+    <DataTablePage
+      canFilter
+      filtersComponent={<Filters />}
+      fetchData={getEventsAggregated}
+      queryKey={'event'}
+      columnData={eventsColumnData}
+      object={'event'}
+      noActions
+    />
   );
 }
 

@@ -3,7 +3,7 @@ import useAxios from 'hooks/useAxios';
 export const getUsers = async (limit = 20, page = 1, search = '') => {
   const api = useAxios();
   try {
-    const unformattedData = await api.get('/users', {
+    const unformattedData = await api.get('/admin/users', {
       params: { limit: limit, page: page, search: search }
     });
     return {
@@ -33,7 +33,7 @@ export const getUsers = async (limit = 20, page = 1, search = '') => {
 export const getUser = async (id) => {
   const api = useAxios();
   try {
-    return await api.get('/users/${id}');
+    return await api.get('/admin/users/${id}');
   } catch (err) {
     console.log(err);
     return {

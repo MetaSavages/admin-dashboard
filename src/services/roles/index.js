@@ -3,7 +3,7 @@ import useAxios from 'hooks/useAxios';
 export const getRoles = async (limit = 20, page = 1, search = '') => {
   const api = useAxios();
   try {
-    const unformattedData = await api.get('/auth/roles', {
+    const unformattedData = await api.get('/admin/auth/roles', {
       params: { limit: limit, page: page, search: search }
     });
     unformattedData.data.data = unformattedData.data.data.map((role) => {
@@ -36,7 +36,7 @@ export const getRoles = async (limit = 20, page = 1, search = '') => {
 export const getRole = async (id) => {
   const api = useAxios();
   try {
-    return await api.get('/auth/roles/${id}', {});
+    return await api.get('/admin/auth/roles/${id}', {});
   } catch (err) {
     console.log(err);
     return {
@@ -51,7 +51,7 @@ export const getRole = async (id) => {
 export const createRole = async (name, permissions) => {
   const api = useAxios();
   try {
-    return await api.post('/auth/roles', {
+    return await api.post('/admin/auth/roles', {
       name: name,
       permissionIds: permissions
     });
@@ -69,7 +69,7 @@ export const createRole = async (name, permissions) => {
 export const updateRole = async (id, name, permissions) => {
   const api = useAxios();
   try {
-    return await api.put('/auth/roles/${id}', {
+    return await api.put('/admin/auth/roles/${id}', {
       name: name,
       permissionIds: permissions
     });

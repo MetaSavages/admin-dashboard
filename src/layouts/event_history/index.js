@@ -38,6 +38,9 @@ import Filters from './components/Filters';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import React, { useState } from 'react';
+import DataTablePage from 'components/DataTablePage';
+import { getEventsHistory } from 'services/analytics';
+import eventHistoryColumnData from 'data/eventHistoryColumnData';
 function EventHistory() {
   const location = useLocation();
   const { search } = location;
@@ -59,34 +62,15 @@ function EventHistory() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DashboardLayout>
-        <DashboardNavbar />
-        <MDBox py={3}>
-          <MDBox>
-            <Grid container spacing={3} mb={3}>
-              <Grid item xs={12}>
-                <Card>
-                  <MDBox p={3} lineHeight={1} display='flex' justifyContent='space-between'>
-                    <MDTypography variant='h5' fontWeight='medium'>
-                      Event history
-                    </MDTypography>
-                  </MDBox>
-                  <DataTable
-                    canFilter
-                    filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
-                    fetchData={fetchData}
-                    queryKey={'event_history'}
-                    columnData={dataTableEventHistory.columns}
-                    object={'event_history'}
-                    noActions
-                  />
-                </Card>
-              </Grid>
-            </Grid>
-          </MDBox>
-        </MDBox>
-        <Footer />
-      </DashboardLayout>
+      <DataTablePage
+        canFilter
+        filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+        fetchData={getEventsHistory}
+        queryKey={'metrics'}
+        columnData={eventHistoryColumnData}
+        object={'metrics'}
+        noActions
+      />
     </LocalizationProvider>
   );
 }
