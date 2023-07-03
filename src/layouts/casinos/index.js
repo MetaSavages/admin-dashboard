@@ -3,7 +3,8 @@ import MDButton from 'components/MDButton';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import dataCasinos from 'assets/mockData/dataCasinos';
-
+import { getCasinos } from 'services/casinos';
+import { casinosColumnData } from 'data/casinosColumnData';
 import { Can } from 'context';
 function CasinoManagement() {
   const navigate = useNavigate();
@@ -37,9 +38,9 @@ function CasinoManagement() {
           }
           canSearch
           canFilter
-          fetchData={fetchData}
+          fetchData={getCasinos}
           queryKey='casinos'
-          columnData={dataCasinos.columns}
+          columnData={casinosColumnData}
           object={'casino'}
           onDelete={onDelete}
           noActions

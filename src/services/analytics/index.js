@@ -36,8 +36,8 @@ export const getEventsHistory = async () => {
 };
 
 export const getEventsAggregated = async () => {
+  const api = useAxios();
   try {
-    const api = useAxios();
     const res = await api.get('/metrics/aggregated');
     console.log(res);
     const data = res.data.map((event) => {
