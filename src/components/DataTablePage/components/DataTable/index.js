@@ -89,8 +89,10 @@ function DataTable({
   object,
   onDelete,
   noActions,
+  subrowFetchData,
   defaultPageSize = 20
 }) {
+  console.log('columnData', subrowFetchData);
   const [openDelete, setOpenDelete] = useState(false);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
@@ -199,7 +201,10 @@ function DataTable({
 
   // // Search input state handle
 
-  const renderRowSubComponent = useCallback(({ row, rowProps }) => <SubRows row={row} rowProps={rowProps} />, []);
+  const renderRowSubComponent = useCallback(
+    ({ row, rowProps }) => <SubRows row={row} rowProps={rowProps} subrowFetchData={subrowFetchData} />,
+    []
+  );
 
   // A function that sets the sorted value for the table
   const setSortedValue = (column) => {

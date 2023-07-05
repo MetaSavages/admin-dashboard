@@ -1,47 +1,22 @@
 import { TableRow, Typography } from '@mui/material';
 import DataTableBodyCell from './DataTableBodyCell';
+import { useEffect, useState } from 'react';
+function SubRows({ row, rowProps, subrowFetchData }) {
+  const [subRows, setSubRows] = useState([]);
 
-function SubRows({ row, rowProps }) {
-  //fetch rows from api
-  const casinos = {
-    rows: [
-      {
-        username: 'Casino 1',
-        time_spent: '1h 30m',
-        current_balance: '$100',
-        spent: '$50',
-        starting_balance: '$50',
-        cashout: '$100'
-      },
-      {
-        username: 'Casino 2',
-        time_spent: '1h 30m',
-        current_balance: '$100',
-        spent: '$50',
-        starting_balance: '$50',
-        cashout: '$100'
-      },
-      {
-        username: 'Casino 3',
-        time_spent: '1h 30m',
-        current_balance: '$100',
-        spent: '$50',
-        starting_balance: '$50',
-        cashout: '$100'
-      },
-      {
-        username: 'Casino 4',
-        time_spent: '1h 30m',
-        current_balance: '$100',
-        spent: '$50',
-        starting_balance: '$50',
-        cashout: '$100'
-      }
-    ]
-  };
+  useEffect(() => {
+    console.log('row', subrowFetchData);
+    const fetchData = async () => {
+      const result = await subrowFetchData(row.original);
+      console.log('result', result);
+      setSubRows(result);
+    };
+    fetchData();
+  }, [row.original.id, subrowFetchData]);
+
   return (
     <>
-      {casinos.rows.map((x, i) => {
+      {subRows.map((x, i) => {
         return (
           <TableRow {...rowProps} key={`${rowProps.key}-expanded-${i}`}>
             {row.cells.map((cell) => {

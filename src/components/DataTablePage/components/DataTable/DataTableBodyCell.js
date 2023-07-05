@@ -38,7 +38,7 @@ function DataTableBodyCell({ noBorder, align, children, expanded = false }) {
         color='text'
         sx={{
           verticalAlign: 'middle',
-          textDecoration: expanded && children?.props?.column?.id === 'username' ? 'underline' : 'none'
+          textDecoration: expanded && children?.props?.column?.id === 'nickname' ? 'underline' : 'none'
         }}
       >
         {children}

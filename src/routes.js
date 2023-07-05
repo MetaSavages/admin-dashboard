@@ -64,10 +64,12 @@ import EditRole from 'layouts/role-management/edit-role';
 import EventsAnalytics from 'layouts/events_analytics';
 import PlayerActivity from 'layouts/player_activity';
 import EventHistory from 'layouts/event_history';
-import WaitingPayouts from 'layouts/pending_payouts';
-import SuccessfullPayouts from 'layouts/successfull_payouts';
-import FailedPayouts from 'layouts/failed_payouts';
-import PendingPayouts from 'layouts/pending_payouts';
+import SuccessfullPayouts from 'layouts/payouts/successfull_payouts';
+import FailedPayouts from 'layouts/payouts/failed_payouts';
+import PendingPayouts from 'layouts/payouts/pending_payouts';
+import SuccessfullDeposits from 'layouts/deposits/successfull_deposits';
+import FailedDeposits from 'layouts/deposits/failed_deposits';
+import PendingDeposits from 'layouts/deposits/pending_deposits';
 import CasinoManagement from 'layouts/casinos';
 import NewCasino from 'layouts/casinos/new-casino';
 import EditCasino from 'layouts/casinos/edit-permission';
@@ -171,6 +173,35 @@ const routes = [
     icon: <Icon fontSize='medium'>block</Icon>,
     route: '/blacklists',
     component: <Sales />
+  },
+  {
+    type: 'collapse',
+    name: 'Deposits',
+    key: 'deposits',
+    icon: <Icon fontSize='medium'>payments</Icon>,
+    collapse: [
+      {
+        name: 'Successful Deposits',
+        key: 'successful-deposits',
+        icon: <Icon fontSize='medium'>done</Icon>,
+        route: '/deposits/successful-deposits',
+        component: <SuccessfullDeposits />
+      },
+      {
+        name: 'Failed Deposits',
+        key: 'failed-deposits',
+        icon: <Icon fontSize='medium'>clear</Icon>,
+        route: '/deposits/failed-deposits',
+        component: <FailedDeposits />
+      },
+      {
+        name: 'Pending Deposits',
+        key: 'pending-deposits',
+        icon: <Icon fontSize='medium'>pending</Icon>,
+        route: '/deposits/pending-deposits',
+        component: <PendingDeposits />
+      }
+    ]
   },
   {
     type: 'collapse',
