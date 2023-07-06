@@ -34,24 +34,25 @@ import { Card } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
-import Filters from './components/Filters';
+// import Filters from './components/Filters';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import React, { useState } from 'react';
 import DataTablePage from 'components/DataTablePage';
 import { getEventsHistory } from 'services/analytics';
-import eventHistoryColumnData from 'data/eventHistoryColumnData';
-function EventHistory() {
+import dataTableBlacklistCountries from 'assets/mockData/dataBlacklistCountries';
+import { Can } from 'context';
+import Filters from './components/Filters';
+function Blacklists() {
   const location = useLocation();
   const { search } = location;
-  console.log('search', search);
   const [filters, setFilters] = useState(queryString.parse(search));
 
   const fetchData = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve({
-          data: dataTableEventHistory.rows,
+          data: dataTableBlacklistCountries.rows,
           meta: {
             totalItems: 10
           }
@@ -59,25 +60,24 @@ function EventHistory() {
       }, 100);
     });
   };
-  const getGameInfo = (row) => {
-    console.log(row);
-    return [{ username: row.amount, event_type: row.gameType }];
-  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DataTablePage
-        canFilter
-        filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
-        fetchData={getEventsHistory}
-        queryKey={'metrics'}
-        columnData={eventHistoryColumnData}
-        object={'metrics'}
-        noActions
-        subrowFetchData={getGameInfo}
-      />
+      <Can I='read' a='user'>
+        <DataTablePage
+          title='Blacklists'
+          canFilter
+          canSearch
+          filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+          fetchData={fetchData}
+          queryKey={'metrics'}
+          columnData={dataTableBlacklistCountries.columns}
+          object={'metrics'}
+          noActions
+        />
+      </Can>
     </LocalizationProvider>
   );
 }
 
-export default EventHistory;
+export default Blacklists;

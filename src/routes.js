@@ -73,6 +73,7 @@ import PendingDeposits from 'layouts/deposits/pending_deposits';
 import CasinoManagement from 'layouts/casinos';
 import NewCasino from 'layouts/casinos/new-casino';
 import EditCasino from 'layouts/casinos/edit-permission';
+import Blacklists from 'layouts/blacklists';
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -171,14 +172,21 @@ const routes = [
     name: 'Blacklists',
     key: 'blacklists',
     icon: <Icon fontSize='medium'>block</Icon>,
-    route: '/blacklists',
-    component: <Sales />
+    collapse: [
+      {
+        name: 'Blacklist Countries',
+        key: 'blacklist-countries',
+        route: '/blacklists/countries',
+        icon: <Icon fontSize='medium'>public</Icon>,
+        component: <Blacklists />
+      }
+    ]
   },
   {
     type: 'collapse',
     name: 'Deposits',
     key: 'deposits',
-    icon: <Icon fontSize='medium'>payments</Icon>,
+    icon: <Icon fontSize='medium'>add_card_payment</Icon>,
     collapse: [
       {
         name: 'Successful Deposits',

@@ -168,7 +168,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2}>
-        <Grid item xs={4} sm={4} md={2}>
+        <Grid item xs={6} sm={4} md={2}>
           <MDBox>
             <Autocomplete
               multiple
@@ -197,7 +197,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={4} sm={4} md={2}>
+        <Grid item xs={6} sm={4} md={2}>
           <MDBox>
             <Autocomplete
               multiple
@@ -298,7 +298,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={3} md={1}>
           <MDButton variant='text' disabled={!playerUsernames.length && !eventTypes.length && !from && !to}>
             Apply
           </MDButton>

@@ -5,13 +5,14 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { Can } from 'context';
 import { getPlayers, getPlayerAggregated } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
+import Filters from './components/Filters';
+import { useState } from 'react';
 function PlayerManagement() {
   const navigate = useNavigate();
   const onDelete = (id) => {
     console.log(id);
   };
-
-  console.log('playerColumnData', getPlayerAggregated);
+  const [filters, setFilters] = useState({});
 
   return (
     <>
@@ -27,6 +28,7 @@ function PlayerManagement() {
           onDelete={onDelete}
           subrowFetchData={getPlayerAggregated}
           noActions
+          filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
         />{' '}
       </Can>
       <Can not I='read' a='user'>

@@ -12,7 +12,9 @@ export const getEventsHistory = async () => {
         username: event?.user?.nickname ? event.user.nickname : '-',
         timestamp: event?.createdAt ? event.createdAt : '-',
         event_type: event?.type?.name ? event.type.name : '-',
-        event_type_id: event?.type?.id ? event.type.id : '-'
+        event_type_id: event?.type?.id ? event.type.id : '-',
+        amount: event?.payload?.amount ? event.payload.amount : '-',
+        gameType: event?.payload?.gameType ? event.payload.gameType : '-'
       };
     });
 

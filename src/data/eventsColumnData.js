@@ -13,7 +13,14 @@ export const eventsColumnData = [
       const queryStringParams = queryString.stringify(filters);
       return (
         <NavLink to={`/analytics/event-history?${queryStringParams}`}>
-          <MDTypography fontSize='0.875rem'> {row.original.event_type}</MDTypography>
+          <MDTypography fontSize='0.875rem'>
+            {' '}
+            {row.original.event_type
+              .replace(/_/g, ' ')
+              .split(' ')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ')}
+          </MDTypography>
         </NavLink>
       );
     }

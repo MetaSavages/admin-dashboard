@@ -32,7 +32,7 @@ const Filters = () => {
           justifyContent: 'flex-end'
         }}
       >
-        <Grid item xs={4} sm={4} md={5}>
+        <Grid item xs={7} sm={4} md={6}>
           <MDBox>
             <Autocomplete
               multiple
@@ -60,7 +60,7 @@ const Filters = () => {
           </MDBox>
         </Grid>
 
-        <Grid item xs={2} md={1}>
+        <Grid item xs={5} md={2}>
           <MDButton variant='text'>Apply</MDButton>
         </Grid>
       </Grid>
