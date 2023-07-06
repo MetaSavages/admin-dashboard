@@ -28,7 +28,7 @@ export const getPermissions = async (limit = 20, page = 1, search = '') => {
 export const getPermission = async (id) => {
   const api = useAxios();
   try {
-    return await api.get('/admin/auth/permissions/${id}');
+    return await api.get(`/admin/auth/permissions/${id}`);
   } catch (err) {
     console.log(err);
     return {
@@ -61,7 +61,7 @@ export const createPermission = async (action, object) => {
 export const updatePermission = async (id, action, object) => {
   const api = useAxios();
   try {
-    return await api.put('/admin/auth/permissions/${id}', {
+    return await api.put(`/admin/auth/permissions/${id}`, {
       action: action,
       object: object
     });

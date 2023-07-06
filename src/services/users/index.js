@@ -33,7 +33,7 @@ export const getUsers = async (limit = 20, page = 1, search = '') => {
 export const getUser = async (id) => {
   const api = useAxios();
   try {
-    return await api.get('/admin/users/${id}');
+    return await api.get(`/admin/users/${id}`);
   } catch (err) {
     console.log(err);
     return {

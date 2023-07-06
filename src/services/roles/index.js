@@ -36,7 +36,7 @@ export const getRoles = async (limit = 20, page = 1, search = '') => {
 export const getRole = async (id) => {
   const api = useAxios();
   try {
-    return await api.get('/admin/auth/roles/${id}', {});
+    return await api.get(`/admin/auth/roles/${id}`, {});
   } catch (err) {
     console.log(err);
     return {
@@ -69,7 +69,7 @@ export const createRole = async (name, permissions) => {
 export const updateRole = async (id, name, permissions) => {
   const api = useAxios();
   try {
-    return await api.put('/admin/auth/roles/${id}', {
+    return await api.put(`/admin/auth/roles/${id}`, {
       name: name,
       permissionIds: permissions
     });
