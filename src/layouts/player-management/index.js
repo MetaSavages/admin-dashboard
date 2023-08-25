@@ -19,6 +19,13 @@ function PlayerManagement() {
       <Can I='read' a='user'>
         <DataTablePage
           title='Player Management'
+          createButton={
+            <Can I='create' a='user'>
+              <MDButton variant='contained' color='info' onClick={() => navigate('/player-add')}>
+                Add Demo Player 1
+              </MDButton>
+            </Can>
+          }
           canSearch
           canFilter
           fetchData={getPlayers}

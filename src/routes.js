@@ -49,6 +49,7 @@ import Icon from '@mui/material/Icon';
 
 // Images
 import PlayerManagement from 'layouts/player-management';
+import PlayerAdd from 'layouts/player-add';
 import UserManagement from 'layouts/user-management';
 import RTL from 'layouts/pages/rtl';
 import Dashboard from 'layouts/dashboard';
@@ -116,7 +117,8 @@ const routes = [
         icon: <Icon fontSize='medium'>check_circle</Icon>,
         route: '/permission-management',
         component: <PermissionManagement />
-      }
+      },
+
     ]
   },
   {
@@ -126,9 +128,8 @@ const routes = [
     key: 'player-management',
     icon: <Icon fontSize='medium'>people</Icon>,
     route: '/player-management',
-    component: <PlayerManagement />
+    component: <PlayerManagement />,
   },
-
   {
     type: 'collapse',
     name: 'Analytics',
