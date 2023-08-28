@@ -129,6 +129,22 @@ const routes = [
     icon: <Icon fontSize='medium'>people</Icon>,
     route: '/player-management',
     component: <PlayerManagement />,
+    collapse: [
+      {
+        name: 'Player management',
+        key: 'player-management',
+        icon: <Icon fontSize='medium'>people</Icon>,
+        route: '/player-management',
+        component: <PlayerManagement />
+      },
+      {
+        name: 'Player Add',
+        key: 'player-add',
+        icon: <Icon fontSize='medium'>people</Icon>,
+        route: '/player-add',
+        component: <PlayerAdd />
+      }
+    ]
   },
   {
     type: 'collapse',

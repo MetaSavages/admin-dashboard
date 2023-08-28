@@ -30,7 +30,7 @@ function DataTablePage({
             </MDTypography>
             {createButton ? createButton : null}
           </MDBox>
-          <DataTable
+          {/* <DataTable
             canFilter={canFilter}
             filtersComponent={filtersComponent}
             fetchData={fetchData}
@@ -40,7 +40,7 @@ function DataTablePage({
             onDelete={onDelete}
             noActions={noActions}
             subrowFetchData={subrowFetchData}
-          />
+          /> */}
         </Card>
       </MDBox>
       <Footer />

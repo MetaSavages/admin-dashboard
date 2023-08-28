@@ -29,33 +29,46 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
-// NewUser page components
+// PlayerInfo page components
 import PlayerInfo from 'layouts/player-add/components/PlayerInfo';
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/user-management/schemas/validations';
-import form from 'layouts/user-management/schemas/form';
-import initialValues from 'layouts/user-management/schemas/initialValues';
+import validations from 'layouts/player-add/schemas/validations';
+import form from 'layouts/player-add/schemas/form';
+import initialValues from 'layouts/player-add/schemas/initialValues';
+
+// Custuom hook for fetching data
+import useAxios from 'hooks/useAxios';
 
 function AddPlyer() {
+  
+  const axiosInstance = useAxios();
   const { formId, formField } = form;
   const currentValidation = validations[0];
 
-  const sleep = (ms) =>
-    new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  const submitForm = async (values, actions) => {
-    await sleep(1000);
 
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(values, null, 2));
+
+  const submitForm = async (values, actions) => {
+
+    const { nickname: nicknameV } = values;
+
+    try {
+      const nicknameValue = JSON.stringify(nicknameV)
+      const response = await axiosInstance.post('admin/users/create-demo-user', nicknameValue)
+      const data = await response.json();
+      alert(JSON.stringify(nicknameValue, data, null, 2));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
     actions.setSubmitting(false);
     actions.resetForm();
   };
+
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };
+
 
   return (
     <DashboardLayout>

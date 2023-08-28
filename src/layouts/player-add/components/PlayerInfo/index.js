@@ -29,27 +29,15 @@ import { Autocomplete } from '@mui/material';
 import { ErrorMessage, Field } from 'formik';
 import MDInput from 'components/MDInput';
 import { getRoles } from 'services/roles';
-function UserInfo({ formData }) {
+
+
+function PlayerInfo({ formData }) {
+
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { nickname } = formField;
   const { nickname: nicknameV } = values;
 
-  useEffect(() => {
-    if (!isSubmitting) {
-      setRoleName('');
-    }
-  }, [isSubmitting]);
 
-  useEffect(() => {
-    getRoles().then((res) => {
-      setRoleOptions(res.data.map((item) => ({ value: item.id, name: item.name })));
-    });
-  }, []);
-
-  const [roleName, setRoleName] = useState('');
-  const [open, setOpen] = useState(false);
-  const [roleOptions, setRoleOptions] = useState([]);
-  const loading = open && roleOptions.length === 0;
   return (
     <MDBox>
       <MDBox lineHeight={0}>
@@ -75,8 +63,8 @@ function UserInfo({ formData }) {
 }
 
 // typechecking props for UserInfo
-UserInfo.propTypes = {
+PlayerInfo.propTypes = {
   formData: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired
 };
 
-export default UserInfo;
+export default PlayerInfo;

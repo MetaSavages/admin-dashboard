@@ -22,7 +22,7 @@ function PlayerManagement() {
           createButton={
             <Can I='create' a='user'>
               <MDButton variant='contained' color='info' onClick={() => navigate('/player-add')}>
-                Add Demo Player 1
+                Add Demo Player
               </MDButton>
             </Can>
           }
