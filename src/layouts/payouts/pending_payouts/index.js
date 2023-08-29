@@ -12,29 +12,20 @@ import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import Grid from '@mui/material/Grid';
 import DataTablePage from 'components/DataTablePage';
+import { getPendingWithdraws } from 'services/withdraws'
+import { pendingWithdrawsColumnData } from 'data/pendingWithdrawsColumnData'
 
 const PendingPayouts = () => {
   const [filters, setFilters] = React.useState({});
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataPendingPayouts.rows,
-          meta: {
-            totalItems: 10
-          }
-        });
-      }, 100);
-    });
-  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DataTablePage
         title='Pending Payouts'
         canFilter
-        fetchData={fetchData}
+        fetchData={getPendingWithdraws}
         queryKey='payouts'
-        columnData={dataPendingPayouts.columns}
+        columnData={pendingWithdrawsColumnData}
         object={'payout'}
         noActions
         filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
