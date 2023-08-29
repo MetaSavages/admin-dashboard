@@ -7,7 +7,6 @@ import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import { IconButton, Icon, Tooltip, Dialog, DialogTitle, DialogContent, DialogContentText, Button, DialogActions } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import { Modal, ModalBody } from 'react-bootstrap';
 import TooltipAction from '../TooltipAction'
 
 function Actions(props) {
