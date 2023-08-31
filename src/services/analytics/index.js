@@ -7,7 +7,7 @@ export const getEventsHistory = async (limit = 20, page = 1, search = '') => {
       params: {
         limit: limit,
         page: page,
-        search: search
+        sortBy: 'createdAt:DESC'
       }
     });
     console.log(res);
