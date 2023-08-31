@@ -6,8 +6,22 @@ export const getPlayers = async (limit = 20, page = 1, search = '') => {
     const unformattedData = await api.get('/admin/metrics/players', {
       params: { limit: limit, page: page, search: search }
     });
+    console.log(unformattedData);
     return {
-      data: unformattedData.data,
+      data: unformattedData.data.items.map((x) => {
+        return {
+          id: x.u_id,
+          nickname: x.u_nickname,
+          time_spent: x.time_spent,
+          current_balance: x.current_balance,
+          starting_balance: x.starting_balance,
+          money_spent: x.money_spent,
+          money_cashed_out: x.money_cashed_out,
+          wallet: x.u_walletId,
+          location: x.u_lastLocation,
+          kyc_status: x.u_kycState
+        };
+      }),
       meta: {
         totalItems: 0,
         itemCount: 0,

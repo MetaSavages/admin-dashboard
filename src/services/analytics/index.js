@@ -4,7 +4,6 @@ export const getEventsHistory = async () => {
   const api = useAxios();
   try {
     const res = await api.get('/metrics');
-    console.log(res);
     const data = res.data.data.map((event) => {
       return {
         ...event,
@@ -17,7 +16,7 @@ export const getEventsHistory = async () => {
         gameType: event?.payload?.gameType ? event.payload.gameType : '-'
       };
     });
-
+    console.log(data);
     return {
       data: data,
       meta: res.data.meta
