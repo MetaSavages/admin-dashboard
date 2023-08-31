@@ -11,7 +11,6 @@ const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const Filters = ({ filters, setFilters }) => {
-  console.log(filters);
   const [open, setOpen] = useState(false);
   const [usernameOptions, setUsernameOptions] = useState([
     {
@@ -102,7 +101,6 @@ const Filters = ({ filters, setFilters }) => {
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
-  console.log(playerUsernames);
   const handleFromChange = (date) => {
     if (to) {
       if (date > to) {

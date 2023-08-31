@@ -1,9 +1,16 @@
 import useAxios from 'hooks/useAxios';
 
-export const getEventsHistory = async () => {
+export const getEventsHistory = async (limit = 20, page = 1, search = '') => {
   const api = useAxios();
   try {
-    const res = await api.get('/metrics');
+    const res = await api.get('/metrics', {
+      params: {
+        limit: limit,
+        page: page,
+        search: search
+      }
+    });
+    console.log(res);
     const data = res.data.data.map((event) => {
       return {
         ...event,
@@ -16,7 +23,6 @@ export const getEventsHistory = async () => {
         gameType: event?.payload?.gameType ? event.payload.gameType : '-'
       };
     });
-    console.log(data);
     return {
       data: data,
       meta: res.data.meta
