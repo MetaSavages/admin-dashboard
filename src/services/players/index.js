@@ -22,13 +22,7 @@ export const getPlayers = async (limit = 20, page = 1, search = '') => {
           kyc_status: x.u_kycState
         };
       }),
-      meta: {
-        totalItems: 0,
-        itemCount: 0,
-        itemsPerPage: 0,
-        totalPages: 0,
-        currentPage: 0
-      }
+      meta: unformattedData.data.meta
       //   meta: unformattedData.data.meta
     };
   } catch (err) {
