@@ -4,26 +4,15 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import React from 'react';
 import dataTableSuccessfullPayouts from 'assets/mockData/dataSuccessfullPayouts';
+import { successfulPaymentsColumnData } from 'data/successfulPaymentsColumnData'
+import { getSuccesfulDeposits } from 'services/deposits'
 const SuccessfullDeposits = () => {
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataTableSuccessfullPayouts.rows,
-          meta: {
-            totalItems: 100
-          }
-        });
-      }, 100);
-    });
-  };
-
   return (
     <DataTablePage
       title='Successful Deposits'
-      fetchData={fetchData}
+      fetchData={getSuccesfulDeposits}
       queryKey='successful_deposits'
-      columnData={dataTableSuccessfullPayouts.columns}
+      columnData={successfulPaymentsColumnData}
       object={'successful_deposits'}
       noActions
     />
