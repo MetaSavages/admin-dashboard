@@ -19,6 +19,7 @@ function DataTablePage({
   noActions = false,
   subrowFetchData = null
 }) {
+
   return (
     <DashboardLayout>
       <DashboardNavbar />

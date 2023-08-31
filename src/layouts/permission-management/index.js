@@ -1,10 +1,23 @@
 import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
 import { useNavigate } from 'react-router-dom';
-import { getPermissions } from 'services/permissions';
+import { deletePermission, getPermissions } from 'services/permissions';
 import permissionsColumnData from 'data/permissionsColumnData';
+
 function PermissionManagement() {
   const navigate = useNavigate();
+
+  async function handleDelete(id) {
+    const response = await deletePermission(id);
+    if (response.status === 200 || response.status === 201) {
+      alert('Permission deleted successfully');
+      return true
+    } else {
+      alert('Permission deleted failed');
+      return false
+    }
+  }
+
   return (
     <DataTablePage
       title='Permission Management'
@@ -15,7 +28,9 @@ function PermissionManagement() {
       }
       canSearch
       canFilter
+      object={'user'}
       fetchData={getPermissions}
+      onDelete={handleDelete}
       queryKey='permissions'
       columnData={permissionsColumnData}
     />

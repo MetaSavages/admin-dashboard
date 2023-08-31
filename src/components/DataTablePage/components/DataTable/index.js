@@ -92,8 +92,9 @@ function DataTable({
   subrowFetchData,
   defaultPageSize = 20
 }) {
-  console.log('columnData', subrowFetchData);
   const [openDelete, setOpenDelete] = useState(false);
+  const [renderAgain, setRenderAgain] = useState(false);
+
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
   defaultState.queryPageSize = defaultPageSize;
@@ -142,7 +143,8 @@ function DataTable({
     queryKey,
     fetchData,
     searchParam,
-    setTotalCountHandler
+    setTotalCountHandler,
+    renderAgain
   );
   const tableColumns = useMemo(() => columnData, []);
   const tableData = useMemo(() => RES_DATA.data, [RES_DATA]);
@@ -182,9 +184,10 @@ function DataTable({
     </MDPagination>
   ));
 
-  const handleDelete = (id) => {
-    onDelete(id);
+  const handleDelete = async (id) => {
+    const result = await onDelete(id);
     handleCloseDelete();
+    return result;
   };
   // // Handler for the input to set the pagination index
   const handleInputPagination = ({ target: { value } }) => {
@@ -229,6 +232,7 @@ function DataTable({
   if (isLoading) {
     return <Skeleton variant='rounded' animation='wave' sx={{ borderRadius: 5 }} height={600} />;
   }
+
   return (
     <TableContainer sx={{ boxShadow: 'none' }}>
       {queryPageSize || canSearch ? (
@@ -294,6 +298,8 @@ function DataTable({
                   handleCloseDelete={handleCloseDelete}
                   handleDelete={handleDelete}
                   rowsLength={page.length}
+                  handleOpenDelete={handleOpenDelete}
+                  setRenderAgain={setRenderAgain}
                 />
                 {row?.isExpanded && renderRowSubComponent({ row, rowProps })}
               </Fragment>

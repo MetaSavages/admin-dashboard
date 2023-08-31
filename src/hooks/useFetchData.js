@@ -8,13 +8,13 @@ const useFetchData = (
   queryKey,
   fetchData,
   search = '',
-  setTotalCount
+  setTotalCount,
+  renderAgain 
 ) => {
   const [data, setData] = useState({
     data: []
   });
   const queryClient = useQueryClient();
-
   useEffect(() => {
     // We want to make sure the current page is less than the total page left
     if (queryPageIndex + 1 < queryPageCount) {
@@ -26,7 +26,7 @@ const useFetchData = (
         fetchData(queryPageSize, nextPage, search)
       );
     }
-  }, [queryPageIndex, queryPageSize, queryPageCount, search]);
+  }, [queryPageIndex, queryPageSize, queryPageCount, search,renderAgain]);
 
   const {
     data: resData,
@@ -34,7 +34,7 @@ const useFetchData = (
     isFetching,
     ...rest
   } = useQuery(
-    [queryKey, queryPageIndex, queryPageSize, queryPageCount, search],
+    [queryKey, queryPageIndex, queryPageSize, queryPageCount, search,renderAgain],
     () => fetchData(queryPageSize, queryPageIndex + 1, search),
     {
       keepPreviousData: true,

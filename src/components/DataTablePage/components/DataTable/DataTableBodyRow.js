@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { TableRow, Tooltip } from '@mui/material';
 import DataTableBodyCell from './DataTableBodyCell';
 import { Can } from 'context';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { IconButton, Icon, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import MDButton from 'components/MDButton';
 import SubRows from './SubRows';
@@ -13,9 +14,13 @@ function DataTableBodyRow({
   openDelete,
   handleCloseDelete,
   handleDelete,
-  rowsLength
+  handleOpenDelete,
+  rowsLength,
+  setRenderAgain
 }) {
   const navigate = useNavigate();
+  let [searchParams, setSearchParams] = useSearchParams();
+
   return (
     <TableRow {...row.getRowProps()}>
       {row.cells.map((cell, index) => (
@@ -49,15 +54,20 @@ function DataTableBodyRow({
             <Tooltip title='Delete'>
               <IconButton
                 color='error'
-                onClick={() => handleDelete(row.cells[0].value)}
-                // onClick={handleOpenDelete}
+                onClick={() => {
+                  setSearchParams({ delete: row.cells[0].value });
+                  handleOpenDelete();
+                }}
               >
                 <Icon>delete</Icon>
               </IconButton>
             </Tooltip>
             <Dialog
               open={openDelete}
-              onClose={handleCloseDelete}
+              onClose={() => {
+                handleCloseDelete();
+                setSearchParams('');
+              }}
               aria-labelledby='alert-dialog-title'
               aria-describedby='alert-dialog-description'
             >
@@ -68,10 +78,27 @@ function DataTableBodyRow({
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <MDButton variant='text' onClick={handleCloseDelete}>
+                <MDButton
+                  variant='text'
+                  onClick={() => {
+                    handleCloseDelete();
+                    setSearchParams('');
+                  }}
+                >
                   No
                 </MDButton>
-                <MDButton variant='text' color='error' onClick={() => handleDelete(row.cells[0].value)}>
+                <MDButton
+                  variant='text'
+                  color='error'
+                  onClick={async () => {
+                    const value = searchParams.get('delete');
+                    setSearchParams('');
+                    const result = await handleDelete(value);
+                    if(result){
+                      setRenderAgain((prev) => !prev)
+                    }
+                  }}
+                >
                   yes
                 </MDButton>
               </DialogActions>
