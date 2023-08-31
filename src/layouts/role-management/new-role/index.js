@@ -45,7 +45,7 @@ function NewRole() {
   const navigate = useNavigate();
   const submitForm = async (values, actions) => {
     const response = await createRole(values.roleName, values.rolePermissions);
-    if (response.status === 201) {
+    if (response.status === 200 || response.status === 201) {
       alert('Role created successfully');
     } else {
       alert('Role creation failed');
