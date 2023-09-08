@@ -90,7 +90,8 @@ function DataTable({
   onDelete,
   noActions,
   subrowFetchData,
-  defaultPageSize = 20
+  defaultPageSize = 20,
+  filters = ''
 }) {
   console.log('columnData', subrowFetchData);
   const [openDelete, setOpenDelete] = useState(false);
@@ -141,7 +142,7 @@ function DataTable({
     queryTotalPageCount,
     queryKey,
     fetchData,
-    searchParam,
+    filters,
     setTotalCountHandler
   );
   const tableColumns = useMemo(() => columnData, []);

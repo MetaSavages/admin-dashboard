@@ -39,7 +39,7 @@ import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import React, { useState } from 'react';
 import DataTablePage from 'components/DataTablePage';
-import { getEventsHistory } from 'services/analytics';
+import { getEventsHistory, getEventsHistorySearch } from 'services/analytics';
 import eventHistoryColumnData from 'data/eventHistoryColumnData';
 function EventHistory() {
   const location = useLocation();
@@ -75,6 +75,7 @@ function EventHistory() {
         object={'metrics'}
         noActions
         subrowFetchData={getGameInfo}
+        filters={filters}
       />
     </LocalizationProvider>
   );
