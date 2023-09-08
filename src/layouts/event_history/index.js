@@ -67,6 +67,7 @@ function EventHistory() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DataTablePage
+        title='Event History'
         canFilter
         filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
         fetchData={getEventsHistory}

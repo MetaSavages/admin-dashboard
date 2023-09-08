@@ -7,6 +7,7 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = null) => 
     const params = {
       limit: limit, 
       page: page,     
+      sortBy: 'createdAt:DESC',
     }
     
     if(Object.keys(filters).length) {
@@ -45,7 +46,6 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = null) => 
         gameType: event?.payload?.gameType ? event.payload.gameType : '-'
       };
     });
-
     return {
       data: data,
       meta: res.data.meta

@@ -93,7 +93,6 @@ function DataTable({
   defaultPageSize = 20,
   filters = ''
 }) {
-  console.log('columnData', subrowFetchData);
   const [openDelete, setOpenDelete] = useState(false);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
