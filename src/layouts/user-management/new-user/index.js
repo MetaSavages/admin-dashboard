@@ -36,7 +36,7 @@ import UserInfo from 'layouts/user-management/components/UserInfo';
 import validations from 'layouts/user-management/schemas/validations';
 import form from 'layouts/user-management/schemas/form';
 import initialValues from 'layouts/user-management/schemas/initialValues';
-
+import { createUser } from 'services/users';
 function NewUser() {
   const { formId, formField } = form;
   const currentValidation = validations[0];
@@ -46,10 +46,10 @@ function NewUser() {
       setTimeout(resolve, ms);
     });
   const submitForm = async (values, actions) => {
-    await sleep(1000);
-
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(values, null, 2));
+    // await sleep(1000);
+    await createUser(values);
+    // // eslint-disable-next-line no-alert
+    // alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
     actions.resetForm();
   };
