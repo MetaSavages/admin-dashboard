@@ -4,26 +4,16 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import React from 'react';
 import dataTableSuccessfullPayouts from 'assets/mockData/dataSuccessfullPayouts';
-const SuccessfullPayouts = () => {
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataTableSuccessfullPayouts.rows,
-          meta: {
-            totalItems: 100
-          }
-        });
-      }, 100);
-    });
-  };
+import { getSuccesfulWithdraws } from 'services/withdraws'
+import { successfulPaymentsColumnData } from 'data/successfulPaymentsColumnData'
 
+const SuccessfullPayouts = () => {
   return (
     <DataTablePage
       title='Successful Payouts'
-      fetchData={fetchData}
+      fetchData={getSuccesfulWithdraws}
       queryKey='successful_payouts'
-      columnData={dataTableSuccessfullPayouts.columns}
+      columnData={successfulPaymentsColumnData}
       object={'successful_payouts'}
       noActions
     />
