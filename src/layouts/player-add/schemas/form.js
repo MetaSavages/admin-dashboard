@@ -19,7 +19,7 @@ const form = {
     nickname: {
       name: 'nickname',
       label: 'Nickname',
-      type: 'text',
+      type: 'string',
       errorMsg: 'Nickname is required.'
     }
   }

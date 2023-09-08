@@ -53,10 +53,10 @@ function AddPlyer() {
     const { nickname: nicknameV } = values;
 
     try {
-      const nicknameValue = JSON.stringify(nicknameV)
-      const response = await axiosInstance.post('admin/users/create-demo-user', nicknameValue)
-      const data = await response.json();
-      alert(JSON.stringify(nicknameValue, data, null, 2));
+      const response = await axiosInstance.post('admin/users/create-demo-user', values)
+      const data = response.data; 
+      alert(JSON.stringify(data, null, 2)); 
+      console.log(JSON.stringify(data, null, 2));
     } catch (error) {
       console.error('Error fetching data:', error);
     }
