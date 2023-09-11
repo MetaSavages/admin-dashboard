@@ -47,8 +47,10 @@ import Filters from './components/Filters';
 import DataTablePage from 'components/DataTablePage';
 import { eventsColumnData } from 'data/eventsColumnData';
 import { getEventsAggregated } from 'services/analytics';
+import { useState } from 'react';
 function EventsAnalytics() {
   const { sales, tasks } = reportsLineChartData;
+  const [filters, setFilters] = useState({});
   const fetchData = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -81,12 +83,13 @@ function EventsAnalytics() {
   return (
     <DataTablePage
       canFilter
-      filtersComponent={<Filters />}
+      filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
       fetchData={getEventsAggregated}
       queryKey={'event'}
       columnData={eventsColumnData}
       object={'event'}
       noActions
+      filters={filters}
     />
   );
 }

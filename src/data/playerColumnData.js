@@ -43,9 +43,8 @@ export const playerColumnData = async () => {
     { Header: 'location', accessor: 'location', width: 200 },
     { Header: 'kyc_status', accessor: 'kyc_status', width: 100 }
   ];
-  console.log('userasdsaas', user);
+
   if (!user.role?.casino) {
-    console.log('here');
     arr = [
       {
         width: 5,

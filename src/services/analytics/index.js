@@ -65,10 +65,23 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = null) => 
   }
 };
 
-export const getEventsAggregated = async () => {
+export const getEventsAggregated = async (limit = 20, page = 1, filters = null) => {
   const api = useAxios();
   try {
-    const res = await api.get('/metrics/aggregated');
+    const params = {
+      limit: limit, 
+      page: page,     
+      sortBy: 'createdAt:DESC',
+    }
+    
+    if(Object.keys(filters).length) {
+      if(filters.eventTypes.length){
+        params['id'] =  `${(filters.eventTypes.map((e) => e.id)).toString()}`;
+      }
+    }
+    const res = await api.get('/metrics/aggregated', {
+      params: params
+    });
     console.log(res);
     const data = res.data.map((event) => {
       return {
