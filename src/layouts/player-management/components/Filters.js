@@ -52,6 +52,7 @@ const Filters = ({ filters, setFilters }) => {
 
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [playerWallets, setPlayerWallets] = useState([]);
+  const [isDemoChecked, setIsDemoChecked] = useState(false); 
 
   // fetch options
   useEffect(() => {
@@ -70,7 +71,7 @@ const Filters = ({ filters, setFilters }) => {
         }
       }
     });
-  }, []);
+  }, [usernameOptions, walletOptions, isDemoChecked]);
 
   useEffect(() => {
     setFilters({
@@ -86,7 +87,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2} justifyContent={'flex-end'}>
-        <Grid item xs={5} md={5}>
+        <Grid item xs={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -107,7 +108,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={5} md={5}>
+        <Grid item xs={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -126,6 +127,19 @@ const Filters = ({ filters, setFilters }) => {
               )}
               renderInput={(params) => <TextField {...params} label='Wallet Address' variant='standard' />}
             />
+          </MDBox>
+        </Grid>
+        <Grid item xs={2} md={2}>
+          <MDBox>
+          <label>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              checked={isDemoChecked}
+              onChange={(event) => setIsDemoChecked(event.target.checked)}
+            />
+            Demo
+          </label>
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
