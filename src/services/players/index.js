@@ -1,10 +1,21 @@
 import useAxios from 'hooks/useAxios';
 
-export const getPlayers = async (limit = 20, page = 1, search = '') => {
+export const getPlayers = async (limit = 20, page = 1, filters = '') => {
   const api = useAxios();
   try {
+    const params = {
+      limit: limit, 
+      page: page,     
+      sortBy: 'createdAt:DESC',
+    }
+    
+    if(Object.keys(filters).length) {
+      if(filters.users.length){
+        params['id'] = `${(filters.users.map((u) => u.id)).toString()}`
+      }
+    }
     const unformattedData = await api.get('/admin/metrics/players', {
-      params: { limit: limit, page: page, search: search }
+      params: params
     });
     console.log(unformattedData);
     return {

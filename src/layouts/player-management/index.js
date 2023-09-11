@@ -35,6 +35,7 @@ function PlayerManagement() {
           subrowFetchData={getPlayerAggregated}
           noActions
           filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+          filters={filters}
         />{' '}
       </Can>
       <Can not I='read' a='user'>
