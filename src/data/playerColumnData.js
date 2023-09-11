@@ -39,11 +39,21 @@ export const playerColumnData = async () => {
       Cell: (cellProps) => <>{Math.floor(cellProps.value)}</>,
       SubCell: (cellProps) => <>{Math.floor(cellProps.value)}</>
     },
-    { Header: 'wallet', accessor: 'wallet', width: 200 },
+    {
+      Header: 'wallet',
+      accessor: 'wallet',
+      width: 200,
+      Cell: ({ row }) => (
+        <>
+          {row.original.isDemo
+            ? `https://master.frontend-ah3.pages.dev?demoUser=${row.original.wallet}`
+            : row.original.wallet}
+        </>
+      )
+    },
     { Header: 'location', accessor: 'location', width: 200 },
     { Header: 'kyc_status', accessor: 'kyc_status', width: 100 }
   ];
-  console.log('userasdsaas', user);
   if (!user.role?.casino) {
     console.log('here');
     arr = [
