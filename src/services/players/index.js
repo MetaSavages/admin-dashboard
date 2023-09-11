@@ -1,10 +1,10 @@
 import useAxios from 'hooks/useAxios';
 
-export const getPlayers = async (limit = 20, page = 1, search = '') => {
+export const getPlayers = async (limit = 20, page = 1, search = []) => {
   const api = useAxios();
   try {
     const unformattedData = await api.get('/admin/metrics/players', {
-      params: { limit: limit, page: page, search: search }
+      params: { limit: limit, page: page, serarch: search }
     });
     console.log(unformattedData);
     return {
@@ -19,7 +19,8 @@ export const getPlayers = async (limit = 20, page = 1, search = '') => {
           money_cashed_out: x.money_cashed_out,
           wallet: x.u_walletId,
           location: x.u_lastLocation,
-          kyc_status: x.u_kycState
+          kyc_status: x.u_kycState,
+          isDemo: x.u_isDemo
         };
       }),
       meta: unformattedData.data.meta
