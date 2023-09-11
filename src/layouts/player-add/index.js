@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 // formik components
 import { Formik, Form } from 'formik';
+import { useState } from 'react';
 
 // @mui material components
 import Grid from '@mui/material/Grid';
@@ -23,6 +24,7 @@ import Card from '@mui/material/Card';
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDButton from 'components/MDButton';
+import MDAlert from "components/MDAlert";
 
 // Material Dashboard 2 PRO React examples
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
@@ -45,22 +47,23 @@ function AddPlyer() {
   const axiosInstance = useAxios();
   const { formId, formField } = form;
   const currentValidation = validations[0];
-
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [data, setData] = useState(null);
 
 
   const submitForm = async (values, actions) => {
 
-    const { nickname: nicknameV } = values;
-
     try {
       const response = await axiosInstance.post('admin/users/create-demo-user', values)
-      const data = response.data; 
-      alert(JSON.stringify(data, null, 2)); 
+      const data = response.data;
+      if (data) {
+        setData(data.walletId);
+        setAlertVisible(true);
+      } 
       console.log(JSON.stringify(data, null, 2));
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-
     actions.setSubmitting(false);
     actions.resetForm();
   };
@@ -92,6 +95,11 @@ function AddPlyer() {
                             isSubmitting
                           }}
                         />
+                          {isAlertVisible && (
+                            <MDAlert color='dark'>
+                               User id is: {data}
+                            </MDAlert>
+                          )}
                         <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
                           <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
                             Send
