@@ -46,7 +46,7 @@ export const playerColumnData = async () => {
       Cell: ({ row }) => (
         <>
           {row.original.isDemo
-            ? `https://master.frontend-ah3.pages.dev?demoUser=${row.original.wallet}`
+            ? process.env.REACT_APP_FRONTEND_URL + row.original.wallet
             : row.original.wallet}
         </>
       )

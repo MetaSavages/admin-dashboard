@@ -74,10 +74,24 @@ const Filters = ({ filters, setFilters }) => {
   }, []);
 
   useEffect(() => {
+
+    console.log('playerUsernames', playerUsernames);
+    console.log('playerWallets', playerWallets);
+    console.log('usernameOptions', usernameOptions);
+
+    // const filteredUsers = usernameOptions.filter((user) => {
+    //   if (isDemoChecked) {
+    //     // If "Demo" checkbox is checked, include users with isDemo true
+    //     return user.isDemo === true;
+    //   } else {
+    //     // If "Demo" checkbox is unchecked, exclude users with isDemo true
+    //     return !filters.users.includes(user.value) || user.isDemo === true;
+    //   }
+    // });
+
     setFilters({
       users: playerUsernames,
       wallets: playerWallets,
-      isDemo: isDemoChecked
     });
   }, [playerWallets, playerUsernames, isDemoChecked]);
   
