@@ -37,14 +37,14 @@ const Filters = ({ filters, setFilters }) => {
 
   const handleUsernameInput = (event) => {
     setUsernameInput(event.target.value);
-    if(event.target.value.length > 2) {
+    if (event.target.value.length > 2) {
       getAllPlayers(event.target.value).then((players) => {
         setUsernameOptions(players);
       });
-    } else if(event.target.value.length < 2) {
+    } else if (event.target.value.length < 2) {
       setUsernameOptions([]);
     }
-  }
+  };
 
   const [eventTypes, setEventTypes] = useState([]);
   const [casinos, setCasinos] = useState([]);
@@ -52,15 +52,13 @@ const Filters = ({ filters, setFilters }) => {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
   const handleFromChange = (date) => {
-
     if (to) {
       if (date > to) {
         setFrom(to);
         setTo(date);
+      } else {
+        setFrom(date);
       }
-       else{
-        setFrom(date)
-       }
     } else {
       setFrom(date);
     }
@@ -71,9 +69,8 @@ const Filters = ({ filters, setFilters }) => {
       if (date < from) {
         setFrom(date);
         setTo(from);
-      }
-      else{
-        setTo(date)
+      } else {
+        setTo(date);
       }
     } else {
       setTo(date);
@@ -122,7 +119,7 @@ const Filters = ({ filters, setFilters }) => {
       from,
       to
     });
-  }
+  };
   return (
     <MDBox
       sx={{
@@ -213,7 +210,15 @@ const Filters = ({ filters, setFilters }) => {
                   {option.label}
                 </li>
               )}
-              renderInput={(params) => <TextField {...params} label='Player username' variant='standard' value={usernameInput} onChange={handleUsernameInput} />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label='Player username'
+                  variant='standard'
+                  value={usernameInput}
+                  onChange={handleUsernameInput}
+                />
+              )}
             />
           </MDBox>
         </Grid>
@@ -262,7 +267,11 @@ const Filters = ({ filters, setFilters }) => {
           </MDBox>
         </Grid>
         <Grid item xs={3} md={1}>
-          <MDButton variant='text' disabled={!playerUsernames.length && !eventTypes.length && !from && !to} onClick={onSubmit}>
+          <MDButton
+            variant='text'
+            disabled={!playerUsernames.length && !eventTypes.length && !from && !to && !casinos.length}
+            onClick={onSubmit}
+          >
             Apply
           </MDButton>
         </Grid>
