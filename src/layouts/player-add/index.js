@@ -24,7 +24,7 @@ import Card from '@mui/material/Card';
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDButton from 'components/MDButton';
-import MDAlert from "components/MDAlert";
+import MDAlert from 'components/MDAlert';
 
 // Material Dashboard 2 PRO React examples
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
@@ -33,6 +33,7 @@ import Footer from 'examples/Footer';
 
 // PlayerInfo page components
 import PlayerInfo from 'layouts/player-add/components/PlayerInfo';
+import CopyToClipboardButton from './components/CopyToClipboardButton'
 
 // NewUser layout schemas for form and form feilds
 import validations from 'layouts/player-add/schemas/validations';
@@ -48,8 +49,9 @@ function AddPlyer() {
   const { formId, formField } = form;
   const currentValidation = validations[0];
   const [isAlertVisible, setAlertVisible] = useState(false);
-  const [data, setData] = useState(null);
+  const [userId, setUserId] = useState(null);
 
+  const link = process.env.REACT_APP_FRONTEND_URL + '?demoUser=';
 
   const submitForm = async (values, actions) => {
 
@@ -57,7 +59,7 @@ function AddPlyer() {
       const response = await axiosInstance.post('admin/users/create-demo-user', values)
       const data = response.data;
       if (data) {
-        setData(data.walletId);
+        setUserId(data.walletId);
         setAlertVisible(true);
       } 
       console.log(JSON.stringify(data, null, 2));
@@ -97,7 +99,8 @@ function AddPlyer() {
                         />
                           {isAlertVisible && (
                             <MDAlert color='dark'>
-                               User id is: {data}
+                               User's link: <a style={{ color: 'green', textDecoration: 'none' }} href={link + userId}>{link + userId}</a>
+                               <CopyToClipboardButton text={link + userId} />
                             </MDAlert>
                           )}
                         <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>

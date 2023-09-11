@@ -71,14 +71,16 @@ const Filters = ({ filters, setFilters }) => {
         }
       }
     });
-  }, [usernameOptions, walletOptions, isDemoChecked]);
+  }, []);
 
   useEffect(() => {
     setFilters({
       users: playerUsernames,
-      wallets: playerWallets
+      wallets: playerWallets,
+      isDemo: isDemoChecked
     });
-  }, [playerWallets, playerUsernames]);
+  }, [playerWallets, playerUsernames, isDemoChecked]);
+  
   return (
     <MDBox
       sx={{
