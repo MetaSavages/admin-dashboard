@@ -46,7 +46,7 @@ export const playerColumnData = async () => {
       Cell: ({ row }) => (
         <>
           {row.original.isDemo
-            ? process.env.REACT_APP_FRONTEND_URL + row.original.wallet
+            ? process.env.REACT_APP_FRONTEND_URL + "?demoUser=" + row.original.wallet
             : row.original.wallet}
         </>
       )

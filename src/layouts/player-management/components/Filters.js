@@ -8,7 +8,7 @@ import MDButton from 'components/MDButton';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const Filters = ({ filters, setFilters }) => {
+const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
   const [usernameOptions, setUsernameOptions] = useState([
     {
       label: 'user1',
@@ -52,7 +52,18 @@ const Filters = ({ filters, setFilters }) => {
 
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [playerWallets, setPlayerWallets] = useState([]);
-  const [isDemoChecked, setIsDemoChecked] = useState(false); 
+  const [localIsDemoChecked, setLocalIsDemoChecked] = useState(isDemoChecked);
+
+// Checkbox handle
+  useEffect(() => {
+    setLocalIsDemoChecked(isDemoChecked);
+  }, [isDemoChecked]);
+
+  const handleCheckboxChange = (event) => {
+    const isChecked = event.target.checked;
+    setLocalIsDemoChecked(isChecked);
+    onIsDemoChange(isChecked);
+  };
 
   // fetch options
   useEffect(() => {
@@ -74,26 +85,11 @@ const Filters = ({ filters, setFilters }) => {
   }, []);
 
   useEffect(() => {
-
-    console.log('playerUsernames', playerUsernames);
-    console.log('playerWallets', playerWallets);
-    console.log('usernameOptions', usernameOptions);
-
-    // const filteredUsers = usernameOptions.filter((user) => {
-    //   if (isDemoChecked) {
-    //     // If "Demo" checkbox is checked, include users with isDemo true
-    //     return user.isDemo === true;
-    //   } else {
-    //     // If "Demo" checkbox is unchecked, exclude users with isDemo true
-    //     return !filters.users.includes(user.value) || user.isDemo === true;
-    //   }
-    // });
-
     setFilters({
       users: playerUsernames,
       wallets: playerWallets,
     });
-  }, [playerWallets, playerUsernames, isDemoChecked]);
+  }, [playerWallets, playerUsernames]);
   
   return (
     <MDBox
@@ -151,8 +147,8 @@ const Filters = ({ filters, setFilters }) => {
             <Checkbox
               icon={icon}
               checkedIcon={checkedIcon}
-              checked={isDemoChecked}
-              onChange={(event) => setIsDemoChecked(event.target.checked)}
+              checked={localIsDemoChecked}
+              onChange={(event) => handleCheckboxChange(event)}
             />
             Demo
           </label>

@@ -24,7 +24,6 @@ export const getPlayers = async (limit = 20, page = 1, search = []) => {
         };
       }),
       meta: unformattedData.data.meta
-      //   meta: unformattedData.data.meta
     };
   } catch (err) {
     console.log(err);
@@ -40,6 +39,51 @@ export const getPlayers = async (limit = 20, page = 1, search = []) => {
     };
   }
 };
+
+export const getPlayers1 = async (limit = 20, page = 1, search = [], showDemo = false) => {
+  const api = useAxios();
+  try {
+    const unformattedData = await api.get('/admin/metrics/players', {
+      params: { limit: limit, page: page, search: search }
+    });
+
+    // Filter the data based on showDemo input
+    const filteredData = unformattedData.data.items.filter((x) => x.u_isDemo === showDemo);
+
+    return {
+      data: filteredData.map((x) => {
+        return {
+          id: x.u_id,
+          nickname: x.u_nickname,
+          time_spent: x.time_spent,
+          current_balance: x.current_balance,
+          starting_balance: x.starting_balance,
+          money_spent: x.money_spent,
+          money_cashed_out: x.money_cashed_out,
+          wallet: x.u_walletId,
+          location: x.u_lastLocation,
+          kyc_status: x.u_kycState,
+          isDemo: x.u_isDemo
+        };
+      }),
+      meta: unformattedData.data.meta
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      data: [],
+      meta: {
+        totalItems: 0,
+        itemCount: 0,
+        itemsPerPage: 0,
+        totalPages: 0,
+        currentPage: 0
+      }
+    };
+  }
+};
+
+
 
 export const getPlayerAggregated = async (id) => {
   const api = useAxios();

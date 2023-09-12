@@ -3,23 +3,35 @@ import dataTablePlayersData from 'assets/mockData/dataTablePlayers';
 import MDButton from 'components/MDButton';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Can } from 'context';
-import { getPlayers, getPlayerAggregated } from 'services/players';
+import { getPlayers, getPlayerAggregated, getPlayers1 } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
 import Filters from './components/Filters';
 import { useEffect, useState } from 'react';
+
+
 function PlayerManagement() {
+
   const navigate = useNavigate();
   const onDelete = (id) => {
     console.log(id);
   };
   const [filters, setFilters] = useState({});
   const [cols, setCols] = useState(null);
+  const [isDemoChecked, setIsDemoChecked] = useState(false);
+
+  const handleIsDemoChange = (isChecked) => {
+    setIsDemoChecked(isChecked);
+  };
+
   useEffect(() => {
+    console.log(isDemoChecked);
     playerColumnData().then((res) => {
       setCols(res);
     });
-  }, []);
+  }, [isDemoChecked]);
+
   if (!cols) return <></>;
+
   return (
     <>
       <Can I='read' a='user'>
@@ -41,7 +53,7 @@ function PlayerManagement() {
           onDelete={onDelete}
           subrowFetchData={getPlayerAggregated}
           noActions
-          filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+          filtersComponent={<Filters filters={filters} setFilters={setFilters} isDemoChecked={isDemoChecked} onIsDemoChange={handleIsDemoChange}/>}
         />{' '}
       </Can>
       <Can not I='read' a='user'>
