@@ -9,7 +9,6 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = null) => 
       page: page,     
       sortBy: 'createdAt:DESC',
     }
-    
     if(Object.keys(filters).length) {
       if(filters.users.length){
         params['filter.user.id'] = `$in:${(filters.users.map((u) => u.id)).toString()}`
@@ -26,6 +25,7 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = null) => 
       if(filters.to ){
         timeFilter.push(`$lte:${filters.to.format('YYYY-MM-DDTHH:mm:ssZ')}`);
       }
+
     }
     if(timeFilter.length) {
       params['filter.createdAt'] =  timeFilter;
@@ -88,7 +88,8 @@ export const getEventsAggregated = async (limit = 20, page = 1, filters = null) 
         event_type: event?.name ? event.name : '-',
         calls: event?.count ? event.count : '-',
         user_calls: event?.userCount ? event.userCount : '-',
-        avg_daily_calls: Math.floor(event.count / 30)
+        avg_daily_calls: Math.floor(event.count / 30),
+        id: event.id
       };
     });
     return {

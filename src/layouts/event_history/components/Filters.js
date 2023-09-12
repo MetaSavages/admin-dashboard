@@ -86,31 +86,49 @@ const Filters = ({ filters, setFilters }) => {
     getAllCasinos().then((casinos) => {
       setCasinoOptions(casinos);
     });
+  }, [])
 
-    // fetch event types
-    // fetch player usernames
-    usernameOptions.forEach((username) => {
-      if (filters?.users) {
-        if (filters.users.includes(username.value)) {
-          setPlayerUsernames((prev) => [...prev, username]);
-        }
-      }
-    });
-    eventTypeOptions.forEach((eventType) => {
-      if (filters?.event_types) {
-        if (filters.event_types.includes(eventType.value)) {
-          setEventTypes((prev) => [...prev, eventType]);
-        }
-      }
-    });
+  useEffect(() => {
     casinoOptions.forEach((casino) => {
       if (filters?.casinos) {
-        if (filters.casinos.includes(casino.value)) {
-          setCasinos((prev) => [...prev, casino]);
-        }
+        filters.casinos.forEach((c) => {
+          if(c.id === casino.value){
+            setCasinos((prev) => [...prev, casino])
+          }
+        })
       }
     });
-  }, []);
+  }, [casinoOptions])
+
+  useEffect(() => {
+      if(filters?.users.length) {
+        getAllPlayers(filters.users[0].username).then((res) => {
+          res.forEach((username) => {
+            if (filters?.users) {
+              filters.users.forEach((u) => {
+                if(u.id === username.id){
+                  setPlayerUsernames((prev) => [...prev, username])
+                }
+              })
+            }
+          });
+        })
+      }
+  }, [])
+
+  useEffect(() => {
+    eventTypeOptions.forEach((eventType) => {
+      if (filters?.eventTypes) {
+        filters.eventTypes.forEach((e) => {
+          console.log(e, eventType)
+          if(e.id === eventType.id){
+            setEventTypes((prev) => [...prev, eventType])
+          }
+        })
+      }
+    });
+
+  }, [eventTypeOptions]);
   const onSubmit = () => {
     setFilters({
       eventTypes,
@@ -120,6 +138,9 @@ const Filters = ({ filters, setFilters }) => {
       to
     });
   };
+  useEffect(() => {
+    
+  }, [])
   return (
     <MDBox
       sx={{
