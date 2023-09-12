@@ -47,6 +47,7 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import VerticalBarChart from 'examples/Charts/BarCharts/VerticalBarChart';
 import MultiLayerPieChart from 'examples/Charts/MultiLayerPieChart';
 import DoubleInfoCard from './components/DoubleInfoCard';
+import TradingViewChart from 'examples/Charts/TradingView';
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
@@ -112,7 +113,7 @@ function Dashboard() {
       </Tooltip>
     </>
   );
-
+  console.log('gradientData', gradientData);
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -155,6 +156,9 @@ function Dashboard() {
                     chart={gradientData}
                     tension={0.5}
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <TradingViewChart days='asd' />
                 </Grid>
                 <Grid item xs={4}>
                   <MultiLayerPieChart title='Earnings' description='24 Hours performance' chart={pieData} />
