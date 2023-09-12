@@ -115,3 +115,31 @@ export const getEventsAggregated = async (limit = 20, page = 1, filters = null) 
     };
   }
 };
+
+export const getTodayNumbers = async (type) => {
+  try {
+    const api = useAxios();
+    let date = new Date();
+    date.setHours(0,0,0,0);
+    date = date.toJSON();
+  
+    let dateTomorrow = new Date();
+    dateTomorrow.setHours(24,0,0,0);
+    dateTomorrow = dateTomorrow.toJSON();
+  
+    const res = await api.get(`metrics/analytics-count-for-period/${type}`, {
+      params: {
+        startDate: date,
+        endDate: dateTomorrow
+      }
+    });
+
+    return await res.data;
+  } catch(error) {
+    console.log(error);
+
+    return {
+      data: []
+    };
+  }
+}
