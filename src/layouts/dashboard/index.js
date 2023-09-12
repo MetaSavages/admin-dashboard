@@ -136,12 +136,12 @@ function Dashboard() {
       <DashboardNavbar />
       <MDBox py={3}>
         <MDBox mb={3}>
-          <MDTypography variant='h2' fontWeight='medium'>
+          <MDTypography variant='h3' fontWeight='medium'>
             Today's numbers
           </MDTypography>
         </MDBox>
-        <MDBox px={6} display='flex' justifyContent='space-between' alignItems='center'>
-          <Grid container spacing={4} direction='row' justify='center' alignItems='stretch'>
+        <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+          <Grid container spacing={2} direction='row' justify='center' alignItems='stretch'>
             <Grid item xs={2}>
               <InfoCard color='info' icon='trending_up' title='Total game wins' description={gameWin} />
             </Grid>
