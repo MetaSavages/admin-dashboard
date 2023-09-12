@@ -54,26 +54,6 @@ function EventHistory() {
     }
   );
 
-  // useEffect(() => {
-  //   window.addEventListener('load', function () {
-  //     console.log('loaded page')
-  //     if(search.length) {
-  //       setFilters(
-  //         {
-  //         eventType: [queryString.parse(search)],
-  //         users: [],
-  //         eventTypes: [],
-  //         casinos: []
-  //        }
-  //         );
-  //       console.log(filters)
-  //     }
-  //   })
-  //   return (() => {
-  //     window.removeEventListener('load', () => {})
-  //   })
-  // }, []);
-
   const fetchData = () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
