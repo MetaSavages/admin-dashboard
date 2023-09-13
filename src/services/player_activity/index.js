@@ -5,7 +5,6 @@ export const getNewPlayers = async (limit = 20, page = 1) => {
     
     try {
       let date = new Date();
-      console.log(date);
       date.setHours(0,0,0,0);
       date = date.toJSON();
 

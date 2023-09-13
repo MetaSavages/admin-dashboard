@@ -6,12 +6,12 @@ export const getUsers = async (limit = 20, page = 1, search = '') => {
     const unformattedData = await api.get('/admin/users', {
       params: { limit: limit, page: page, search: search }
     });
-    console.log(unformattedData);
+
     return {
       data: unformattedData.data.data.map((user) => {
         return {
           ...user,
-          role: user.role.name
+          role: user.role?.name ? user.role?.name : '-',
         };
       }),
       meta: unformattedData.data.meta
@@ -81,6 +81,26 @@ export const updateUser = async (id, user) => {
       data: {
         action: '',
         object: ''
+      }
+    };
+  }
+};
+
+export const deleteUser = async (id) => {
+  const api = useAxios();
+  try {
+    return await api.delete(`/admin/users/${id}`);
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        role: {
+          id: '',
+          name: ''
+        }
       }
     };
   }
