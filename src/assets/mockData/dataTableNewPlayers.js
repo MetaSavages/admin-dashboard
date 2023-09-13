@@ -20,34 +20,6 @@ const dataTableNewPlayersData = {
     {
       Header: 'KYC Status',
       accessor: 'kyc_status',
-      Cell: ({ row }) => (
-        // Use Cell to render an expander for each row.
-        // We can use the getToggleRowExpandedProps prop-getter
-        // to build the expander.
-        <MDBox sx={{ position: 'relative', display: 'inline-flex' }}>
-          <CircularProgress
-            variant='determinate'
-            color={row.original.kyc_status === 100 ? 'success' : 'info'}
-            value={row.original.kyc_status}
-          />
-          <MDBox
-            sx={{
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              position: 'absolute',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            <MDTypography variant='caption' component='div'>
-              {`${Math.round(row.original.kyc_status)}%`}
-            </MDTypography>
-          </MDBox>
-        </MDBox>
-      )
     }
   ],
   rows: [

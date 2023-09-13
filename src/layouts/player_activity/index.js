@@ -44,6 +44,8 @@ import booking1 from 'assets/images/products/product-1-min.jpg';
 import booking2 from 'assets/images/products/product-2-min.jpg';
 import booking3 from 'assets/images/products/product-3-min.jpg';
 
+import { getNewPlayers } from 'services/player_activity';
+
 function PlayerActivity() {
   const { sales, tasks } = reportsLineChartData;
   const fetchData = () => {
@@ -120,7 +122,7 @@ function PlayerActivity() {
                 <DataTable
                   canSearch={false}
                   canFilter={false}
-                  fetchData={fetchData}
+                  fetchData={getNewPlayers}
                   queryKey={'new_payer'}
                   columnData={dataTableNewPlayersData.columns}
                   object={'new_payer'}
