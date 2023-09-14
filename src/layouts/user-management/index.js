@@ -13,6 +13,7 @@ function UserManagement() {
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
   const [deleteUserId, setDeleteUserId] = useState('');
+  const [filters, setFilters] = useState('');
 
   return (
     <>
@@ -38,6 +39,7 @@ function UserManagement() {
               handleOpenModal();
             }
           }
+          filters={filters}
         />
       </Can>
       <Can not I='read' a='user'>
@@ -57,7 +59,7 @@ function UserManagement() {
                 async () => {
                   await deleteUser(deleteUserId); 
                   handleCloseModal(); 
-                  window.location.reload();
+                  setFilters(filters.length ? "" : "d");
                 }
               }>Yes</Button>
               <Button onClick={handleCloseModal}>No</Button>

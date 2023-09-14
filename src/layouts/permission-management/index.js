@@ -11,6 +11,7 @@ function PermissionManagement() {
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
   const [deletePermissionId, setDeletePermissionId] = useState('');
+  const [filters, setFilters] = useState('');
   
   return (
     <>
@@ -32,6 +33,7 @@ function PermissionManagement() {
             handleOpenModal();
           }
         }
+        filters={filters}
       />
       <Dialog
           open={showModal}
@@ -47,7 +49,7 @@ function PermissionManagement() {
                 async () => {
                   await deletePermission(deletePermissionId); 
                   handleCloseModal(); 
-                  window.location.reload();
+                  setFilters(filters.length ? "" : "d");
                 }
               }>Yes</Button>
               <Button onClick={handleCloseModal}>No</Button>

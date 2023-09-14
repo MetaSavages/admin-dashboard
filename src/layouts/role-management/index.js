@@ -11,7 +11,7 @@ function RoleManagement() {
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
   const [deleteRoleId, setDeleteRoleId] = useState('');
-  
+  const [filters, setFilters] = useState('');
   return (
     <>
       <DataTablePage
@@ -32,6 +32,7 @@ function RoleManagement() {
             handleOpenModal();
           }
         }
+        filters={filters}
       />
       <Dialog
           open={showModal}
@@ -47,7 +48,7 @@ function RoleManagement() {
                 async () => {
                   await deleteRole(deleteRoleId);
                   handleCloseModal(); 
-                  window.location.reload();
+                  setFilters(filters.length ? "" : "d")
                 }
               }>Yes</Button>
               <Button onClick={handleCloseModal}>No</Button>

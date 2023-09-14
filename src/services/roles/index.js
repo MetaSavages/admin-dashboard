@@ -1,10 +1,10 @@
 import useAxios from 'hooks/useAxios';
 
-export const getRoles = async (limit = 20, page = 1, search = '') => {
+export const getRoles = async (limit = 20, page = 1) => {
   const api = useAxios();
   try {
     const unformattedData = await api.get('/admin/auth/roles', {
-      params: { limit: limit, page: page, search: search }
+      params: { limit: limit, page: page }
     });
     unformattedData.data.data = unformattedData.data.data.map((role) => {
       role.permissions = role.permissions
