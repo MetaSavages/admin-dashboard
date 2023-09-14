@@ -37,15 +37,22 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Filters from './components/Filters';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTablePage from 'components/DataTablePage';
 import { getEventsHistory, getEventsHistorySearch } from 'services/analytics';
 import eventHistoryColumnData from 'data/eventHistoryColumnData';
+
 function EventHistory() {
   const location = useLocation();
   const { search } = location;
   console.log('search', search);
-  const [filters, setFilters] = useState(queryString.parse(search));
+  const [filters, setFilters] = useState(
+    {
+      users: queryString.parse(search)?.userId ? [{id: queryString.parse(search)?.userId}] : [],
+      eventTypes: queryString.parse(search)?.eventType ? [{id: Number(queryString.parse(search)?.eventType)}] : [],
+      casinos: queryString.parse(search)?.casinoId ? [{id: queryString.parse(search)?.casinoId}] : []
+    }
+  );
 
   const fetchData = () => {
     return new Promise((resolve, reject) => {

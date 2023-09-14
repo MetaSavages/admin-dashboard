@@ -1,10 +1,10 @@
 import useAxios from 'hooks/useAxios';
 
-export const getPermissions = async (limit = 20, page = 1, search = '') => {
+export const getPermissions = async (limit = 20, page = 1) => {
   const api = useAxios();
   try {
     const unformattedData = await api.get('/admin/auth/permissions', {
-      params: { limit: limit, page: page, search: search }
+      params: { limit: limit, page: page }
     });
     return {
       data: unformattedData.data.data,
@@ -65,6 +65,21 @@ export const updatePermission = async (id, action, object) => {
       action: action,
       object: object
     });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        action: '',
+        object: ''
+      }
+    };
+  }
+};
+
+export const deletePermission = async (id) => {
+  const api = useAxios();
+  try {
+    return await api.delete(`/admin/auth/permissions/${id}`);
   } catch (err) {
     console.log(err);
     return {
