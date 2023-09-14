@@ -158,7 +158,7 @@ function Dashboard() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TradingViewChart days='asd' />
+                  <TradingViewChart />
                 </Grid>
                 <Grid item xs={4}>
                   <MultiLayerPieChart title='Earnings' description='24 Hours performance' chart={pieData} />
