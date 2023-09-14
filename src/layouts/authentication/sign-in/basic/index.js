@@ -39,6 +39,11 @@ function Basic() {
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
+        console.log('res', res);
+        if (res.data.access_token) {
+          localStorage.setItem('bt', res.data.access_token);
+        }
+
         actions.setSubmitting(false);
         actions.resetForm();
         getCurrentUser().then((res) => {

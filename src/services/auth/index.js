@@ -22,7 +22,12 @@ export const login = async (email, password) => {
 export const getCurrentUser = async () => {
   const api = useAxios();
   try {
-    return await api.get('/admin/users/me');
+    const token = localStorage.getItem('bt');
+
+      const config = token
+        ? { headers: { Authorization: `Bearer ${token}` } }
+        : {};
+      return await api.get('/admin/users/me', config);
   } catch (err) {
     console.log(err);
     return {
