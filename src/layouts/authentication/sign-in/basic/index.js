@@ -41,6 +41,7 @@ function Basic() {
       .then((res) => {
         actions.setSubmitting(false);
         actions.resetForm();
+        res.data.access_token && localStorage.setItem('token', res.data.access_token);
         getCurrentUser().then((res) => {
           console.log('res', res);
           setName(dispatch, `${res.firstName} ${res.lastName}`);
@@ -52,6 +53,7 @@ function Basic() {
       })
       .catch((err) => {
         alert('Email or password is incorrect');
+        console.log(err);
         actions.setSubmitting(false);
         actions.resetForm();
       });
