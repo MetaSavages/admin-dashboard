@@ -41,7 +41,8 @@ function Basic() {
       .then((res) => {
         actions.setSubmitting(false);
         actions.resetForm();
-        res.data.access_token && localStorage.setItem('token', res.data.access_token);
+        console.log('res', res);
+        res.data.access_token && localStorage.setItem('bt', res.data.access_token);
         getCurrentUser().then((res) => {
           console.log('res', res);
           setName(dispatch, `${res.firstName} ${res.lastName}`);
