@@ -8,7 +8,7 @@ import MDButton from 'components/MDButton';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const Filters = ({ filters, setFilters }) => {
+const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
   const [usernameOptions, setUsernameOptions] = useState([
     {
       label: 'user1',
@@ -52,6 +52,18 @@ const Filters = ({ filters, setFilters }) => {
 
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [playerWallets, setPlayerWallets] = useState([]);
+  const [localIsDemoChecked, setLocalIsDemoChecked] = useState(isDemoChecked);
+
+// Checkbox handle
+  useEffect(() => {
+    setLocalIsDemoChecked(isDemoChecked);
+  }, [isDemoChecked]);
+
+  const handleCheckboxChange = (event) => {
+    const isChecked = event.target.checked;
+    setLocalIsDemoChecked(isChecked);
+    onIsDemoChange(isChecked);
+  };
 
   // fetch options
   useEffect(() => {
@@ -75,9 +87,10 @@ const Filters = ({ filters, setFilters }) => {
   useEffect(() => {
     setFilters({
       users: playerUsernames,
-      wallets: playerWallets
+      wallets: playerWallets,
     });
   }, [playerWallets, playerUsernames]);
+  
   return (
     <MDBox
       sx={{
@@ -86,7 +99,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2} justifyContent={'flex-end'}>
-        <Grid item xs={5} md={5}>
+        <Grid item xs={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -107,7 +120,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={5} md={5}>
+        <Grid item xs={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -126,6 +139,19 @@ const Filters = ({ filters, setFilters }) => {
               )}
               renderInput={(params) => <TextField {...params} label='Wallet Address' variant='standard' />}
             />
+          </MDBox>
+        </Grid>
+        <Grid item xs={2} md={2}>
+          <MDBox>
+          <label>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              checked={localIsDemoChecked}
+              onChange={(event) => handleCheckboxChange(event)}
+            />
+            Demo
+          </label>
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>

@@ -15,6 +15,7 @@ Coded by www.creative-tim.com
 
 // formik components
 import { Formik, Form } from 'formik';
+import { useState } from 'react';
 
 // @mui material components
 import Grid from '@mui/material/Grid';
@@ -23,39 +24,56 @@ import Card from '@mui/material/Card';
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDButton from 'components/MDButton';
+import MDAlert from 'components/MDAlert';
 
 // Material Dashboard 2 PRO React examples
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
-// NewUser page components
-import UserInfo from 'layouts/user-management/components/UserInfo';
+// PlayerInfo page components
+import PlayerInfo from 'layouts/player-add/components/PlayerInfo';
+import CopyToClipboardButton from './components/CopyToClipboardButton'
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/user-management/schemas/validations';
-import form from 'layouts/user-management/schemas/form';
-import initialValues from 'layouts/user-management/schemas/initialValues';
-import { createUser } from 'services/users';
-function NewUser() {
+import validations from 'layouts/player-add/schemas/validations';
+import form from 'layouts/player-add/schemas/form';
+import initialValues from 'layouts/player-add/schemas/initialValues';
+
+// Custuom hook for fetching data
+import useAxios from 'hooks/useAxios';
+
+function AddPlyer() {
+  
+  const axiosInstance = useAxios();
   const { formId, formField } = form;
   const currentValidation = validations[0];
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [userId, setUserId] = useState(null);
 
-  const sleep = (ms) =>
-    new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
+  const link = process.env.REACT_APP_FRONTEND_URL + '?demoUser=';
+
   const submitForm = async (values, actions) => {
-    // await sleep(1000);
-    await createUser(values);
-    // // eslint-disable-next-line no-alert
-    // alert(JSON.stringify(values, null, 2));
+
+    try {
+      const response = await axiosInstance.post('admin/users/create-demo-user', values)
+      const data = response.data;
+      if (data) {
+        setUserId(data.walletId);
+        setAlertVisible(true);
+      } 
+      console.log(JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
     actions.setSubmitting(false);
     actions.resetForm();
   };
+
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };
+
 
   return (
     <DashboardLayout>
@@ -69,7 +87,7 @@ function NewUser() {
                   <Card sx={{ height: '100%' }}>
                     <MDBox p={3}>
                       <MDBox>
-                        <UserInfo
+                        <PlayerInfo
                           formData={{
                             values,
                             touched,
@@ -79,6 +97,12 @@ function NewUser() {
                             isSubmitting
                           }}
                         />
+                          {isAlertVisible && (
+                            <MDAlert color='dark'>
+                               User's link: <a style={{ color: 'green', textDecoration: 'none' }} href={link + userId}>{link + userId}</a>
+                               <CopyToClipboardButton text={link + userId} />
+                            </MDAlert>
+                          )}
                         <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
                           <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
                             Send
@@ -98,4 +122,4 @@ function NewUser() {
   );
 }
 
-export default NewUser;
+export default AddPlyer;

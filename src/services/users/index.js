@@ -6,6 +6,7 @@ export const getUsers = async (limit = 20, page = 1, search = '') => {
     const unformattedData = await api.get('/admin/users', {
       params: { limit: limit, page: page, search: search }
     });
+    console.log(unformattedData);
     return {
       data: unformattedData.data.data.map((user) => {
         return {
@@ -45,6 +46,41 @@ export const getUser = async (id) => {
           id: '',
           name: ''
         }
+      }
+    };
+  }
+};
+
+export const createUser = async (user) => {
+  const api = useAxios();
+  try {
+    return await api.post('/admin/users', {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      roleId: user.role
+    });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        action: '',
+        object: ''
+      }
+    };
+  }
+};
+export const updateUser = async (id, user) => {
+  const api = useAxios();
+  try {
+    return await api.put(`/admin/users/${id}`, user);
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        action: '',
+        object: ''
       }
     };
   }

@@ -1,26 +1,16 @@
 import DataTablePage from 'components/DataTablePage';
 import React from 'react';
 import dataTableFailedPayouts from 'assets/mockData/dataFailedPayouts';
-const FailedPayouts = () => {
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataTableFailedPayouts.rows,
-          meta: {
-            totalItems: 100
-          }
-        });
-      }, 100);
-    });
-  };
+import { getFailedWithdraws } from 'services/withdraws'
+import { failedWithdrawsColumnData } from 'data/failedWithdrawsColumnData'
 
+const FailedPayouts = () => {
   return (
     <DataTablePage
       title='Failed Payouts'
-      fetchData={fetchData}
+      fetchData={getFailedWithdraws}
       queryKey='failed_payouts'
-      columnData={dataTableFailedPayouts.columns}
+      columnData={failedWithdrawsColumnData}
       object={'failed_payouts'}
       noActions
     />

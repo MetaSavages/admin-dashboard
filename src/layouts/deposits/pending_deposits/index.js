@@ -8,28 +8,20 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import DataTablePage from 'components/DataTablePage';
 
+import { pendingPaymentsColumnData } from 'data/pendingPaymentsColumnData'
+import { getPendingDeposits } from 'services/deposits'
+
 const PendingDeposits = () => {
   const [filters, setFilters] = React.useState({});
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataPendingDeposits.rows,
-          meta: {
-            totalItems: 10
-          }
-        });
-      }, 100);
-    });
-  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DataTablePage
         title='Pending Deposits'
         canFilter
-        fetchData={fetchData}
+        fetchData={getPendingDeposits}
         queryKey='pending_deposits'
-        columnData={dataPendingDeposits.columns}
+        columnData={pendingPaymentsColumnData}
         object={'pending_deposits'}
         noActions
         filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
