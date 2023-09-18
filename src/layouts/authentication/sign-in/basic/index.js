@@ -39,21 +39,14 @@ function Basic() {
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
-        console.log('res', res);
-        if (res.data.access_token) {
-          localStorage.setItem('bt', res.data.access_token);
-        }
-
         actions.setSubmitting(false);
         actions.resetForm();
-        console.log('res', res);
         res.data.access_token && localStorage.setItem('AccessToken', res.data.access_token);
         getCurrentUser().then((res) => {
-          console.log('res', res);
-          setName(dispatch, `${res.firstName} ${res.lastName}`);
-          setEmail(dispatch, res.email);
-          setRole(dispatch, res.role); // no role yet
-          setAbility(dispatch, getUserAbilities(res.role));
+          setName(dispatch, `${res.data.firstName} ${res.data.lastName}`);
+          setEmail(dispatch, res.data.email);
+          setRole(dispatch, res.data.role); // no role yet
+          setAbility(dispatch, getUserAbilities(res.data.role));
           navigate('/dashboard', { replace: true });
         });
       })

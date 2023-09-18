@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { Grid, useTheme } from '@mui/material';
+import dayjs from 'dayjs';
 
 import { useMaterialUIController } from 'context';
 import { getDepositData } from 'services/deposits';
@@ -17,38 +18,26 @@ const TradingViewChart = ({}) => {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
-  const [from, setFrom] = useState(null);
-  const [to, setTo] = useState(null);
+  const today = new Date();
+
+  // Create a new date object for before 1 week 
+  const weekBefore = new Date();
+  weekBefore.setDate(today.getDate() - 7);
+
+  const [from, setFrom] = useState(dayjs(weekBefore));
+  const [to, setTo] = useState(dayjs(today));
 
   useEffect(() => {
-    setData([
-      { time: '2019-04-11', value: 80.01 },
-      { time: '2019-04-12', value: 96.63 },
-      { time: '2019-04-13', value: 76.64 },
-      { time: '2019-04-14', value: 81.89 },
-      { time: '2019-04-15', value: 74.43 },
-      { time: '2019-04-16', value: 80.01 },
-      { time: '2019-04-17', value: 96.63 },
-      { time: '2019-04-18', value: 76.64 },
-      { time: '2019-04-19', value: 81.89 },
-      { time: '2019-04-20', value: 74.43 }
-    ]);
+    
     getDepositData(from, to, 'SUCCESSFUL', 'day')
       .then((result) => {
-        if (result.length > 0) {
-          setData(result);
+        if (result.data.length > 0) { 
+          setData(result.data);
         }
-        // if (result?.prices?.length > 0) {
-        //   let allData = [];
-        //   result.prices.forEach((el) => {
-        //     allData.push({ time: el[0] / 1000, value: el[1] });
-        //   });
-        //   setData(allData);
-        // }
       })
       .catch((err) => console.error(err));
   }, [from, to]);
-
+  
   const backgroundValue = darkMode ? theme.palette.background.card : theme.palette.white.main;
   const colorText = darkMode ? '#ffffff' : '#344767';
 
@@ -106,7 +95,8 @@ const TradingViewChart = ({}) => {
       setTo(date);
     }
   };
-
+  console.log('from', from);
+  console.log('to', to);
   return (
     <MDBox>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -120,6 +110,7 @@ const TradingViewChart = ({}) => {
                 showDaysOutsideCurrentMonth
                 format='DD/MM/YYYY hh:mm'
                 value={from}
+                // value={''}
                 onChange={handleFromChange}
                 slotProps={{
                   layout: {
