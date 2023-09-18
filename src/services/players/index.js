@@ -113,3 +113,23 @@ export const getPlayerAggregated = async (id) => {
     };
   }
 };
+
+export const deletePlayer = async (id) => {
+  const api = useAxios();
+  try {
+    await api.delete(`/user/${id.id}`);
+
+    console.log(`User with ID ${id.id} deleted successfully.`);
+    alert(`User with ID ${id.id} deleted successfully.`);
+  } catch (err) {
+    console.error(`Error deleting user or fetching player aggregated data:`, err);
+    alert(`Error deleting user or fetching player aggregated data: ${err}`);
+  }
+};
+
+
+
+
+
+
+

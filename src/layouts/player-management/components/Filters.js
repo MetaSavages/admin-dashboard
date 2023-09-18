@@ -155,7 +155,7 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
-          <MDButton variant='text' disabled={!playerUsernames.length && !playerWallets.length}>
+          <MDButton variant='text' disabled={!playerUsernames.length && !playerWallets.length && !localIsDemoChecked}>
             Apply
           </MDButton>
         </Grid>

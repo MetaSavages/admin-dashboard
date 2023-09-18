@@ -2,18 +2,22 @@ import DataTablePage from 'components/DataTablePage';
 import dataTablePlayersData from 'assets/mockData/dataTablePlayers';
 import MDButton from 'components/MDButton';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { Can } from 'context';
 import { getPlayers, getPlayerAggregated, getPlayers1 } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
 import Filters from './components/Filters';
 import { useEffect, useState } from 'react';
+import { deletePlayer } from 'services/players';
+import { Can } from 'context';
 
 
 function PlayerManagement() {
 
   const navigate = useNavigate();
+
   const onDelete = (id) => {
-    console.log(id);
+    deletePlayer(id).then((res) => {
+      console.log(res);
+    });
   };
   const [filters, setFilters] = useState({});
   const [cols, setCols] = useState(null);
@@ -39,20 +43,20 @@ function PlayerManagement() {
           title='Player Management'
           createButton={
             <Can I='create' a='user'>
-              <MDButton variant='contained' color='info' onClick={() => navigate('/player-add')}>
+              <MDButton variant='contained' color='info' onClick={() => navigate('/player-management/new-player/')}>
                 Add Demo Player
               </MDButton>
             </Can>
           }
           canSearch
           canFilter
-          fetchData={getPlayers}
+          fetchData={getPlayers1}
           queryKey='players'
           columnData={cols}
           object={'player'}
           onDelete={onDelete}
           subrowFetchData={getPlayerAggregated}
-          noActions
+          // {isDemoChecked ? null : noActions}
           filtersComponent={<Filters filters={filters} setFilters={setFilters} isDemoChecked={isDemoChecked} onIsDemoChange={handleIsDemoChange}/>}
         />{' '}
       </Can>

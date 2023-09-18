@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import * as Yup from 'yup';
-import checkout from 'layouts/player-add/schemas/form';
+import checkout from 'layouts/player-management/schemas/form';
 
 const {
   formField: { nickname }

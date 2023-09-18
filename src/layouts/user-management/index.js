@@ -5,6 +5,8 @@ import { getUsers } from 'services/users';
 import userColumnData from 'data/usersColumnData';
 import { Skeleton } from '@mui/material';
 import { Can } from 'context';
+
+
 function UserManagement() {
   const navigate = useNavigate();
   const onDelete = (id) => {
