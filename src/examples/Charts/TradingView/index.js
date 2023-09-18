@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { Grid, useTheme } from '@mui/material';
-import dayjs from 'dayjs';
 
 import { useMaterialUIController } from 'context';
 import { getDepositData } from 'services/deposits';
@@ -11,33 +10,17 @@ import { pickersLayoutClasses } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 
-const TradingViewChart = ({}) => {
+const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo }) => {
   const chartContainer = useRef(null);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(dataInfo);
   const theme = useTheme();
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
-  const today = new Date();
-
-  // Create a new date object for before 1 week 
-  const weekBefore = new Date();
-  weekBefore.setDate(today.getDate() - 7);
-
-  const [from, setFrom] = useState(dayjs(weekBefore));
-  const [to, setTo] = useState(dayjs(today));
-
   useEffect(() => {
-    
-    getDepositData(from, to, 'SUCCESSFUL', 'day')
-      .then((result) => {
-        if (result.data.length > 0) { 
-          setData(result.data);
-        }
-      })
-      .catch((err) => console.error(err));
-  }, [from, to]);
-  
+    setData(dataInfo);
+  }, [dataInfo]);
+
   const backgroundValue = darkMode ? theme.palette.background.card : theme.palette.white.main;
   const colorText = darkMode ? '#ffffff' : '#344767';
 
@@ -75,28 +58,6 @@ const TradingViewChart = ({}) => {
     };
   }, [darkMode, data]);
 
-  const handleFromChange = (date) => {
-    if (to) {
-      if (date > to) {
-        setFrom(to);
-        setTo(date);
-      }
-    } else {
-      setFrom(date);
-    }
-  };
-  const handleToChange = (date) => {
-    if (from) {
-      if (date < from) {
-        setFrom(date);
-        setTo(from);
-      }
-    } else {
-      setTo(date);
-    }
-  };
-  console.log('from', from);
-  console.log('to', to);
   return (
     <MDBox>
       <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -13,6 +13,9 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+
 // @mui material components
 import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
@@ -49,8 +52,53 @@ import MultiLayerPieChart from 'examples/Charts/MultiLayerPieChart';
 import DoubleInfoCard from './components/DoubleInfoCard';
 import TradingViewChart from 'examples/Charts/TradingView';
 
+// Services
+import { getDepositData } from 'services/deposits';
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [data, setData] = useState([])
+  const today = new Date();
+
+  // Create a new date object for before 1 week 
+  const weekBefore = new Date();
+  weekBefore.setDate(today.getDate() - 7);
+
+  const [from, setFrom] = useState(dayjs(weekBefore));
+  const [to, setTo] = useState(dayjs(today));
+
+  useEffect(() => {
+    
+    getDepositData(from, to, 'SUCCESSFUL', 'day')
+      .then((result) => {
+        if (result.data.length > 0) { 
+          setData(result.data);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, [from, to]);
+
+  const handleFromChange = (date) => {
+    if (to) {
+      if (date > to) {
+        setFrom(to);
+        setTo(date);
+      }
+    } else {
+      setFrom(date);
+    }
+  };
+  const handleToChange = (date) => {
+    if (from) {
+      if (date < from) {
+        setFrom(date);
+        setTo(from);
+      }
+    } else {
+      setTo(date);
+    }
+  };
+
 
   const gradientData = {
     ...sales,
@@ -158,7 +206,7 @@ function Dashboard() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TradingViewChart />
+                  <TradingViewChart from={from} handleFromChange={handleFromChange} to={to} handleToChange={handleToChange} dataInfo={data}/>
                 </Grid>
                 <Grid item xs={4}>
                   <MultiLayerPieChart title='Earnings' description='24 Hours performance' chart={pieData} />
