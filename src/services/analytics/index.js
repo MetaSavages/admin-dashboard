@@ -1,6 +1,6 @@
 import useAxios from 'hooks/useAxios';
 
-export const getEventsHistory = async (limit = 20, page = 1, filters = null) => {
+export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
   const api = useAxios();
   try {
     let timeFilter = [];
@@ -43,7 +43,8 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = null) => 
         event_type: event?.type?.name ? event.type.name : '-',
         event_type_id: event?.type?.id ? event.type.id : '-',
         amount: event?.payload?.amount ? event.payload.amount : '-',
-        gameType: event?.payload?.gameType ? event.payload.gameType : '-'
+        gameType: event?.payload?.gameType ? event.payload.gameType : '-',
+        country: event?.country ? event.country : '-'
       };
     });
     return {
