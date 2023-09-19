@@ -42,7 +42,6 @@ function CasinoManagement() {
           queryKey='casinos'
           columnData={casinosColumnData}
           object={'casino'}
-          onDelete={onDelete}
           noActions
         />
       </Can>

@@ -30,10 +30,10 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
     if(timeFilter.length) {
       params['filter.createdAt'] =  timeFilter;
     }
-    const res = await api.get('/metrics', {
+    const res = await api.get('/admin/metrics', {
       params: params
     });
-    console.log(res);
+
     const data = res.data.data.map((event) => {
       return {
         ...event,
@@ -80,7 +80,7 @@ export const getEventsAggregated = async (limit = 20, page = 1, filters = null) 
         params['id'] =  `${(filters.eventTypes.map((e) => e.id)).toString()}`;
       }
     }
-    const res = await api.get('/metrics/aggregated', {
+    const res = await api.get('/admin/metrics/aggregated', {
       params: params
     });
     console.log(res);
@@ -128,7 +128,7 @@ export const getTodayNumbers = async (type) => {
     dateTomorrow.setHours(24,0,0,0);
     dateTomorrow = dateTomorrow.toJSON();
   
-    const res = await api.get(`metrics/analytics-count-for-period/${type}`, {
+    const res = await api.get(`admin/metrics/analytics-count-for-period/${type}`, {
       params: {
         startDate: date,
         endDate: dateTomorrow

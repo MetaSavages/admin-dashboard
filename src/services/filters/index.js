@@ -3,7 +3,7 @@ import useAxios from 'hooks/useAxios';
 export const getEventTypes = async () => {
     const api = useAxios();
     try {
-      const unformattedData = await api.get('/metrics/types');
+      const unformattedData = await api.get('admin/metrics/types');
       
       const data = unformattedData.data.map((type) => {
         return {
