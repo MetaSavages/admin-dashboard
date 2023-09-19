@@ -117,15 +117,22 @@ export const getPlayerAggregated = async (id) => {
 export const deletePlayer = async (id) => {
   const api = useAxios();
   try {
-    await api.delete(`/user/${id.id}`);
-
-    console.log(`User with ID ${id.id} deleted successfully.`);
-    alert(`User with ID ${id.id} deleted successfully.`);
+    const response = await api.delete('/user', {
+      data: { userId: id },
+    });
+    if (response.status === 200) {
+      console.log(`User with ID ${id} deleted successfully.`);
+      alert(`User with ID ${id} deleted successfully.`);
+    } else {
+      console.error(`Error deleting user: Unexpected status code ${response.status}`);
+      alert(`Error deleting user: Unexpected status code ${response.status}`);
+    }
   } catch (err) {
-    console.error(`Error deleting user or fetching player aggregated data:`, err);
-    alert(`Error deleting user or fetching player aggregated data: ${err}`);
+    console.error(`Error deleting user:`, err);
+    alert(`Error deleting user: ${err.message}`);
   }
 };
+
 
 
 

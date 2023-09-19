@@ -44,6 +44,7 @@ import { Skeleton } from '@mui/material';
 import { getPlayerAggregated } from 'services/players';
 import { getUser } from 'services/users';
 
+
 function EditPlyer() {
   const { formId, formField } = form;
   const currentValidation = validations[0];

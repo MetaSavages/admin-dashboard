@@ -139,13 +139,6 @@ const routes = [
         route: '/player-management',
         component: <PlayerManagement />
       }
-      // {
-      //   name: 'Player Add',
-      //   key: 'new-player',
-      //   icon: <Icon fontSize='medium'>people</Icon>,
-      //   route: '/player-management/new-player',
-      //   component: <PlayerAdd />
-      // }
     ]
   },
   {

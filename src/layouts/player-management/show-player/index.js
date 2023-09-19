@@ -15,6 +15,8 @@ function ShowPlayer() {
     getPlayerAggregated(id)
       .then((res) => {
         setUser(res.data);
+        console.log("User");
+        console.log(user);
       })
       .catch((err) => {
         console.log(err);
@@ -44,17 +46,17 @@ function ShowPlayer() {
             </MDBox>
             <MDBox display='flex' justifyContent='space-between' alignItems='center'>
               <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Email: {user.email}
+                Nickname: {user.nickname}
               </MDTypography>
             </MDBox>
             <MDBox display='flex' justifyContent='space-between' alignItems='center'>
               <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Created at: {user.createdAt}
+                Wallet ID: {user.walletId}
               </MDTypography>
             </MDBox>
             <MDBox display='flex' justifyContent='space-between' alignItems='center'>
               <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Updated At: {user.updatedAt}
+                KYC: {user.kycState}
               </MDTypography>
             </MDBox>
           </MDBox>

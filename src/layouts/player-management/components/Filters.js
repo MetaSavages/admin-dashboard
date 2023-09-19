@@ -9,46 +9,25 @@ const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
-  const [usernameOptions, setUsernameOptions] = useState([
-    {
-      label: 'user1',
-      value: '1'
-    },
-    {
-      label: 'user2',
-      value: '2'
-    },
-    {
-      label: 'user3',
-      value: '3'
-    },
-    {
-      label: 'user4',
-      value: '4'
-    }
-  ]);
-  const [walletOptions, setWalletOptions] = useState([
-    {
-      label: 'wallet1',
-      value: '1'
-    },
-    {
-      label: 'wallet2',
-      value: '2'
-    },
-    {
-      label: 'wallet3',
-      value: '3'
-    },
-    {
-      label: 'wallet4',
-      value: '4'
-    }
-  ]);
+  const [usernameOptions, setUsernameOptions] = useState([]);
+  const [walletOptions, setWalletOptions] = useState([]);
+  const [usernameInput, setUsernameInput] = useState('');
 
   const updateUsernames = (event, value) => {
     setPlayerUsernames(value);
   };
+
+  const handleUsernameInput = (event) => {
+    setUsernameInput(event.target.value);
+    if (event.target.value.length > 2) {
+      getAllPlayers(event.target.value).then((players) => {
+        setUsernameOptions(players);
+      });
+    } else if (event.target.value.length < 2) {
+      setUsernameOptions([]);
+    }
+  };
+
 
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [playerWallets, setPlayerWallets] = useState([]);
@@ -83,6 +62,7 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
       }
     });
   }, []);
+  
 
   useEffect(() => {
     setFilters({
@@ -116,7 +96,15 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
                   {option.label}
                 </li>
               )}
-              renderInput={(params) => <TextField {...params} label='Player username' variant='standard' />}
+              renderInput={ (params) => 
+                <TextField
+                  {...params}
+                  label='Player username or Wallet ID'
+                  variant='standard'
+                  value={usernameInput}
+                  onChange={handleUsernameInput}
+                />
+              }
             />
           </MDBox>
         </Grid>

@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { IconButton, Icon, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import MDButton from 'components/MDButton';
 import SubRows from './SubRows';
+import { useEffect } from 'react';
+
 function DataTableBodyRow({
   row,
   noEndBorder,
@@ -16,6 +18,13 @@ function DataTableBodyRow({
   rowsLength
 }) {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(row.cells);
+
+
+  }, [row]);
+
   return (
     <TableRow {...row.getRowProps()}>
       {row.cells.map((cell, index) => (

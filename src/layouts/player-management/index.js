@@ -13,7 +13,6 @@ import { Can } from 'context';
 function PlayerManagement() {
 
   const navigate = useNavigate();
-
   const onDelete = (id) => {
     deletePlayer(id).then((res) => {
       console.log(res);
@@ -26,6 +25,7 @@ function PlayerManagement() {
   const handleIsDemoChange = (isChecked) => {
     setIsDemoChecked(isChecked);
   };
+
 
   useEffect(() => {
     console.log(isDemoChecked);
@@ -50,7 +50,7 @@ function PlayerManagement() {
           }
           canSearch
           canFilter
-          fetchData={getPlayers1}
+          fetchData={getPlayers}
           queryKey='players'
           columnData={cols}
           object={'player'}
@@ -58,6 +58,7 @@ function PlayerManagement() {
           subrowFetchData={getPlayerAggregated}
           // {isDemoChecked ? null : noActions}
           filtersComponent={<Filters filters={filters} setFilters={setFilters} isDemoChecked={isDemoChecked} onIsDemoChange={handleIsDemoChange}/>}
+          filters={filters}
         />{' '}
       </Can>
       <Can not I='read' a='user'>
