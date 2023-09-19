@@ -33,7 +33,7 @@ import MDBox from 'components/MDBox';
 import SalesTableCell from 'examples/Tables/SalesTable/SalesTableCell';
 
 function SalesTable({ rows, shadow }) {
-  const defaultCountries = [
+  let defaultCountries = [
     {
       country: ['AU', 'Australia'],
       registered: 0,
@@ -48,8 +48,7 @@ function SalesTable({ rows, shadow }) {
       country: ['KR', 'South Korea'],
       registered: 0,
       active: 0
-    }
-    ,
+    },
     {
       country: ['US', 'United States'],
       registered: 0,
@@ -58,41 +57,42 @@ function SalesTable({ rows, shadow }) {
   ];
 
   const rowsToShow = [...rows.slice(1)];
-  const res = [...defaultCountries, ...rowsToShow.filter((cc) => !defaultCountries.find((c) => cc.country[0] === c.country[0]))];
-  const rowsDescending = (res.sort((a, b) => b.active - a.active));
+  defaultCountries = defaultCountries.filter((c) =>
+    rowsToShow.find((cc) => c.country[0] === cc.country[0] && (cc.registered === 0 || cc.active === 0))
+  );
+  const rowsDescending = [...defaultCountries, ...rowsToShow].sort((a, b) => b.active - a.active);
 
-  if(rowsDescending?.length < 250) {
-    return <></>
+  if (rowsDescending?.length < 250) {
+    return <></>;
   }
 
   const renderTableCells = rowsDescending.slice(0, 4).map((row, key) => {
     const tableRows = [];
     const rowKey = `row-${key}`;
     Object.entries(row).map(([cellTitle, cellContent]) => {
-        Array.isArray(cellContent)
-          ? tableRows.push(
-              <SalesTableCell
-                key={cellContent[1]}
-                title={cellTitle}
-                content={cellContent[1]}
-                image={`https://flagsapi.com/${cellContent[0]}/shiny/64.png`}
-                noBorder={key === rows.length - 1}
-              />
-            )
-          : tableRows.push(
-              <SalesTableCell
-                key={cellContent}
-                title={cellTitle}
-                content={cellContent}
-                noBorder={key === rows.length - 1}
-              />
+      Array.isArray(cellContent)
+        ? tableRows.push(
+            <SalesTableCell
+              key={cellContent[1]}
+              title={cellTitle}
+              content={cellContent[1]}
+              image={`https://flagsapi.com/${cellContent[0]}/shiny/64.png`}
+              noBorder={key === rows.length - 1}
+            />
           )
-        }
-    );
+        : tableRows.push(
+            <SalesTableCell
+              key={cellContent}
+              title={cellTitle}
+              content={cellContent}
+              noBorder={key === rows.length - 1}
+            />
+          );
+    });
 
     return <TableRow key={rowKey}>{tableRows}</TableRow>;
   });
-  
+
   return (
     <TableContainer sx={{ height: '100%', boxShadow: !shadow && 'none' }}>
       <Table>
