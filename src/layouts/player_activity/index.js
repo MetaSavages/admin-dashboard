@@ -59,44 +59,44 @@ function PlayerActivity() {
   const [userCountries, setUserCountries] = useState([]);
   const [countryValues, setCountryValues] = useState({});
   const [salesTable, setSalesTable] = useState([{}]);
-  const [loading ,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api
-    .request("https://restcountries.com/v3.1/all")
-    .then((response) => {
+      .request('https://restcountries.com/v3.1/all')
+      .then((response) => {
         const countryCodes = [];
         const countryNames = [];
         response.data.forEach((element) => {
-            countryCodes.push([element.cca2, 0]);
-            countryNames[element.cca2] = element.name.common;
+          countryCodes.push([element.cca2, 0]);
+          countryNames[element.cca2] = element.name.common;
         });
         setCountryCodes(countryCodes);
         setCountryNames(countryNames);
-    })
-    .catch(function (error) {
+      })
+      .catch(function (error) {
         console.error(error);
-    });
+      });
   }, []);
 
   useEffect(() => {
     getEventsHistory(1000, 1, {
       users: [],
       casinos: [],
-      eventTypes: [{id:1}],
-      from: dayjs().subtract(14, "day"),
+      eventTypes: [{ id: 1 }],
+      from: dayjs().subtract(14, 'day'),
       to: dayjs()
     })
-    .then((response) => {
-        const users = []
+      .then((response) => {
+        const users = [];
         response.data.forEach((user) => {
-            users.push(user.country);
+          users.push(user.country);
         });
         setUserCountries(users);
-    })
-    .catch(function (error) {
+      })
+      .catch(function (error) {
         console.error(error);
-    });
+      });
   }, []);
 
   const countCountries = () => {
@@ -104,34 +104,34 @@ function PlayerActivity() {
     countryCodes.forEach((country) => {
       let counter = 0;
       userCountries.forEach((userCountry) => {
-        if( country[0] === userCountry ) { counter++; }
-      })
-      res = {...res,[ country[0]]: counter}
-    })
+        if (country[0] === userCountry) {
+          counter++;
+        }
+      });
+      res = { ...res, [country[0]]: counter };
+    });
     setCountryValues(res);
   };
 
   const handleSalesTable = () => {
     Object.entries(countryValues).map((key, value) => {
-        setSalesTable((salesTable) => 
-        [
-          ...salesTable,
-          {
-            country: [key[0], countryNames[key[0]]],
-            registered: key[1],
-            active: key[1]
-          },
-        ]
-      )
-    })
-  }
+      setSalesTable((salesTable) => [
+        ...salesTable,
+        {
+          country: [key[0], countryNames[key[0]]],
+          registered: key[1],
+          active: key[1]
+        }
+      ]);
+    });
+  };
 
   useEffect(() => {
-    if(Object.entries(countryValues).length){
+    if (Object.entries(countryValues).length) {
       setLoading(false);
       handleSalesTable();
     }
-  }, [countryValues])
+  }, [countryValues]);
 
   useEffect(() => {
     countCountries();
@@ -139,13 +139,13 @@ function PlayerActivity() {
 
   const findCountryValue = (country) => {
     let number = 0;
-    Object.entries(countryValues).find(([key,value]) => {
+    Object.entries(countryValues).find(([key, value]) => {
       if (key == country) {
         number = value;
       }
     });
     return number;
-  }
+  };
 
   // Action buttons for the BookingCard
   const actionButtons = (
@@ -170,7 +170,7 @@ function PlayerActivity() {
         <Grid container spacing={5}>
           <Grid item xs={6} md={6} lg={6}>
             <MDBox xs={6} md={6} lg={6}>
-              <SalesByCountry salesTable={salesTable}/>
+              <SalesByCountry salesTable={salesTable} />
               <MDBox mb={3} mt={5}>
                 <ReportsLineChart
                   color='dark'
@@ -183,9 +183,9 @@ function PlayerActivity() {
             </MDBox>
           </Grid>
           <Grid item xs={6} md={6} lg={6}>
-            {
-              ((loading || !userCountries.length) && !Object.entries(countryValues).length) ?
-                    <Skeleton/> :
+            {(loading || !userCountries.length) && !Object.entries(countryValues).length ? (
+              <Skeleton />
+            ) : (
               <VectorMap
                 map={worldMerc}
                 zoomOnScroll={false}
@@ -209,7 +209,7 @@ function PlayerActivity() {
                 series={{
                   regions: [
                     {
-                      scale: ['#ffffcc', '#c7e9b4', '#7fcdbb', '#41b6c4', '#2c7fb8', '#253494'],
+                      scale: ['#8a836b', '#c7e9b4', '#7fcdbb', '#41b6c4', '#2c7fb8', '#253494'],
                       attribute: 'fill',
                       values: countryValues,
                       hoverOpacity: 0.7,
@@ -224,10 +224,10 @@ function PlayerActivity() {
                   ]
                 }}
               />
-            }
+            )}
           </Grid>
         </Grid>
-        
+
         <MDBox>
           <Grid container spacing={3} mb={3}>
             <Grid item xs={12}>
