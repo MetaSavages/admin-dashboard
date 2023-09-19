@@ -196,15 +196,12 @@ function PlayerActivity() {
                 }}
                 regionStyle={{
                   initial: {
-                    fill: '#dee2e7',
+                    fill: '#8a836b',
                     'fill-opacity': 1,
                     stroke: 'none',
                     'stroke-width': 0,
                     'stroke-opacity': 0
                   }
-                }}
-                style={{
-                  marginTop: '-1.5rem'
                 }}
                 series={{
                   regions: [
