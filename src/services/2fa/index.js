@@ -20,10 +20,10 @@ export const turnOn2Fa = async (code) => {
   }
 };
 
-export const login2Fa = async () => {
+export const login2Fa = async (code) => {
   const api = useAxios();
   try {
-    return await api.post('/admin/auth/2fa-login');
+    return await api.post('/admin/auth/2fa-login', { twoFactorAuthenticationCode: code.toString() });
   } catch (err) {
     console.log(err);
     throw new Error(err.response.data.message);

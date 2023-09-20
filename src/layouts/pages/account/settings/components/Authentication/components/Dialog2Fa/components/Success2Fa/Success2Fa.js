@@ -1,5 +1,5 @@
 import MDButton from 'components/MDButton';
-s
+
 const { DialogContent, DialogActions } = require('@mui/material');
 const { default: MDBox } = require('components/MDBox');
 const { default: MDTypography } = require('components/MDTypography');
