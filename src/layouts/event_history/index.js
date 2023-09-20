@@ -45,14 +45,13 @@ import eventHistoryColumnData from 'data/eventHistoryColumnData';
 function EventHistory() {
   const location = useLocation();
   const { search } = location;
-  console.log('search', search);
-  const [filters, setFilters] = useState(
-    {
-      users: queryString.parse(search)?.userId ? [{id: queryString.parse(search)?.userId}] : [],
-      eventTypes: queryString.parse(search)?.eventType ? [{id: Number(queryString.parse(search)?.eventType)}] : [],
-      casinos: queryString.parse(search)?.casinoId ? [{id: queryString.parse(search)?.casinoId}] : []
-    }
-  );
+
+  const [filters, setFilters] = useState({
+    users: queryString.parse(search)?.userId ? [{ id: queryString.parse(search)?.userId }] : [],
+    eventTypes: queryString.parse(search)?.eventType ? [{ id: Number(queryString.parse(search)?.eventType) }] : [],
+    casinos: queryString.parse(search)?.casinoId ? [{ id: queryString.parse(search)?.casinoId }] : [],
+    countries: queryString.parse(search)?.country ? [queryString.parse(search)?.country] : []
+  });
 
   const fetchData = () => {
     return new Promise((resolve, reject) => {

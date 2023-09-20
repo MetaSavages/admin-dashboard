@@ -5,30 +5,33 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
   try {
     let timeFilter = [];
     const params = {
-      limit: limit, 
-      page: page,     
-      sortBy: 'createdAt:DESC',
-    }
-    if(Object.keys(filters).length) {
-      if(filters.users.length){
-        params['filter.user.id'] = `$in:${(filters.users.map((u) => u.id)).toString()}`
+      limit: limit,
+      page: page,
+      sortBy: 'createdAt:DESC'
+    };
+
+    if (Object.keys(filters).length) {
+      if (filters.users.length) {
+        params['filter.user.id'] = `$in:${filters.users.map((u) => u.id).toString()}`;
       }
-      if(filters.eventTypes.length){
-        params['filter.type.id'] =  `$in:${(filters.eventTypes.map((e) => e.id)).toString()}`;
+      if (filters.eventTypes.length) {
+        params['filter.type.id'] = `$in:${filters.eventTypes.map((e) => e.id).toString()}`;
       }
-      if(filters.casinos.length){
-        params['filter.casino.id']  = `$in:${(filters.casinos.map((c) => c.id)).toString()}`;
+      if (filters.casinos.length) {
+        params['filter.casino.id'] = `$in:${filters.casinos.map((c) => c.id).toString()}`;
       }
-      if(filters.from ){
+      if (filters.countries.length) {
+        params['filter.country'] = `$in:${filters.countries.map((c) => c).toString()}`;
+      }
+      if (filters.from) {
         timeFilter.push(`$gte:${filters.from.format('YYYY-MM-DDTHH:mm:ssZ')}`);
       }
-      if(filters.to ){
+      if (filters.to) {
         timeFilter.push(`$lte:${filters.to.format('YYYY-MM-DDTHH:mm:ssZ')}`);
       }
-
     }
-    if(timeFilter.length) {
-      params['filter.createdAt'] =  timeFilter;
+    if (timeFilter.length) {
+      params['filter.createdAt'] = timeFilter;
     }
     const res = await api.get('/admin/metrics', {
       params: params
@@ -70,14 +73,14 @@ export const getEventsAggregated = async (limit = 20, page = 1, filters = null) 
   const api = useAxios();
   try {
     const params = {
-      limit: limit, 
-      page: page,     
-      sortBy: 'createdAt:DESC',
-    }
-    
-    if(Object.keys(filters).length) {
-      if(filters.eventTypes.length){
-        params['id'] =  `${(filters.eventTypes.map((e) => e.id)).toString()}`;
+      limit: limit,
+      page: page,
+      sortBy: 'createdAt:DESC'
+    };
+
+    if (Object.keys(filters).length) {
+      if (filters.eventTypes.length) {
+        params['id'] = `${filters.eventTypes.map((e) => e.id).toString()}`;
       }
     }
     const res = await api.get('/admin/metrics/aggregated', {
@@ -121,13 +124,13 @@ export const getTodayNumbers = async (type) => {
   try {
     const api = useAxios();
     let date = new Date();
-    date.setHours(0,0,0,0);
+    date.setHours(0, 0, 0, 0);
     date = date.toJSON();
-  
+
     let dateTomorrow = new Date();
-    dateTomorrow.setHours(24,0,0,0);
+    dateTomorrow.setHours(24, 0, 0, 0);
     dateTomorrow = dateTomorrow.toJSON();
-  
+
     const res = await api.get(`admin/metrics/analytics-count-for-period/${type}`, {
       params: {
         startDate: date,
@@ -136,11 +139,11 @@ export const getTodayNumbers = async (type) => {
     });
 
     return await res.data;
-  } catch(error) {
+  } catch (error) {
     console.log(error);
 
     return {
       data: []
     };
   }
-}
+};

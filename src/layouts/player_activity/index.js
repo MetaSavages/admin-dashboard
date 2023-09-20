@@ -84,6 +84,7 @@ function PlayerActivity() {
       users: [],
       casinos: [],
       eventTypes: [{ id: 1 }],
+      countries: [],
       from: dayjs().subtract(14, 'day'),
       to: dayjs()
     })
