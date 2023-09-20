@@ -114,6 +114,27 @@ export const getPlayerAggregated = async (id) => {
   }
 };
 
+export const getPlayer = async (id) => {
+  const api = useAxios();
+  try {
+    const res = await api.get(`/admin/metrics/players/?id=${id}`);
+    return res.data.items[0];
+  } catch (err) {
+    console.log(err);
+    return {
+      data: [],
+      meta: {
+        totalItems: 0,
+        itemCount: 0,
+        itemsPerPage: 0,
+        totalPages: 0,
+        currentPage: 0
+      }
+    };
+  }
+};
+
+
 export const deletePlayer = async (id) => {
   const api = useAxios();
   try {
@@ -135,6 +156,25 @@ export const deletePlayer = async (id) => {
 
 
 
+
+export const updatePlayerName = async (id, name) => {
+  const api = useAxios();
+  try {
+    const response = await api.post('user/update-nickname', {
+      userId:id, nickname: name 
+    });
+    if (response.status === 200) {
+      console.log(`User with ID ${id} deleted successfully.`);
+      alert(`Player has new name now.`);
+    } else {
+      console.error(`Error updating user: Unexpected status code ${response.status}`);
+      alert(`Error updating user: Unexpected status code ${response.status}`);
+    }
+  } catch (err) {
+    console.error(`Error updating user:`, err);
+    alert(`Error updating user: ${err.message}`);
+  }
+};
 
 
 

@@ -19,12 +19,6 @@ function DataTableBodyRow({
 }) {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(row.cells);
-
-
-  }, [row]);
-
   return (
     <TableRow {...row.getRowProps()}>
       {row.cells.map((cell, index) => (

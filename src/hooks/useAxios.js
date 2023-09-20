@@ -1,26 +1,24 @@
 import axios from 'axios';
-
 const useAxios = () => {
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_BACKEND_URL,
-    withCredentials: true,
+    withCredentials: true
   });
-
   axiosInstance.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('AccessToken');
-
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    function (config) {
+      const value = `; ${document.cookie}`;
+      let parts = value.split(`; access_token=`);
+      if (parts.length === 2) {
+        parts = parts.pop().split(';').shift();
       }
-
+      config.headers['Authorization'] = `Bearer ${parts}`;
       return config;
     },
-    (error) => {
+    function (error) {
+      // Do something with request error
       return Promise.reject(error);
     }
   );
-
   return axiosInstance;
 };
 

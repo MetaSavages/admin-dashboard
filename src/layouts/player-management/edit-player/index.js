@@ -41,8 +41,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
 
-import { getPlayerAggregated } from 'services/players';
-import { getUser } from 'services/users';
+import { getPlayer, updatePlayerName } from 'services/players';
 
 
 function EditPlyer() {
@@ -52,9 +51,10 @@ function EditPlyer() {
 
   const { id } = useParams();
   useEffect(() => {
-    getPlayerAggregated(id)
+    getPlayer(id)
       .then((res) => {
-        setUser(res.data);
+        setUser(res);
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -67,6 +67,7 @@ function EditPlyer() {
     });
   const submitForm = async (values, actions) => {
     await sleep(1000);
+    updatePlayerName(id, values.nickname);
 
     // eslint-disable-next-line no-alert
     alert(JSON.stringify(values, null, 2));
@@ -86,7 +87,7 @@ function EditPlyer() {
             <Grid item xs={12} lg={8}>
               <Formik
                 initialValues={{
-                  nickname: user?.nickname || '',
+                  nickname: user?.u_nickname || '',
                 }}
                 validationSchema={currentValidation}
                 onSubmit={handleSubmit}

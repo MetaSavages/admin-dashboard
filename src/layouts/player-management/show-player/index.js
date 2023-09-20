@@ -4,19 +4,18 @@ import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import { useEffect, useState } from 'react';
-import { getUser } from 'services/users';
 import { useParams } from 'react-router-dom';
-import { getPlayerAggregated } from 'services/players';
+import { getPlayer } from 'services/players';
 
 function ShowPlayer() {
   const { id } = useParams();
+  console.log(id);
   const [user, setUser] = useState({});
   useEffect(() => {
-    getPlayerAggregated(id)
+    getPlayer(id)
       .then((res) => {
-        setUser(res.data);
-        console.log("User");
-        console.log(user);
+        setUser(res);
+        console.log(res)
       })
       .catch((err) => {
         console.log(err);
@@ -41,22 +40,52 @@ function ShowPlayer() {
           <MDBox>
             <MDBox display='flex' justifyContent='space-between' alignItems='center'>
               <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Id: {user.id}
+                Id: {user.u_id}
               </MDTypography>
             </MDBox>
             <MDBox display='flex' justifyContent='space-between' alignItems='center'>
               <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Nickname: {user.nickname}
+                Nickname: {user.u_nickname}
               </MDTypography>
             </MDBox>
             <MDBox display='flex' justifyContent='space-between' alignItems='center'>
               <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Wallet ID: {user.walletId}
+                Wallet ID: {user.u_walletId}
               </MDTypography>
             </MDBox>
             <MDBox display='flex' justifyContent='space-between' alignItems='center'>
               <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                KYC: {user.kycState}
+                Location: {user.u_lastLocation}
+              </MDTypography>
+            </MDBox>
+            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+                KYC: {user.u_kycState}
+              </MDTypography>
+            </MDBox>
+            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+              Current Balance: {user.current_balance}
+              </MDTypography>
+            </MDBox>
+            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+              Money Cashed Out: {user.money_cashed_out}
+              </MDTypography>
+            </MDBox>
+            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+              Money Spent: {user.money_spent}
+              </MDTypography>
+            </MDBox>
+            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+              Starting Balance: {user.starting_balance}
+              </MDTypography>
+            </MDBox>
+            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+              Time Spent: {user.time_spent}
               </MDTypography>
             </MDBox>
           </MDBox>
