@@ -31,7 +31,7 @@ import form from 'layouts/authentication/sign-in/basic/schemas/form';
 import { login, getCurrentUser } from 'services/auth';
 // Images
 import bgImage from 'assets/images/bg-sign-in-basic.jpeg';
-import { setName, setEmail, setRole, useMaterialUIController, setAbility } from 'context';
+import { setName, setEmail, setRole, useMaterialUIController, setAbility, setTwoFactor } from 'context';
 import { getUserAbilities } from 'config/ability';
 import { useNavigate } from 'react-router-dom';
 function Basic() {
@@ -41,12 +41,11 @@ function Basic() {
       .then((res) => {
         actions.setSubmitting(false);
         actions.resetForm();
-        console.log('res', res);
         res.data.access_token && localStorage.setItem('AccessToken', res.data.access_token);
         getCurrentUser().then((res) => {
-          console.log('res', res);
           setName(dispatch, `${res.firstName} ${res.lastName}`);
           setEmail(dispatch, res.email);
+          setTwoFactor(dispatch, res.isTwoFactorAuthenticationEnabled);
           setRole(dispatch, res.role); // no role yet
           setAbility(dispatch, getUserAbilities(res.role));
           navigate('/dashboard', { replace: true });

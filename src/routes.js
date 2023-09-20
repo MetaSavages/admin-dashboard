@@ -75,6 +75,7 @@ import CasinoManagement from 'layouts/casinos';
 import NewCasino from 'layouts/casinos/new-casino';
 import EditCasino from 'layouts/casinos/edit-permission';
 import Blacklists from 'layouts/blacklists';
+import Settings from 'layouts/pages/account/settings';
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -117,8 +118,7 @@ const routes = [
         icon: <Icon fontSize='medium'>check_circle</Icon>,
         route: '/permission-management',
         component: <PermissionManagement />
-      },
-
+      }
     ]
   },
   {
@@ -292,8 +292,15 @@ const routes = [
     name: 'Settings',
     key: 'settings',
     icon: <Icon fontSize='medium'>settings</Icon>,
-    route: '/settings',
-    component: <Sales />
+    collapse: [
+      {
+        name: 'Edit user',
+        key: 'edit user',
+        icon: <Icon fontSize='medium'>edit</Icon>,
+        route: '/settings/user',
+        component: <Settings />
+      }
+    ]
   },
   {
     type: 'collapse',
