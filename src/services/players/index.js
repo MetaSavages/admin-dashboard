@@ -138,7 +138,7 @@ export const getPlayer = async (id) => {
 export const deletePlayer = async (id) => {
   const api = useAxios();
   try {
-    const response = await api.delete('/user', {
+    const response = await api.delete('admin/users', {
       data: { userId: id },
     });
     if (response.status === 200) {
@@ -160,12 +160,12 @@ export const deletePlayer = async (id) => {
 export const updatePlayerName = async (id, name) => {
   const api = useAxios();
   try {
-    const response = await api.post('user/update-nickname', {
+    const response = await api.post('admin/users/update-nickname', {
       userId:id, nickname: name 
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
       console.log(`User with ID ${id} deleted successfully.`);
-      alert(`Player has new name now.`);
+      alert(`Player has new name now: ${name}` );
     } else {
       console.error(`Error updating user: Unexpected status code ${response.status}`);
       alert(`Error updating user: Unexpected status code ${response.status}`);

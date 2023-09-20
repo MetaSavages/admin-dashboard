@@ -16,6 +16,7 @@ function PlayerManagement() {
   const onDelete = (id) => {
     deletePlayer(id).then((res) => {
       console.log(res);
+      window.location.reload();
     });
   };
   const [filters, setFilters] = useState({});

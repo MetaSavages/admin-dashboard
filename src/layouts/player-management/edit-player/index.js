@@ -61,18 +61,9 @@ function EditPlyer() {
       });
   }, []);
 
-  const sleep = (ms) =>
-    new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
   const submitForm = async (values, actions) => {
-    await sleep(1000);
     updatePlayerName(id, values.nickname);
-
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
-    actions.resetForm();
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
