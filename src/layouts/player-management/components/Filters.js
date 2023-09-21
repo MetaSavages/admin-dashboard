@@ -8,10 +8,13 @@ import MDButton from 'components/MDButton';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
+const Filters = ({ filters, setFilters }) => {
   const [usernameOptions, setUsernameOptions] = useState([]);
   const [walletOptions, setWalletOptions] = useState([]);
   const [usernameInput, setUsernameInput] = useState('');
+  const [playerUsernames, setPlayerUsernames] = useState([]);
+  const [playerWallets, setPlayerWallets] = useState([]);
+  const [isDemoChecked, setIsDemoChecked] = useState(true);
 
   const updateUsernames = (event, value) => {
     setPlayerUsernames(value);
@@ -28,20 +31,9 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
     }
   };
 
-
-  const [playerUsernames, setPlayerUsernames] = useState([]);
-  const [playerWallets, setPlayerWallets] = useState([]);
-  const [localIsDemoChecked, setLocalIsDemoChecked] = useState(isDemoChecked);
-
-// Checkbox handle
-  useEffect(() => {
-    setLocalIsDemoChecked(isDemoChecked);
-  }, [isDemoChecked]);
-
   const handleCheckboxChange = (event) => {
     const isChecked = event.target.checked;
-    setLocalIsDemoChecked(isChecked);
-    onIsDemoChange(isChecked);
+    setIsDemoChecked(isChecked);
   };
 
   // fetch options
@@ -62,14 +54,14 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
       }
     });
   }, []);
-  
 
   useEffect(() => {
     setFilters({
       users: playerUsernames,
       wallets: playerWallets,
+      isDemo: isDemoChecked
     });
-  }, [playerWallets, playerUsernames]);
+  }, [playerWallets, playerUsernames, isDemoChecked]);
   
   return (
     <MDBox
@@ -99,7 +91,7 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
               renderInput={ (params) => 
                 <TextField
                   {...params}
-                  label='Player username or Wallet ID'
+                  label='Player username'
                   variant='standard'
                   value={usernameInput}
                   onChange={handleUsernameInput}
@@ -135,7 +127,7 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
             <Checkbox
               icon={icon}
               checkedIcon={checkedIcon}
-              checked={localIsDemoChecked}
+              checked={isDemoChecked}
               onChange={(event) => handleCheckboxChange(event)}
             />
             Demo
@@ -143,7 +135,7 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
-          <MDButton variant='text' disabled={!playerUsernames.length && !playerWallets.length && !localIsDemoChecked}>
+          <MDButton variant='text' disabled={!playerUsernames.length && !playerWallets.length && !isDemoChecked}>
             Apply
           </MDButton>
         </Grid>

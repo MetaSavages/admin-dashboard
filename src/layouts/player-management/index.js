@@ -2,7 +2,7 @@ import DataTablePage from 'components/DataTablePage';
 import dataTablePlayersData from 'assets/mockData/dataTablePlayers';
 import MDButton from 'components/MDButton';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { getPlayers, getPlayerAggregated, getPlayers1 } from 'services/players';
+import { getPlayers, getPlayerAggregated, getPlayers1, getPlayers2 } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
 import Filters from './components/Filters';
 import { useEffect, useState } from 'react';
@@ -19,21 +19,16 @@ function PlayerManagement() {
       window.location.reload();
     });
   };
+
   const [filters, setFilters] = useState({});
   const [cols, setCols] = useState(null);
-  const [isDemoChecked, setIsDemoChecked] = useState(false);
-
-  const handleIsDemoChange = (isChecked) => {
-    setIsDemoChecked(isChecked);
-  };
-
 
   useEffect(() => {
-    console.log(isDemoChecked);
+    console.log(filters);
     playerColumnData().then((res) => {
       setCols(res);
     });
-  }, [isDemoChecked]);
+  }, [filters]);
 
   if (!cols) return <></>;
 
@@ -57,8 +52,7 @@ function PlayerManagement() {
           object={'player'}
           onDelete={onDelete}
           subrowFetchData={getPlayerAggregated}
-          // {isDemoChecked ? null : noActions}
-          filtersComponent={<Filters filters={filters} setFilters={setFilters} isDemoChecked={isDemoChecked} onIsDemoChange={handleIsDemoChange}/>}
+          filtersComponent={<Filters filters={filters} setFilters={setFilters}/>}
           filters={filters}
         />{' '}
       </Can>
