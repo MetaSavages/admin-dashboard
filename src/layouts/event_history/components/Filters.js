@@ -8,7 +8,7 @@ import MDButton from 'components/MDButton';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { pickersLayoutClasses } from '@mui/x-date-pickers';
 
-import { getAllCasinos, getAllPlayers, getEventTypes } from '../../../services/filters/index';
+import { getAllCasinos, getAllPlayers, getEventTypes, getAllCountries } from '../../../services/filters/index';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
@@ -18,6 +18,7 @@ const Filters = ({ filters, setFilters }) => {
   const [eventTypeOptions, setEventTypeOptions] = useState([]);
   const [casinoOptions, setCasinoOptions] = useState([]);
   const [usernameInput, setUsernameInput] = useState('');
+  const [countryOptions, setCountryOptions] = useState([]);
 
   const setOptions = (value) => {
     console.log(value);
@@ -33,6 +34,10 @@ const Filters = ({ filters, setFilters }) => {
 
   const updateCasinos = (event, value) => {
     setCasinos(value);
+  };
+
+  const updateCountries = (event, value) => {
+    setCountries(value);
   };
 
   const handleUsernameInput = (event) => {
@@ -51,6 +56,7 @@ const Filters = ({ filters, setFilters }) => {
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
+  const [countries, setCountries] = useState([]);
   const handleFromChange = (date) => {
     if (to) {
       if (date > to) {
@@ -85,6 +91,10 @@ const Filters = ({ filters, setFilters }) => {
 
     getAllCasinos().then((casinos) => {
       setCasinoOptions(casinos);
+    });
+
+    getAllCountries().then((countries) => {
+      setCountryOptions(countries);
     });
   }, [])
 
@@ -129,18 +139,31 @@ const Filters = ({ filters, setFilters }) => {
     });
 
   }, [eventTypeOptions]);
+
   const onSubmit = () => {
     setFilters({
       eventTypes,
       casinos,
+      countries,
       users: playerUsernames,
       from,
       to
     });
   };
+
   useEffect(() => {
-    
-  }, [])
+    countryOptions.forEach((country) => {
+      if (filters?.countries) {
+        filters.countries.forEach((c) => {
+          console.log(c, country);
+          if (c.name === country) {
+            setCountries((prev) => [...prev, country]);
+          }
+        });
+      }
+    });
+  }, [countryOptions]);
+
   return (
     <MDBox
       sx={{
@@ -149,7 +172,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2}>
-        <Grid item xs={6} sm={4} md={2}>
+        <Grid item xs={6} sm={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -178,36 +201,8 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={6} sm={4} md={2}>
-          <MDBox>
-            <Autocomplete
-              multiple
-              //   open={open}
-              //   onOpen={() => {
-              //     setOpen(true);
-              //   }}
-              //   onClose={() => {
-              //     setOpen(false);
-              //   }}
 
-              limitTags={2}
-              options={casinoOptions}
-              disableCloseOnSelect
-              value={casinos}
-              onChange={updateCasinos}
-              isOptionEqualToValue={(option, value) => option.value === value.value}
-              getOptionLabel={(option) => option.label}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
-                  {option.label}
-                </li>
-              )}
-              renderInput={(params) => <TextField {...params} label='Casino' variant='standard' />}
-            />
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} sm={4} md={2}>
+        <Grid item xs={12} sm={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -243,7 +238,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={4} md={2.5}>
+        <Grid item xs={12} sm={4} md={2}>
           <MDBox>
             <DateTimePicker
               label='From'
@@ -265,7 +260,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={4} md={2.5}>
+        <Grid item xs={12} sm={4} md={2}>
           <MDBox>
             <DateTimePicker
               label='To'
@@ -287,10 +282,67 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={3} md={1}>
+        <Grid item xs={12} sm={4} md={4}>
+          <MDBox>
+            <Autocomplete
+              multiple
+              //   open={open}
+              //   onOpen={() => {
+              //     setOpen(true);
+              //   }}
+              //   onClose={() => {
+              //     setOpen(false);
+              //   }}
+              limitTags={2}
+              options={countryOptions}
+              disableCloseOnSelect
+              value={countries}
+              onChange={updateCountries}
+              isOptionEqualToValue={(option, value) => option === value}
+              getOptionLabel={(option) => option}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option}
+                </li>
+              )}
+              renderInput={(params) => <TextField {...params} label='Country' variant='standard' />}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={6} sm={4} md={4}>
+          <MDBox>
+            <Autocomplete
+              multiple
+              //   open={open}
+              //   onOpen={() => {
+              //     setOpen(true);
+              //   }}
+              //   onClose={() => {
+              //     setOpen(false);
+              //   }}
+
+              limitTags={2}
+              options={casinoOptions}
+              disableCloseOnSelect
+              value={casinos}
+              onChange={updateCasinos}
+              isOptionEqualToValue={(option, value) => option.value === value.value}
+              getOptionLabel={(option) => option.label}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option.label}
+                </li>
+              )}
+              renderInput={(params) => <TextField {...params} label='Casino' variant='standard' />}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={3} md={1} ml={20}>
           <MDButton
             variant='text'
-            disabled={!playerUsernames.length && !eventTypes.length && !from && !to && !casinos.length}
+            disabled={!playerUsernames.length && !eventTypes.length && !from && !to && !casinos.length && !countries.length}
             onClick={onSubmit}
           >
             Apply

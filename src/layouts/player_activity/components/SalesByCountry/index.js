@@ -13,10 +13,6 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-// @react-jvectormap components
-import { VectorMap } from '@react-jvectormap/core';
-import { worldMerc } from '@react-jvectormap/world';
-
 // @mui material components
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
@@ -29,15 +25,12 @@ import MDTypography from 'components/MDTypography';
 // Material Dashboard 2 PRO React examples
 import SalesTable from 'examples/Tables/SalesTable';
 
-// Data
-import salesTableData from 'layouts/player_activity/components/SalesByCountry/data/salesTableData';
 import './legend_styles.css';
 import { useMaterialUIController } from 'context';
-import { useEffect, useState } from 'react';
-function SalesByCountry() {
+
+function SalesByCountry({salesTable}) {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-
   return (
     <Card sx={{ width: '100%' }}>
       <MDBox display='flex'>
@@ -64,62 +57,8 @@ function SalesByCountry() {
         </MDTypography>
       </MDBox>
       <MDBox p={2}>
-        <Grid container>
-          <Grid item xs={12} md={5} lg={5}>
-            <SalesTable rows={salesTableData} shadow={false} />
-          </Grid>
-          <Grid item xs={12} md={7} lg={7} sx={{ mt: { xs: 5, lg: 0 } }}>
-            <VectorMap
-              map={worldMerc}
-              zoomOnScroll={false}
-              zoomButtons={false}
-              backgroundColor='transparent'
-              onRegionTipShow={(e, el, code) => {
-                el.html(el.html() + ` <br> Active users: 152`);
-              }}
-              regionStyle={{
-                initial: {
-                  fill: '#dee2e7',
-                  'fill-opacity': 1,
-                  stroke: 'none',
-                  'stroke-width': 0,
-                  'stroke-opacity': 0
-                }
-              }}
-              style={{
-                marginTop: '-1.5rem'
-              }}
-              series={{
-                regions: [
-                  {
-                    scale: ['#ffffcc', '#c7e9b4', '#7fcdbb', '#41b6c4', '#2c7fb8', '#253494'],
-                    attribute: 'fill',
-                    values: {
-                      AF: 16.63,
-                      AL: 11.58,
-                      CD: 5.2,
-                      CN: 200,
-                      DZ: 158.97,
-                      LY: 300,
-                      PK: 74.77,
-                      IQ: 45,
-                      IR: 30,
-                      SA: 195.2,
-                      US: 1000
-                    },
-                    hoverOpacity: 0.7,
-                    hoverColor: true,
-                    normalizeFunction: 'polynomial',
-                    legend: {
-                      vertical: true,
-                      title: 'Active users',
-                      cssClass: darkMode ? 'dark' : 'light'
-                    }
-                  }
-                ]
-              }}
-            />
-          </Grid>
+        <Grid item xs={12} md={12} lg={12}>
+          <SalesTable rows={salesTable} shadow={false} />
         </Grid>
       </MDBox>
     </Card>
