@@ -17,7 +17,8 @@ function DataTablePage({
   object,
   onDelete,
   noActions = false,
-  subrowFetchData = null
+  subrowFetchData = null,
+  filters = ''
 }) {
   return (
     <DashboardLayout>
@@ -40,6 +41,7 @@ function DataTablePage({
             onDelete={onDelete}
             noActions={noActions}
             subrowFetchData={subrowFetchData}
+            filters={filters}
           />
         </Card>
       </MDBox>

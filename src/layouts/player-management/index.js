@@ -2,7 +2,7 @@ import DataTablePage from 'components/DataTablePage';
 import dataTablePlayersData from 'assets/mockData/dataTablePlayers';
 import MDButton from 'components/MDButton';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { getPlayers, getPlayerAggregated, getPlayers1, getPlayers2 } from 'services/players';
+import { getPlayers, getPlayerAggregated } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
 import Filters from './components/Filters';
 import { useEffect, useState } from 'react';
@@ -24,7 +24,6 @@ function PlayerManagement() {
   const [cols, setCols] = useState(null);
 
   useEffect(() => {
-    console.log(filters);
     playerColumnData().then((res) => {
       setCols(res);
     });

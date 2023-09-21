@@ -14,7 +14,12 @@ const Filters = ({ filters, setFilters }) => {
   const [usernameInput, setUsernameInput] = useState('');
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [playerWallets, setPlayerWallets] = useState([]);
-  const [isDemoChecked, setIsDemoChecked] = useState(true);
+  const [isDemoChecked, setIsDemoChecked] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    const isChecked = event.target.checked;
+    setIsDemoChecked(isChecked);
+  };
 
   const updateUsernames = (event, value) => {
     setPlayerUsernames(value);
@@ -29,11 +34,6 @@ const Filters = ({ filters, setFilters }) => {
     } else if (event.target.value.length < 2) {
       setUsernameOptions([]);
     }
-  };
-
-  const handleCheckboxChange = (event) => {
-    const isChecked = event.target.checked;
-    setIsDemoChecked(isChecked);
   };
 
   // fetch options
