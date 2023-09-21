@@ -32,17 +32,34 @@ import { getPermissions } from 'services/permissions';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { item } from 'components/Sidenav/styles/sidenavItem';
+import { getAllCasinos } from 'services/filters';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 function RoleInfo({ formData }) {
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
-  const { roleName, rolePermissions } = formField;
-  const { roleName: roleNameV, rolePermissions: rolePermissionsV } = values;
+  const { roleName, rolePermissions, casino } = formField;
+  const { roleName: roleNameV, rolePermissions: rolePermissionsV, casino: casinoV } = values;
   const [roleOptions, setRoleOptions] = useState([]);
   const [open, setOpen] = useState(false);
+  const [casinoOptions, setCasinoOptions] = useState([]);
+  const [openCasino, setOpenCasino] = useState(false);
   const loading = open && roleOptions.length === 0;
+
+  useEffect(() => {
+    getAllCasinos().then((casinos) => {
+      casinos.unshift({
+        blockChainId: null,
+        id: null,
+        label: 'All',
+        name: 'All',
+        provider: null,
+        value: null
+      });
+      setCasinoOptions(casinos);
+    });
+  }, []);
 
   useEffect(() => {
     setFieldValue(
@@ -55,6 +72,7 @@ function RoleInfo({ formData }) {
       setRoleOptions(res.data.map((item) => ({ value: item.id, name: `${item.action}: ${item.object}` })));
     });
   }, []);
+
   const [rolePermissionNames, setRolePermissonNames] = useState(rolePermissionsV);
   const setRolePermissons = (event, value) => {
     setRolePermissonNames(value);
@@ -65,6 +83,13 @@ function RoleInfo({ formData }) {
       })
     );
   };
+
+  const [casinos, setCasinos] = useState(casinoV);
+  const handleCasinos = (event, value) => {
+    setCasinos(value);
+    setFieldValue(casino.name, value.value);
+  };
+
   return (
     <MDBox>
       <MDBox lineHeight={0}>
@@ -116,6 +141,34 @@ function RoleInfo({ formData }) {
                   <ErrorMessage name={rolePermissions.name} />
                 </MDTypography>
               </MDBox>
+            </MDBox>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={24} sm={12}>
+            <MDBox mb={1.5}>
+              <Autocomplete
+                open={openCasino}
+                onOpen={() => {
+                  setOpenCasino(true);
+                }}
+                onClose={() => {
+                  setOpenCasino(false);
+                }}
+                options={casinoOptions}
+                disableCloseOnSelect
+                value={casinos}
+                onChange={handleCasinos}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+                getOptionLabel={(option) => option.name}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                    {option.name}
+                  </li>
+                )}
+                renderInput={(params) => <TextField {...params} label='Casino' variant='standard' />}
+              />
             </MDBox>
           </Grid>
         </Grid>

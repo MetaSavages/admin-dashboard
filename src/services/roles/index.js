@@ -12,6 +12,7 @@ export const getRoles = async (limit = 20, page = 1) => {
           return `${permission.action}: ${permission.object}`;
         })
         .join(', ');
+      role.casino = role.casino?.name ? role.casino.name : 'All';
       return role;
     });
     return {
@@ -48,13 +49,17 @@ export const getRole = async (id) => {
   }
 };
 
-export const createRole = async (name, permissions) => {
+export const createRole = async (name, permissions, casinos) => {
   const api = useAxios();
   try {
-    return await api.post('/admin/auth/roles', {
+    const params = {
       name: name,
       permissionIds: permissions
-    });
+    };
+    if (casinos) {
+      params['casinoId'] = casinos;
+    }
+    return await api.post('/admin/auth/roles', params);
   } catch (err) {
     console.log(err);
     return {
@@ -66,13 +71,15 @@ export const createRole = async (name, permissions) => {
   }
 };
 
-export const updateRole = async (id, name, permissions) => {
+export const updateRole = async (id, name, permissions, casinos) => {
   const api = useAxios();
   try {
-    return await api.put(`/admin/auth/roles/${id}`, {
+    const params = {
       name: name,
-      permissionIds: permissions
-    });
+      permissionIds: permissions,
+      casinoId: casinos ? casinos : null
+    };
+    return await api.put(`/admin/auth/roles/${id}`, params);
   } catch (err) {
     console.log(err);
     return {
