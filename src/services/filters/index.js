@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import useAxios from 'hooks/useAxios';
 import { getEventsHistory } from 'services/analytics';
 
