@@ -34,11 +34,15 @@ import bgImage from 'assets/images/bg-sign-in-basic.jpeg';
 import { setName, setEmail, setRole, useMaterialUIController, setAbility } from 'context';
 import { getUserAbilities } from 'config/ability';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 function Basic() {
   const [, dispatch] = useMaterialUIController();
+  const [cookie, setCookie] = useCookies(['access_token']);
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
+        console.log(res);
+        setCookie('access_token', res?.data?.access_token, { path: '/' });
         actions.setSubmitting(false);
         actions.resetForm();
         getCurrentUser().then((res) => {
@@ -51,6 +55,7 @@ function Basic() {
         });
       })
       .catch((err) => {
+        console.log(err);
         alert('Email or password is incorrect');
         actions.setSubmitting(false);
         actions.resetForm();
