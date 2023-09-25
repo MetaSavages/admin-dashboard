@@ -17,7 +17,7 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
     const unformattedData = await api.get('/admin/metrics/players', {
       params: params
     });
-    console.log(unformattedData);
+
     return {
       data: unformattedData.data.items.map((x) => {
         return {

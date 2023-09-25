@@ -26,33 +26,31 @@ function RoleManagement() {
         fetchData={getRoles}
         queryKey='roles'
         columnData={rolesColumnData}
-        onDelete={
-          (id) => {
-            setDeleteRoleId(id); 
-            handleOpenModal();
-          }
-        }
+        onDelete={(id) => {
+          setDeleteRoleId(id);
+          handleOpenModal();
+        }}
         filters={filters}
       />
       <Dialog
-          open={showModal}
-          onClose={handleCloseModal}
-          aria-labelledby='alert-dialog-title'
-          aria-describedby='alert-dialog-description'
+        open={showModal}
+        onClose={handleCloseModal}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-          <DialogTitle id='alert-dialog-title'>
-              {'Are you sure you want to delete this role?'}
-          </DialogTitle>
-          <DialogActions>
-              <Button onClick={
-                async () => {
-                  await deleteRole(deleteRoleId);
-                  handleCloseModal(); 
-                  setFilters(filters.length ? "" : "d")
-                }
-              }>Yes</Button>
-              <Button onClick={handleCloseModal}>No</Button>
-          </DialogActions>
+        <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this role?'}</DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={async () => {
+              await deleteRole(deleteRoleId);
+              handleCloseModal();
+              setFilters(filters.length ? '' : 'd');
+            }}
+          >
+            Yes
+          </Button>
+          <Button onClick={handleCloseModal}>No</Button>
+        </DialogActions>
       </Dialog>
     </>
   );
