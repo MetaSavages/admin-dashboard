@@ -21,6 +21,17 @@ const Filters = ({ filters, setFilters }) => {
     setIsDemoChecked(isChecked);
   };
 
+  const handleUsernameInput = (event) => {
+    setUsernameInput(event.target.value);
+    if (event.target.value.length > 2) {
+      getAllPlayers(event.target.value, filters?.isDemo).then((players) => {
+        setUsernameOptions(players);
+      });
+    } else if (event.target.value.length < 2) {
+      setUsernameOptions([]);
+    }
+  };
+
   const [playerUsernames, setPlayerUsernames] = useState([]);
   // fetch options
   useEffect(() => {
@@ -91,7 +102,14 @@ const Filters = ({ filters, setFilters }) => {
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
-          <MDButton variant='text' disabled={!playerUsernames.length && !isDemoChecked}>
+          <MDButton
+            variant='text'
+            disabled={
+              !playerUsernames.length &&
+              ((filters?.isDemo == null && isDemoChecked === false) || isDemoChecked === filters?.isDemo)
+            }
+            onClick={onSubmit}
+          >
             Apply
           </MDButton>
         </Grid>

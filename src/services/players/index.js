@@ -4,16 +4,16 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
   const api = useAxios();
   try {
     const params = {
-      limit: limit, 
-      page: page,     
-      sortBy: 'createdAt:DESC',
-    }
-    
-    if(Object.keys(filters).length) {
-      if(filters.users.length){
-        params['id'] = `${(filters.users.map((u) => u.id)).toString()}`
+      limit: limit,
+      page: page,
+      sortBy: 'createdAt:DESC'
+    };
+    console.log('fifafasd', filters);
+    if (Object.keys(filters).length) {
+      if (filters.users.length) {
+        params['id'] = `${filters.users.map((u) => u.id).toString()}`;
       }
-      if(filters?.isDemo != null){
+      if (filters?.isDemo != null) {
         params['isDemo'] = filters.isDemo;
       }
     }
@@ -55,10 +55,10 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
   }
 };
 
-export const getPlayerAggregated = async (id) => {
+export const getPlayerAggregated = async (user) => {
   const api = useAxios();
   try {
-    const res = await api.get(`/admin/metrics/players/${id}`);
+    const res = await api.get(`/admin/metrics/players/${user.id}`);
     return res.data.map((x) => {
       return {
         nickname: x.casino_name,
@@ -108,7 +108,7 @@ export const deletePlayer = async (id) => {
   const api = useAxios();
   try {
     const response = await api.delete('admin/users', {
-      data: { userId: id },
+      data: { userId: id }
     });
     if (response.status === 200) {
       console.log(`User with ID ${id} deleted successfully.`);
@@ -127,11 +127,12 @@ export const updatePlayerName = async (id, name) => {
   const api = useAxios();
   try {
     const response = await api.post('admin/users/update-nickname', {
-      userId:id, nickname: name 
+      userId: id,
+      nickname: name
     });
     if (response.status === 201) {
       console.log(`User with ID ${id} deleted successfully.`);
-      alert(`Player has new name now: ${name}` );
+      alert(`Player has new name now: ${name}`);
     } else {
       console.error(`Error updating user: Unexpected status code ${response.status}`);
       alert(`Error updating user: Unexpected status code ${response.status}`);
@@ -141,8 +142,3 @@ export const updatePlayerName = async (id, name) => {
     alert(`Error updating user: ${err.message}`);
   }
 };
-
-
-
-
-

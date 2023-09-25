@@ -13,7 +13,7 @@ function SubRows({ row, rowProps, subrowFetchData }) {
     };
     fetchData();
   }, [row.original.id, subrowFetchData]);
-
+  console.log('subRows', subRows);
   return (
     <>
       {subRows.map((x, i) => {
