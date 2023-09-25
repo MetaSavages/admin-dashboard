@@ -59,6 +59,17 @@ function RoleInfo({ formData }) {
       });
       setCasinoOptions(casinos);
     });
+
+    if (casinoV === null) {
+      setCasinos({
+        blockChainId: null,
+        id: null,
+        label: 'All',
+        name: 'All',
+        provider: null,
+        value: null
+      });
+    }
   }, []);
 
   useEffect(() => {
