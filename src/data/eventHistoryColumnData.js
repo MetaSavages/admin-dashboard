@@ -40,6 +40,10 @@ const eventHistoryColumnData = [
     accessor: 'casino'
   },
   {
+    Header: 'Country',
+    accessor: 'country',
+  },
+  {
     Header: 'Timestamp',
     accessor: 'timestamp'
   }

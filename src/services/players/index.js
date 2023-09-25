@@ -10,14 +10,18 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
     }
     
     if(Object.keys(filters).length) {
+      if(filters.users.length){
+        params['id'] = `${(filters.users.map((u) => u.id)).toString()}`
+      }
       if(filters?.isDemo != null){
         params['isDemo'] = filters.isDemo;
       }
     }
+
     const unformattedData = await api.get('/admin/metrics/players', {
       params: params
     });
-    console.log(unformattedData);
+
     return {
       data: unformattedData.data.items.map((x) => {
         return {

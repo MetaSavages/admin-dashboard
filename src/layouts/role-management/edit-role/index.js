@@ -64,7 +64,8 @@ function EditRole() {
             value: permission.id,
             name: `${permission.action}: ${permission.object}`
           };
-        })
+        }),
+        [formField.casino.name]: response.data.casino
       });
     });
     return () => {
@@ -73,7 +74,7 @@ function EditRole() {
   }, []);
 
   const submitForm = async (values, actions) => {
-    const response = await updateRole(id, values.roleName, values.rolePermissions);
+    const response = await updateRole(id, values.roleName, values.rolePermissions, values.casino);
     if (response.status === 201 || response.status === 200) {
       alert('Role edited successfully');
     } else {

@@ -56,7 +56,6 @@ export const playerColumnData = async () => {
     { Header: 'kyc_status', accessor: 'kyc_status', width: 100 }
   ];
   if (!user.role?.casino) {
-    console.log('here');
     arr = [
       ...arr,
       {
