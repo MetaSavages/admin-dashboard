@@ -12,17 +12,19 @@ const checkedIcon = <CheckBoxIcon fontSize='small' />;
 const Filters = ({ filters, setFilters }) => {
   const [usernameOptions, setUsernameOptions] = useState([]);
   const [usernameInput, setUsernameInput] = useState('');
-
+  const [isDemoChecked, setIsDemoChecked] = useState(false);
   const updateUsernames = (event, value) => {
     setPlayerUsernames(value);
   };
-
-  const [playerUsernames, setPlayerUsernames] = useState([]);
+  const handleCheckboxChange = (event) => {
+    const isChecked = event.target.checked;
+    setIsDemoChecked(isChecked);
+  };
 
   const handleUsernameInput = (event) => {
     setUsernameInput(event.target.value);
     if (event.target.value.length > 2) {
-      getAllPlayers(event.target.value).then((players) => {
+      getAllPlayers(event.target.value, filters?.isDemo).then((players) => {
         setUsernameOptions(players);
       });
     } else if (event.target.value.length < 2) {
@@ -30,6 +32,7 @@ const Filters = ({ filters, setFilters }) => {
     }
   };
 
+  const [playerUsernames, setPlayerUsernames] = useState([]);
   // fetch options
   useEffect(() => {
     // fetch player usernames
@@ -45,9 +48,9 @@ const Filters = ({ filters, setFilters }) => {
   const onSubmit = () => {
     setFilters({
       users: playerUsernames,
+      isDemo: isDemoChecked
     });
   };
-
   return (
     <MDBox
       sx={{
@@ -56,7 +59,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2} justifyContent={'flex-end'}>
-        <Grid item xs={5} md={5}>
+        <Grid item xs={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -73,7 +76,7 @@ const Filters = ({ filters, setFilters }) => {
                   {option.label}
                 </li>
               )}
-              renderInput={ (params) => 
+              renderInput={(params) => (
                 <TextField
                   {...params}
                   label='Player username or Wallet ID'
@@ -81,12 +84,32 @@ const Filters = ({ filters, setFilters }) => {
                   value={usernameInput}
                   onChange={handleUsernameInput}
                 />
-              }
+              )}
             />
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
-          <MDButton variant='text' disabled={!playerUsernames.length} onClick={onSubmit}>
+          <MDBox>
+            <label>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                checked={isDemoChecked}
+                onChange={(event) => handleCheckboxChange(event)}
+              />
+              Demo
+            </label>
+          </MDBox>
+        </Grid>
+        <Grid item xs={2} md={2}>
+          <MDButton
+            variant='text'
+            disabled={
+              !playerUsernames.length &&
+              ((filters?.isDemo == null && isDemoChecked === false) || isDemoChecked === filters?.isDemo)
+            }
+            onClick={onSubmit}
+          >
             Apply
           </MDButton>
         </Grid>

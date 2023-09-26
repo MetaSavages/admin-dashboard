@@ -39,6 +39,7 @@ Coded by www.creative-tim.com
 import Analytics from 'layouts/player_activity';
 import Sales from 'layouts/sales';
 import NewUser from 'layouts/user-management/new-user';
+import NewPlayer from 'layouts/player-management/new-player';
 
 import SignInBasic from 'layouts/authentication/sign-in/basic';
 
@@ -55,6 +56,8 @@ import Dashboard from 'layouts/dashboard';
 import RoleManagement from 'layouts/role-management';
 import NewRole from 'layouts/role-management/new-role';
 import EditUser from 'layouts/user-management/edit-user';
+import EditPlayer from 'layouts/player-management/edit-player';
+import ShowPlayer from 'layouts/player-management/show-player';
 import Logout from 'layouts/authentication/logout';
 import ShowUser from 'layouts/user-management/show-user';
 import PermissionManagement from 'layouts/permission-management';
@@ -116,7 +119,8 @@ const routes = [
         icon: <Icon fontSize='medium'>check_circle</Icon>,
         route: '/permission-management',
         component: <PermissionManagement />
-      }
+      },
+
     ]
   },
   {
@@ -126,9 +130,17 @@ const routes = [
     key: 'player-management',
     icon: <Icon fontSize='medium'>people</Icon>,
     route: '/player-management',
-    component: <PlayerManagement />
+    component: <PlayerManagement />,
+    collapse: [
+      {
+        name: 'Player management',
+        key: 'player-management',
+        icon: <Icon fontSize='medium'>people</Icon>,
+        route: '/player-management',
+        component: <PlayerManagement />
+      }
+    ]
   },
-
   {
     type: 'collapse',
     name: 'Analytics',
@@ -310,6 +322,24 @@ const routes = [
     key: 'edit-user',
     route: '/user-management/edit/:id',
     component: <EditUser />
+  },
+  {
+    name: 'New Player',
+    key: 'new-player',
+    route: '/player-management/new-player',
+    component: <NewPlayer />
+  },
+  {
+    name: 'Show Player',
+    key: 'show-player',
+    route: '/player-management/show/:id',
+    component: <ShowPlayer />
+  },
+  {
+    name: 'Edit Player',
+    key: 'edit-player',
+    route: '/player-management/edit/:id',
+    component: <EditPlayer />
   },
   {
     name: 'New Role',

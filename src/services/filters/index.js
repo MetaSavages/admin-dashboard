@@ -65,12 +65,13 @@ export const getAllCasinos = async () => {
   }
 };
 
-export const getAllPlayers = async (nickname) => {
+export const getAllPlayers = async (nickname, isDemo = false) => {
   const api = useAxios();
   try {
     const unformattedData = await api.get('/user/autocomplete', {
       params: {
-        search: nickname
+        search: nickname,
+        demo: isDemo
       }
     });
 

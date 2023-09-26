@@ -5,8 +5,8 @@ import { getUsers, deleteUser } from 'services/users';
 import userColumnData from 'data/usersColumnData';
 import { Skeleton } from '@mui/material';
 import { Can } from 'context';
-import { useState } from 'react';
-import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
+
+
 function UserManagement() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);

@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { IconButton, Icon, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import MDButton from 'components/MDButton';
 import SubRows from './SubRows';
+import { useEffect } from 'react';
+
 function DataTableBodyRow({
   row,
   noEndBorder,
@@ -29,7 +31,7 @@ function DataTableBodyRow({
           {cell.render('Cell')}
         </DataTableBodyCell>
       ))}
-      {!noActions && (
+      {!noActions && row.original.isDemo === true && (
         <DataTableBodyCell noBorder={noEndBorder && rowsLength - 1 === key} width='0.5rem' align='left'>
           <Can I='read' a={object}>
             <Tooltip title='View'>
