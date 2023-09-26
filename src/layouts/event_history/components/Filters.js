@@ -1,4 +1,4 @@
-import { Autocomplete, Checkbox, Grid, TextField } from '@mui/material';
+import { Autocomplete, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MDBox from 'components/MDBox';
@@ -9,6 +9,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { pickersLayoutClasses } from '@mui/x-date-pickers';
 
 import { getAllCasinos, getAllPlayers, getEventTypes, getAllCountries } from '../../../services/filters/index';
+import CheckBox from '@mui/icons-material/CheckBox';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
@@ -57,6 +58,8 @@ const Filters = ({ filters, setFilters }) => {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
   const [countries, setCountries] = useState([]);
+  const [demo, setDemo] = useState(false);
+
   const handleFromChange = (date) => {
     if (to) {
       if (date > to) {
@@ -96,48 +99,47 @@ const Filters = ({ filters, setFilters }) => {
     getAllCountries().then((countries) => {
       setCountryOptions(countries);
     });
-  }, [])
+  }, []);
 
   useEffect(() => {
     casinoOptions.forEach((casino) => {
       if (filters?.casinos) {
         filters.casinos.forEach((c) => {
-          if(c.id === casino.value){
-            setCasinos((prev) => [...prev, casino])
+          if (c.id === casino.value) {
+            setCasinos((prev) => [...prev, casino]);
           }
-        })
+        });
       }
     });
-  }, [casinoOptions])
+  }, [casinoOptions]);
 
   useEffect(() => {
-      if(filters?.users.length) {
-        getAllPlayers(filters.users[0].username).then((res) => {
-          res.forEach((username) => {
-            if (filters?.users) {
-              filters.users.forEach((u) => {
-                if(u.id === username.id){
-                  setPlayerUsernames((prev) => [...prev, username])
-                }
-              })
-            }
-          });
-        })
-      }
-  }, [])
+    if (filters?.users.length) {
+      getAllPlayers(filters.users[0].username).then((res) => {
+        res.forEach((username) => {
+          if (filters?.users) {
+            filters.users.forEach((u) => {
+              if (u.id === username.id) {
+                setPlayerUsernames((prev) => [...prev, username]);
+              }
+            });
+          }
+        });
+      });
+    }
+  }, []);
 
   useEffect(() => {
     eventTypeOptions.forEach((eventType) => {
       if (filters?.eventTypes) {
         filters.eventTypes.forEach((e) => {
-          console.log(e, eventType)
-          if(e.id === eventType.id){
-            setEventTypes((prev) => [...prev, eventType])
+          console.log(e, eventType);
+          if (e.id === eventType.id) {
+            setEventTypes((prev) => [...prev, eventType]);
           }
-        })
+        });
       }
     });
-
   }, [eventTypeOptions]);
 
   const onSubmit = () => {
@@ -147,7 +149,8 @@ const Filters = ({ filters, setFilters }) => {
       countries,
       users: playerUsernames,
       from,
-      to
+      to,
+      demo
     });
   };
 
@@ -339,10 +342,45 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={3} md={1} ml={20}>
+        <Grid item xs={2} sm={2} md={2}>
+          <MDBox>
+            <FormControlLabel
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0,
+                marginTop: '2px'
+              }}
+              control={
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  checked={demo}
+                  onClick={() => setDemo(!demo)}
+                  name='demo-users-checkbox'
+                  id='demo-users-checkbox'
+                />
+              }
+              label={
+                <label
+                  for='demo-users-checkbox'
+                  style={{
+                    fontSize: '14px',
+                    color: '#9A9CA6'
+                  }}
+                >
+                  {'Enable demo users'}
+                </label>
+              }
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={1} md={1} lg={1} ml={3}>
           <MDButton
             variant='text'
-            disabled={!playerUsernames.length && !eventTypes.length && !from && !to && !casinos.length && !countries.length}
+            disabled={
+              !playerUsernames.length && !eventTypes.length && !from && !to && !casinos.length && !countries.length && (demo === filters?.demo)
+            }
             onClick={onSubmit}
           >
             Apply

@@ -29,6 +29,11 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
       if (filters.to) {
         timeFilter.push(`$lte:${filters.to.format('YYYY-MM-DDTHH:mm:ssZ')}`);
       }
+      if (filters.demo) {
+        params['demo'] = `true`;
+      } else {
+        params['demo'] = `false`;
+      }
     }
     if (timeFilter.length) {
       params['filter.createdAt'] = timeFilter;
