@@ -47,7 +47,7 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import VerticalBarChart from 'examples/Charts/BarCharts/VerticalBarChart';
 import MultiLayerPieChart from 'examples/Charts/MultiLayerPieChart';
 import DoubleInfoCard from './components/DoubleInfoCard';
-import { getTodayNumbers, getGameStats } from 'services/analytics';
+import { getTodayNumbers, getGameStats, getNewRegistrations } from 'services/analytics';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@mui/material';
 
@@ -62,9 +62,10 @@ function Dashboard() {
   const [gameWins, setGameWins] = useState([]);
   const [gameLoses, setGameLoses] = useState([]);
   const [correctMonths, setCorrectMonths] = useState([]);
+  const [newRegistrations, setNewRegistrations] = useState([]);
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  const gradientData = {
+  const gameData = {
     labels: correctMonths,
     datasets: [
       {
@@ -79,10 +80,23 @@ function Dashboard() {
     ]
   };
 
+  const registrationsData = {
+    labels: correctMonths,
+    datasets: [
+      {
+        label: 'Registrations',
+        data: newRegistrations,
+        color: 'info'
+      }
+    ]
+  };
+
   useEffect(() => {
     getGameStats(8).then((res) => {
       let wins = res.map((m) => {
-        (m[0] === 12) ? setCorrectMonths((prev) => [...prev, months[0]]) : setCorrectMonths((prev) => [...prev, months[m[0]]]);
+        m[0] === 12
+          ? setCorrectMonths((prev) => [...prev, months[0]])
+          : setCorrectMonths((prev) => [...prev, months[m[0]]]);
         return m[1];
       });
       setGameWins(wins);
@@ -93,6 +107,13 @@ function Dashboard() {
         return m[1];
       });
       setGameLoses(loses);
+    });
+
+    getNewRegistrations().then((res) => {
+      let registrations = res.map((m) => {
+        return m[1];
+      });
+      setNewRegistrations(registrations);
     });
   }, []);
 
@@ -200,9 +221,9 @@ function Dashboard() {
                 <Grid item xs={12}>
                   {gameWins.length > 0 ? (
                     <GradientLineChart
-                      title='Sales'
-                      description='Last campaign performance'
-                      chart={gradientData}
+                      title='Game win / lose'
+                      description='Monthly performance'
+                      chart={gameData}
                       tension={0.5}
                     />
                   ) : (
@@ -213,10 +234,14 @@ function Dashboard() {
                   <MultiLayerPieChart title='Earnings' description='24 Hours performance' chart={pieData} />
                 </Grid>
                 <Grid item xs={8}>
-                  {gameWins.length > 0 ? (
-                    <VerticalBarChart title='Conversions' description='24 Hours performance' chart={gradientData} />
+                  {newRegistrations.length > 0 ? (
+                    <VerticalBarChart
+                      title='Registrations'
+                      description='Monthly performance'
+                      chart={registrationsData}
+                    />
                   ) : (
-                    <Skeleton height={400}/>
+                    <Skeleton height={400} />
                   )}
                 </Grid>
                 <Grid item xs={12}>

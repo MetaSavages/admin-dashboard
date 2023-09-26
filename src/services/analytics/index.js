@@ -200,3 +200,46 @@ export const getGameStats = async (id) => {
     return 0;
   }
 };
+
+export const getNewRegistrations = async () => {
+  const api = useAxios();
+  try {
+    let amounts = [];
+    const params = {
+      'filter.type.id': 1
+    };
+    let month = new Date().getMonth();
+
+    for (let count = 0; count < 12; count++) {
+      let timeFilter = [];
+      let dayFrom, dayTo;
+      let correctMonth = month;
+
+      if (month < 1) {
+        dayFrom = new Date(new Date().getFullYear() - 1, month + 13, 1).toISOString();
+        dayTo = new Date(new Date().getFullYear() - 1, month + 12, 1).toISOString();
+        correctMonth = month + 12;
+      } else {
+        dayFrom = new Date(new Date().getFullYear(), month, 1).toISOString();
+        dayTo = new Date(new Date().getFullYear(), month + 1, 1).toISOString();
+      }
+
+      timeFilter.push(`$gte:${dayFrom}`);
+      timeFilter.push(`$lte:${dayTo}`);
+
+      params['filter.createdAt'] = timeFilter;
+
+      const res = await api.get('/admin/metrics/', {
+        params: params
+      });
+
+      amounts.unshift([correctMonth, res.data.data.length]);
+      month--;
+    }
+
+    return amounts;
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
+};
