@@ -199,12 +199,7 @@ function Dashboard() {
               <InfoCard color='info' icon='trending_up' title='Total game bets' description={gameBet} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard
-                color='info'
-                icon='trending_up'
-                title='Total registration starts'
-                description={registrationStart}
-              />
+              <InfoCard color='info' icon='trending_up' title='Total registrations' description={registrationStart} />
             </Grid>
             <Grid item xs={2}>
               <InfoCard color='info' icon='trending_up' title='Total baccarat sessions' description={baccarat} />
@@ -214,7 +209,7 @@ function Dashboard() {
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox mt={6}>
+        <MDBox mt={5}>
           <Grid container spacing={3} direction='row' justify='center' alignItems='stretch'>
             <Grid item xs={8}>
               <Grid container spacing={3}>
@@ -269,10 +264,10 @@ function Dashboard() {
                     }}
                   />
                 </Grid>
-                <Grid item xs={11} mt={3}>
+                <Grid item xs={12}>
                   <DoubleInfoCard title1='$560K' cap1='Total sales' title2='$300K' cap2='Total profit' />
                 </Grid>
-                <Grid item xs={12} mt={3}>
+                <Grid item xs={12}>
                   <TimelineList title='Activity Overview'>
                     <TimelineItem
                       color='success'
