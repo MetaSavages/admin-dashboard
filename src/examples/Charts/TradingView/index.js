@@ -62,16 +62,20 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
     <MDBox>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4} md={2.5}>
-            <MDBox>
+          <Grid item xs={12} sm={5} md={3.5}>
+            <MDBox sx={{ width: '150px' }}>
               <DateTimePicker
                 label='From'
                 ampmInClock={false}
+                closeOnSelect={true}
                 ampm={false}
                 showDaysOutsideCurrentMonth
-                format='DD/MM/YYYY hh:mm'
                 value={from}
-                // value={''}
+                viewRenderers={{
+                  hours: null,
+                  minutes: null,
+                  seconds: null
+                }}
                 onChange={handleFromChange}
                 slotProps={{
                   layout: {
@@ -85,15 +89,19 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} sm={4} md={2.5}>
-            <MDBox>
+          <Grid item xs={12} sm={5} md={3.5}>
+            <MDBox sx={{ width: '150px' }}>
               <DateTimePicker
                 label='To'
                 ampmInClock={false}
                 ampm={false}
                 showDaysOutsideCurrentMonth
-                format='DD/MM/YYYY hh:mm'
                 value={to}
+                viewRenderers={{
+                  hours: null,
+                  minutes: null,
+                  seconds: null
+                }}
                 onChange={handleToChange}
                 slotProps={{
                   layout: {
