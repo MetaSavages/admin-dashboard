@@ -107,9 +107,13 @@ export const getPlayer = async (id) => {
 export const deletePlayer = async (id) => {
   const api = useAxios();
   try {
-    const response = await api.delete('admin/users', {
-      data: { userId: id }
-    });
+    const response = await api.delete(
+      'admin/users',
+      {},
+      {
+        userId: id
+      }
+    );
     if (response.status === 200) {
       console.log(`User with ID ${id} deleted successfully.`);
       alert(`User with ID ${id} deleted successfully.`);
