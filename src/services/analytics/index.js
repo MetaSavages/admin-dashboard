@@ -168,8 +168,8 @@ export const getGameStats = async (id) => {
       let correctMonth = month;
 
       if (month < 1) {
-        dayFrom = new Date(new Date().getFullYear() - 1, month + 13, 1).toISOString();
-        dayTo = new Date(new Date().getFullYear() - 1, month + 12, 1).toISOString();
+        dayFrom = new Date(new Date().getFullYear() - 1, month + 12, 1).toISOString();
+        dayTo = new Date(new Date().getFullYear() - 1, month + 13, 1).toISOString();
         correctMonth = month + 12;
       } else {
         dayFrom = new Date(new Date().getFullYear(), month, 1).toISOString();
