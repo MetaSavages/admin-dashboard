@@ -47,9 +47,10 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import VerticalBarChart from 'examples/Charts/BarCharts/VerticalBarChart';
 import MultiLayerPieChart from 'examples/Charts/MultiLayerPieChart';
 import DoubleInfoCard from './components/DoubleInfoCard';
-import { getTodayNumbers, getGameStats, getNewRegistrations } from 'services/analytics';
+import { getTodayNumbers, getGameStats, getNewRegistrations, getGameSessions } from 'services/analytics';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@mui/material';
+import HorizontalBarChart from 'examples/Charts/BarCharts/HorizontalBarChart';
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
@@ -63,6 +64,7 @@ function Dashboard() {
   const [gameLoses, setGameLoses] = useState([]);
   const [correctMonths, setCorrectMonths] = useState([]);
   const [newRegistrations, setNewRegistrations] = useState([]);
+  const [gameSessions, setGameSessions] = useState([]);
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   const gameData = {
@@ -91,6 +93,17 @@ function Dashboard() {
     ]
   };
 
+  const sessionsData = {
+    labels: ['Roulette', 'Blackjack', 'Baccarat'],
+    datasets: [
+      {
+        label: 'Sessions',
+        data: gameSessions,
+        color: 'info'
+      }
+    ]
+  };
+
   useEffect(() => {
     getGameStats(8).then((res) => {
       let wins = res.map((m) => {
@@ -108,13 +121,19 @@ function Dashboard() {
       });
       setGameLoses(loses);
     });
+  }, []);
 
+  useEffect(() => {
     getNewRegistrations().then((res) => {
       let registrations = res.map((m) => {
         return m[1];
       });
       setNewRegistrations(registrations);
     });
+  }, []);
+
+  useEffect(() => {
+    getGameSessions().then((res) => setGameSessions(res));
   }, []);
 
   const pieData = {
@@ -229,6 +248,9 @@ function Dashboard() {
                   <MultiLayerPieChart title='Earnings' description='24 Hours performance' chart={pieData} />
                 </Grid>
                 <Grid item xs={8}>
+                  <HorizontalBarChart title='Game sessions' description='24 Hours performance' chart={sessionsData} />
+                </Grid>
+                <Grid item xs={12}>
                   {newRegistrations.length > 0 ? (
                     <VerticalBarChart
                       title='Registrations'
@@ -238,14 +260,6 @@ function Dashboard() {
                   ) : (
                     <Skeleton height={400} />
                   )}
-                </Grid>
-                <Grid item xs={12}>
-                  {/* <DataTable
-                    table={dataTablePlayersData}
-                    sx={{ height: '50%' }}
-                    entriesPerPage={{ defaultValue: 5 }}
-                    isSorted={false}
-                  /> */}
                 </Grid>
               </Grid>
             </Grid>
