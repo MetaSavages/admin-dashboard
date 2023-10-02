@@ -4,67 +4,35 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MDBox from 'components/MDBox';
 import React, { useState, useEffect } from 'react';
 import MDButton from 'components/MDButton';
+import { getAllPlayers } from 'services/filters';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
-  const [usernameOptions, setUsernameOptions] = useState([
-    {
-      label: 'user1',
-      value: '1'
-    },
-    {
-      label: 'user2',
-      value: '2'
-    },
-    {
-      label: 'user3',
-      value: '3'
-    },
-    {
-      label: 'user4',
-      value: '4'
-    }
-  ]);
-  const [walletOptions, setWalletOptions] = useState([
-    {
-      label: 'wallet1',
-      value: '1'
-    },
-    {
-      label: 'wallet2',
-      value: '2'
-    },
-    {
-      label: 'wallet3',
-      value: '3'
-    },
-    {
-      label: 'wallet4',
-      value: '4'
-    }
-  ]);
-
+const Filters = ({ filters, setFilters }) => {
+  const [usernameOptions, setUsernameOptions] = useState([]);
+  const [usernameInput, setUsernameInput] = useState('');
+  const [isDemoChecked, setIsDemoChecked] = useState(false);
   const updateUsernames = (event, value) => {
     setPlayerUsernames(value);
   };
-
-  const [playerUsernames, setPlayerUsernames] = useState([]);
-  const [playerWallets, setPlayerWallets] = useState([]);
-  const [localIsDemoChecked, setLocalIsDemoChecked] = useState(isDemoChecked);
-
-// Checkbox handle
-  useEffect(() => {
-    setLocalIsDemoChecked(isDemoChecked);
-  }, [isDemoChecked]);
-
   const handleCheckboxChange = (event) => {
     const isChecked = event.target.checked;
-    setLocalIsDemoChecked(isChecked);
-    onIsDemoChange(isChecked);
+    setIsDemoChecked(isChecked);
   };
 
+  const handleUsernameInput = (event) => {
+    setUsernameInput(event.target.value);
+    if (event.target.value.length > 2) {
+      getAllPlayers(event.target.value, filters?.isDemo).then((players) => {
+        setUsernameOptions(players);
+      });
+    } else if (event.target.value.length < 2) {
+      setUsernameOptions([]);
+    }
+  };
+
+  const [playerUsernames, setPlayerUsernames] = useState([]);
   // fetch options
   useEffect(() => {
     // fetch player usernames
@@ -75,22 +43,14 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
         }
       }
     });
-    walletOptions.forEach((wallet) => {
-      if (filters?.wallets) {
-        if (filters.wallets.includes(wallet.value)) {
-          setPlayerWallets((prev) => [...prev, wallet]);
-        }
-      }
-    });
   }, []);
 
-  useEffect(() => {
+  const onSubmit = () => {
     setFilters({
       users: playerUsernames,
-      wallets: playerWallets,
+      isDemo: isDemoChecked
     });
-  }, [playerWallets, playerUsernames]);
-  
+  };
   return (
     <MDBox
       sx={{
@@ -116,46 +76,40 @@ const Filters = ({ filters, setFilters, isDemoChecked, onIsDemoChange }) => {
                   {option.label}
                 </li>
               )}
-              renderInput={(params) => <TextField {...params} label='Player username' variant='standard' />}
-            />
-          </MDBox>
-        </Grid>
-        <Grid item xs={4} md={4}>
-          <MDBox>
-            <Autocomplete
-              multiple
-              limitTags={2}
-              options={walletOptions}
-              disableCloseOnSelect
-              value={playerWallets}
-              onChange={setPlayerWallets}
-              isOptionEqualToValue={(option, value) => option.value === value.value}
-              getOptionLabel={(option) => option.label}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
-                  {option.label}
-                </li>
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label='Player username or Wallet ID'
+                  variant='standard'
+                  value={usernameInput}
+                  onChange={handleUsernameInput}
+                />
               )}
-              renderInput={(params) => <TextField {...params} label='Wallet Address' variant='standard' />}
             />
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
           <MDBox>
-          <label>
-            <Checkbox
-              icon={icon}
-              checkedIcon={checkedIcon}
-              checked={localIsDemoChecked}
-              onChange={(event) => handleCheckboxChange(event)}
-            />
-            Demo
-          </label>
+            <label>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                checked={isDemoChecked}
+                onChange={(event) => handleCheckboxChange(event)}
+              />
+              Demo
+            </label>
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
-          <MDButton variant='text' disabled={!playerUsernames.length && !playerWallets.length}>
+          <MDButton
+            variant='text'
+            disabled={
+              !playerUsernames.length &&
+              ((filters?.isDemo == null && isDemoChecked === false) || isDemoChecked === filters?.isDemo)
+            }
+            onClick={onSubmit}
+          >
             Apply
           </MDButton>
         </Grid>

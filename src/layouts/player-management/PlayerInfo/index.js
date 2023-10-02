@@ -24,7 +24,7 @@ import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 
 // NewUser page components
-import FormField from 'layouts/player-add/components/FormField';
+import FormField from 'layouts/player-management/FormField';
 import { Autocomplete } from '@mui/material';
 import { ErrorMessage, Field } from 'formik';
 import MDInput from 'components/MDInput';

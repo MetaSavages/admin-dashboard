@@ -90,7 +90,8 @@ function DataTable({
   onDelete,
   noActions,
   subrowFetchData,
-  defaultPageSize = 20
+  defaultPageSize = 20,
+  filters = ''
 }) {
   const [openDelete, setOpenDelete] = useState(false);
   const [renderAgain, setRenderAgain] = useState(false);
@@ -143,8 +144,9 @@ function DataTable({
     queryKey,
     fetchData,
     searchParam,
-    setTotalCountHandler,
-    renderAgain
+    renderAgain,
+    filters,
+    setTotalCountHandler
   );
   const tableColumns = useMemo(() => columnData, []);
   const tableData = useMemo(() => RES_DATA.data, [RES_DATA]);
@@ -274,7 +276,7 @@ function DataTable({
                   {column.render('Header')}
                 </DataTableHeadCell>
               ))}
-              {!noActions && (
+              {!noActions && page?.at(0)?.original?.isDemo === true && (
                 <DataTableHeadCell width='0.5rem' align='left' sorted={false}>
                   Actions
                 </DataTableHeadCell>

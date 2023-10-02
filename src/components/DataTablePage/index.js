@@ -17,7 +17,8 @@ function DataTablePage({
   object,
   onDelete,
   noActions = false,
-  subrowFetchData = null
+  subrowFetchData = null,
+  filters = ''
 }) {
 
   return (
@@ -41,6 +42,7 @@ function DataTablePage({
             onDelete={onDelete}
             noActions={noActions}
             subrowFetchData={subrowFetchData}
+            filters={filters}
           />
         </Card>
       </MDBox>

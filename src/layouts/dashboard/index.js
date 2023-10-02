@@ -50,6 +50,7 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import VerticalBarChart from 'examples/Charts/BarCharts/VerticalBarChart';
 import MultiLayerPieChart from 'examples/Charts/MultiLayerPieChart';
 import DoubleInfoCard from './components/DoubleInfoCard';
+import { getTodayNumbers } from 'services/analytics';
 import TradingViewChart from 'examples/Charts/TradingView';
 
 // Services
@@ -57,6 +58,12 @@ import { getDepositData } from 'services/deposits';
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [gameWin, setGameWin] = useState('');
+  const [gameLose, setGameLose] = useState('');
+  const [gameBet, setGameBet] = useState('');
+  const [registrationStart, setRegistrationStart] = useState('');
+  const [baccarat, setBaccarat] = useState('');
+  const [blackjack, setBlackjack] = useState('');
   const [data, setData] = useState([])
   const today = new Date();
 
@@ -146,6 +153,16 @@ function Dashboard() {
       }
     ]
   };
+
+  useEffect(() => {
+    getTodayNumbers('game_win').then(res => setGameWin(res));
+    getTodayNumbers('game_lose').then(res => setGameLose(res));
+    getTodayNumbers('game_bet').then(res => setGameBet(res));
+    getTodayNumbers('registration_start').then(res => setRegistrationStart(res));
+    getTodayNumbers('baccarat_session_start').then(res => setBaccarat(res));
+    getTodayNumbers('blackjack_session_start').then(res => setBlackjack(res));
+  }, []);
+
   // Action buttons for the BookingCard
   const actionButtons = (
     <>
@@ -167,29 +184,29 @@ function Dashboard() {
       <DashboardNavbar />
       <MDBox py={3}>
         <MDBox mb={3}>
-          <MDTypography variant='h2' fontWeight='medium'>
+          <MDTypography variant='h3' fontWeight='medium'>
             Today's numbers
           </MDTypography>
         </MDBox>
-        <MDBox px={6} display='flex' justifyContent='space-between' alignItems='center'>
-          <Grid container spacing={4} direction='row' justify='center' alignItems='stretch'>
+        <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+          <Grid container spacing={2} direction='row' justify='center' alignItems='stretch'>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total sales' description='$560K' />
+              <InfoCard color='info' icon='trending_up' title='Total game wins' description={gameWin} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total profit' description='$23K' />
+              <InfoCard color='info' icon='trending_up' title='Total game loses' description={gameLose} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total cost' description='$12K' />
+              <InfoCard color='info' icon='trending_up' title='Total game bets' description={gameBet} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total users' description='2.3K' />
+              <InfoCard color='info' icon='trending_up' title='Total registration starts' description={registrationStart} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total clicks' description='1.2M' />
+              <InfoCard color='info' icon='trending_up' title='Total baccarat sessions' description={baccarat} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Today' description='1.5M' />
+              <InfoCard color='info' icon='trending_up' title='Total blackjack sessions' description={blackjack} />
             </Grid>
           </Grid>
         </MDBox>
