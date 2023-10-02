@@ -1,8 +1,10 @@
 import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
+import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getUsers, deleteUser } from 'services/users';
 import userColumnData from 'data/usersColumnData';
+import { Dialog, DialogTitle, DialogActions, Button } from '@mui/material';
 import { Skeleton } from '@mui/material';
 import { Can } from 'context';
 
