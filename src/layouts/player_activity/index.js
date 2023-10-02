@@ -42,7 +42,7 @@ import { Card, Skeleton } from '@mui/material';
 
 import { useMaterialUIController } from 'context';
 
-import { getNewPlayers } from 'services/player_activity';
+import { getNewPlayers, getPlayerCountries } from 'services/player_activity';
 
 import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
@@ -56,7 +56,8 @@ function PlayerActivity() {
   const api = useAxios();
   const [countryCodes, setCountryCodes] = useState([]);
   const [countryNames, setCountryNames] = useState('');
-  const [userCountries, setUserCountries] = useState([]);
+  const [userCountries, setUserCountries] = useState({});
+  const [tableValues, setTableValues] = useState({});
   const [countryValues, setCountryValues] = useState({});
   const [salesTable, setSalesTable] = useState([{}]);
   const [loading, setLoading] = useState(true);
@@ -80,63 +81,50 @@ function PlayerActivity() {
   }, []);
 
   useEffect(() => {
-    getEventsHistory(1000, 1, {
-      users: [],
-      casinos: [],
-      eventTypes: [{ id: 1 }],
-      countries: [],
-      from: dayjs().subtract(14, 'day'),
-      to: dayjs()
-    })
-      .then((response) => {
-        const users = [];
-        response.data.forEach((user) => {
-          users.push(user.country);
-        });
-        setUserCountries(users);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+    getPlayerCountries().then((res) => {
+      setUserCountries(res.data);
+      setTableValues(res.data);
+    });
   }, []);
 
-  const countCountries = () => {
+  const countCountries = (data) => {
     let res = {};
     countryCodes.forEach((country) => {
-      let counter = 0;
-      userCountries.forEach((userCountry) => {
-        if (country[0] === userCountry) {
-          counter++;
+      data.forEach((userCountry) => {
+        if (country[0] === userCountry.country) {
+          res[userCountry.country] = userCountry.active;
+        } else {
+          res[country[0]] = 0;
         }
-      });
-      res = { ...res, [country[0]]: counter };
+      }); 
     });
     setCountryValues(res);
   };
 
+  useEffect(() => {
+    countCountries(userCountries)
+  }, [userCountries]);
+
   const handleSalesTable = () => {
-    Object.entries(countryValues).map((key, value) => {
-      setSalesTable((salesTable) => [
-        ...salesTable,
+    let values = [{}];
+    tableValues.map((res) => {
+      values.push(
         {
-          country: [key[0], countryNames[key[0]]],
-          registered: key[1],
-          active: key[1]
+          country: [res?.country ? res.country : '-', countryNames[res.country] ? countryNames[res.country] : '-'],
+          registered: res?.registered ? res.registered : 0,
+          active: res?.active ? res.active : 0
         }
-      ]);
+      );
     });
+    setSalesTable(values)
   };
 
   useEffect(() => {
-    if (Object.entries(countryValues).length) {
+    if (tableValues.length > 0) {
       setLoading(false);
       handleSalesTable();
     }
-  }, [countryValues]);
-
-  useEffect(() => {
-    countCountries();
-  }, [userCountries]);
+  }, [tableValues]);
 
   const findCountryValue = (country) => {
     let number = 0;
@@ -184,7 +172,7 @@ function PlayerActivity() {
             </MDBox>
           </Grid>
           <Grid item xs={6} md={6} lg={6}>
-            {(loading || !userCountries.length) && !Object.entries(countryValues).length ? (
+            {(loading) && !countryValues.length ? (
               <Skeleton />
             ) : (
               <VectorMap

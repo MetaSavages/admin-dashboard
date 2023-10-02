@@ -102,18 +102,14 @@ export const getAllPlayers = async (nickname) => {
 export const getAllCountries = async () => {
   const api = useAxios();
   try {
-    const unformattedData = await getEventsHistory(1000, 1, {
-      countries: [],
-      users: [],
-      casinos: [],
-      eventTypes: [{ id: 1 }]
-    });
+    const unformattedData = await api.get('admin/metrics/active-and-registered-users-by-country');
 
     const data = unformattedData.data.map((e) => {
-      return e.country;
+      return e.metric_country;
     });
 
-    const uniqueData = [...new Set(data)].filter((c) => c != '-');
+    const uniqueData = [...new Set(data)].filter((c) => c != null);
+    console.log(uniqueData)
 
     return uniqueData;
   } catch (err) {
