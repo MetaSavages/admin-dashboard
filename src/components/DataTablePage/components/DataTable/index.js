@@ -270,7 +270,7 @@ function DataTable({
                   {column.render('Header')}
                 </DataTableHeadCell>
               ))}
-              {!noActions && page?.at(0)?.original?.isDemo === true && (
+              {!noActions && (
                 <DataTableHeadCell width='0.5rem' align='left' sorted={false}>
                   Actions
                 </DataTableHeadCell>
