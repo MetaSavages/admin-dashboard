@@ -38,12 +38,14 @@ import form from 'layouts/casinos/schemas/form';
 import initialValues from 'layouts/casinos/schemas/initialValues';
 import { createPermission } from 'services/permissions';
 import { useNavigate } from 'react-router-dom';
+import { createCasino } from 'services/casinos';
 
 function NewCasino() {
   const { formId, formField } = form;
   const navigate = useNavigate();
   const submitForm = async (values, actions) => {
-    const response = await createPermission(values.name, values.currency);
+    console.log(values)
+    const response = await createCasino(values.casino_name, values.provider_name);
     if (response.status === 201) {
       alert('Casino added successfully');
     } else {

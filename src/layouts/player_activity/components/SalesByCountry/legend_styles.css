@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 .light {
   background-image: linear-gradient(195deg, #42424a, #191919) !important;
 }
@@ -16,14 +8,11 @@
 
 .jvectormap-legend-tick-sample {
   margin-right: 0.2rem !important;
-
 }
 
 .dark {
-  background-image: linear-gradient(195deg, #323a54, #1a2035) !important; 
+  background-image: linear-gradient(195deg, #323a54, #1a2035) !important;
 }
-
-
 
 .jvectormap-legend {
   color: #ffffff !important;
@@ -31,4 +20,10 @@
   border-radius: 5px !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
   font-size: 0.4rem !important;
+}
+
+.jvectormap-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

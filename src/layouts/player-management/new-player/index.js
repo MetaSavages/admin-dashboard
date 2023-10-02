@@ -32,13 +32,13 @@ import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
 // PlayerInfo page components
-import PlayerInfo from 'layouts/player-add/components/PlayerInfo';
-import CopyToClipboardButton from './components/CopyToClipboardButton'
+import PlayerInfo from 'layouts/player-management/PlayerInfo';
+import CopyToClipboardButton from 'layouts/player-management/components/CopyToClipboardButton'
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/player-add/schemas/validations';
-import form from 'layouts/player-add/schemas/form';
-import initialValues from 'layouts/player-add/schemas/initialValues';
+import validations from 'layouts/player-management/schemas/validations';
+import form from 'layouts/player-management/schemas/form';
+import initialValues from 'layouts/player-management/schemas/initialValues';
 
 // Custuom hook for fetching data
 import useAxios from 'hooks/useAxios';

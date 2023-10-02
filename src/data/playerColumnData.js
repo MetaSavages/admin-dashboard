@@ -3,6 +3,7 @@ import { getCurrentUser } from 'services/auth';
 export const playerColumnData = async () => {
   const user = await getCurrentUser();
   let arr = [
+    // { Header: 'ID', accessor: 'id', width: 100 },
     { Header: 'Username', accessor: 'nickname', width: 100 },
     {
       Header: 'Time Spent',
@@ -46,7 +47,7 @@ export const playerColumnData = async () => {
       Cell: ({ row }) => (
         <>
           {row.original.isDemo
-            ? process.env.REACT_APP_FRONTEND_URL + "?demoUser=" + row.original.wallet
+            ? process.env.REACT_APP_FRONTEND_URL + '?demoUser=' + row.original.wallet
             : row.original.wallet}
         </>
       )
@@ -55,7 +56,6 @@ export const playerColumnData = async () => {
     { Header: 'kyc_status', accessor: 'kyc_status', width: 100 }
   ];
   if (!user.role?.casino) {
-    console.log('here');
     arr = [
       {
         width: 5,

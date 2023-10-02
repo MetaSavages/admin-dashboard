@@ -10,10 +10,10 @@ const rolesColumnData = [
   {
     Header: 'Permissions',
     accessor: 'permissions'
+  },
+  {
+    Header: 'Casino',
+    accessor: 'casino'
   }
-  // {
-  //   Header: 'Role',
-  //   accessor: 'role'
-  // },
 ];
 export default rolesColumnData;

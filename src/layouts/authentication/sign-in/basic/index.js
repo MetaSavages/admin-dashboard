@@ -38,18 +38,21 @@ import { useState } from 'react';
 import MDInput from 'components/MDInput';
 import { login2Fa, turnOn2Fa } from 'services/2fa';
 
+import { useCookies } from 'react-cookie';
+
 function Basic() {
   const [, dispatch] = useMaterialUIController();
   const [isTwoFactor, setIsTwoFactor] = useState(false);
   const [code, setCode] = useState('');
   const [errorCode, setErrorCode] = useState('');
-
+  const [cookie, setCookie] = useCookies(['access_token']);
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
+        console.log(res);
+        setCookie('access_token', res?.data?.access_token, { path: '/' });
         actions.setSubmitting(false);
         actions.resetForm();
-        res.data.access_token && localStorage.setItem('AccessToken', res.data.access_token);
         getCurrentUser().then((res) => {
           if (res.isTwoFactorAuthenticationEnabled) {
             setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
@@ -59,6 +62,7 @@ function Basic() {
         });
       })
       .catch((err) => {
+        console.log(err);
         alert('Email or password is incorrect');
         console.log(err);
         actions.setSubmitting(false);

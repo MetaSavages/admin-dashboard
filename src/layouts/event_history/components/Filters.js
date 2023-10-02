@@ -7,78 +7,18 @@ import MDButton from 'components/MDButton';
 
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { pickersLayoutClasses } from '@mui/x-date-pickers';
+
+import { getAllCasinos, getAllPlayers, getEventTypes, getAllCountries } from '../../../services/filters/index';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const Filters = ({ filters, setFilters }) => {
   const [open, setOpen] = useState(false);
-  const [usernameOptions, setUsernameOptions] = useState([
-    {
-      label: 'user1',
-      value: '1'
-    },
-    {
-      label: 'user2',
-      value: '2'
-    },
-    {
-      label: 'user3',
-      value: '3'
-    },
-    {
-      label: 'user4',
-      value: '4'
-    }
-  ]);
-  const [eventTypeOptions, setEventTypeOptions] = useState([
-    {
-      label: 'Login',
-      value: '3'
-    },
-    {
-      label: 'Logout',
-      value: '4'
-    },
-    {
-      label: 'Deposit',
-      value: '1'
-    },
-    {
-      label: 'Withdraw',
-      value: '2'
-    },
-    {
-      label: 'Register',
-      value: '5'
-    },
-    {
-      label: 'Game Started',
-      value: '6'
-    }
-  ]);
-
-  const casinoOptions = [
-    {
-      label: 'No casino',
-      value: '0'
-    },
-    {
-      label: 'Casino 1',
-      value: '1'
-    },
-    {
-      label: 'Casino 2',
-      value: '2'
-    },
-    {
-      label: 'Casino 3',
-      value: '3'
-    },
-    {
-      label: 'Casino 4',
-      value: '4'
-    }
-  ];
+  const [usernameOptions, setUsernameOptions] = useState([]);
+  const [eventTypeOptions, setEventTypeOptions] = useState([]);
+  const [casinoOptions, setCasinoOptions] = useState([]);
+  const [usernameInput, setUsernameInput] = useState('');
+  const [countryOptions, setCountryOptions] = useState([]);
 
   const setOptions = (value) => {
     console.log(value);
@@ -96,16 +36,34 @@ const Filters = ({ filters, setFilters }) => {
     setCasinos(value);
   };
 
+  const updateCountries = (event, value) => {
+    setCountries(value);
+  };
+
+  const handleUsernameInput = (event) => {
+    setUsernameInput(event.target.value);
+    if (event.target.value.length > 2) {
+      getAllPlayers(event.target.value).then((players) => {
+        setUsernameOptions(players);
+      });
+    } else if (event.target.value.length < 2) {
+      setUsernameOptions([]);
+    }
+  };
+
   const [eventTypes, setEventTypes] = useState([]);
   const [casinos, setCasinos] = useState([]);
   const [playerUsernames, setPlayerUsernames] = useState([]);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
+  const [countries, setCountries] = useState([]);
   const handleFromChange = (date) => {
     if (to) {
       if (date > to) {
         setFrom(to);
         setTo(date);
+      } else {
+        setFrom(date);
       }
     } else {
       setFrom(date);
@@ -117,6 +75,8 @@ const Filters = ({ filters, setFilters }) => {
       if (date < from) {
         setFrom(date);
         setTo(from);
+      } else {
+        setTo(date);
       }
     } else {
       setTo(date);
@@ -125,39 +85,85 @@ const Filters = ({ filters, setFilters }) => {
 
   // fetch options
   useEffect(() => {
-    // fetch event types
-    // fetch player usernames
-    usernameOptions.forEach((username) => {
-      if (filters?.users) {
-        if (filters.users.includes(username.value)) {
-          setPlayerUsernames((prev) => [...prev, username]);
-        }
-      }
+    getEventTypes().then((types) => {
+      setEventTypeOptions(types);
     });
-    eventTypeOptions.forEach((eventType) => {
-      if (filters?.event_types) {
-        if (filters.event_types.includes(eventType.value)) {
-          setEventTypes((prev) => [...prev, eventType]);
-        }
-      }
+
+    getAllCasinos().then((casinos) => {
+      setCasinoOptions(casinos);
     });
-    casinoOptions.forEach((casino) => {
-      if (filters?.casinos) {
-        if (filters.casinos.includes(casino.value)) {
-          setCasinos((prev) => [...prev, casino]);
-        }
-      }
+
+    getAllCountries().then((countries) => {
+      setCountryOptions(countries);
     });
-  }, []);
+  }, [])
 
   useEffect(() => {
+    casinoOptions.forEach((casino) => {
+      if (filters?.casinos) {
+        filters.casinos.forEach((c) => {
+          if(c.id === casino.value){
+            setCasinos((prev) => [...prev, casino])
+          }
+        })
+      }
+    });
+  }, [casinoOptions])
+
+  useEffect(() => {
+      if(filters?.users.length) {
+        getAllPlayers(filters.users[0].username).then((res) => {
+          res.forEach((username) => {
+            if (filters?.users) {
+              filters.users.forEach((u) => {
+                if(u.id === username.id){
+                  setPlayerUsernames((prev) => [...prev, username])
+                }
+              })
+            }
+          });
+        })
+      }
+  }, [])
+
+  useEffect(() => {
+    eventTypeOptions.forEach((eventType) => {
+      if (filters?.eventTypes) {
+        filters.eventTypes.forEach((e) => {
+          console.log(e, eventType)
+          if(e.id === eventType.id){
+            setEventTypes((prev) => [...prev, eventType])
+          }
+        })
+      }
+    });
+
+  }, [eventTypeOptions]);
+
+  const onSubmit = () => {
     setFilters({
       eventTypes,
+      casinos,
+      countries,
       users: playerUsernames,
       from,
       to
     });
-  }, [eventTypes, playerUsernames, from, to]);
+  };
+
+  useEffect(() => {
+    countryOptions.forEach((country) => {
+      if (filters?.countries) {
+        filters.countries.forEach((c) => {
+          console.log(c, country);
+          if (c.name === country) {
+            setCountries((prev) => [...prev, country]);
+          }
+        });
+      }
+    });
+  }, [countryOptions]);
+
   return (
     <MDBox
       sx={{
@@ -166,7 +172,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2}>
-        <Grid item xs={6} sm={4} md={2}>
+        <Grid item xs={6} sm={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -195,7 +201,116 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={6} sm={4} md={2}>
+
+        <Grid item xs={12} sm={4} md={4}>
+          <MDBox>
+            <Autocomplete
+              multiple
+              //   open={open}
+              //   onOpen={() => {
+              //     setOpen(true);
+              //   }}
+              //   onClose={() => {
+              //     setOpen(false);
+              //   }}
+              limitTags={2}
+              options={usernameOptions}
+              disableCloseOnSelect
+              value={playerUsernames}
+              onChange={updateUsernames}
+              isOptionEqualToValue={(option, value) => option.value === value.value}
+              getOptionLabel={(option) => option.label}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option.label}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label='Player username'
+                  variant='standard'
+                  value={usernameInput}
+                  onChange={handleUsernameInput}
+                />
+              )}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} sm={4} md={2}>
+          <MDBox>
+            <DateTimePicker
+              label='From'
+              ampmInClock={false}
+              ampm={false}
+              showDaysOutsideCurrentMonth
+              format='DD/MM/YYYY hh:mm'
+              value={from}
+              onChange={handleFromChange}
+              slotProps={{
+                layout: {
+                  sx: {
+                    [`.${pickersLayoutClasses.actionBar}`]: {
+                      display: 'none'
+                    }
+                  }
+                }
+              }}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} sm={4} md={2}>
+          <MDBox>
+            <DateTimePicker
+              label='To'
+              ampmInClock={false}
+              ampm={false}
+              showDaysOutsideCurrentMonth
+              format='DD/MM/YYYY hh:mm'
+              value={to}
+              onChange={handleToChange}
+              slotProps={{
+                layout: {
+                  sx: {
+                    [`.${pickersLayoutClasses.actionBar}`]: {
+                      display: 'none'
+                    }
+                  }
+                }
+              }}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} sm={4} md={4}>
+          <MDBox>
+            <Autocomplete
+              multiple
+              //   open={open}
+              //   onOpen={() => {
+              //     setOpen(true);
+              //   }}
+              //   onClose={() => {
+              //     setOpen(false);
+              //   }}
+              limitTags={2}
+              options={countryOptions}
+              disableCloseOnSelect
+              value={countries}
+              onChange={updateCountries}
+              isOptionEqualToValue={(option, value) => option === value}
+              getOptionLabel={(option) => option}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                  {option}
+                </li>
+              )}
+              renderInput={(params) => <TextField {...params} label='Country' variant='standard' />}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={6} sm={4} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -224,80 +339,12 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={4} md={2}>
-          <MDBox>
-            <Autocomplete
-              multiple
-              //   open={open}
-              //   onOpen={() => {
-              //     setOpen(true);
-              //   }}
-              //   onClose={() => {
-              //     setOpen(false);
-              //   }}
-              limitTags={2}
-              options={usernameOptions}
-              disableCloseOnSelect
-              value={playerUsernames}
-              onChange={updateUsernames}
-              isOptionEqualToValue={(option, value) => option.value === value.value}
-              getOptionLabel={(option) => option.label}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
-                  {option.label}
-                </li>
-              )}
-              renderInput={(params) => <TextField {...params} label='Player username' variant='standard' />}
-            />
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} sm={4} md={2.5}>
-          <MDBox>
-            <DateTimePicker
-              label='From'
-              ampmInClock={false}
-              ampm={false}
-              showDaysOutsideCurrentMonth
-              format='DD/MM/YYYY hh:mm'
-              value={from}
-              onChange={handleFromChange}
-              slotProps={{
-                layout: {
-                  sx: {
-                    [`.${pickersLayoutClasses.actionBar}`]: {
-                      display: 'none'
-                    }
-                  }
-                }
-              }}
-            />
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} sm={4} md={2.5}>
-          <MDBox>
-            <DateTimePicker
-              label='To'
-              ampmInClock={false}
-              ampm={false}
-              showDaysOutsideCurrentMonth
-              format='DD/MM/YYYY hh:mm'
-              value={to}
-              onChange={handleToChange}
-              slotProps={{
-                layout: {
-                  sx: {
-                    [`.${pickersLayoutClasses.actionBar}`]: {
-                      display: 'none'
-                    }
-                  }
-                }
-              }}
-            />
-          </MDBox>
-        </Grid>
-        <Grid item xs={3} md={1}>
-          <MDButton variant='text' disabled={!playerUsernames.length && !eventTypes.length && !from && !to}>
+        <Grid item xs={3} md={1} ml={20}>
+          <MDButton
+            variant='text'
+            disabled={!playerUsernames.length && !eventTypes.length && !from && !to && !casinos.length && !countries.length}
+            onClick={onSubmit}
+          >
             Apply
           </MDButton>
         </Grid>

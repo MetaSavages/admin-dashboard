@@ -23,10 +23,10 @@ const form = {
       errorMsg: 'Casino name is required.'
     },
     currency: {
-      name: 'currency_name',
-      label: 'Currency name',
+      name: 'provider_name',
+      label: 'Provider',
       type: 'text',
-      errorMsg: 'Currency name is required.'
+      errorMsg: 'Provider is required.'
     }
   }
 };

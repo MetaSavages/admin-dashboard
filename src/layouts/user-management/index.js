@@ -1,15 +1,21 @@
 import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { getUsers } from 'services/users';
+import { getUsers, deleteUser } from 'services/users';
 import userColumnData from 'data/usersColumnData';
+import { Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { Skeleton } from '@mui/material';
 import { Can } from 'context';
+import { useState } from 'react';
+
 function UserManagement() {
   const navigate = useNavigate();
-  const onDelete = (id) => {
-    console.log(id);
-  };
+  const [showModal, setShowModal] = useState(false);
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+  const [deleteUserId, setDeleteUserId] = useState('');
+  const [filters, setFilters] = useState('');
+
   return (
     <>
       <Can I='read' a='user'>
@@ -28,12 +34,36 @@ function UserManagement() {
           queryKey='users'
           columnData={userColumnData}
           object={'user'}
-          onDelete={onDelete}
+          onDelete={(id) => {
+            setDeleteUserId(id);
+            handleOpenModal();
+          }}
+          filters={filters}
         />
       </Can>
       <Can not I='read' a='user'>
         <Navigate to='/dashboard' />
       </Can>
+      <Dialog
+        open={showModal}
+        onClose={handleCloseModal}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
+      >
+        <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this user?'}</DialogTitle>
+        <DialogActions>
+          <MDButton
+            onClick={async () => {
+              await deleteUser(deleteUserId);
+              handleCloseModal();
+              setFilters(filters.length ? '' : 'd');
+            }}
+          >
+            Yes
+          </MDButton>
+          <MDButton onClick={handleCloseModal}>No</MDButton>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
