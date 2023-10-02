@@ -36,7 +36,7 @@ function DataTableBodyRow({
           {cell.render('Cell')}
         </DataTableBodyCell>
       ))}
-      {!noActions && row.original.isDemo === true && (
+      {!noActions && (
         <DataTableBodyCell noBorder={noEndBorder && rowsLength - 1 === key} width='0.5rem' align='left'>
           <Can I='read' a={object}>
             <Tooltip title='View'>
