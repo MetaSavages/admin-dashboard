@@ -64,10 +64,10 @@ function Dashboard() {
   const [registrationStart, setRegistrationStart] = useState('');
   const [baccarat, setBaccarat] = useState('');
   const [blackjack, setBlackjack] = useState('');
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   const today = new Date();
 
-  // Create a new date object for before 1 week 
+  // Create a new date object for before 1 week
   const weekBefore = new Date();
   weekBefore.setDate(today.getDate() - 7);
 
@@ -75,10 +75,9 @@ function Dashboard() {
   const [to, setTo] = useState(dayjs(today));
 
   useEffect(() => {
-    
     getDepositData(from, to, 'SUCCESSFUL', 'day')
       .then((result) => {
-        if (result.data.length > 0) { 
+        if (result.data.length > 0) {
           setData(result.data);
         }
       })
@@ -90,6 +89,8 @@ function Dashboard() {
       if (date > to) {
         setFrom(to);
         setTo(date);
+      } else {
+        setFrom(date);
       }
     } else {
       setFrom(date);
@@ -105,7 +106,6 @@ function Dashboard() {
       setTo(date);
     }
   };
-
 
   const gradientData = {
     ...sales,
@@ -155,12 +155,12 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    getTodayNumbers('game_win').then(res => setGameWin(res));
-    getTodayNumbers('game_lose').then(res => setGameLose(res));
-    getTodayNumbers('game_bet').then(res => setGameBet(res));
-    getTodayNumbers('registration_start').then(res => setRegistrationStart(res));
-    getTodayNumbers('baccarat_session_start').then(res => setBaccarat(res));
-    getTodayNumbers('blackjack_session_start').then(res => setBlackjack(res));
+    getTodayNumbers('game_win').then((res) => setGameWin(res));
+    getTodayNumbers('game_lose').then((res) => setGameLose(res));
+    getTodayNumbers('game_bet').then((res) => setGameBet(res));
+    getTodayNumbers('registration_start').then((res) => setRegistrationStart(res));
+    getTodayNumbers('baccarat_session_start').then((res) => setBaccarat(res));
+    getTodayNumbers('blackjack_session_start').then((res) => setBlackjack(res));
   }, []);
 
   // Action buttons for the BookingCard
@@ -200,7 +200,12 @@ function Dashboard() {
               <InfoCard color='info' icon='trending_up' title='Total game bets' description={gameBet} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total registration starts' description={registrationStart} />
+              <InfoCard
+                color='info'
+                icon='trending_up'
+                title='Total registration starts'
+                description={registrationStart}
+              />
             </Grid>
             <Grid item xs={2}>
               <InfoCard color='info' icon='trending_up' title='Total baccarat sessions' description={baccarat} />
@@ -223,7 +228,13 @@ function Dashboard() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TradingViewChart from={from} handleFromChange={handleFromChange} to={to} handleToChange={handleToChange} dataInfo={data}/>
+                  <TradingViewChart
+                    from={from}
+                    handleFromChange={handleFromChange}
+                    to={to}
+                    handleToChange={handleToChange}
+                    dataInfo={data}
+                  />
                 </Grid>
                 <Grid item xs={4}>
                   <MultiLayerPieChart title='Earnings' description='24 Hours performance' chart={pieData} />

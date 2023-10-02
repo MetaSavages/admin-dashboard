@@ -143,10 +143,9 @@ function DataTable({
     queryTotalPageCount,
     queryKey,
     fetchData,
-    searchParam,
-    renderAgain,
     filters,
-    setTotalCountHandler
+    setTotalCountHandler,
+    renderAgain
   );
   const tableColumns = useMemo(() => columnData, []);
   const tableData = useMemo(() => RES_DATA.data, [RES_DATA]);

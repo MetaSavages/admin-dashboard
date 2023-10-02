@@ -105,18 +105,3 @@ export const deleteRole = async (id) => {
     };
   }
 };
-
-export const deleteRole = async (id) => {
-  const api = useAxios();
-  try {
-    return await api.delete(`/admin/auth/roles/${id}`);
-  } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        name: '',
-        permissions: []
-      }
-    };
-  }
-};

@@ -121,7 +121,9 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
         ref={chartContainer}
         style={{
           maxWidth: '100%',
-          height: data.length > 0 ? '500px' : ''
+          height: '500px'
+          // This is if we want to do not show empty chart
+          // height: data.length > 0 ? '500px' : ''
         }}
       ></MDBox>
     </MDBox>
