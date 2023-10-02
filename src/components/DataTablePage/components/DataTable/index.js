@@ -94,7 +94,6 @@ function DataTable({
   filters = ''
 }) {
   const [openDelete, setOpenDelete] = useState(false);
-  const [renderAgain, setRenderAgain] = useState(false);
 
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
@@ -144,8 +143,7 @@ function DataTable({
     queryKey,
     fetchData,
     filters,
-    setTotalCountHandler,
-    renderAgain
+    setTotalCountHandler
   );
   const tableColumns = useMemo(() => columnData, []);
   const tableData = useMemo(() => RES_DATA.data, [RES_DATA]);
@@ -300,7 +298,6 @@ function DataTable({
                   handleDelete={handleDelete}
                   rowsLength={page.length}
                   handleOpenDelete={handleOpenDelete}
-                  setRenderAgain={setRenderAgain}
                 />
                 {row?.isExpanded && renderRowSubComponent({ row, rowProps })}
               </Fragment>

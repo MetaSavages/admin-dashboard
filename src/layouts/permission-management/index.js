@@ -28,6 +28,7 @@ function PermissionManagement() {
     <>
       <DataTablePage
         title='Permission Management'
+        object='permission'
         createButton={
           <MDButton variant='contained' color='info' onClick={() => navigate('/permission-management/new-permission')}>
             Add Permission

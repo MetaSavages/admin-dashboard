@@ -8,8 +8,7 @@ const useFetchData = (
   queryKey,
   fetchData,
   search = '',
-  setTotalCount,
-  renderAgain 
+  setTotalCount
 ) => {
   const [data, setData] = useState({
     data: []
@@ -26,7 +25,7 @@ const useFetchData = (
         fetchData(queryPageSize, nextPage, search)
       );
     }
-  }, [queryPageIndex, queryPageSize, queryPageCount, search,renderAgain]);
+  }, [queryPageIndex, queryPageSize, queryPageCount, search]);
 
   const {
     data: resData,
@@ -34,7 +33,7 @@ const useFetchData = (
     isFetching,
     ...rest
   } = useQuery(
-    [queryKey, queryPageIndex, queryPageSize, queryPageCount, search,renderAgain],
+    [queryKey, queryPageIndex, queryPageSize, queryPageCount, search],
     () => fetchData(queryPageSize, queryPageIndex + 1, search),
     {
       keepPreviousData: true,

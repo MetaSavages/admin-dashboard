@@ -16,6 +16,7 @@ function RoleManagement() {
     <>
       <DataTablePage
         title='Role Management'
+        object='role'
         createButton={
           <MDButton variant='contained' color='info' onClick={() => navigate('/role-management/new-role')}>
             Add Role
