@@ -109,7 +109,6 @@ export const getAllCountries = async () => {
     });
 
     const uniqueData = [...new Set(data)].filter((c) => c != null);
-    console.log(uniqueData)
 
     return uniqueData;
   } catch (err) {
