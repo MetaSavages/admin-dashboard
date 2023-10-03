@@ -58,6 +58,7 @@ function PlayerActivity() {
   const [userCountries, setUserCountries] = useState({});
   const [tableValues, setTableValues] = useState({});
   const [countryValues, setCountryValues] = useState({});
+  const [countryValuesRegistered, setCountryValuesRegistered] = useState({});
   const [salesTable, setSalesTable] = useState([{}]);
   const [loading, setLoading] = useState(true);
   const [newRegistrations, setNewRegistrations] = useState([]);
@@ -109,19 +110,42 @@ function PlayerActivity() {
   const countCountries = (data) => {
     let res = {};
     countryCodes.forEach((country) => {
+      let isCountry = null;
       data.forEach((userCountry) => {
         if (country[0] === userCountry.country) {
-          res[userCountry.country] = userCountry.active;
-        } else {
-          res[country[0]] = 0;
+          isCountry = userCountry;
         }
       });
+      if (isCountry) {
+        res[isCountry.country] = isCountry.active;
+      } else {
+        res[country[0]] = 0;
+      }
     });
     setCountryValues(res);
   };
 
+  const countCountriesRegistered = (data) => {
+    let res = {};
+    countryCodes.forEach((country) => {
+      let isCountry = null;
+      data.forEach((userCountry) => {
+        if (country[0] === userCountry.country) {
+          isCountry = userCountry;
+        }
+      });
+      if (isCountry) {
+        res[isCountry.country] = isCountry.registered;
+      } else {
+        res[country[0]] = 0;
+      }
+    });
+    setCountryValuesRegistered(res);
+  };
+
   useEffect(() => {
     countCountries(userCountries);
+    countCountriesRegistered(userCountries);
   }, [userCountries]);
 
   const handleSalesTable = () => {
@@ -153,6 +177,16 @@ function PlayerActivity() {
     return number;
   };
 
+  const findCountryRegisteredValue = (country) => {
+    let number = 0;
+    Object.entries(countryValuesRegistered).find(([key, value]) => {
+      if (key == country) {
+        number = value;
+      }
+    });
+    return number;
+  };
+
   // Action buttons for the BookingCard
   const actionButtons = (
     <>
@@ -174,23 +208,8 @@ function PlayerActivity() {
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={5}>
-          <Grid item xs={6} md={6} lg={6}>
-            <MDBox>
-              <SalesByCountry salesTable={salesTable} />
-              <MDBox mb={3} mt={5}>
-                {newRegistrations.length > 0 ? (
-                  <ReportsLineChart
-                    color='dark'
-                    title='User registration rate'
-                    description='User registration rate'
-                    date='just updated'
-                    chart={registrationsData}
-                  />
-                ) : (
-                  <Skeleton height={300} />
-                )}
-              </MDBox>
-            </MDBox>
+          <Grid item xs={6} md={6} lg={6} height={400} display={'flex'} alignItems={'center'}>
+            <SalesByCountry salesTable={salesTable} />
           </Grid>
           <Grid item xs={6} md={6} lg={6}>
             {loading && !countryValues.length ? (
@@ -206,6 +225,59 @@ function PlayerActivity() {
                 }}
                 regionStyle={{
                   initial: {
+                    fill: '#0A2F51',
+                    'fill-opacity': 1,
+                    stroke: 'none',
+                    'stroke-width': 0,
+                    'stroke-opacity': 0
+                  }
+                }}
+                series={{
+                  regions: [
+                    {
+                      scale: ['#BDEFCC', '#7CDE9A', '#5CD581', '#3DCC68', '#31A45A', '#257C49', '#185334'],
+                      attribute: 'fill',
+                      values: countryValues,
+                      hoverOpacity: 0.7,
+                      hoverColor: true,
+                      normalizeFunction: 'polynomial',
+                      legend: {
+                        vertical: true,
+                        title: 'Active users',
+                        cssClass: darkMode ? 'dark' : 'light'
+                      }
+                    }
+                  ]
+                }}
+              />
+            )}
+          </Grid>
+          <Grid item xs={6} md={6} lg={6} height={420}>
+            <MDBox mb={3} mt={1}>
+              <ReportsLineChart
+                color='dark'
+                title='User registration rate'
+                description='User registration rate'
+                date='just updated'
+                chart={registrationsData}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={6} md={6} lg={6} mb={4}>
+            {loading && !countryValuesRegistered.length ? (
+              <Skeleton />
+            ) : (
+              <VectorMap
+                height={300}
+                map={worldMerc}
+                zoomOnScroll={false}
+                zoomButtons={false}
+                backgroundColor='transparent'
+                onRegionTipShow={(e, el, code) => {
+                  el.html(el.html() + ` <br> Registered users: ${findCountryRegisteredValue(code)}`);
+                }}
+                regionStyle={{
+                  initial: {
                     fill: '#8a836b',
                     'fill-opacity': 1,
                     stroke: 'none',
@@ -218,13 +290,13 @@ function PlayerActivity() {
                     {
                       scale: ['#8a836b', '#c7e9b4', '#7fcdbb', '#41b6c4', '#2c7fb8', '#253494'],
                       attribute: 'fill',
-                      values: countryValues,
+                      values: countryValuesRegistered,
                       hoverOpacity: 0.7,
                       hoverColor: true,
                       normalizeFunction: 'polynomial',
                       legend: {
                         vertical: true,
-                        title: 'Active users',
+                        title: 'Registered users',
                         cssClass: darkMode ? 'dark' : 'light'
                       }
                     }
