@@ -22,9 +22,9 @@ function PlayerManagement() {
   const [cols, setCols] = useState(null);
 
   useEffect(() => {
-    playerColumnData().then((res) => {
-      setCols(res);
-    });
+      playerColumnData().then((res) => {
+        setCols(res);
+      });
   }, [filters]);
 
   if (!cols) return <></>;

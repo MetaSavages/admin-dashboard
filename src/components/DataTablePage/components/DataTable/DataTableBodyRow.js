@@ -35,14 +35,14 @@ function DataTableBodyRow({
         <DataTableBodyCell noBorder={noEndBorder && rowsLength - 1 === key} width='0.5rem' align='left'>
           <Can I='read' a={object}>
             <Tooltip title='View'>
-              <IconButton color='info' onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}>
+              <IconButton color='info' onClick={() => navigate(`show/${row?.original?.id}`, { replace: false })}>
                 <Icon>visibility</Icon>
               </IconButton>
             </Tooltip>
           </Can>
           <Can I='update' a={object}>
             <Tooltip title='Edit'>
-              <IconButton color='info' onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}>
+              <IconButton color='info' onClick={() => navigate(`edit/${row?.original?.id}`, { replace: false })}>
                 <Icon>edit</Icon>
               </IconButton>
             </Tooltip>
@@ -51,7 +51,7 @@ function DataTableBodyRow({
             <Tooltip title='Delete'>
               <IconButton
                 color='error'
-                onClick={() => handleDelete(row.cells[0].value)}
+                onClick={() => handleDelete(row?.original?.id)}
                 // onClick={handleOpenDelete}
               >
                 <Icon>delete</Icon>
