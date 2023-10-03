@@ -92,8 +92,6 @@ function PlayerActivity() {
     registrationsData.datasets.data = newRegistrations;
   }, [newRegistrations]);
 
-  console.log(registrationsData, tasks);
-
   useEffect(() => {
     getNewRegistrations().then((res) => {
       let registrations = res.map((m) => {
