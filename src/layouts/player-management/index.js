@@ -9,9 +9,7 @@ import { useEffect, useState } from 'react';
 import { deletePlayer } from 'services/players';
 import { Can } from 'context';
 
-
 function PlayerManagement() {
-
   const navigate = useNavigate();
   const onDelete = (id) => {
     deletePlayer(id).then((res) => {
@@ -30,7 +28,6 @@ function PlayerManagement() {
   }, [filters]);
 
   if (!cols) return <></>;
-
   return (
     <>
       <Can I='read' a='user'>
@@ -51,8 +48,9 @@ function PlayerManagement() {
           object={'player'}
           onDelete={onDelete}
           subrowFetchData={getPlayerAggregated}
-          filtersComponent={<Filters filters={filters} setFilters={setFilters}/>}
+          filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
           filters={filters}
+          noActions={filters?.isDemo == null || filters?.isDemo == false ? true : false}
         />{' '}
       </Can>
       <Can not I='read' a='user'>
