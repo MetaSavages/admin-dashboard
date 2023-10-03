@@ -46,7 +46,7 @@ import { getNewPlayers, getPlayerCountries } from 'services/player_activity';
 
 import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
-import { getEventsHistory } from 'services/analytics';
+import { getEventsHistory, getNewRegistrations } from 'services/analytics';
 import dayjs from 'dayjs';
 
 function PlayerActivity() {
@@ -61,6 +61,9 @@ function PlayerActivity() {
   const [countryValues, setCountryValues] = useState({});
   const [salesTable, setSalesTable] = useState([{}]);
   const [loading, setLoading] = useState(true);
+  const [newRegistrations, setNewRegistrations] = useState([]);
+  const [correctMonths, setCorrectMonths] = useState([]);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   useEffect(() => {
     api
@@ -80,6 +83,29 @@ function PlayerActivity() {
       });
   }, []);
 
+  let registrationsData = {
+    labels: correctMonths,
+    datasets: { label: 'Registrations', data: newRegistrations }
+  };
+
+  useEffect(() => {
+    registrationsData.datasets.data = newRegistrations;
+  }, [newRegistrations]);
+
+  console.log(registrationsData, tasks);
+
+  useEffect(() => {
+    getNewRegistrations().then((res) => {
+      let registrations = res.map((m) => {
+        m[0] === 12
+          ? setCorrectMonths((prev) => [...prev, months[0]])
+          : setCorrectMonths((prev) => [...prev, months[m[0]]]);
+        return m[1];
+      });
+      setNewRegistrations(registrations);
+    });
+  }, []);
+
   useEffect(() => {
     getPlayerCountries().then((res) => {
       setUserCountries(res.data);
@@ -96,27 +122,25 @@ function PlayerActivity() {
         } else {
           res[country[0]] = 0;
         }
-      }); 
+      });
     });
     setCountryValues(res);
   };
 
   useEffect(() => {
-    countCountries(userCountries)
+    countCountries(userCountries);
   }, [userCountries]);
 
   const handleSalesTable = () => {
     let values = [{}];
     tableValues.map((res) => {
-      values.push(
-        {
-          country: [res?.country ? res.country : '-', countryNames[res.country] ? countryNames[res.country] : '-'],
-          registered: res?.registered ? res.registered : 0,
-          active: res?.active ? res.active : 0
-        }
-      );
+      values.push({
+        country: [res?.country ? res.country : '-', countryNames[res.country] ? countryNames[res.country] : '-'],
+        registered: res?.registered ? res.registered : 0,
+        active: res?.active ? res.active : 0
+      });
     });
-    setSalesTable(values)
+    setSalesTable(values);
   };
 
   useEffect(() => {
@@ -158,21 +182,25 @@ function PlayerActivity() {
       <MDBox py={3}>
         <Grid container spacing={5}>
           <Grid item xs={6} md={6} lg={6}>
-            <MDBox xs={6} md={6} lg={6}>
+            <MDBox>
               <SalesByCountry salesTable={salesTable} />
               <MDBox mb={3} mt={5}>
-                <ReportsLineChart
-                  color='dark'
-                  title='User registration rate'
-                  description='User registration rate'
-                  date='just updated'
-                  chart={tasks}
-                />
+                {newRegistrations.length > 0 ? (
+                  <ReportsLineChart
+                    color='dark'
+                    title='User registration rate'
+                    description='User registration rate'
+                    date='just updated'
+                    chart={registrationsData}
+                  />
+                ) : (
+                  <Skeleton height={300} />
+                )}
               </MDBox>
             </MDBox>
           </Grid>
           <Grid item xs={6} md={6} lg={6}>
-            {(loading) && !countryValues.length ? (
+            {loading && !countryValues.length ? (
               <Skeleton />
             ) : (
               <VectorMap
