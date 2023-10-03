@@ -87,7 +87,7 @@ export const getPlayerAggregated = async (user) => {
 export const getPlayer = async (id) => {
   const api = useAxios();
   try {
-    const res = await api.get(`/admin/metrics/players/?id=${id}`);
+    const res = await api.get(`/admin/metrics/players/?id=${id}&isDemo=true`);
     return res.data.items[0];
   } catch (err) {
     console.log(err);
@@ -107,13 +107,9 @@ export const getPlayer = async (id) => {
 export const deletePlayer = async (id) => {
   const api = useAxios();
   try {
-    const response = await api.delete(
-      'admin/users',
-      {},
-      {
-        userId: id
-      }
-    );
+    const response = await api.delete('admin/users', {
+      data: { userId: id }
+    });
     if (response.status === 200) {
       console.log(`User with ID ${id} deleted successfully.`);
       alert(`User with ID ${id} deleted successfully.`);

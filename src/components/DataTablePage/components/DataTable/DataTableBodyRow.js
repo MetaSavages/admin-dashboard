@@ -38,14 +38,14 @@ function DataTableBodyRow({
         <DataTableBodyCell noBorder={noEndBorder && rowsLength - 1 === key} width='0.5rem' align='left'>
           <Can I='read' a={object}>
             <Tooltip title='View'>
-              <IconButton color='info' onClick={() => navigate(`show/${row.cells[0].value}`, { replace: false })}>
+              <IconButton color='info' onClick={() => navigate(`show/${row?.original?.id}`, { replace: false })}>
                 <Icon>visibility</Icon>
               </IconButton>
             </Tooltip>
           </Can>
           <Can I='update' a={object}>
             <Tooltip title='Edit'>
-              <IconButton color='info' onClick={() => navigate(`edit/${row.cells[0].value}`, { replace: false })}>
+              <IconButton color='info' onClick={() => navigate(`edit/${row?.original?.id}`, { replace: false })}>
                 <Icon>edit</Icon>
               </IconButton>
             </Tooltip>
@@ -54,15 +54,33 @@ function DataTableBodyRow({
             <Tooltip title='Delete'>
               <IconButton
                 color='error'
-                onClick={async () => {
-                  handleOpenDelete();
-                  const value = row.cells[0].value;
-                  const result = await handleDelete(value);
-                }}
+                onClick={() => handleDelete(row?.original?.id)}
+                // onClick={handleOpenDelete}
               >
                 <Icon>delete</Icon>
               </IconButton>
             </Tooltip>
+            <Dialog
+              open={openDelete}
+              onClose={handleCloseDelete}
+              aria-labelledby='alert-dialog-title'
+              aria-describedby='alert-dialog-description'
+            >
+              <DialogTitle id='alert-dialog-title'>{`Delete ${object}`}</DialogTitle>
+              <DialogContent>
+                <DialogContentText id='alert-dialog-description'>
+                  Are you sure you want to delete this {object}?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <MDButton variant='text' onClick={handleCloseDelete}>
+                  No
+                </MDButton>
+                <MDButton variant='text' color='error' onClick={() => handleDelete(row?.original?.id)}>
+                  yes
+                </MDButton>
+              </DialogActions>
+            </Dialog>
           </Can>
         </DataTableBodyCell>
       )}
