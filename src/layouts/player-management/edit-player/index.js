@@ -54,7 +54,6 @@ function EditPlyer() {
     getPlayer(id)
       .then((res) => {
         setUser(res);
-        console.log('res');
         console.log(res);
       })
       .catch((err) => {

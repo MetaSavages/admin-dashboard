@@ -9,7 +9,6 @@ import { getPlayer } from 'services/players';
 
 function ShowPlayer() {
   const { id } = useParams();
-  console.log(id);
   const [user, setUser] = useState({});
   useEffect(() => {
     getPlayer(id)
