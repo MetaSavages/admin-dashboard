@@ -46,8 +46,7 @@ import { getNewPlayers, getPlayerCountries } from 'services/player_activity';
 
 import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
-import { getEventsHistory, getNewRegistrations } from 'services/analytics';
-import dayjs from 'dayjs';
+import { getNewRegistrations } from 'services/analytics';
 
 function PlayerActivity() {
   const [controller] = useMaterialUIController();
