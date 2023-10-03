@@ -89,10 +89,6 @@ function PlayerActivity() {
   };
 
   useEffect(() => {
-    registrationsData.datasets.data = newRegistrations;
-  }, [newRegistrations]);
-
-  useEffect(() => {
     getNewRegistrations().then((res) => {
       let registrations = res.map((m) => {
         m[0] === 12
