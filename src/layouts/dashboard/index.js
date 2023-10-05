@@ -47,8 +47,10 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import VerticalBarChart from 'examples/Charts/BarCharts/VerticalBarChart';
 import MultiLayerPieChart from 'examples/Charts/MultiLayerPieChart';
 import DoubleInfoCard from './components/DoubleInfoCard';
-import { getTodayNumbers } from 'services/analytics';
+import { getTodayNumbers, getGameStats, getNewRegistrations, getGameSessions } from 'services/analytics';
 import { useEffect, useState } from 'react';
+import { Skeleton } from '@mui/material';
+import HorizontalBarChart from 'examples/Charts/BarCharts/HorizontalBarChart';
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
@@ -58,18 +60,82 @@ function Dashboard() {
   const [registrationStart, setRegistrationStart] = useState('');
   const [baccarat, setBaccarat] = useState('');
   const [blackjack, setBlackjack] = useState('');
+  const [gameWins, setGameWins] = useState([]);
+  const [gameLoses, setGameLoses] = useState([]);
+  const [correctMonths, setCorrectMonths] = useState([]);
+  const [newRegistrations, setNewRegistrations] = useState([]);
+  const [gameSessions, setGameSessions] = useState([]);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  const gradientData = {
-    ...sales,
+  const gameData = {
+    labels: correctMonths,
     datasets: [
-      sales.datasets,
       {
-        label: 'Profit',
-        data: [0, 200, 100, 300, 150, 400, 200, 550, 570],
+        label: 'Wins',
+        data: gameWins,
+        color: 'info'
+      },
+      {
+        label: 'Loses',
+        data: gameLoses
+      }
+    ]
+  };
+
+  const registrationsData = {
+    labels: correctMonths,
+    datasets: [
+      {
+        label: 'Registrations',
+        data: newRegistrations,
         color: 'info'
       }
     ]
   };
+
+  const sessionsData = {
+    labels: ['Roulette', 'Blackjack', 'Baccarat'],
+    datasets: [
+      {
+        label: 'Sessions',
+        data: gameSessions,
+        color: 'info'
+      }
+    ]
+  };
+
+  useEffect(() => {
+    getGameStats(8).then((res) => {
+      let wins = res.map((m) => {
+        m[0] === 12
+          ? setCorrectMonths((prev) => [...prev, months[0]])
+          : setCorrectMonths((prev) => [...prev, months[m[0]]]);
+        return m[1];
+      });
+      setGameWins(wins);
+    });
+
+    getGameStats(9).then((res) => {
+      let loses = res.map((m) => {
+        return m[1];
+      });
+      setGameLoses(loses);
+    });
+  }, []);
+
+  useEffect(() => {
+    getNewRegistrations().then((res) => {
+      let registrations = res.map((m) => {
+        return m[1];
+      });
+      setNewRegistrations(registrations);
+    });
+  }, []);
+
+  useEffect(() => {
+    getGameSessions().then((res) => setGameSessions(res));
+  }, []);
+
   const pieData = {
     labels: ['Red', 'Blue', 'Empty', 'Empty'],
     datasets: [
@@ -107,12 +173,12 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    getTodayNumbers('game_win').then(res => setGameWin(res));
-    getTodayNumbers('game_lose').then(res => setGameLose(res));
-    getTodayNumbers('game_bet').then(res => setGameBet(res));
-    getTodayNumbers('registration_start').then(res => setRegistrationStart(res));
-    getTodayNumbers('baccarat_session_start').then(res => setBaccarat(res));
-    getTodayNumbers('blackjack_session_start').then(res => setBlackjack(res));
+    getTodayNumbers('game_win').then((res) => setGameWin(res));
+    getTodayNumbers('game_lose').then((res) => setGameLose(res));
+    getTodayNumbers('game_bet').then((res) => setGameBet(res));
+    getTodayNumbers('registration_start').then((res) => setRegistrationStart(res));
+    getTodayNumbers('baccarat_session_start').then((res) => setBaccarat(res));
+    getTodayNumbers('blackjack_session_start').then((res) => setBlackjack(res));
   }, []);
 
   // Action buttons for the BookingCard
@@ -152,7 +218,7 @@ function Dashboard() {
               <InfoCard color='info' icon='trending_up' title='Total game bets' description={gameBet} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total registration starts' description={registrationStart} />
+              <InfoCard color='info' icon='trending_up' title='Total registrations' description={registrationStart} />
             </Grid>
             <Grid item xs={2}>
               <InfoCard color='info' icon='trending_up' title='Total baccarat sessions' description={baccarat} />
@@ -162,37 +228,44 @@ function Dashboard() {
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox mt={6}>
+        <MDBox mt={5}>
           <Grid container spacing={3} direction='row' justify='center' alignItems='stretch'>
             <Grid item xs={8}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
-                  <GradientLineChart
-                    title='Sales'
-                    description='Last campaign performance'
-                    chart={gradientData}
-                    tension={0.5}
-                  />
+                  {gameWins.length > 0 ? (
+                    <GradientLineChart
+                      title='Game win / lose'
+                      description='Monthly performance'
+                      chart={gameData}
+                      tension={0.5}
+                    />
+                  ) : (
+                    <Skeleton height={400} />
+                  )}
                 </Grid>
                 <Grid item xs={4}>
                   <MultiLayerPieChart title='Earnings' description='24 Hours performance' chart={pieData} />
                 </Grid>
                 <Grid item xs={8}>
-                  <VerticalBarChart title='Conversions' description='24 Hours performance' chart={gradientData} />
+                  <HorizontalBarChart title='Game sessions' description='24 Hours performance' chart={sessionsData} />
                 </Grid>
                 <Grid item xs={12}>
-                  {/* <DataTable
-                    table={dataTablePlayersData}
-                    sx={{ height: '50%' }}
-                    entriesPerPage={{ defaultValue: 5 }}
-                    isSorted={false}
-                  /> */}
+                  {newRegistrations.length > 0 ? (
+                    <VerticalBarChart
+                      title='Registrations'
+                      description='Monthly performance'
+                      chart={registrationsData}
+                    />
+                  ) : (
+                    <Skeleton height={400} />
+                  )}
                 </Grid>
               </Grid>
             </Grid>
             <Grid item xs={4}>
               <Grid container spacing={3}>
-                <Grid item xs={12} mt={8}>
+                <Grid item xs={12} mt={3}>
                   <CasinoCard
                     title='Casino'
                     description='Last campaign performance'
@@ -205,10 +278,10 @@ function Dashboard() {
                     }}
                   />
                 </Grid>
-                <Grid item xs={11} mt={3}>
+                <Grid item xs={12}>
                   <DoubleInfoCard title1='$560K' cap1='Total sales' title2='$300K' cap2='Total profit' />
                 </Grid>
-                <Grid item xs={12} mt={3}>
+                <Grid item xs={12}>
                   <TimelineList title='Activity Overview'>
                     <TimelineItem
                       color='success'

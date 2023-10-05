@@ -29,6 +29,11 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
       if (filters.to) {
         timeFilter.push(`$lte:${filters.to.format('YYYY-MM-DDTHH:mm:ssZ')}`);
       }
+      if (filters.demo) {
+        params['demo'] = `true`;
+      } else {
+        params['demo'] = `false`;
+      }
     }
     if (timeFilter.length) {
       params['filter.createdAt'] = timeFilter;
@@ -133,6 +138,7 @@ export const getTodayNumbers = async (type) => {
 
     const res = await api.get(`admin/metrics/analytics-count-for-period/${type}`, {
       params: {
+        limit: 100000,
         startDate: date,
         endDate: dateTomorrow
       }
@@ -145,5 +151,141 @@ export const getTodayNumbers = async (type) => {
     return {
       data: []
     };
+  }
+};
+
+export const getGameStats = async (id) => {
+  const api = useAxios();
+  try {
+    let amounts = [];
+    const params = {
+      limit: 100000,
+      'filter.type.id': id
+    };
+    let month = new Date().getMonth();
+
+    for (let count = 0; count < 12; count++) {
+      let timeFilter = [];
+      let dayFrom, dayTo;
+      let correctMonth = month;
+
+      if (month < 1) {
+        dayFrom = new Date(new Date().getFullYear() - 1, month + 12, 1).toISOString();
+        dayTo = new Date(new Date().getFullYear() - 1, month + 13, 1).toISOString();
+        correctMonth = month + 12;
+      } else {
+        dayFrom = new Date(new Date().getFullYear(), month, 1).toISOString();
+        dayTo = new Date(new Date().getFullYear(), month + 1, 1).toISOString();
+      }
+
+      timeFilter.push(`$gte:${dayFrom}`);
+      timeFilter.push(`$lte:${dayTo}`);
+
+      params['filter.createdAt'] = timeFilter;
+
+      const res = await api.get('/admin/metrics/', {
+        params: params
+      });
+
+      let amount = 0;
+      res.data.data.map((e) => {
+        amount += e.payload.amount;
+      });
+
+      amounts.unshift([correctMonth, amount]);
+      month--;
+    }
+
+    return amounts;
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
+};
+
+export const getNewRegistrations = async () => {
+  const api = useAxios();
+  try {
+    let amounts = [];
+    const params = {
+      limit: 100000,
+      'filter.type.id': 1
+    };
+    let month = new Date().getMonth();
+
+    for (let count = 0; count < 12; count++) {
+      let timeFilter = [];
+      let dayFrom, dayTo;
+      let correctMonth = month;
+
+      if (month < 1) {
+        dayFrom = new Date(new Date().getFullYear() - 1, month + 13, 1).toISOString();
+        dayTo = new Date(new Date().getFullYear() - 1, month + 12, 1).toISOString();
+        correctMonth = month + 12;
+      } else {
+        dayFrom = new Date(new Date().getFullYear(), month, 1).toISOString();
+        dayTo = new Date(new Date().getFullYear(), month + 1, 1).toISOString();
+      }
+
+      timeFilter.push(`$gte:${dayFrom}`);
+      timeFilter.push(`$lte:${dayTo}`);
+
+      params['filter.createdAt'] = timeFilter;
+
+      const res = await api.get('/admin/metrics/', {
+        params: params
+      });
+
+      amounts.unshift([correctMonth, res.data.data.length]);
+      month--;
+    }
+
+    return amounts;
+  } catch (err) {
+    console.log(err);
+    return 0;
+  }
+};
+
+export const getGameSessions = async () => {
+  let sessions = [0, 0, 0];
+  try {
+    const api = useAxios();
+
+    let dateFrom = new Date();
+    dateFrom.setHours(0, 0, 0, 0);
+    dateFrom = dateFrom.toJSON();
+
+    let dateTo = new Date();
+    dateTo.setHours(24, 0, 0, 0);
+    dateTo = dateTo.toJSON();
+
+    const res = await api.get(`admin/metrics`, {
+      params: {
+        limit: 100000,
+        startDate: dateFrom,
+        endDate: dateTo,
+        'filter.type.id': `$in:13,15,19`,
+      }
+    });
+
+    res.data.data.map((session) => {
+      switch(session.type.id) {
+        case 13: 
+          sessions[1] += 1;
+          break;
+        case 15: 
+          sessions[0] += 1;
+          break;
+        case 19:
+          sessions[2] += 1;
+          break;
+      }
+    });
+
+    return sessions;
+  } catch (error) {
+    console.log(error);
+    return {};
   }
 };
