@@ -109,7 +109,7 @@ function Basic() {
           });
       }
     } catch (error) {
-      setErrorCode(error.message);
+      setErrorCode('INCORRECT AUTHENTICATION CODE!');
     }
   }
   const { formId, formField } = form;
@@ -135,33 +135,39 @@ function Basic() {
           <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%' }}>
             <Grid item xs={12} lg={8}>
               {isTwoFactor ? (
-                <MDBox className='remove-arrows-from-input'>
-                  <MDInput
-                    type='number'
-                    label='Code'
-                    fullWidth
-                    value={code}
-                    onChange={handleChange}
-                    error={errorCode ? true : false}
-                  />
-                  <MDBox mt={0.75}>
-                    <MDTypography component='div' variant='caption' color='error' fontWeight='regular'>
-                      {errorCode}
-                    </MDTypography>
-                  </MDBox>
-                  <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
-                    <MDButton
-                      disabled={code?.length >= 6 ? false : true}
-                      onClick={handleSubmitCode}
-                      type='submit'
-                      variant='gradient'
-                      color='info'
-                      fullWidth
-                    >
-                      Submit
-                    </MDButton>
-                  </MDBox>
-                </MDBox>
+                <Formik>
+                  {() => (
+                    <Form id='2fa' autoComplete='off'>
+                      <MDBox className='remove-arrows-from-input'>
+                        <MDInput
+                          type='number'
+                          label='Code'
+                          fullWidth
+                          value={code}
+                          onChange={handleChange}
+                          error={errorCode ? true : false}
+                        />
+                        <MDBox mt={0.75}>
+                          <MDTypography component='div' variant='caption' color='error' fontWeight='regular'>
+                            {errorCode}
+                          </MDTypography>
+                        </MDBox>
+                        <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
+                          <MDButton
+                            disabled={code?.length >= 6 ? false : true}
+                            onClick={handleSubmitCode}
+                            type='submit'
+                            variant='gradient'
+                            color='info'
+                            fullWidth
+                          >
+                            Submit
+                          </MDButton>
+                        </MDBox>
+                      </MDBox>
+                    </Form>
+                  )}
+                </Formik>
               ) : (
                 <Formik initialValues={initialValues} validationSchema={validations} onSubmit={handleSubmit}>
                   {({ values, errors, touched, isSubmitting, setFieldValue }) => (
