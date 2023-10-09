@@ -57,6 +57,7 @@ function Basic() {
       .catch((err) => {
         console.log(err);
         alert('Email or password is incorrect');
+        console.log(err);
         actions.setSubmitting(false);
         actions.resetForm();
       });

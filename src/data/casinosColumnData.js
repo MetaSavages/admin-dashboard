@@ -73,7 +73,6 @@ export const casinosColumnData = [
                   async () => {
                     await deleteCasino(deleteCasinoId);
                     handleCloseModal();
-                    window.location.reload();
                   }
                 }
               >

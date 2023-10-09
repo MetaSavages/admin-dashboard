@@ -3,10 +3,11 @@ import MDButton from 'components/MDButton';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getUsers, deleteUser } from 'services/users';
 import userColumnData from 'data/usersColumnData';
+import { Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { Skeleton } from '@mui/material';
 import { Can } from 'context';
 import { useState } from 'react';
-import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
+
 function UserManagement() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -33,12 +34,10 @@ function UserManagement() {
           queryKey='users'
           columnData={userColumnData}
           object={'user'}
-          onDelete={
-            (id) => {
-              setDeleteUserId(id); 
-              handleOpenModal();
-            }
-          }
+          onDelete={(id) => {
+            setDeleteUserId(id);
+            handleOpenModal();
+          }}
           filters={filters}
         />
       </Can>
@@ -46,24 +45,24 @@ function UserManagement() {
         <Navigate to='/dashboard' />
       </Can>
       <Dialog
-          open={showModal}
-          onClose={handleCloseModal}
-          aria-labelledby='alert-dialog-title'
-          aria-describedby='alert-dialog-description'
+        open={showModal}
+        onClose={handleCloseModal}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-          <DialogTitle id='alert-dialog-title'>
-              {'Are you sure you want to delete this user?'}
-          </DialogTitle>
-          <DialogActions>
-              <Button onClick={
-                async () => {
-                  await deleteUser(deleteUserId); 
-                  handleCloseModal(); 
-                  setFilters(filters.length ? "" : "d");
-                }
-              }>Yes</Button>
-              <Button onClick={handleCloseModal}>No</Button>
-          </DialogActions>
+        <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this user?'}</DialogTitle>
+        <DialogActions>
+          <MDButton
+            onClick={async () => {
+              await deleteUser(deleteUserId);
+              handleCloseModal();
+              setFilters(filters.length ? '' : 'd');
+            }}
+          >
+            Yes
+          </MDButton>
+          <MDButton onClick={handleCloseModal}>No</MDButton>
+        </DialogActions>
       </Dialog>
     </>
   );

@@ -44,7 +44,7 @@ const Filters = ({ filters, setFilters }) => {
   const handleUsernameInput = (event) => {
     setUsernameInput(event.target.value);
     if (event.target.value.length > 2) {
-      getAllPlayers(event.target.value).then((players) => {
+      getAllPlayers(event.target.value, filters?.demo).then((players) => {
         setUsernameOptions(players);
       });
     } else if (event.target.value.length < 2) {
@@ -115,7 +115,7 @@ const Filters = ({ filters, setFilters }) => {
 
   useEffect(() => {
     if (filters?.users.length) {
-      getAllPlayers(filters.users[0].username).then((res) => {
+      getAllPlayers(filters.users[0].username, filters?.demo).then((res) => {
         res.forEach((username) => {
           if (filters?.users) {
             filters.users.forEach((u) => {
@@ -379,7 +379,13 @@ const Filters = ({ filters, setFilters }) => {
           <MDButton
             variant='text'
             disabled={
-              !playerUsernames.length && !eventTypes.length && !from && !to && !casinos.length && !countries.length && (demo === filters?.demo)
+              !playerUsernames.length &&
+              !eventTypes.length &&
+              !from &&
+              !to &&
+              !casinos.length &&
+              !countries.length &&
+              demo === filters?.demo
             }
             onClick={onSubmit}
           >

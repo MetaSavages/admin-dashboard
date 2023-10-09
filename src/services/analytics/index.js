@@ -30,9 +30,9 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
         timeFilter.push(`$lte:${filters.to.format('YYYY-MM-DDTHH:mm:ssZ')}`);
       }
       if (filters.demo) {
-        params['demo'] = `true`;
+        params['filter.user.isDemo'] = `true`;
       } else {
-        params['demo'] = `false`;
+        params['filter.user.isDemo'] = `false`;
       }
     }
     if (timeFilter.length) {
@@ -46,11 +46,11 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
       return {
         ...event,
         casino: event?.casino?.name ? event.casino.name : '-',
-        username: event?.user?.nickname ? event.user.nickname : '-',
+        username: event?.user?.nickname != null ? event.user.nickname : '-',
         timestamp: event?.createdAt ? event.createdAt : '-',
         event_type: event?.type?.name ? event.type.name : '-',
         event_type_id: event?.type?.id ? event.type.id : '-',
-        amount: event?.payload?.amount ? event.payload.amount : '-',
+        amount: event?.payload?.amount != null ? event.payload.amount : '-',
         gameType: event?.payload?.gameType ? event.payload.gameType : '-',
         country: event?.country ? event.country : '-'
       };
@@ -265,16 +265,16 @@ export const getGameSessions = async () => {
         limit: 100000,
         startDate: dateFrom,
         endDate: dateTo,
-        'filter.type.id': `$in:13,15,19`,
+        'filter.type.id': `$in:13,15,19`
       }
     });
 
     res.data.data.map((session) => {
-      switch(session.type.id) {
-        case 13: 
+      switch (session.type.id) {
+        case 13:
           sessions[1] += 1;
           break;
-        case 15: 
+        case 15:
           sessions[0] += 1;
           break;
         case 19:

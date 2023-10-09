@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import useAxios from 'hooks/useAxios';
 import { getEventsHistory } from 'services/analytics';
 
@@ -66,12 +65,13 @@ export const getAllCasinos = async () => {
   }
 };
 
-export const getAllPlayers = async (nickname) => {
+export const getAllPlayers = async (nickname, isDemo = false) => {
   const api = useAxios();
   try {
     const unformattedData = await api.get('/user/autocomplete', {
       params: {
-        search: nickname
+        search: nickname,
+        demo: isDemo
       }
     });
 
