@@ -2,18 +2,18 @@ import useAxios from 'hooks/useAxios';
 
 export const getNewPlayers = async (limit = 20, page = 1) => {
   const api = useAxios();
-  
+
   try {
     let date = new Date();
-    date.setHours(0,0,0,0);
+    date.setHours(0, 0, 0, 0);
     date = date.toJSON();
 
     const params = {
-      limit: limit, 
-      page: page,     
+      limit: limit,
+      page: page,
       sortBy: 'createdAt:DESC',
       ['filter.createdDate']: `$gte:${date}`
-    }
+    };
 
     const res = await api.get('/user', {
       params: params
@@ -24,7 +24,7 @@ export const getNewPlayers = async (limit = 20, page = 1) => {
         id: user?.id ? user.id : '-',
         username: user?.nickname ? user.nickname : '-',
         kyc_status: user?.kycState ? user.kycState : '-',
-        refferal: user?.referral ? user.referral : '-',
+        refferal: user?.referral ? user.referral : '-'
       };
     });
     return {
@@ -53,22 +53,24 @@ export const getPlayerCountries = async (limit = 20, page = 1) => {
     const params = {
       limit: limit,
       page: page,
-      sortBy: 'createdAt:DESC',
+      sortBy: 'createdAt:DESC'
     };
 
     const res = await api.get('/admin/metrics/active-and-registered-users-by-country', {
       params: params
     });
 
-    const data = res.data.map((metric) => {
+    let data = res.data.map((metric) => {
       return {
         country: metric?.metric_country ? metric.metric_country : '-',
         registered: metric?.registered_count ? metric.registered_count : '-',
-        active: metric?.active_count ? metric.active_count : '-',
+        active: metric?.active_count ? metric.active_count : '-'
       };
     });
+
+    const filteredData = data.filter((country) => country.country !== '-');
     return {
-      data: data,
+      data: filteredData,
       meta: res.data.meta
     };
   } catch (err) {
@@ -84,4 +86,4 @@ export const getPlayerCountries = async (limit = 20, page = 1) => {
       }
     };
   }
-}
+};
