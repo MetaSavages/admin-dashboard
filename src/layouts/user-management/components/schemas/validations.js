@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import * as Yup from 'yup';
-import checkout from 'layouts/user-management/schemas/form';
+import checkout from 'layouts/user-management/components/schemas/form';
 
 const {
   formField: { firstName, lastName, email, password, repeatPassword, role }

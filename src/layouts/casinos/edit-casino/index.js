@@ -30,11 +30,11 @@ import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
 // NewUser page components
-import PermissionInfo from 'layouts/permission-management/components/PermissionInfo';
+import CasinoInfo from 'layouts/casinos/components/CasinoInfo';
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/permission-management/components/schemas/validations';
-import form from 'layouts/permission-management/components/schemas/form';
+import validations from 'layouts/casinos/components/schemas/validations';
+import form from 'layouts/casinos/components/schemas/form';
 import { useEffect, useState } from 'react';
 import { updatePermission, getPermission } from 'services/permissions';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -42,7 +42,7 @@ import { Skeleton } from '@mui/material';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
-function EditPermession() {
+function EditCasino() {
   const { id } = useParams();
   const { formId, formField } = form;
   const [initialValues, setInitalValues] = useState(null);
@@ -54,30 +54,30 @@ function EditPermession() {
     getPermission(id).then((response) => {
       const { data } = response;
       setInitalValues({
-        [formField.action.name]: data.action,
-        [formField.object.name]: data.object
+        [formField.name.name]: data.name,
+        [formField.currency.name]: data.currency
       });
     });
   }, []);
 
   const submitForm = async (values, actions) => {
-    const response = await updatePermission(id, values.action, values.object);
-    if (response.status === 201) {
-      alert('Permission created successfully');
-    } else {
-      alert('Permission creation failed');
-    }
+    // const response = await updatePermission(id, values.name, values.currency);
+    // if (response.status === 201) {
+    //   alert('Casino updated successfully');
+    // } else {
+    //   alert('Casino update failed');
+    // }
     // eslint-disable-next-line no-alert
     actions.setSubmitting(false);
     actions.resetForm();
-    navigate('/permission-management');
+    navigate('/casinos');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };
   return (
     <>
-      <Can I='update' a='permission'>
+      <Can I='update' a='casino'>
         <DashboardLayout>
           <DashboardNavbar />
           <MDBox py={3} mb={20} height='65vh'>
@@ -92,7 +92,7 @@ function EditPermession() {
                         <Card sx={{ height: '100%' }}>
                           <MDBox p={3}>
                             <MDBox>
-                              <PermissionInfo
+                              <CasinoInfo
                                 formData={{
                                   values,
                                   touched,
@@ -101,7 +101,7 @@ function EditPermession() {
                                   setFieldValue,
                                   isSubmitting
                                 }}
-                                title='Edit Permission'
+                                title='Edit Casino'
                               />
                               <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
                                 <MDButton
@@ -126,7 +126,7 @@ function EditPermession() {
                                 >
                                   <DialogContent>
                                     <MDTypography variant='h6' fontWeight='medium'>
-                                      Are you sure you want to update this permission?
+                                      Are you sure you want to update this casino?
                                     </MDTypography>
                                   </DialogContent>
                                   <DialogActions>
@@ -152,11 +152,11 @@ function EditPermession() {
           <Footer />
         </DashboardLayout>
       </Can>
-      <Can not I='update' a='permission'>
+      <Can not I='update' a='casino'>
         <Navigate to='/dashboard' replace />
       </Can>
     </>
   );
 }
 
-export default EditPermession;
+export default EditCasino;

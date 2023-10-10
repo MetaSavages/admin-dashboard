@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 import * as Yup from 'yup';
-import checkout from 'layouts/role-management/schemas/form';
+import checkout from 'layouts/role-management/components/schemas/form';
 
 const {
   formField: { roleName, rolePermissions }

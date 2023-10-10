@@ -6,6 +6,7 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import { useEffect, useState } from 'react';
 import { getUser } from 'services/users';
 import { useParams } from 'react-router-dom';
+import { Can } from 'context';
 function ShowUser() {
   const { id } = useParams();
   const [user, setUser] = useState({});
@@ -19,46 +20,53 @@ function ShowUser() {
       });
   }, []);
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox display='flex' justifyContent='center' width='100%'>
-        <Card
-          sx={{
-            borderRadius: '12px',
-            boxShadow: (theme) => theme.shadows[4],
-            width: '50%',
-            height: '100%',
-            overflow: 'hidden',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <MDBox>
-            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Id: {user.id}
-              </MDTypography>
-            </MDBox>
-            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Email: {user.email}
-              </MDTypography>
-            </MDBox>
-            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Created at: {user.createdAt}
-              </MDTypography>
-            </MDBox>
-            <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-              <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                Updated At: {user.updatedAt}
-              </MDTypography>
-            </MDBox>
+    <>
+      <Can I='read' a='user'>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox display='flex' justifyContent='center' width='100%'>
+            <Card
+              sx={{
+                borderRadius: '12px',
+                boxShadow: (theme) => theme.shadows[4],
+                width: '50%',
+                height: '100%',
+                overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <MDBox>
+                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+                    Id: {user.id}
+                  </MDTypography>
+                </MDBox>
+                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+                    Email: {user.email}
+                  </MDTypography>
+                </MDBox>
+                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+                    Created at: {user.createdAt}
+                  </MDTypography>
+                </MDBox>
+                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
+                    Updated At: {user.updatedAt}
+                  </MDTypography>
+                </MDBox>
+              </MDBox>
+            </Card>
           </MDBox>
-        </Card>
-      </MDBox>
-    </DashboardLayout>
+        </DashboardLayout>
+      </Can>
+      <Can not I='read' a='user'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

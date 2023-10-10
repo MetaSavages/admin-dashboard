@@ -13,18 +13,13 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import * as Yup from 'yup';
-import checkout from 'layouts/role-management/schemas/form';
+import checkout from 'layouts/player-management/components/schemas/form';
 
 const {
-  formField: { roleName, rolePermissions }
+  formField: { nickname }
 } = checkout;
+const initialValues = {
+  [nickname.name]: ''
+};
 
-const validations = [
-  Yup.object().shape({
-    [roleName.name]: Yup.string().required(`${roleName.errorMsg}`),
-    [rolePermissions.name]: Yup.array().of(Yup.string()).min(1, `${rolePermissions.errorMsg}`)
-  })
-];
-
-export default validations;
+export default initialValues;

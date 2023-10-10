@@ -14,15 +14,19 @@ Coded by www.creative-tim.com
 */
 
 import * as Yup from 'yup';
-import checkout from 'layouts/casinos/schemas/form';
+import checkout from 'layouts/player-management/components/schemas/form';
 
 const {
-  formField: { name, currency }
+  formField: { nickname }
 } = checkout;
 
-const validations = Yup.object().shape({
-  [name.name]: Yup.string().required(`${name.errorMsg}`),
-  [currency.name]: Yup.string().required(`${currency.errorMsg}`)
-});
+const validations = [
+  Yup.object().shape({
+    [nickname.name]: Yup.string()
+      .required(nickname.errorMsg)
+      .min(3, 'Nickname must have at least 3 characters')
+      .max(500, 'Nickname must not exceed 500 characters')
+  })
+];
 
 export default validations;
