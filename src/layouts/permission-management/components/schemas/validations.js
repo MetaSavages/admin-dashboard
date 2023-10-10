@@ -13,28 +13,16 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-const form = {
-  formId: 'new-user-form',
-  formField: {
-    roleName: {
-      name: 'roleName',
-      label: 'Role Name',
-      type: 'text',
-      errorMsg: 'Role name is required.'
-    },
-    rolePermissions: {
-      name: 'rolePermissions',
-      label: 'Role Permissions',
-      type: 'select',
-      errorMsg: 'Role permissions is required.'
-    },
-    casino: {
-      name: 'casino',
-      label: 'Casino',
-      type: 'select',
-      errorMsg: 'Casino is required.'
-    }
-  }
-};
+import * as Yup from 'yup';
+import checkout from 'layouts/permission-management/components/schemas/form';
 
-export default form;
+const {
+  formField: { action, object }
+} = checkout;
+
+const validations = Yup.object().shape({
+  [action.name]: Yup.string().required(`${action.errorMsg}`),
+  [object.name]: Yup.string().required(`${object.errorMsg}`)
+});
+
+export default validations;

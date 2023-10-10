@@ -89,11 +89,11 @@ function PlayerManagement() {
   if (!cols) return <></>;
   return (
     <>
-      <Can I='read' a='user'>
+      <Can I='read' a='player'>
         <DataTablePage
           title='Player Management'
           createButton={
-            <Can I='create' a='user'>
+            <Can I='create' a='player'>
               <MDButton variant='contained' color='info' onClick={() => handleOpenModal()}>
                 Create Demo Player
               </MDButton>
@@ -112,8 +112,8 @@ function PlayerManagement() {
           noActions={filters?.isDemo == null || filters?.isDemo == false ? true : false}
         />{' '}
       </Can>
-      <Can not I='read' a='user'>
-        <Navigate to='/dashboard' />
+      <Can not I='read' a='player'>
+        <Navigate to='/dashboard' replace />
       </Can>
       <Dialog
         open={showModal}
