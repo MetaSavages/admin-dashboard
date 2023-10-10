@@ -40,7 +40,7 @@ import initialValues from 'layouts/user-management/schemas/initialValues';
 import { getUser, resetUserPasswordAnd2Fa } from 'services/users';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Dialog, DialogActions, DialogContent, Skeleton } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, Skeleton, Tooltip } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can, useMaterialUIController } from 'context';
 import { PERMISSION_ACTION, PERMISSION_OBJECT } from 'constants/Admin';
@@ -141,15 +141,17 @@ function EditUser() {
                               Send
                             </MDButton>
                             <Can I='update' a={PERMISSION_OBJECT.RESETPASSWORDAND2FA}>
-                              <MDButton
-                                disabled={openDialog}
-                                onClick={() => setOpenDialog(true)}
-                                type='button'
-                                variant='gradient'
-                                color='dark'
-                              >
-                                Reset password and 2fa
-                              </MDButton>
+                              <Tooltip title='Reset password and 2fa of the users'>
+                                <MDButton
+                                  disabled={openDialog}
+                                  onClick={() => setOpenDialog(true)}
+                                  type='button'
+                                  variant='gradient'
+                                  color='dark'
+                                >
+                                  Reset password and 2fa
+                                </MDButton>
+                              </Tooltip>
                             </Can>
                           </MDBox>
                         </MDBox>
