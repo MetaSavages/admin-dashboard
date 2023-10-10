@@ -105,7 +105,7 @@ export default function App() {
         setName(dispatch, null);
         setEmail(dispatch, null);
         setRole(dispatch, null);
-        setAbility(dispatch, null);
+        setAbility(dispatch, getUserAbilities([]));
       });
   }, [dispatch]);
 
