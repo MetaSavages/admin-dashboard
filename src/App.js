@@ -110,7 +110,7 @@ export default function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (name === null) {
+    if (name == null || email == null || ability == null) {
       navigate('/authentication/sign-in/basic');
     }
   }, [name, email, ability]);
