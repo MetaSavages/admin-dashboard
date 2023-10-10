@@ -5,7 +5,7 @@ import MDTypography from 'components/MDTypography';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import { useEffect, useState } from 'react';
 import { getUser } from 'services/users';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { Can } from 'context';
 function ShowUser() {
   const { id } = useParams();
