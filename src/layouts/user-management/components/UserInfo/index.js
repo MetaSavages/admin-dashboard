@@ -29,7 +29,12 @@ import { Autocomplete } from '@mui/material';
 import { ErrorMessage, Field } from 'formik';
 import MDInput from 'components/MDInput';
 import { getRoles } from 'services/roles';
+
+import { useMaterialUIController } from 'context';
+
 function UserInfo({ formData }) {
+  const [controller] = useMaterialUIController();
+  const { userDetails } = controller;
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { firstName, lastName, role, email, password, repeatPassword } = formField;
   const {

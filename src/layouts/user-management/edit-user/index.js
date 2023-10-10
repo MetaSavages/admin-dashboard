@@ -37,15 +37,29 @@ import validations from 'layouts/user-management/schemas/validations';
 import form from 'layouts/user-management/schemas/form';
 import initialValues from 'layouts/user-management/schemas/initialValues';
 
-import { getUser } from 'services/users';
+import { getUser, resetUserPasswordAnd2Fa } from 'services/users';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Skeleton } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, Skeleton } from '@mui/material';
+import MDTypography from 'components/MDTypography';
+import { Can, useMaterialUIController } from 'context';
+import { PERMISSION_ACTION, PERMISSION_OBJECT } from 'constants/Admin';
 
 function EditUser() {
+  const [controller] = useMaterialUIController();
   const { formId, formField } = form;
   const currentValidation = validations[0];
   const [user, setUser] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [errorReset, setErrorReset] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [openDialogPassword, setOpenDialogPassword] = useState(false);
+
+  function closeDialogPassword() {
+    setErrorReset('');
+    setNewPassword('');
+    setOpenDialogPassword(false);
+  }
 
   const { id } = useParams();
   useEffect(() => {
@@ -73,6 +87,20 @@ function EditUser() {
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };
+
+  async function resetPasswordAnd2Fa() {
+    try {
+      const result = await resetUserPasswordAnd2Fa(user.id);
+      if (result.data.password) {
+        setNewPassword(result.data.password);
+        setOpenDialogPassword(true);
+      }
+    } catch (error) {
+      setOpenDialogPassword(true);
+      setErrorReset(error.message);
+    }
+    setOpenDialog(false);
+  }
 
   return (
     <DashboardLayout>
@@ -112,6 +140,17 @@ function EditUser() {
                             <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
                               Send
                             </MDButton>
+                            <Can I='update' a={PERMISSION_OBJECT.RESETPASSWORDAND2FA}>
+                              <MDButton
+                                disabled={openDialog}
+                                onClick={() => setOpenDialog(true)}
+                                type='button'
+                                variant='gradient'
+                                color='dark'
+                              >
+                                Reset password and 2fa
+                              </MDButton>
+                            </Can>
                           </MDBox>
                         </MDBox>
                       </MDBox>
@@ -119,6 +158,63 @@ function EditUser() {
                   </Form>
                 )}
               </Formik>
+              <Dialog
+                open={openDialog}
+                onClose={() => setOpenDialog(false)}
+                aria-labelledby='alert-dialog-title'
+                aria-describedby='alert-dialog-description'
+              >
+                <DialogContent>
+                  <MDTypography variant='h6' fontWeight='medium'>
+                    Are you sure you want reset password and 2fa code?
+                  </MDTypography>
+                </DialogContent>
+                <DialogActions>
+                  <MDButton onClick={() => setOpenDialog(false)} variant='text'>
+                    No
+                  </MDButton>
+                  <MDButton type='button' onClick={resetPasswordAnd2Fa} variant='text'>
+                    Yes
+                  </MDButton>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                open={openDialogPassword}
+                aria-labelledby='alert-dialog-title'
+                aria-describedby='alert-dialog-description'
+              >
+                <DialogContent sx={{ 'min-width': '500px' }}>
+                  {errorReset ? (
+                    <MDTypography
+                      sx={{ color: 'red', 'font-size': '18px', 'margin-left': '5px' }}
+                      variant='p'
+                      fontWeight='medium'
+                    >
+                      {errorReset}
+                    </MDTypography>
+                  ) : (
+                    <MDTypography sx={{ 'font-weight': '400' }} variant='p' fontWeight='medium'>
+                      New password of user{' '}
+                      <MDTypography variant='p' fontWeight='medium'>
+                        {user.email}
+                      </MDTypography>{' '}
+                      is:{' '}
+                      <MDTypography
+                        sx={{ color: 'green', 'font-size': '18px', 'margin-left': '5px' }}
+                        variant='p'
+                        fontWeight='medium'
+                      >
+                        {newPassword}
+                      </MDTypography>
+                    </MDTypography>
+                  )}
+                </DialogContent>
+                <DialogActions>
+                  <MDButton onClick={closeDialogPassword} variant='text'>
+                    Close
+                  </MDButton>
+                </DialogActions>
+              </Dialog>
             </Grid>
           </Grid>
         ) : (

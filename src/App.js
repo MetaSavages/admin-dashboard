@@ -53,7 +53,8 @@ import {
   setEmail,
   setName,
   setRole,
-  setAbility
+  setAbility,
+  setUserDetails
 } from 'context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Images
@@ -95,6 +96,7 @@ export default function App() {
   useMemo(() => {
     getCurrentUser()
       .then((user) => {
+        setUserDetails(dispatch, user);
         setAbility(dispatch, getUserAbilities(user.role));
         setName(dispatch, `${user.firstName} ${user.lastName}`);
         setEmail(dispatch, user.email);

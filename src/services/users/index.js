@@ -11,7 +11,7 @@ export const getUsers = async (limit = 20, page = 1) => {
       data: unformattedData.data.data.map((user) => {
         return {
           ...user,
-          role: user.role?.name ? user.role?.name : '-',
+          role: user.role?.name ? user.role?.name : '-'
         };
       }),
       meta: unformattedData.data.meta
@@ -103,5 +103,14 @@ export const deleteUser = async (id) => {
         }
       }
     };
+  }
+};
+
+export const resetUserPasswordAnd2Fa = async (userId) => {
+  const api = useAxios();
+  try {
+    return await api.post(`/admin/users/reset-password-2fa`, { userId: userId });
+  } catch (err) {
+    throw new Error(err.message);
   }
 };
