@@ -5,18 +5,13 @@ function CopyToClipboardButton({ text }) {
     const [isCopied, setIsCopied] = useState(false);
   
     const copyToClipboard = () => {
-      const textField = document.createElement('textarea');
-      textField.innerText = text;
-      document.body.appendChild(textField);
-      textField.select();
-      document.execCommand('copy');
-      textField.remove();
+      navigator.clipboard.writeText(text);
       setIsCopied(true);
     };
   
     return (
         <MDButton onClick={copyToClipboard} variant='gradient' color={isCopied ? 'success' : 'info'}>
-            {isCopied ? 'Copied!' : 'Copy'}
+            {isCopied ? 'Copied!' : 'Copy to clipboard'}
         </MDButton>
     );
   }
