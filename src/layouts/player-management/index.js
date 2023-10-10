@@ -8,11 +8,11 @@ import MDButton from 'components/MDButton';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 
-import validations from 'layouts/player-management/schemas/validations';
-import form from 'layouts/player-management/schemas/form';
-import initialValues from 'layouts/player-management/schemas/initialValues';
+import validations from 'layouts/player-management/components/schemas/validations';
+import form from 'layouts/player-management/components/schemas/form';
+import initialValues from 'layouts/player-management/components/schemas/initialValues';
 
-import PlayerInfo from 'layouts/player-management/PlayerInfo';
+import PlayerInfo from 'layouts/player-management/components/PlayerInfo';
 import CopyToClipboardButton from 'layouts/player-management/components/CopyToClipboardButton';
 
 import { Dialog, DialogTitle, DialogContent } from '@mui/material';
@@ -28,9 +28,7 @@ import { Can } from 'context';
 
 import useAxios from 'hooks/useAxios';
 
-import {
-  useMaterialUIController,
-} from 'context';
+import { useMaterialUIController } from 'context';
 
 function PlayerManagement() {
   const [controller] = useMaterialUIController();
@@ -198,7 +196,7 @@ function PlayerManagement() {
                             </a>
                           </MDAlert>
                           <div style={{ display: 'flex', justifyContent: 'center' }}>
-                            <CopyToClipboardButton text={`${link}` + `${userId}`}/>
+                            <CopyToClipboardButton text={`${link}` + `${userId}`} />
                           </div>
                         </>
                       )}
