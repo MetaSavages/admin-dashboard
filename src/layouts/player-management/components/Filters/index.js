@@ -89,15 +89,15 @@ const Filters = ({ filters, setFilters }) => {
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
-          <MDBox>
-            <label>
+          <MDBox sx={{display: 'flex', alignItems: 'center', padding: '2px'}}>
+            <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
               <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
                 checked={isDemoChecked}
                 onChange={(event) => handleCheckboxChange(event)}
               />
-              Demo
+              Demo players
             </label>
           </MDBox>
         </Grid>
