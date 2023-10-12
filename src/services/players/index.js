@@ -107,16 +107,9 @@ export const getPlayer = async (id) => {
 export const deletePlayer = async (id) => {
   const api = useAxios();
   try {
-    const response = await api.delete('admin/users', {
+    return await api.delete('admin/users', {
       data: { userId: id }
     });
-    if (response.status === 200) {
-      console.log(`User with ID ${id} deleted successfully.`);
-      alert(`User with ID ${id} deleted successfully.`);
-    } else {
-      console.error(`Error deleting user: Unexpected status code ${response.status}`);
-      alert(`Error deleting user: Unexpected status code ${response.status}`);
-    }
   } catch (err) {
     console.error(`Error deleting user:`, err);
     alert(`Error deleting user: ${err.message}`);

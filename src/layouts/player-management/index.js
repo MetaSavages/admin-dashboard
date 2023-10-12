@@ -15,7 +15,7 @@ import initialValues from 'layouts/player-management/schemas/initialValues';
 import PlayerInfo from 'layouts/player-management/PlayerInfo';
 import CopyToClipboardButton from 'layouts/player-management/components/CopyToClipboardButton';
 
-import { Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Button, DialogActions } from '@mui/material';
 
 import MDAlert from 'components/MDAlert';
 import { useNavigate, Navigate } from 'react-router-dom';
@@ -28,20 +28,16 @@ import { Can } from 'context';
 
 import useAxios from 'hooks/useAxios';
 
-import {
-  useMaterialUIController,
-} from 'context';
+import { useMaterialUIController } from 'context';
 
 function PlayerManagement() {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const navigate = useNavigate();
-  const onDelete = (id) => {
-    deletePlayer(id).then((res) => {
-      console.log(res);
-      setFilters({ isDemo: true });
-    });
-  };
+  const [showDeleteModal, setShowDeleteModal] = useState();
+  const handleCloseDeleteModal = () => setShowDeleteModal(false);
+  const handleOpenDeleteModal = () => setShowDeleteModal(true);
+  const [deleteRoleId, setDeleteRoleId] = useState(null);
 
   const [filters, setFilters] = useState({});
   const [cols, setCols] = useState(null);
@@ -105,7 +101,10 @@ function PlayerManagement() {
           queryKey='players'
           columnData={cols}
           object={'player'}
-          onDelete={onDelete}
+          onDelete={(id) => {
+            setDeleteRoleId(id);
+            handleOpenDeleteModal();
+          }}
           subrowFetchData={getPlayerAggregated}
           filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
           filters={filters}
@@ -198,7 +197,7 @@ function PlayerManagement() {
                             </a>
                           </MDAlert>
                           <div style={{ display: 'flex', justifyContent: 'center' }}>
-                            <CopyToClipboardButton text={`${link}` + `${userId}`}/>
+                            <CopyToClipboardButton text={`${link}` + `${userId}`} />
                           </div>
                         </>
                       )}
@@ -216,6 +215,30 @@ function PlayerManagement() {
             )}
           </Formik>
         </DialogContent>
+      </Dialog>
+      <Dialog
+        open={showDeleteModal}
+        onClose={handleCloseDeleteModal}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
+      >
+        <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this user?'}</DialogTitle>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              deletePlayer(deleteRoleId);
+              handleCloseDeleteModal();
+              setFilters({
+                ...filters,
+                isDemo: true,
+                refresh: filters?.length ? true : false
+              });
+            }}
+          >
+            Yes
+          </Button>
+          <Button onClick={handleCloseDeleteModal}>No</Button>
+        </DialogActions>
       </Dialog>
     </>
   );
