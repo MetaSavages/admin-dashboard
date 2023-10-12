@@ -217,9 +217,7 @@ function Dashboard() {
         <MDBox display='flex' justifyContent='space-between' alignItems='center'>
           <Grid container spacing={2} direction='row' justify='center' alignItems='stretch'>
             <Grid item xs={2}>
-              <a href='/analytics/event-history'>
-                <InfoCard color='info' icon='trending_up' title='Total game wins' description={gameWin} />
-              </a>
+              <InfoCard color='info' icon='trending_up' title='Total game wins' description={gameWin} />
             </Grid>
             <Grid item xs={2}>
               <InfoCard color='info' icon='trending_up' title='Total game loses' description={gameLose} />
