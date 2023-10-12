@@ -48,6 +48,8 @@ import DataTablePage from 'components/DataTablePage';
 import { eventsColumnData } from 'data/eventsColumnData';
 import { getEventsAggregated } from 'services/analytics';
 import { useState } from 'react';
+import { Can } from 'context';
+import { Navigate } from 'react-router-dom';
 function EventsAnalytics() {
   const { sales, tasks } = reportsLineChartData;
   const [filters, setFilters] = useState({});
@@ -81,16 +83,23 @@ function EventsAnalytics() {
   );
 
   return (
-    <DataTablePage
-      canFilter
-      filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
-      fetchData={getEventsAggregated}
-      queryKey={'event'}
-      columnData={eventsColumnData}
-      object={'event'}
-      noActions
-      filters={filters}
-    />
+    <>
+      <Can I='read' a='metric'>
+        <DataTablePage
+          canFilter
+          filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+          fetchData={getEventsAggregated}
+          queryKey={'event'}
+          columnData={eventsColumnData}
+          object={'event'}
+          noActions
+          filters={filters}
+        />
+      </Can>
+      <Can not I='read' a='metric'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

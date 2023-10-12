@@ -22,7 +22,8 @@ import Grid from '@mui/material/Grid';
 import MDBox from 'components/MDBox';
 
 // NewUser page components
-import FormField from 'layouts/player-management/FormField';
+
+import FormField from 'layouts/player-management/components/FormField';
 
 function PlayerInfo({ formData }) {
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;

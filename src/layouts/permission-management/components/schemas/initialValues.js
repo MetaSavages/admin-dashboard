@@ -13,15 +13,14 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import checkout from 'layouts/role-management/schemas/form';
+import checkout from 'layouts/permission-management/components/schemas/form';
 
 const {
-  formField: { roleName, rolePermissions, casino }
+  formField: { action, object }
 } = checkout;
 const initialValues = {
-  [roleName.name]: '',
-  [rolePermissions.name]: [],
-  [casino.name]: null
+  [action.name]: '',
+  [object.name]: ''
 };
 
 export default initialValues;

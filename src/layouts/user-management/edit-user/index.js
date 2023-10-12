@@ -33,14 +33,15 @@ import Footer from 'examples/Footer';
 import UserInfo from 'layouts/user-management/components/UserInfo';
 
 // EditUser layout schemas for form and form feilds
-import validations from 'layouts/user-management/schemas/validations';
-import form from 'layouts/user-management/schemas/form';
-import initialValues from 'layouts/user-management/schemas/initialValues';
+import validations from 'layouts/user-management/components/schemas/validations';
+import form from 'layouts/user-management/components/schemas/form';
+import initialValues from 'layouts/user-management/components/schemas/initialValues';
 
 import { getUser } from 'services/users';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
+import { Can } from 'context';
 
 function EditUser() {
   const { formId, formField } = form;
@@ -75,58 +76,65 @@ function EditUser() {
   };
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3} mb={20} height='65vh'>
-        {user ? (
-          <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
-            <Grid item xs={12} lg={8}>
-              <Formik
-                initialValues={{
-                  firstName: user?.firstName || '',
-                  lastName: user?.lastName || '',
-                  role: user?.role || '',
-                  email: user?.email || '',
-                  password: user?.password || '',
-                  repeatPassword: user?.repeatPassword || ''
-                }}
-                validationSchema={currentValidation}
-                onSubmit={handleSubmit}
-              >
-                {({ values, errors, touched, isSubmitting, setFieldValue }) => (
-                  <Form id={formId} autoComplete='off'>
-                    <Card sx={{ height: '100%' }}>
-                      <MDBox p={3}>
-                        <MDBox>
-                          <UserInfo
-                            formData={{
-                              values,
-                              touched,
-                              formField,
-                              errors,
-                              setFieldValue,
-                              isSubmitting
-                            }}
-                          />
-                          <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
-                            <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
-                              Send
-                            </MDButton>
+    <>
+      <Can I='update' a='user'>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox py={3} mb={20} height='65vh'>
+            {user ? (
+              <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
+                <Grid item xs={12} lg={8}>
+                  <Formik
+                    initialValues={{
+                      firstName: user?.firstName || '',
+                      lastName: user?.lastName || '',
+                      role: user?.role || '',
+                      email: user?.email || '',
+                      password: user?.password || '',
+                      repeatPassword: user?.repeatPassword || ''
+                    }}
+                    validationSchema={currentValidation}
+                    onSubmit={handleSubmit}
+                  >
+                    {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+                      <Form id={formId} autoComplete='off'>
+                        <Card sx={{ height: '100%' }}>
+                          <MDBox p={3}>
+                            <MDBox>
+                              <UserInfo
+                                formData={{
+                                  values,
+                                  touched,
+                                  formField,
+                                  errors,
+                                  setFieldValue,
+                                  isSubmitting
+                                }}
+                              />
+                              <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
+                                <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
+                                  Send
+                                </MDButton>
+                              </MDBox>
+                            </MDBox>
                           </MDBox>
-                        </MDBox>
-                      </MDBox>
-                    </Card>
-                  </Form>
-                )}
-              </Formik>
-            </Grid>
-          </Grid>
-        ) : (
-          <Skeleton variant='rectangular' sx={{ height: '100%', mt: 8 }} />
-        )}
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+                        </Card>
+                      </Form>
+                    )}
+                  </Formik>
+                </Grid>
+              </Grid>
+            ) : (
+              <Skeleton variant='rectangular' sx={{ height: '100%', mt: 8 }} />
+            )}
+          </MDBox>
+          <Footer />
+        </DashboardLayout>
+      </Can>
+      <Can not I='update' a='user'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

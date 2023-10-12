@@ -86,11 +86,9 @@ const Filters = ({ filters, setFilters }) => {
         </Grid>
 
         <Grid item xs={5} md={2}>
-          <MDButton 
-          variant='text'
-          disabled={!eventTypes.length}
-          onClick={onSubmit}
-          >Apply</MDButton>
+          <MDButton variant='text' disabled={!eventTypes.length} onClick={onSubmit}>
+            Apply
+          </MDButton>
         </Grid>
       </Grid>
     </MDBox>

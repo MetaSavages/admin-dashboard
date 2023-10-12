@@ -8,11 +8,11 @@ import MDButton from 'components/MDButton';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 
-import validations from 'layouts/player-management/schemas/validations';
-import form from 'layouts/player-management/schemas/form';
-import initialValues from 'layouts/player-management/schemas/initialValues';
+import validations from 'layouts/player-management/components/schemas/validations';
+import form from 'layouts/player-management/components/schemas/form';
+import initialValues from 'layouts/player-management/components/schemas/initialValues';
 
-import PlayerInfo from 'layouts/player-management/PlayerInfo';
+import PlayerInfo from 'layouts/player-management/components/PlayerInfo';
 import CopyToClipboardButton from 'layouts/player-management/components/CopyToClipboardButton';
 
 import { Dialog, DialogTitle, DialogContent, Button, DialogActions } from '@mui/material';
@@ -85,11 +85,11 @@ function PlayerManagement() {
   if (!cols) return <></>;
   return (
     <>
-      <Can I='read' a='user'>
+      <Can I='read' a='player'>
         <DataTablePage
           title='Player Management'
           createButton={
-            <Can I='create' a='user'>
+            <Can I='create' a='player'>
               <MDButton variant='contained' color='info' onClick={() => handleOpenModal()}>
                 Create Demo Player
               </MDButton>
@@ -111,8 +111,8 @@ function PlayerManagement() {
           noActions={filters?.isDemo == null || filters?.isDemo == false ? true : false}
         />{' '}
       </Can>
-      <Can not I='read' a='user'>
-        <Navigate to='/dashboard' />
+      <Can not I='read' a='player'>
+        <Navigate to='/dashboard' replace />
       </Can>
       <Dialog
         open={showModal}
