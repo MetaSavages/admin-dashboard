@@ -143,7 +143,7 @@ function EditUser() {
                                   Send
                                 </MDButton>
                                 <Can I='update' a={PERMISSION_OBJECT.RESETPASSWORDAND2FA}>
-                                  <Tooltip title='Reset password and 2fa of the users'>
+                                  <Tooltip title='You are about to reset the user password and 2 FA and this action cannot be undone'>
                                     <MDButton
                                       disabled={openDialog}
                                       onClick={() => setOpenDialog(true)}
