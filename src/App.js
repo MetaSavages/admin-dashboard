@@ -80,6 +80,7 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
+  const [fetchingUser, setFetchingUser] = useState(true);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   // Cache for the rtl
@@ -99,6 +100,7 @@ export default function App() {
         setName(dispatch, `${user.firstName} ${user.lastName}`);
         setEmail(dispatch, user.email);
         setRole(dispatch, user.role); // no role yet
+        setFetchingUser(false);
       })
       .catch((err) => {
         console.log(err);
@@ -106,14 +108,18 @@ export default function App() {
         setEmail(dispatch, null);
         setRole(dispatch, null);
         setAbility(dispatch, null);
+        setFetchingUser(false);
       });
   }, [dispatch]);
 
   useEffect(() => {
+    if (fetchingUser) {
+      return;
+    }
     if (name == null || email == null || ability == null) {
       navigate('/authentication/sign-in/basic');
     }
-  }, [name, email, ability]);
+  }, [name, email, ability, fetchingUser]);
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
@@ -203,10 +209,14 @@ export default function App() {
               </>
             )}
             {layout === 'vr' && <Configurator />}
-            <Routes>
-              {getRoutes(routes)}
-              <Route path='*' element={<Navigate to='/dashboard' replace />} />
-            </Routes>
+            {fetchingUser ? (
+              <> </>
+            ) : (
+              <Routes>
+                {getRoutes(routes)}
+                <Route path='*' element={<Navigate to='/dashboard' replace />} />
+              </Routes>
+            )}
           </ThemeProvider>
         </CacheProvider>
       </QueryClientProvider>
@@ -232,7 +242,7 @@ export default function App() {
           {layout === 'vr' && <Configurator />}
           <Routes>
             {getRoutes(routes)}
-            <Route path='*' element={<Navigate to='/dashboard' replace />} />
+            {/* <Route path='*' element={<Navigate to='/dashboard' replace />} /> */}
           </Routes>
         </ThemeProvider>
       </QueryClientProvider>

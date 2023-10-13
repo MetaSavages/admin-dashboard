@@ -77,6 +77,15 @@ import CasinoManagement from 'layouts/casinos';
 import NewCasino from 'layouts/casinos/new-casino';
 import EditCasino from 'layouts/casinos/edit-casino';
 import Blacklists from 'layouts/blacklists';
+import BaccaratManagement from 'layouts/baccarat-management';
+import NewBaccaratTable from 'layouts/baccarat-management/components/new-baccarat-table';
+import EditTable from 'layouts/baccarat-management/components/edit-table';
+import BlackjackManagement from 'layouts/blackjack-management';
+import EditBlackjackTable from 'layouts/blackjack-management/components/edit-table';
+import NewBlackjackTable from 'layouts/blackjack-management/components/new-table';
+import NewRouletteTable from 'layouts/roulette-management/components/new-table';
+import EditRouletteTable from 'layouts/roulette-management/components/edit-table';
+import RouletteManagement from 'layouts/roulette-management';
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -178,6 +187,41 @@ const routes = [
     component: <CasinoManagement />,
     action: 'read',
     object: 'casino'
+  },
+  {
+    type: 'collapse',
+    name: 'Games',
+    key: 'games',
+    icon: <Icon fontSize='medium'>games</Icon>,
+    collapse: [
+      {
+        name: 'Baccarat',
+        key: 'baccarat-management',
+        action: 'read',
+        object: 'casino',
+        icon: <Icon fontSize='medium'>smart_toy</Icon>,
+        route: '/games/baccarat-management',
+        component: <BaccaratManagement />
+      },
+      {
+        name: 'Blackjack',
+        key: 'blackjack-management',
+        action: 'read',
+        object: 'casino',
+        icon: <Icon fontSize='medium'>extension</Icon>,
+        route: '/games/blackjack-management',
+        component: <BlackjackManagement />
+      },
+      {
+        name: 'Roulette',
+        key: 'roulette-management',
+        icon: <Icon fontSize='medium'>sports_soccer</Icon>,
+        route: '/games/roulette-management',
+        component: <RouletteManagement />,
+        action: 'read',
+        object: 'casino'
+      }
+    ]
   },
   {
     type: 'collapse',
@@ -385,6 +429,42 @@ const routes = [
     key: 'logout',
     route: '/authentication/logout',
     component: <Logout />
+  },
+  {
+    name: 'New Baccarat table',
+    key: 'new-baccarat-table',
+    route: '/games/baccarat-management/new-baccarat-table',
+    component: <NewBaccaratTable />
+  },
+  {
+    name: 'Edit Baccarat table',
+    key: 'edit-baccarat-table',
+    route: '/games/baccarat-management/edit/:id',
+    component: <EditTable />
+  },
+  {
+    name: 'New Blackjack table',
+    key: 'new-blackjack-table',
+    route: '/games/blackjack-management/new-blackjack-table',
+    component: <NewBlackjackTable />
+  },
+  {
+    name: 'Edit Blackjack table',
+    key: 'edit-blackjack-table',
+    route: '/games/blackjack-management/edit/:id',
+    component: <EditBlackjackTable />
+  },
+  {
+    name: 'New Roulette table',
+    key: 'new-roulette-table',
+    route: '/games/roulette-management/new-roulette-table',
+    component: <NewRouletteTable />
+  },
+  {
+    name: 'Edit Roulette table',
+    key: 'edit-roulette-table',
+    route: '/games/roulette-management/edit/:id',
+    component: <EditRouletteTable />
   }
 ];
 
