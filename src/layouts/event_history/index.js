@@ -16,12 +16,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import Filters from './components/Filters';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import React, { useState } from 'react';
 import DataTablePage from 'components/DataTablePage';
 import { getEventsHistory } from 'services/analytics';
 import eventHistoryColumnData from 'data/eventHistoryColumnData';
+import { Can } from 'context';
 
 function EventHistory() {
   const location = useLocation();
@@ -40,20 +41,27 @@ function EventHistory() {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DataTablePage
-        title='Event History'
-        canFilter
-        filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
-        fetchData={getEventsHistory}
-        queryKey={'metrics'}
-        columnData={eventHistoryColumnData}
-        object={'metrics'}
-        noActions
-        subrowFetchData={getGameInfo}
-        filters={filters}
-      />
-    </LocalizationProvider>
+    <>
+      <Can I='read' a='metric'>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DataTablePage
+            title='Event History'
+            canFilter
+            filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+            fetchData={getEventsHistory}
+            queryKey={'metrics'}
+            columnData={eventHistoryColumnData}
+            object={'metrics'}
+            noActions
+            subrowFetchData={getGameInfo}
+            filters={filters}
+          />
+        </LocalizationProvider>
+      </Can>
+      <Can not I='read' a='metric'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

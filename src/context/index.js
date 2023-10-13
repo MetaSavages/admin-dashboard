@@ -98,9 +98,9 @@ function MaterialUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: 'ltr',
     layout: 'dashboard',
-    name: '',
-    email: '',
-    role: '',
+    name: undefined,
+    email: undefined,
+    role: undefined,
     ability: undefined,
     twoFactor: false,
     darkMode: localStorage.getItem('darkMode') === 'true'

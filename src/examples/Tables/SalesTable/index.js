@@ -62,10 +62,6 @@ function SalesTable({ rows, shadow }) {
   );
   const rowsDescending = [...defaultCountries, ...rowsToShow].sort((a, b) => b.active - a.active);
 
-  if (rowsDescending?.length < 250) {
-    return <></>;
-  }
-
   const renderTableCells = rowsDescending.slice(0, 4).map((row, key) => {
     const tableRows = [];
     const rowKey = `row-${key}`;

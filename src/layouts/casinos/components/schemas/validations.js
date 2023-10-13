@@ -13,14 +13,16 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import checkout from 'layouts/casinos/schemas/form';
+import * as Yup from 'yup';
+import checkout from 'layouts/casinos/components/schemas/form';
 
 const {
   formField: { name, currency }
 } = checkout;
-const initialValues = {
-  [name.name]: '',
-  [currency.name]: ''
-};
 
-export default initialValues;
+const validations = Yup.object().shape({
+  [name.name]: Yup.string().required(`${name.errorMsg}`),
+  [currency.name]: Yup.string().required(`${currency.errorMsg}`)
+});
+
+export default validations;

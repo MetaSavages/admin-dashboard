@@ -7,9 +7,9 @@ function Logout() {
   const [, dispatch] = useMaterialUIController();
   useEffect(() => {
     logout().then(() => {
-      setName(dispatch, '');
-      setEmail(dispatch, '');
-      setRole(dispatch, '');
+      setName(dispatch, null);
+      setEmail(dispatch, null);
+      setRole(dispatch, null);
 
       // document.cookie = 'connect.sid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       navigate('/authentication/sign-in/basic');

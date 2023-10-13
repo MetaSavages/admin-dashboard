@@ -75,7 +75,7 @@ import FailedDeposits from 'layouts/deposits/failed_deposits';
 import PendingDeposits from 'layouts/deposits/pending_deposits';
 import CasinoManagement from 'layouts/casinos';
 import NewCasino from 'layouts/casinos/new-casino';
-import EditCasino from 'layouts/casinos/edit-permission';
+import EditCasino from 'layouts/casinos/edit-casino';
 import Blacklists from 'layouts/blacklists';
 import Settings from 'layouts/pages/account/settings';
 const routes = [
@@ -93,8 +93,8 @@ const routes = [
   {
     type: 'collapse',
     name: 'Admin management',
-    // action: 'manage',
-    // object: 'all',
+    // action: 'read',
+    // object: 'admin', // not yet implemented in the backend
     key: 'admin-management',
     icon: <Icon fontSize='medium'>manageAccounts</Icon>,
     collapse: [
@@ -112,14 +112,18 @@ const routes = [
         key: 'role-management',
         icon: <Icon fontSize='medium'>manageAccounts</Icon>,
         route: '/role-management',
-        component: <RoleManagement />
+        component: <RoleManagement />,
+        action: 'read',
+        object: 'role'
       },
       {
         name: 'Permission management',
         key: 'permission-management',
         icon: <Icon fontSize='medium'>check_circle</Icon>,
         route: '/permission-management',
-        component: <PermissionManagement />
+        component: <PermissionManagement />,
+        action: 'read',
+        object: 'permission'
       }
     ]
   },
@@ -131,21 +135,16 @@ const routes = [
     icon: <Icon fontSize='medium'>people</Icon>,
     route: '/player-management',
     component: <PlayerManagement />,
-    collapse: [
-      {
-        name: 'Player management',
-        key: 'player-management',
-        icon: <Icon fontSize='medium'>people</Icon>,
-        route: '/player-management',
-        component: <PlayerManagement />
-      }
-    ]
+    action: 'read',
+    object: 'player'
   },
   {
     type: 'collapse',
     name: 'Analytics',
     key: 'analytics',
     icon: <Icon fontSize='medium'>analytics</Icon>,
+    action: 'read',
+    object: 'metric',
     collapse: [
       {
         name: 'Player Analytics',
@@ -177,28 +176,28 @@ const routes = [
     key: 'casinos',
     icon: <Icon fontSize='medium'>casino</Icon>,
     route: '/casinos',
-    component: <CasinoManagement />
+    component: <CasinoManagement />,
+    action: 'read',
+    object: 'casino'
   },
   {
     type: 'collapse',
     name: 'Blacklists',
     key: 'blacklists',
     icon: <Icon fontSize='medium'>block</Icon>,
-    collapse: [
-      {
-        name: 'Blacklist Countries',
-        key: 'blacklist-countries',
-        route: '/blacklists/countries',
-        icon: <Icon fontSize='medium'>public</Icon>,
-        component: <Blacklists />
-      }
-    ]
+    noCollapse: true,
+    route: '/blacklists/countries',
+    component: <Blacklists />,
+    action: 'read',
+    object: 'blacklist'
   },
   {
     type: 'collapse',
     name: 'Deposits',
     key: 'deposits',
     icon: <Icon fontSize='medium'>add_card_payment</Icon>,
+    action: 'read',
+    object: 'deposit',
     collapse: [
       {
         name: 'Successful Deposits',
@@ -228,6 +227,8 @@ const routes = [
     name: 'Payouts',
     key: 'payouts',
     icon: <Icon fontSize='medium'>payments</Icon>,
+    action: 'read',
+    object: 'payout',
     collapse: [
       {
         name: 'Successful Payouts',

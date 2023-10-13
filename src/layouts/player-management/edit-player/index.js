@@ -30,19 +30,19 @@ import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
 // EditPlayer page components
-import PlayerInfo from 'layouts/player-management/PlayerInfo';
+import PlayerInfo from 'layouts/player-management/components/PlayerInfo';
 
 // EditPlayer layout schemas for form and form feilds
-import validations from 'layouts/player-management/schemas/validations';
-import form from 'layouts/player-management/schemas/form';
-import initialValues from 'layouts/player-management/schemas/initialValues';
+import validations from 'layouts/player-management/components/schemas/validations';
+import form from 'layouts/player-management/components/schemas/form';
+import initialValues from 'layouts/player-management/components/schemas/initialValues';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
 
 import { getPlayer, updatePlayerName } from 'services/players';
-
+import { Can } from 'context';
 
 function EditPlyer() {
   const { formId, formField } = form;
@@ -71,53 +71,60 @@ function EditPlyer() {
   };
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3} mb={20} height='65vh'>
-        {user ? (
-          <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
-            <Grid item xs={12} lg={8}>
-              <Formik
-                initialValues={{
-                  nickname: user?.u_nickname || '',
-                }}
-                validationSchema={currentValidation}
-                onSubmit={handleSubmit}
-              >
-                {({ values, errors, touched, isSubmitting, setFieldValue }) => (
-                  <Form id={formId} autoComplete='off'>
-                    <Card sx={{ height: '100%' }}>
-                      <MDBox p={3}>
-                        <MDBox>
-                          <PlayerInfo
-                            formData={{
-                              values,
-                              touched,
-                              formField,
-                              errors,
-                              setFieldValue,
-                              isSubmitting
-                            }}
-                          />
-                          <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
-                            <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
-                              Send
-                            </MDButton>
+    <>
+      <Can I='update' a='player'>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox py={3} mb={20} height='65vh'>
+            {user ? (
+              <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
+                <Grid item xs={12} lg={8}>
+                  <Formik
+                    initialValues={{
+                      nickname: user?.u_nickname || ''
+                    }}
+                    validationSchema={currentValidation}
+                    onSubmit={handleSubmit}
+                  >
+                    {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+                      <Form id={formId} autoComplete='off'>
+                        <Card sx={{ height: '100%' }}>
+                          <MDBox p={3}>
+                            <MDBox>
+                              <PlayerInfo
+                                formData={{
+                                  values,
+                                  touched,
+                                  formField,
+                                  errors,
+                                  setFieldValue,
+                                  isSubmitting
+                                }}
+                              />
+                              <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
+                                <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
+                                  Send
+                                </MDButton>
+                              </MDBox>
+                            </MDBox>
                           </MDBox>
-                        </MDBox>
-                      </MDBox>
-                    </Card>
-                  </Form>
-                )}
-              </Formik>
-            </Grid>
-          </Grid>
-        ) : (
-          <Skeleton variant='rectangular' sx={{ height: '100%', mt: 8 }} />
-        )}
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+                        </Card>
+                      </Form>
+                    )}
+                  </Formik>
+                </Grid>
+              </Grid>
+            ) : (
+              <Skeleton variant='rectangular' sx={{ height: '100%', mt: 8 }} />
+            )}
+          </MDBox>
+          <Footer />
+        </DashboardLayout>
+      </Can>
+      <Can not I='update' a='player'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 
