@@ -25,12 +25,28 @@ import MDTypography from 'components/MDTypography';
 import MDButton from 'components/MDButton';
 import MDBadge from 'components/MDBadge';
 import Dialog2Fa from './components/Dialog2Fa';
-import { useMaterialUIController } from 'context';
+import { setTwoFactor, useMaterialUIController } from 'context';
+import { remove2Fa } from 'services/2fa';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 function Authentication() {
-  const [open, setOpen] = useState(false);
-  const [controller] = useMaterialUIController();
+  const [openQrCode, setOpenQrCode] = useState(false);
+  const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
+  const [controller, dispatch] = useMaterialUIController();
   const { twoFactor } = controller;
+  const [disabledButton, setDisabledButton] = useState(false);
+
+  async function remove2faCode() {
+    setDisabledButton(true);
+    try {
+      const result = await remove2Fa();
+      setTwoFactor(dispatch, result.isTwoFactorAuthenticationEnabled);
+      setDisabledButton(false);
+      setOpenRemoveDialog(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Card id='2fa' sx={{ overflow: 'visible' }}>
@@ -53,13 +69,46 @@ function Authentication() {
             alignItems={{ xs: 'flex-start', sm: 'center' }}
             flexDirection={{ xs: 'column', sm: 'row' }}
           >
-            <MDButton variant='outlined' color='dark' size='small' onClick={() => setOpen(true)} disabled={twoFactor}>
-              {twoFactor ? 'remove' : 'add'}
-            </MDButton>
+            {twoFactor ? (
+              <MDButton variant='outlined' color='dark' size='small' onClick={() => setOpenRemoveDialog(true)}>
+                remove
+              </MDButton>
+            ) : (
+              <MDButton
+                variant='outlined'
+                color='dark'
+                size='small'
+                onClick={() => setOpenQrCode(true)}
+                disabled={disabledButton}
+              >
+                add
+              </MDButton>
+            )}
           </MDBox>
         </MDBox>
+        <Dialog
+          open={openRemoveDialog}
+          onClose={() => setOpenRemoveDialog(false)}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>{`Remove 2FA`}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id='alert-dialog-description'>
+              Are you sure you want to remove 2FA protection?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <MDButton variant='text' onClick={() => setOpenRemoveDialog(false)}>
+              No
+            </MDButton>
+            <MDButton variant='text' color='error' onClick={remove2faCode}>
+              yes
+            </MDButton>
+          </DialogActions>
+        </Dialog>
       </MDBox>
-      <Dialog2Fa open={open} setOpen={setOpen} />
+      <Dialog2Fa open={openQrCode} setOpen={setOpenQrCode} />
     </Card>
   );
 }

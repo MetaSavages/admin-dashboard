@@ -29,3 +29,13 @@ export const login2Fa = async (code) => {
     throw new Error(err.response.data.message);
   }
 };
+
+export const remove2Fa = async () => {
+  const api = useAxios();
+  try {
+    return await api.post('/admin/auth/remove-2fa');
+  } catch (err) {
+    console.log(err);
+    throw new Error(err.response.data.message);
+  }
+};
