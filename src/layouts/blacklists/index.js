@@ -35,7 +35,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 // import Filters from './components/Filters';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import React, { useState } from 'react';
 import DataTablePage from 'components/DataTablePage';
@@ -62,21 +62,26 @@ function Blacklists() {
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Can I='read' a='user'>
-        <DataTablePage
-          title='Blacklists'
-          canFilter
-          canSearch
-          filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
-          fetchData={fetchData}
-          queryKey={'metrics'}
-          columnData={dataTableBlacklistCountries.columns}
-          object={'metrics'}
-          noActions
-        />
+    <>
+      <Can I='read' a='blacklist'>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DataTablePage
+            title='Blacklists'
+            canFilter
+            canSearch
+            filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+            fetchData={fetchData}
+            queryKey={'metrics'}
+            columnData={dataTableBlacklistCountries.columns}
+            object={'metrics'}
+            noActions
+          />
+        </LocalizationProvider>
       </Can>
-    </LocalizationProvider>
+      <Can not I='read' a='blacklist'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

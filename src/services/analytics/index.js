@@ -30,9 +30,9 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
         timeFilter.push(`$lte:${filters.to.format('YYYY-MM-DDTHH:mm:ssZ')}`);
       }
       if (filters.demo) {
-        params['demo'] = `true`;
+        params['filter.user.isDemo'] = `true`;
       } else {
-        params['demo'] = `false`;
+        params['filter.user.isDemo'] = `false`;
       }
     }
     if (timeFilter.length) {

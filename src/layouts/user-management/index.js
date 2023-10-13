@@ -39,30 +39,30 @@ function UserManagement() {
           }}
           filters={filters}
         />
+        <Dialog
+          open={showModal}
+          onClose={handleCloseModal}
+          aria-labelledby='alert-dialog-title'
+          aria-describedby='alert-dialog-description'
+        >
+          <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this user?'}</DialogTitle>
+          <DialogActions>
+            <MDButton
+              onClick={async () => {
+                await deleteUser(deleteUserId);
+                handleCloseModal();
+                setFilters(filters.length ? '' : 'd');
+              }}
+            >
+              Yes
+            </MDButton>
+            <MDButton onClick={handleCloseModal}>No</MDButton>
+          </DialogActions>
+        </Dialog>
       </Can>
       <Can not I='read' a='user'>
-        <Navigate to='/dashboard' />
+        <Navigate to='/dashboard' replace />
       </Can>
-      <Dialog
-        open={showModal}
-        onClose={handleCloseModal}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
-      >
-        <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this user?'}</DialogTitle>
-        <DialogActions>
-          <MDButton
-            onClick={async () => {
-              await deleteUser(deleteUserId);
-              handleCloseModal();
-              setFilters(filters.length ? '' : 'd');
-            }}
-          >
-            Yes
-          </MDButton>
-          <MDButton onClick={handleCloseModal}>No</MDButton>
-        </DialogActions>
-      </Dialog>
     </>
   );
 }
