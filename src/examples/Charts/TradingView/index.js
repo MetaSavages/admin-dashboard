@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { createChart } from 'lightweight-charts';
-import { Grid, useTheme } from '@mui/material';
+import { Card, Grid, useTheme } from '@mui/material';
 
 import { useMaterialUIController } from 'context';
 import { getDepositData } from 'services/deposits';
@@ -9,6 +9,7 @@ import { DateTimePicker } from '@mui/x-date-pickers';
 import { pickersLayoutClasses } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import MDTypography from 'components/MDTypography';
 
 const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo }) => {
   const chartContainer = useRef(null);
@@ -58,75 +59,100 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
     };
   }, [darkMode, data]);
 
+  console.log('datadatadatadatadatsa', data);
+
   return (
-    <MDBox>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={5} md={3.5}>
-            <MDBox sx={{ width: '150px' }}>
-              <DateTimePicker
-                label='From'
-                ampmInClock={false}
-                closeOnSelect={true}
-                ampm={false}
-                showDaysOutsideCurrentMonth
-                value={from}
-                viewRenderers={{
-                  hours: null,
-                  minutes: null,
-                  seconds: null
-                }}
-                onChange={handleFromChange}
-                slotProps={{
-                  layout: {
-                    sx: {
-                      [`.${pickersLayoutClasses.actionBar}`]: {
-                        display: 'none'
+    <Card
+      sx={{
+        paddingLeft: '20px',
+        paddingRight: '20px',
+        paddingBottom: '20px'
+      }}
+    >
+      <MDBox p={3} lineHeight={1} display='flex' justifyContent='space-between'>
+        <MDTypography variant='h5' fontWeight='medium'>
+          Deposit chart
+        </MDTypography>
+      </MDBox>
+      <MDBox>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={5} md={3.5}>
+              <MDBox sx={{ width: '150px' }}>
+                <DateTimePicker
+                  label='From'
+                  ampmInClock={false}
+                  closeOnSelect={true}
+                  ampm={false}
+                  showDaysOutsideCurrentMonth
+                  value={from}
+                  viewRenderers={{
+                    hours: null,
+                    minutes: null,
+                    seconds: null
+                  }}
+                  onChange={handleFromChange}
+                  slotProps={{
+                    layout: {
+                      sx: {
+                        [`.${pickersLayoutClasses.actionBar}`]: {
+                          display: 'none'
+                        }
                       }
                     }
-                  }
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} sm={5} md={3.5}>
-            <MDBox sx={{ width: '150px' }}>
-              <DateTimePicker
-                label='To'
-                ampmInClock={false}
-                ampm={false}
-                showDaysOutsideCurrentMonth
-                value={to}
-                viewRenderers={{
-                  hours: null,
-                  minutes: null,
-                  seconds: null
-                }}
-                onChange={handleToChange}
-                slotProps={{
-                  layout: {
-                    sx: {
-                      [`.${pickersLayoutClasses.actionBar}`]: {
-                        display: 'none'
+                  }}
+                />
+              </MDBox>
+            </Grid>
+            <Grid item xs={12} sm={5} md={3.5}>
+              <MDBox sx={{ width: '150px' }}>
+                <DateTimePicker
+                  label='To'
+                  ampmInClock={false}
+                  ampm={false}
+                  showDaysOutsideCurrentMonth
+                  value={to}
+                  viewRenderers={{
+                    hours: null,
+                    minutes: null,
+                    seconds: null
+                  }}
+                  onChange={handleToChange}
+                  slotProps={{
+                    layout: {
+                      sx: {
+                        [`.${pickersLayoutClasses.actionBar}`]: {
+                          display: 'none'
+                        }
                       }
                     }
-                  }
-                }}
-              />
-            </MDBox>
+                  }}
+                />
+              </MDBox>
+            </Grid>
           </Grid>
-        </Grid>
-      </LocalizationProvider>
-      <MDBox
-        ref={chartContainer}
-        style={{
-          maxWidth: '100%',
-          height: '500px'
-          // This is if we want to do not show empty chart
-          // height: data.length > 0 ? '500px' : ''
-        }}
-      ></MDBox>
-    </MDBox>
+        </LocalizationProvider>
+        <MDBox
+          sx={{
+            maxWidth: '100%',
+            height: '500px',
+            display: data.length > 0 ? 'block' : 'none',
+            marginTop: '20px',
+            position: 'relative',
+            '&::before': {
+              'z-index': '10',
+              background: 'black',
+              content: '""',
+              width: '1px',
+              height: '94%',
+              position: 'absolute',
+              left: 0
+            }
+          }}
+          ref={chartContainer}
+        ></MDBox>
+      </MDBox>
+    </Card>
   );
 };
 

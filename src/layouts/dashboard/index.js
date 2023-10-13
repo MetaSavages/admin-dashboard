@@ -77,7 +77,7 @@ function Dashboard() {
   useEffect(() => {
     getDepositData(from, to, 'SUCCESSFUL', 'day')
       .then((result) => {
-        if (result.data.length > 0) {
+        if (result.data) {
           setData(result.data);
         }
       })
