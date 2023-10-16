@@ -40,14 +40,14 @@ import reportsLineChartData from 'layouts/player_activity/data/reportsLineChartD
 import dataTableNewPlayersData from 'assets/mockData/dataTableNewPlayers';
 import { Card, Skeleton } from '@mui/material';
 
-import { useMaterialUIController } from 'context';
+import { Can, useMaterialUIController } from 'context';
 
-import { getNewPlayers } from 'services/player_activity';
+import { getNewPlayers, getPlayerCountries } from 'services/player_activity';
 
 import { useEffect, useState } from 'react';
 import useAxios from 'hooks/useAxios';
-import { getEventsHistory } from 'services/analytics';
-import dayjs from 'dayjs';
+import { getNewRegistrations } from 'services/analytics';
+import { Navigate } from 'react-router-dom';
 
 function PlayerActivity() {
   const [controller] = useMaterialUIController();
@@ -56,10 +56,15 @@ function PlayerActivity() {
   const api = useAxios();
   const [countryCodes, setCountryCodes] = useState([]);
   const [countryNames, setCountryNames] = useState('');
-  const [userCountries, setUserCountries] = useState([]);
+  const [userCountries, setUserCountries] = useState({});
+  const [tableValues, setTableValues] = useState({});
   const [countryValues, setCountryValues] = useState({});
+  const [countryValuesRegistered, setCountryValuesRegistered] = useState({});
   const [salesTable, setSalesTable] = useState([{}]);
   const [loading, setLoading] = useState(true);
+  const [newRegistrations, setNewRegistrations] = useState([]);
+  const [correctMonths, setCorrectMonths] = useState([]);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   useEffect(() => {
     api
@@ -79,68 +84,103 @@ function PlayerActivity() {
       });
   }, []);
 
+  let registrationsData = {
+    labels: correctMonths,
+    datasets: { label: 'Registrations', data: newRegistrations }
+  };
+
   useEffect(() => {
-    getEventsHistory(1000, 1, {
-      users: [],
-      casinos: [],
-      eventTypes: [{ id: 1 }],
-      countries: [],
-      from: dayjs().subtract(14, 'day'),
-      to: dayjs()
-    })
-      .then((response) => {
-        const users = [];
-        response.data.forEach((user) => {
-          users.push(user.country);
-        });
-        setUserCountries(users);
-      })
-      .catch(function (error) {
-        console.error(error);
+    getNewRegistrations().then((res) => {
+      let registrations = res.map((m) => {
+        m[0] === 12
+          ? setCorrectMonths((prev) => [...prev, months[0]])
+          : setCorrectMonths((prev) => [...prev, months[m[0]]]);
+        return m[1];
       });
+      setNewRegistrations(registrations);
+    });
   }, []);
 
-  const countCountries = () => {
+  useEffect(() => {
+    getPlayerCountries().then((res) => {
+      setUserCountries(res.data);
+      setTableValues(res.data);
+    });
+  }, []);
+
+  const countCountries = (data) => {
     let res = {};
     countryCodes.forEach((country) => {
-      let counter = 0;
-      userCountries.forEach((userCountry) => {
-        if (country[0] === userCountry) {
-          counter++;
+      let isCountry = null;
+      data.forEach((userCountry) => {
+        if (country[0] === userCountry.country) {
+          isCountry = userCountry;
         }
       });
-      res = { ...res, [country[0]]: counter };
+      if (isCountry) {
+        res[isCountry.country] = isCountry.active;
+      } else {
+        res[country[0]] = 0;
+      }
     });
     setCountryValues(res);
   };
 
-  const handleSalesTable = () => {
-    Object.entries(countryValues).map((key, value) => {
-      setSalesTable((salesTable) => [
-        ...salesTable,
-        {
-          country: [key[0], countryNames[key[0]]],
-          registered: key[1],
-          active: key[1]
+  const countCountriesRegistered = (data) => {
+    let res = {};
+    countryCodes.forEach((country) => {
+      let isCountry = null;
+      data.forEach((userCountry) => {
+        if (country[0] === userCountry.country) {
+          isCountry = userCountry;
         }
-      ]);
+      });
+      if (isCountry) {
+        res[isCountry.country] = isCountry.registered;
+      } else {
+        res[country[0]] = 0;
+      }
     });
+    setCountryValuesRegistered(res);
   };
 
   useEffect(() => {
-    if (Object.entries(countryValues).length) {
+    countCountries(userCountries);
+    countCountriesRegistered(userCountries);
+  }, [userCountries]);
+
+  const handleSalesTable = () => {
+    let values = [{}];
+    tableValues.map((res) => {
+      values.push({
+        country: [res?.country ? res.country : '-', countryNames[res.country] ? countryNames[res.country] : '-'],
+        registered: res?.registered ? res.registered : 0,
+        active: res?.active ? res.active : 0
+      });
+    });
+    setSalesTable(values);
+  };
+
+  useEffect(() => {
+    if (tableValues.length > 0) {
       setLoading(false);
       handleSalesTable();
     }
-  }, [countryValues]);
-
-  useEffect(() => {
-    countCountries();
-  }, [userCountries]);
+  }, [tableValues]);
 
   const findCountryValue = (country) => {
     let number = 0;
     Object.entries(countryValues).find(([key, value]) => {
+      if (key == country) {
+        number = value;
+      }
+    });
+    return number;
+  };
+
+  const findCountryRegisteredValue = (country) => {
+    let number = 0;
+    Object.entries(countryValuesRegistered).find(([key, value]) => {
       if (key == country) {
         number = value;
       }
@@ -165,93 +205,142 @@ function PlayerActivity() {
   );
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3}>
-        <Grid container spacing={5}>
-          <Grid item xs={6} md={6} lg={6}>
-            <MDBox xs={6} md={6} lg={6}>
-              <SalesByCountry salesTable={salesTable} />
-              <MDBox mb={3} mt={5}>
-                <ReportsLineChart
-                  color='dark'
-                  title='User registration rate'
-                  description='User registration rate'
-                  date='just updated'
-                  chart={tasks}
-                />
-              </MDBox>
-            </MDBox>
-          </Grid>
-          <Grid item xs={6} md={6} lg={6}>
-            {(loading || !userCountries.length) && !Object.entries(countryValues).length ? (
-              <Skeleton />
-            ) : (
-              <VectorMap
-                map={worldMerc}
-                zoomOnScroll={false}
-                zoomButtons={false}
-                backgroundColor='transparent'
-                onRegionTipShow={(e, el, code) => {
-                  el.html(el.html() + ` <br> Active users: ${findCountryValue(code)}`);
-                }}
-                regionStyle={{
-                  initial: {
-                    fill: '#8a836b',
-                    'fill-opacity': 1,
-                    stroke: 'none',
-                    'stroke-width': 0,
-                    'stroke-opacity': 0
-                  }
-                }}
-                series={{
-                  regions: [
-                    {
-                      scale: ['#8a836b', '#c7e9b4', '#7fcdbb', '#41b6c4', '#2c7fb8', '#253494'],
-                      attribute: 'fill',
-                      values: countryValues,
-                      hoverOpacity: 0.7,
-                      hoverColor: true,
-                      normalizeFunction: 'polynomial',
-                      legend: {
-                        vertical: true,
-                        title: 'Active users',
-                        cssClass: darkMode ? 'dark' : 'light'
+    <>
+      <Can I='read' a='metric'>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox py={3}>
+            <Grid container spacing={5}>
+              <Grid item xs={6} md={6} lg={6} height={400} display={'flex'} alignItems={'center'}>
+                <SalesByCountry salesTable={salesTable} />
+              </Grid>
+              <Grid item xs={6} md={6} lg={6}>
+                {loading && !countryValues.length ? (
+                  <Skeleton />
+                ) : (
+                  <VectorMap
+                    map={worldMerc}
+                    zoomOnScroll={false}
+                    zoomButtons={false}
+                    backgroundColor='transparent'
+                    onRegionTipShow={(e, el, code) => {
+                      el.html(el.html() + ` <br> Active users: ${findCountryValue(code)}`);
+                    }}
+                    regionStyle={{
+                      initial: {
+                        fill: '#0A2F51',
+                        'fill-opacity': 1,
+                        stroke: 'none',
+                        'stroke-width': 0,
+                        'stroke-opacity': 0
                       }
-                    }
-                  ]
-                }}
-              />
-            )}
-          </Grid>
-        </Grid>
-
-        <MDBox>
-          <Grid container spacing={3} mb={3}>
-            <Grid item xs={12}>
-              <Card>
-                <MDBox p={3} lineHeight={1} display='flex' justifyContent='space-between'>
-                  <MDTypography variant='h5' fontWeight='medium'>
-                    New Players
-                  </MDTypography>
+                    }}
+                    series={{
+                      regions: [
+                        {
+                          scale: ['#BDEFCC', '#7CDE9A', '#5CD581', '#3DCC68', '#31A45A', '#257C49', '#185334'],
+                          attribute: 'fill',
+                          values: countryValues,
+                          hoverOpacity: 0.7,
+                          hoverColor: true,
+                          normalizeFunction: 'polynomial',
+                          legend: {
+                            vertical: true,
+                            title: 'Active users',
+                            cssClass: darkMode ? 'dark' : 'light'
+                          }
+                        }
+                      ]
+                    }}
+                  />
+                )}
+              </Grid>
+              <Grid item xs={6} md={6} lg={6} height={420}>
+                <MDBox mb={3} mt={1}>
+                  <ReportsLineChart
+                    color='dark'
+                    title='User registration rate'
+                    description='User registration rate'
+                    date='just updated'
+                    chart={registrationsData}
+                  />
                 </MDBox>
-                <DataTable
-                  canSearch={false}
-                  canFilter={false}
-                  fetchData={getNewPlayers}
-                  queryKey={'new_payer'}
-                  columnData={dataTableNewPlayersData.columns}
-                  object={'new_payer'}
-                  noActions
-                  defaultPageSize={10}
-                />
-              </Card>
+              </Grid>
+              <Grid item xs={6} md={6} lg={6} mb={4}>
+                {loading && !countryValuesRegistered.length ? (
+                  <Skeleton />
+                ) : (
+                  <VectorMap
+                    height={300}
+                    map={worldMerc}
+                    zoomOnScroll={false}
+                    zoomButtons={false}
+                    backgroundColor='transparent'
+                    onRegionTipShow={(e, el, code) => {
+                      el.html(el.html() + ` <br> Registered users: ${findCountryRegisteredValue(code)}`);
+                    }}
+                    regionStyle={{
+                      initial: {
+                        fill: '#8a836b',
+                        'fill-opacity': 1,
+                        stroke: 'none',
+                        'stroke-width': 0,
+                        'stroke-opacity': 0
+                      }
+                    }}
+                    series={{
+                      regions: [
+                        {
+                          scale: ['#8a836b', '#c7e9b4', '#7fcdbb', '#41b6c4', '#2c7fb8', '#253494'],
+                          attribute: 'fill',
+                          values: countryValuesRegistered,
+                          hoverOpacity: 0.7,
+                          hoverColor: true,
+                          normalizeFunction: 'polynomial',
+                          legend: {
+                            vertical: true,
+                            title: 'Registered users',
+                            cssClass: darkMode ? 'dark' : 'light'
+                          }
+                        }
+                      ]
+                    }}
+                  />
+                )}
+              </Grid>
             </Grid>
-          </Grid>
-        </MDBox>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+
+            <MDBox>
+              <Grid container spacing={3} mb={3}>
+                <Grid item xs={12}>
+                  <Card>
+                    <MDBox p={3} lineHeight={1} display='flex' justifyContent='space-between'>
+                      <MDTypography variant='h5' fontWeight='medium'>
+                        New Players
+                      </MDTypography>
+                    </MDBox>
+                    <DataTable
+                      canSearch={false}
+                      canFilter={false}
+                      fetchData={getNewPlayers}
+                      queryKey={'new_payer'}
+                      columnData={dataTableNewPlayersData.columns}
+                      object={'new_payer'}
+                      noActions
+                      defaultPageSize={10}
+                    />
+                  </Card>
+                </Grid>
+              </Grid>
+            </MDBox>
+          </MDBox>
+          <Footer />
+        </DashboardLayout>
+      </Can>
+      <Can not I='read' a='metric'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

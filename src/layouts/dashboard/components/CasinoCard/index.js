@@ -60,17 +60,17 @@ function CasinoCard({ image, title, description, action }) {
           }}
         />
       </MDBox>
-      <MDBox pl={3} pr={3}>
-        <MDBox display='flex' justifyContent='space-between' alignItems='center' ml={4} mr={4} mt={2}>
+      <MDBox px={3}>
+        <MDBox display='flex' justifyContent='space-around' alignItems='center' gap={10} ml={4} mr={4} mt={2}>
           <MDBox display='flex' alignItems='center'>
             <Icon fontSize='large' color='info'>
               business_center
             </Icon>
-            <MDBox ml={2}>
+            <MDBox ml={1}>
               <MDTypography display='inline' variant='h5' textTransform='capitalize' fontWeight='bold'>
                 1123
               </MDTypography>
-              <MDTypography variant='caption' component='p' color='text'>
+              <MDTypography variant='caption' component='p' color='text' mt={-0.75}>
                 Rounds a day
               </MDTypography>
             </MDBox>
@@ -79,22 +79,22 @@ function CasinoCard({ image, title, description, action }) {
             <Icon fontSize='large' color='success'>
               shopping_cart
             </Icon>
-            <MDBox ml={2}>
+            <MDBox ml={1}>
               <MDTypography display='inline' variant='h5' textTransform='capitalize' fontWeight='bold'>
                 81K
               </MDTypography>
-              <MDTypography variant='caption' component='p' color='text'>
+              <MDTypography variant='caption' component='p' color='text' mt={-0.75}>
                 Cashout requests
               </MDTypography>
             </MDBox>
           </MDBox>
         </MDBox>
       </MDBox>
-      <MDBox p={3} ml={4} mr={4} mb={4}>
-        <MDTypography display='inline' variant='h4' textTransform='capitalize' fontWeight='bold'>
+      <MDBox p={3} ml={4} mr={4} mb={3}>
+        <MDTypography display='flex' variant='h4' textTransform='capitalize' fontWeight='bold' justifyContent='center'>
           $405,321,321
         </MDTypography>
-        <MDBox mt={1} mb={3}>
+        <MDBox mb={3} mt={-0.5} display='flex' justifyContent='center'>
           <MDTypography variant='subtitle2' component='p' color='info'>
             Life time sales
           </MDTypography>
@@ -109,7 +109,7 @@ function CasinoCard({ image, title, description, action }) {
             </MuiLink>
           </MDBox>
         ) : (
-          <MDBox display='flex' justifyContent='space-between'>
+          <MDBox display='flex' justifyContent='space-around' gap={10}>
             <Link to={action.route}>
               <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
             </Link>

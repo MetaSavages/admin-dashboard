@@ -27,7 +27,7 @@ import { Divider } from '@mui/material';
 function DoubleInfoCard({ title1, cap1, title2, cap2 }) {
   return (
     <Card display='flex'>
-      <MDBox p={3} display='flex' justifyContent='space-between' alignItems='center'>
+      <MDBox py={3} px={5} display='flex' justifyContent='space-around' alignItems='center'>
         <MDBox display='flex' flexDirection='column' alignItems='center'>
           <MDTypography variant='h5' fontWeight='medium' textTransform='capitalize'>
             {title1}

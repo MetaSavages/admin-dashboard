@@ -76,7 +76,8 @@ export default function App() {
     ability,
     name,
     email,
-    darkMode
+    darkMode,
+    setTwoFactor
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
@@ -96,9 +97,10 @@ export default function App() {
     getCurrentUser()
       .then((user) => {
         setAbility(dispatch, getUserAbilities(user.role));
-        setName(dispatch, `${user.firstName} ${user.lastName}`);
-        setEmail(dispatch, user.email);
-        setRole(dispatch, user.role); // no role yet
+        setName(dispatch, `${user?.firstName} ${user?.lastName}`);
+        setTwoFactor(dispatch, user?.isTwoFactorAuthenticationEnabled);
+        setEmail(dispatch, user?.email ? user.email : null);
+        setRole(dispatch, user?.role); // no role yet
       })
       .catch((err) => {
         console.log(err);
@@ -110,10 +112,10 @@ export default function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (name === null) {
+    if (email === null) {
       navigate('/authentication/sign-in/basic');
     }
-  }, [name, email, ability]);
+  }, [email]);
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
@@ -205,7 +207,7 @@ export default function App() {
             {layout === 'vr' && <Configurator />}
             <Routes>
               {getRoutes(routes)}
-              <Route path='*' element={<Navigate to='/dashboard' />} />
+              <Route path='*' element={<Navigate to='/dashboard' replace />} />
             </Routes>
           </ThemeProvider>
         </CacheProvider>
@@ -232,7 +234,7 @@ export default function App() {
           {layout === 'vr' && <Configurator />}
           <Routes>
             {getRoutes(routes)}
-            <Route path='*' element={<Navigate to='/dashboard' />} />
+            <Route path='*' element={<Navigate to='/dashboard' replace />} />
           </Routes>
         </ThemeProvider>
       </QueryClientProvider>

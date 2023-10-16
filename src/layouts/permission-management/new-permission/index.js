@@ -33,11 +33,12 @@ import Footer from 'examples/Footer';
 import PermissionInfo from 'layouts/permission-management/components/PermissionInfo';
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/permission-management/schemas/validations';
-import form from 'layouts/permission-management/schemas/form';
-import initialValues from 'layouts/permission-management/schemas/initialValues';
+import validations from 'layouts/permission-management/components/schemas/validations';
+import form from 'layouts/permission-management/components/schemas/form';
+import initialValues from 'layouts/permission-management/components/schemas/initialValues';
 import { createPermission } from 'services/permissions';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Can } from 'context';
 
 function NewPermission() {
   const { formId, formField } = form;
@@ -59,44 +60,51 @@ function NewPermission() {
   };
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3} mb={20} height='65vh'>
-        <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
-          <Grid item xs={12} lg={8}>
-            <Formik initialValues={initialValues} validationSchema={validations} onSubmit={handleSubmit}>
-              {({ values, errors, touched, isSubmitting, setFieldValue }) => (
-                <Form id={formId} autoComplete='off'>
-                  <Card sx={{ height: '100%' }}>
-                    <MDBox p={3}>
-                      <MDBox>
-                        <PermissionInfo
-                          formData={{
-                            values,
-                            touched,
-                            formField,
-                            errors,
-                            setFieldValue,
-                            isSubmitting
-                          }}
-                          title='New Permission'
-                        />
-                        <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
-                          <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
-                            Add
-                          </MDButton>
+    <>
+      <Can I='create' a='permission'>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox py={3} mb={20} height='65vh'>
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
+              <Grid item xs={12} lg={8}>
+                <Formik initialValues={initialValues} validationSchema={validations} onSubmit={handleSubmit}>
+                  {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+                    <Form id={formId} autoComplete='off'>
+                      <Card sx={{ height: '100%' }}>
+                        <MDBox p={3}>
+                          <MDBox>
+                            <PermissionInfo
+                              formData={{
+                                values,
+                                touched,
+                                formField,
+                                errors,
+                                setFieldValue,
+                                isSubmitting
+                              }}
+                              title='New Permission'
+                            />
+                            <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
+                              <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
+                                Add
+                              </MDButton>
+                            </MDBox>
+                          </MDBox>
                         </MDBox>
-                      </MDBox>
-                    </MDBox>
-                  </Card>
-                </Form>
-              )}
-            </Formik>
-          </Grid>
-        </Grid>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+                      </Card>
+                    </Form>
+                  )}
+                </Formik>
+              </Grid>
+            </Grid>
+          </MDBox>
+          <Footer />
+        </DashboardLayout>
+      </Can>
+      <Can not I='create' a='permission'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 
