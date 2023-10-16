@@ -77,9 +77,6 @@ function reducer(state, action) {
     case 'ABILITY': {
       return { ...state, ability: action.value };
     }
-    case 'USER_DETAILS': {
-      return { ...state, userDetails: action.value };
-    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -101,7 +98,6 @@ function MaterialUIControllerProvider({ children }) {
     name: '',
     email: '',
     role: '',
-    userDetails: '',
     ability: undefined,
     darkMode: localStorage.getItem('darkMode') === 'true'
   };
@@ -143,7 +139,6 @@ const setEmail = (dispatch, value) => dispatch({ type: 'EMAIL', value });
 const setName = (dispatch, value) => dispatch({ type: 'NAME', value });
 const setRole = (dispatch, value) => dispatch({ type: 'ROLE', value });
 const setAbility = (dispatch, value) => dispatch({ type: 'ABILITY', value });
-const setUserDetails = (dispatch, value) => dispatch({ type: 'USER_DETAILS', value });
 
 export {
   MaterialUIControllerProvider,
@@ -162,7 +157,6 @@ export {
   setName,
   setRole,
   setAbility,
-  setUserDetails,
   Can,
   AbilityContext
 };

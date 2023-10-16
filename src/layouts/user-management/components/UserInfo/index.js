@@ -34,7 +34,6 @@ import { useMaterialUIController } from 'context';
 
 function UserInfo({ formData }) {
   const [controller] = useMaterialUIController();
-  const { userDetails } = controller;
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { firstName, lastName, role, email, password, repeatPassword } = formField;
   const {
