@@ -109,7 +109,7 @@ export const deleteUser = async (id) => {
 export const resetUserPasswordAnd2Fa = async (userId) => {
   const api = useAxios();
   try {
-    return await api.post(`/admin/users/reset-password-2fa`, { userId: userId });
+    return await api.post(`/admin/users/reset-password-2fa`, { id: userId });
   } catch (err) {
     throw new Error(err.message);
   }
