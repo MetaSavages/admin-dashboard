@@ -75,6 +75,10 @@ function Dashboard() {
   const [to, setTo] = useState(dayjs(today));
 
   useEffect(() => {
+    submitDepositData();
+  }, [from, to]);
+
+  const submitDepositData = () => {
     getDepositData(from, to, 'SUCCESSFUL', 'day')
       .then((result) => {
         if (result.data) {
@@ -82,7 +86,7 @@ function Dashboard() {
         }
       })
       .catch((err) => console.error(err));
-  }, [from, to]);
+  };
 
   const handleFromChange = (date) => {
     if (to) {
@@ -234,6 +238,7 @@ function Dashboard() {
                     to={to}
                     handleToChange={handleToChange}
                     dataInfo={data}
+                    submitDepositData={submitDepositData}
                   />
                 </Grid>
                 <Grid item xs={4}>

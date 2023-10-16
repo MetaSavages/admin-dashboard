@@ -10,8 +10,9 @@ import { pickersLayoutClasses } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import MDTypography from 'components/MDTypography';
+import MDButton from 'components/MDButton';
 
-const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo }) => {
+const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo, submitDepositData }) => {
   const chartContainer = useRef(null);
   const [data, setData] = useState(dataInfo);
   const theme = useTheme();
@@ -129,6 +130,12 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
                   }}
                 />
               </MDBox>
+            </Grid>
+
+            <Grid item xs={12} sm={5} md={3.5}>
+              <MDButton variant='text' color='gradient' onClick={submitDepositData}>
+                Apply
+              </MDButton>
             </Grid>
           </Grid>
         </LocalizationProvider>
