@@ -30,12 +30,13 @@ export const login2Fa = async (code) => {
   }
 };
 
-export const remove2Fa = async () => {
+export const remove2Fa = async (code) => {
   const api = useAxios();
   try {
-    return await api.post('/admin/auth/remove-2fa');
+    return await api.post('/admin/auth/remove-2fa', { twoFactorAuthenticationCode: code.toString() });
   } catch (err) {
     console.log(err);
+
     throw new Error(err.response.data.message);
   }
 };

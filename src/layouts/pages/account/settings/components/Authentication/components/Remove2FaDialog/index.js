@@ -1,18 +1,11 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
 import MDBox from 'components/MDBox';
-import MDTypography from 'components/MDTypography';
-import MDButton from 'components/MDButton';
 import { useState } from 'react';
-import DisplayQrCode from './components/DisplayQrCode';
 import DisplayTextField from './components/DisplayTextField';
 import Success2Fa from './components/Success2Fa/Success2Fa';
 
@@ -25,7 +18,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   }
 }));
 
-function Dialog2Fa({ open, setOpen }) {
+function Remove2FaDialog({ open, setOpen }) {
   const [steps, setSteps] = useState(1);
 
   function handleClose(e) {
@@ -37,10 +30,8 @@ function Dialog2Fa({ open, setOpen }) {
   function showContent() {
     switch (steps) {
       case 1:
-        return <DisplayQrCode setSteps={setSteps} />;
-      case 2:
         return <DisplayTextField setSteps={setSteps} />;
-      case 3:
+      case 2:
         return <Success2Fa setSteps={setSteps} setOpen={setOpen} />;
       default:
         break;
@@ -74,4 +65,4 @@ function Dialog2Fa({ open, setOpen }) {
   );
 }
 
-export default Dialog2Fa;
+export default Remove2FaDialog;

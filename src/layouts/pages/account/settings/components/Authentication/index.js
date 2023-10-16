@@ -17,20 +17,21 @@ import { useState } from 'react';
 
 // @mui material components
 import Card from '@mui/material/Card';
-import Divider from '@mui/material/Divider';
 
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import MDButton from 'components/MDButton';
 import MDBadge from 'components/MDBadge';
-import Dialog2Fa from './components/Dialog2Fa';
+import Add2FaDialog from './components/Add2FaDialog';
 import { setTwoFactor, useMaterialUIController } from 'context';
 import { remove2Fa } from 'services/2fa';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import Remove2FaDialog from './components/Remove2FaDialog';
 
 function Authentication() {
-  const [openQrCode, setOpenQrCode] = useState(false);
+  const [openAdd2FaCode, setOpenAdd2FaCode] = useState(false);
+  const [openRemove2FaCode, setOpenRemove2FaCode] = useState(false);
   const [openRemoveDialog, setOpenRemoveDialog] = useState(false);
   const [controller, dispatch] = useMaterialUIController();
   const { twoFactor } = controller;
@@ -78,7 +79,7 @@ function Authentication() {
                 variant='outlined'
                 color='dark'
                 size='small'
-                onClick={() => setOpenQrCode(true)}
+                onClick={() => setOpenAdd2FaCode(true)}
                 disabled={disabledButton}
               >
                 add
@@ -102,13 +103,22 @@ function Authentication() {
             <MDButton variant='text' onClick={() => setOpenRemoveDialog(false)}>
               No
             </MDButton>
-            <MDButton variant='text' color='error' onClick={remove2faCode}>
+            <MDButton
+              variant='text'
+              color='error'
+              onClick={() => {
+                setOpenRemove2FaCode(true);
+                setOpenRemoveDialog(false);
+                // remove2faCode();
+              }}
+            >
               yes
             </MDButton>
           </DialogActions>
         </Dialog>
       </MDBox>
-      <Dialog2Fa open={openQrCode} setOpen={setOpenQrCode} />
+      <Add2FaDialog open={openAdd2FaCode} setOpen={setOpenAdd2FaCode} />
+      <Remove2FaDialog open={openRemove2FaCode} setOpen={setOpenRemove2FaCode} />
     </Card>
   );
 }

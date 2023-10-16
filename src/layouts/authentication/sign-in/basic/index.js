@@ -99,7 +99,7 @@ function Basic() {
     try {
       const result = await login2Fa(code);
       if (result.status == 200) {
-        result.access_token && localStorage.setItem('AccessToken', res.access_token);
+        result.data.access_token && localStorage.setItem('AccessToken', result.data.access_token);
         getCurrentUser()
           .then((user) => {
             serUserData(user);
