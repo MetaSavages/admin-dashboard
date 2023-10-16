@@ -43,7 +43,6 @@ import { Navigate, useParams } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, Skeleton, Tooltip } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can, useMaterialUIController } from 'context';
-import { PERMISSION_ACTION, PERMISSION_OBJECT } from 'constants/Admin';
 
 function EditUser() {
   const [controller] = useMaterialUIController();
@@ -142,7 +141,7 @@ function EditUser() {
                                 <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
                                   Send
                                 </MDButton>
-                                <Can I='update' a={PERMISSION_OBJECT.RESETPASSWORDAND2FA}>
+                                <Can I='update' a='reset-password-and-2fa'>
                                   <Tooltip title='You are about to reset the user password and 2 FA and this action cannot be undone'>
                                     <MDButton
                                       disabled={openDialog}
