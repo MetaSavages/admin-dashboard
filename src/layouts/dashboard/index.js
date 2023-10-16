@@ -249,7 +249,7 @@ function Dashboard() {
       </Tooltip>
     </>
   );
-  console.log('gradientData', gradientData);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
