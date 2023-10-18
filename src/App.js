@@ -76,7 +76,8 @@ export default function App() {
     ability,
     name,
     email,
-    darkMode
+    darkMode,
+    setTwoFactor
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
@@ -100,6 +101,7 @@ export default function App() {
         setName(dispatch, `${user.firstName} ${user.lastName}`);
         setEmail(dispatch, user.email);
         setRole(dispatch, user.role); // no role yet
+        setTwoFactor(dispatch, user?.isTwoFactorAuthenticationEnabled);
         setFetchingUser(false);
       })
       .catch((err) => {

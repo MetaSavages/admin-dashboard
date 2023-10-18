@@ -86,6 +86,7 @@ import NewBlackjackTable from 'layouts/blackjack-management/components/new-table
 import NewRouletteTable from 'layouts/roulette-management/components/new-table';
 import EditRouletteTable from 'layouts/roulette-management/components/edit-table';
 import RouletteManagement from 'layouts/roulette-management';
+import Settings from 'layouts/pages/account/settings';
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -331,8 +332,15 @@ const routes = [
     name: 'Settings',
     key: 'settings',
     icon: <Icon fontSize='medium'>settings</Icon>,
-    route: '/settings',
-    component: <Sales />
+    collapse: [
+      {
+        name: 'Edit user',
+        key: 'edit user',
+        icon: <Icon fontSize='medium'>edit</Icon>,
+        route: '/settings/user',
+        component: <Settings />
+      }
+    ]
   },
   {
     type: 'collapse',
