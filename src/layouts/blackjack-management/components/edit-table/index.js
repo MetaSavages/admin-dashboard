@@ -34,6 +34,7 @@ import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 import MDButton from 'components/MDButton';
 import { getBlackjackTable, updateBlackjackTable } from 'services/blackjack';
+import BlackjackTableInfo from '../table-info';
 
 function EditBlackjackTable() {
   const { formId, formField } = form;
