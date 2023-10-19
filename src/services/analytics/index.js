@@ -92,7 +92,7 @@ export const getEventsAggregated = async (limit = 20, page = 1, filters = null) 
     const res = await api.get('/admin/metrics/aggregated', {
       params: params
     });
-    
+
     const data = res.data.map((event) => {
       return {
         event_type: event?.name ? event.name : '-',
@@ -232,7 +232,12 @@ export const getNewRegistrations = async () => {
     return data;
   } catch (err) {
     console.log(err);
-    return 0;
+    return [
+      {
+        month: '-',
+        count: 0
+      }
+    ];
   }
 };
 
@@ -283,7 +288,7 @@ export const getGameSessions = async () => {
     return [rouletteCount, blackjackCount, baccaratCount];
   } catch (error) {
     console.log(error);
-    return {};
+    return [0, 0, 0];
   }
 };
 
@@ -304,8 +309,8 @@ export const trackSuccessfulLogins = async () => {
       return {
         username: login.user?.nickname ? login.user.nickname : '-',
         date: login.createdAt ? date.toLocaleString() : '-'
-      }
-    })
+      };
+    });
 
     return data;
   } catch (error) {

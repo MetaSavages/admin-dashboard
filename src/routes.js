@@ -77,6 +77,19 @@ import CasinoManagement from 'layouts/casinos';
 import NewCasino from 'layouts/casinos/new-casino';
 import EditCasino from 'layouts/casinos/edit-casino';
 import Blacklists from 'layouts/blacklists';
+import BlackjackSessions from 'layouts/game_sessions/blackjack-sessions';
+import BaccaratSessions from 'layouts/game_sessions/baccarat-sessions';
+import RouletteSessions from 'layouts/game_sessions/roulette-sessions';
+import CasinoGames from 'layouts/casino-games';
+import JetpackSessions from 'layouts/game_sessions/jetpack';
+import CrashSessions from 'layouts/game_sessions/crash';
+import SlotSessions from 'layouts/game_sessions/slots';
+import EditBlackjackTable from 'layouts/game_sessions/blackjack-sessions/edit-table';
+import EditBaccaratTable from 'layouts/game_sessions/baccarat-sessions/edit-table';
+import EditRouletteTable from 'layouts/game_sessions/roulette-sessions/edit-table';
+import EditJetpackTable from 'layouts/game_sessions/jetpack/edit-table';
+import EditCrashTable from 'layouts/game_sessions/crash/edit-table';
+
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -385,6 +398,78 @@ const routes = [
     key: 'logout',
     route: '/authentication/logout',
     component: <Logout />
+  },
+  {
+    name: 'Blackjack Sessions',
+    key: 'blackjack-sessions',
+    route: '/blackjack-sessions/:id',
+    component: <BlackjackSessions />
+  },
+  {
+    name: 'Edit Blackjack Table',
+    key: 'edit-blackjack-table',
+    route: '/blackjack-sessions/:id/edit/:id',
+    component: <EditBlackjackTable />
+  },
+  {
+    name: 'Baccarat Sessions',
+    key: 'baccarat-sessions',
+    route: '/baccarat-sessions/:id1',
+    component: <BaccaratSessions />
+  },
+  {
+    name: 'Edit Baccarat Table',
+    key: 'edit-baccarat-table',
+    route: '/baccarat-sessions/:id1/edit/:id',
+    component: <EditBaccaratTable />
+  },
+  {
+    name: 'Roulette Sessions',
+    key: 'roulette-sessions',
+    route: '/roulette-sessions/:id1',
+    component: <RouletteSessions />
+  },
+  {
+    name: 'Edit Roulette Table',
+    key: 'edit-roulette-table',
+    route: '/roulette-sessions/:id1/edit/:id',
+    component: <EditRouletteTable />
+  },
+  {
+    name: 'Slot Sessions',
+    key: 'slot-sessions',
+    route: '/slot-sessions/:id1',
+    component: <SlotSessions />
+  },
+  {
+    name: 'Jetpack Sessions',
+    key: 'jetpack-sessions',
+    route: '/jetpack-sessions/:id1',
+    component: <JetpackSessions />
+  },
+  {
+    name: 'Edit Jetpack Table',
+    key: 'edit-jetpack-table',
+    route: '/jetpack-sessions/:id1/edit/:id',
+    component: <EditJetpackTable />
+  },
+  {
+    name: 'Crash Sessions',
+    key: 'crash-sessions',
+    route: '/crash-sessions/:id1',
+    component: <CrashSessions />
+  },
+  {
+    name: 'Edit Crash Table',
+    key: 'edit-crash-table',
+    route: '/crash-sessions/:id1/edit/:id',
+    component: <EditCrashTable />
+  },
+  {
+    name: 'Casino Games',
+    key: 'casino-games',
+    route: '/casino-games/:id',
+    component: <CasinoGames />
   }
 ];
 
