@@ -23,7 +23,7 @@ function CasinoManagement() {
       }, 100);
     });
   };
-
+  
   return (
     <>
       <Can I='read' a='casino'>
