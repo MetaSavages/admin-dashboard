@@ -24,7 +24,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
 import TableInfo from 'layouts/game_sessions/components/TableInfo';
-import { getBaccaratTableById } from 'services/tables';
+import { getBaccaratTableById, updateTable } from 'services/tables';
 
 function EditBaccaratTable() {
   const { id } = useParams();
@@ -47,16 +47,11 @@ function EditBaccaratTable() {
   }, []);
 
   const submitForm = async (values, actions) => {
-    //   const response = await updatePermission(id, values.action, values.object);
-    //   if (response.status === 201) {
-    //     alert('Permission created successfully');
-    //   } else {
-    //     alert('Permission creation failed');
-    //   }
-    //   // eslint-disable-next-line no-alert
-    //   actions.setSubmitting(false);
-    //   actions.resetForm();
-    navigate(`/baccarat-sessions/${casinoId}`);
+     const response = await updateTable('baccarat', id, values.min_bet, values.max_bet);
+     // eslint-disable-next-line no-alert
+     actions.setSubmitting(false);
+     actions.resetForm();
+     navigate(`/baccarat-sessions/${casinoId}`);
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);

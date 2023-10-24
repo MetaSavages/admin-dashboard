@@ -422,55 +422,55 @@ const routes = [
   {
     name: 'Baccarat Sessions',
     key: 'baccarat-sessions',
-    route: '/baccarat-sessions/:id1',
+    route: '/baccarat-sessions/:id',
     component: <BaccaratSessions />
   },
   {
     name: 'Edit Baccarat Table',
     key: 'edit-baccarat-table',
-    route: '/baccarat-sessions/:id1/edit/:id',
+    route: '/baccarat-sessions/:id/edit/:id',
     component: <EditBaccaratTable />
   },
   {
     name: 'Roulette Sessions',
     key: 'roulette-sessions',
-    route: '/roulette-sessions/:id1',
+    route: '/roulette-sessions/:id',
     component: <RouletteSessions />
   },
   {
     name: 'Edit Roulette Table',
     key: 'edit-roulette-table',
-    route: '/roulette-sessions/:id1/edit/:id',
+    route: '/roulette-sessions/:id/edit/:id',
     component: <EditRouletteTable />
   },
   {
     name: 'Slot Sessions',
     key: 'slot-sessions',
-    route: '/slot-sessions/:id1',
+    route: '/slot-sessions/:id',
     component: <SlotSessions />
   },
   {
     name: 'Jetpack Sessions',
     key: 'jetpack-sessions',
-    route: '/jetpack-sessions/:id1',
+    route: '/jetpack-sessions/:id',
     component: <JetpackSessions />
   },
   {
     name: 'Edit Jetpack Table',
     key: 'edit-jetpack-table',
-    route: '/jetpack-sessions/:id1/edit/:id',
+    route: '/jetpack-sessions/:id/edit/:id',
     component: <EditJetpackTable />
   },
   {
     name: 'Crash Sessions',
     key: 'crash-sessions',
-    route: '/crash-sessions/:id1',
+    route: '/crash-sessions/:id',
     component: <CrashSessions />
   },
   {
     name: 'Edit Crash Table',
     key: 'edit-crash-table',
-    route: '/crash-sessions/:id1/edit/:id',
+    route: '/crash-sessions/:id/edit/:id',
     component: <EditCrashTable />
   },
   {
