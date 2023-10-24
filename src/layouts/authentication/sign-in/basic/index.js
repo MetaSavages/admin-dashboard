@@ -50,16 +50,20 @@ function Basic() {
     login(values.email, values.password)
       .then((res) => {
         console.log(res);
-        setCookie('access_token', res?.data?.access_token, { path: '/' });
-        actions.setSubmitting(false);
-        actions.resetForm();
-        getCurrentUser().then((res) => {
-          if (res.isTwoFactorAuthenticationEnabled) {
-            setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
-          } else {
-            serUserData(res);
-          }
-        });
+        if(res.data.access_token == undefined){
+          throw new Error('Email or password is incorrect');
+        } else {
+          setCookie('access_token', res?.data?.access_token, { path: '/' });
+          actions.setSubmitting(false);
+          actions.resetForm();
+          getCurrentUser().then((res) => {
+            if (res.isTwoFactorAuthenticationEnabled) {
+              setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
+            } else {
+              serUserData(res);
+            }
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
