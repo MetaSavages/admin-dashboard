@@ -410,37 +410,37 @@ const routes = [
   {
     name: 'Blackjack Sessions',
     key: 'blackjack-sessions',
-    route: '/blackjack-sessions/:id',
+    route: '/blackjack-sessions/:id1',
     component: <BlackjackSessions />
   },
   {
     name: 'Edit Blackjack Table',
     key: 'edit-blackjack-table',
-    route: '/blackjack-sessions/:id/edit/:id',
+    route: '/blackjack-sessions/:id1/edit/:id',
     component: <EditBlackjackTable />
   },
   {
     name: 'Baccarat Sessions',
     key: 'baccarat-sessions',
-    route: '/baccarat-sessions/:id',
+    route: '/baccarat-sessions/:id1',
     component: <BaccaratSessions />
   },
   {
     name: 'Edit Baccarat Table',
     key: 'edit-baccarat-table',
-    route: '/baccarat-sessions/:id/edit/:id',
+    route: '/baccarat-sessions/:id1/edit/:id',
     component: <EditBaccaratTable />
   },
   {
     name: 'Roulette Sessions',
     key: 'roulette-sessions',
-    route: '/roulette-sessions/:id',
+    route: '/roulette-sessions/:id1',
     component: <RouletteSessions />
   },
   {
     name: 'Edit Roulette Table',
     key: 'edit-roulette-table',
-    route: '/roulette-sessions/:id/edit/:id',
+    route: '/roulette-sessions/:id1/edit/:id',
     component: <EditRouletteTable />
   },
   {
@@ -452,25 +452,25 @@ const routes = [
   {
     name: 'Jetpack Sessions',
     key: 'jetpack-sessions',
-    route: '/jetpack-sessions/:id',
+    route: '/jetpack-sessions/:id1',
     component: <JetpackSessions />
   },
   {
     name: 'Edit Jetpack Table',
     key: 'edit-jetpack-table',
-    route: '/jetpack-sessions/:id/edit/:id',
+    route: '/jetpack-sessions/:id1/edit/:id',
     component: <EditJetpackTable />
   },
   {
     name: 'Crash Sessions',
     key: 'crash-sessions',
-    route: '/crash-sessions/:id',
+    route: '/crash-sessions/:id1',
     component: <CrashSessions />
   },
   {
     name: 'Edit Crash Table',
     key: 'edit-crash-table',
-    route: '/crash-sessions/:id/edit/:id',
+    route: '/crash-sessions/:id1/edit/:id',
     component: <EditCrashTable />
   },
   {

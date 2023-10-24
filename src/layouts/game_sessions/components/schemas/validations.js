@@ -19,18 +19,12 @@ import checkout from 'layouts/game_sessions/components/schemas/form';
 const {
   formField: { min_bet, max_bet }
 } = checkout;
-
+console.log(Yup.ref(`${min_bet.name}`));
 const validations = Yup.object().shape({
-  [min_bet.name]: Yup.number().required(`${min_bet.errorMsg}`),
-  // [
-  //   Yup.number().required(`${min_bet.errorMsg}`),
-  //   Yup.number().min(0, 'Min Bet must be greater than 0.')
-  // ],
-  [max_bet.name]: Yup.number().required(`${max_bet.errorMsg}`),
-  // [
-  //   Yup.number().required(`${max_bet.errorMsg}`),
-  //   Yup.number().min(min_bet.name, 'Max Bet must be greater than Min Bet')
-  // ]
+  [min_bet.name]: Yup.number().required(`${min_bet.errorMsg}`).min(0, 'Min Bet must be greater than 0.'),
+  [max_bet.name]: Yup.number()
+    .required(`${max_bet.errorMsg}`)
+    .moreThan(Yup.ref(`${min_bet.name}`), 'Max bet must be greater than min bet')
 });
 
 export default validations;

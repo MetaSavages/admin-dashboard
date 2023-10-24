@@ -53,7 +53,8 @@ import {
   setEmail,
   setName,
   setRole,
-  setAbility
+  setAbility,
+  setTwoFactor
 } from 'context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Images
@@ -76,8 +77,7 @@ export default function App() {
     ability,
     name,
     email,
-    darkMode,
-    setTwoFactor
+    darkMode
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
@@ -98,7 +98,7 @@ export default function App() {
       .then((user) => {
         setAbility(dispatch, getUserAbilities(user.role));
         setName(dispatch, `${user?.firstName} ${user?.lastName}`);
-        setTwoFactor(dispatch, user?.isTwoFactorAuthenticationEnabled);
+        setTwoFactor(dispatch, false);
         setEmail(dispatch, user?.email ? user.email : null);
         setRole(dispatch, user?.role); // no role yet
       })
