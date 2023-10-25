@@ -51,7 +51,7 @@ function Basic() {
       .then((res) => {
         console.log(res);
         if(res.data.access_token == undefined){
-          throw new Error('Email or password is incorrect');
+          setErrorCode('Email or password is incorrect')
         } else {
           setCookie('access_token', res?.data?.access_token, { path: '/' });
           actions.setSubmitting(false);
@@ -191,6 +191,11 @@ function Basic() {
                           <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='info' fullWidth>
                             Sign in
                           </MDButton>
+                        </MDBox>
+                        <MDBox mt={0.75}>
+                          <MDTypography component='div' variant='caption' color='error' fontWeight='regular'>
+                            {errorCode}
+                          </MDTypography>
                         </MDBox>
                       </MDBox>
                     </Form>
