@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import useAxios from 'hooks/useAxios';
-
+import Slider from 'react-slick';
 export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
   const api = useAxios();
   try {
@@ -126,7 +126,7 @@ export const getEventsAggregated = async (limit = 20, page = 1, filters = null) 
   }
 };
 
-export const getTodayNumbers = async (type) => {
+export const getTodayNumbers = async (type, gameType = null) => {
   try {
     const api = useAxios();
     let date = new Date();
@@ -141,7 +141,8 @@ export const getTodayNumbers = async (type) => {
       params: {
         limit: 100000,
         startDate: date,
-        endDate: dateTomorrow
+        endDate: dateTomorrow,
+        gameType: gameType ? gameType : ''
       }
     });
 
@@ -316,5 +317,35 @@ export const trackSuccessfulLogins = async () => {
   } catch (error) {
     console.log(error);
     return {};
+  }
+};
+
+export const getTodayAmount = async (type, gameType = null) => {
+  try {
+    const api = useAxios();
+    let date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date = date.toJSON();
+
+    let dateTomorrow = new Date();
+    dateTomorrow.setHours(24, 0, 0, 0);
+    dateTomorrow = dateTomorrow.toJSON();
+
+    const res = await api.get(`admin/metrics/analytics-amount-for-period/${type}`, {
+      params: {
+        limit: 100000,
+        startDate: date,
+        endDate: dateTomorrow,
+        gameType: gameType ? gameType : ''
+      }
+    });
+
+    return await res.data;
+  } catch (error) {
+    console.log(error);
+
+    return {
+      data: []
+    };
   }
 };
