@@ -50,16 +50,20 @@ function Basic() {
     login(values.email, values.password)
       .then((res) => {
         console.log(res);
-        setCookie('access_token', res?.data?.access_token, { path: '/' });
-        actions.setSubmitting(false);
-        actions.resetForm();
-        getCurrentUser().then((res) => {
-          if (res.isTwoFactorAuthenticationEnabled) {
-            setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
-          } else {
-            serUserData(res);
-          }
-        });
+        if(res.data.access_token == undefined){
+          setErrorCode('Email or password is incorrect')
+        } else {
+          setCookie('access_token', res?.data?.access_token, { path: '/' });
+          actions.setSubmitting(false);
+          actions.resetForm();
+          getCurrentUser().then((res) => {
+            if (res.isTwoFactorAuthenticationEnabled) {
+              setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
+            } else {
+              serUserData(res);
+            }
+          });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -187,6 +191,11 @@ function Basic() {
                           <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='info' fullWidth>
                             Sign in
                           </MDButton>
+                        </MDBox>
+                        <MDBox mt={0.75}>
+                          <MDTypography component='div' variant='caption' color='error' fontWeight='regular'>
+                            {errorCode}
+                          </MDTypography>
                         </MDBox>
                       </MDBox>
                     </Form>
