@@ -56,6 +56,7 @@ import {
   getGameStats,
   getNewRegistrations,
   getGameSessions,
+  trackSuccessfulLogins,
   getTodayAmount
 } from 'services/analytics';
 import { useEffect, useRef, useState } from 'react';
@@ -77,6 +78,7 @@ function Dashboard() {
   const [correctMonths, setCorrectMonths] = useState([]);
   const [newRegistrations, setNewRegistrations] = useState([]);
   const [gameSessions, setGameSessions] = useState([]);
+  const [successfulLogins, setSuccessfulLogins] = useState([]);
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const [baccarat, setBaccarat] = useState({
     sessionStart: '',
@@ -194,7 +196,7 @@ function Dashboard() {
   useEffect(() => {
     getNewRegistrations().then((res) => {
       let registrations = res.map((m) => {
-        return m[1];
+        return m.count;
       });
       setNewRegistrations(registrations);
     });
@@ -250,6 +252,7 @@ function Dashboard() {
     getSlotsDetails();
     getRouletteDetails();
     getCrashDetails();
+    trackSuccessfulLogins().then((res) => setSuccessfulLogins(res));
   }, []);
 
   function getBlackjackDetails() {
@@ -384,16 +387,21 @@ function Dashboard() {
         <MDBox display='flex' justifyContent='space-between' alignItems='center'>
           <Grid container spacing={2} direction='row' justify='center' alignItems='stretch'>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total game wins' description={gameWin} />
+              <InfoCard color='info' icon='trending_up' title='Total game wins' description={`${gameWin}`} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total game loses' description={gameLose} />
+              <InfoCard color='info' icon='trending_up' title='Total game loses' description={`${gameLose}`} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total game bets' description={gameBet} />
+              <InfoCard color='info' icon='trending_up' title='Total game bets' description={`${gameBet}`} />
             </Grid>
             <Grid item xs={2}>
-              <InfoCard color='info' icon='trending_up' title='Total registrations' description={registrationStart} />
+              <InfoCard
+                color='info'
+                icon='trending_up'
+                title='Total registrations'
+                description={`${registrationStart}`}
+              />
             </Grid>
             <Grid item xs={2}>
               <InfoCard
@@ -541,31 +549,15 @@ function Dashboard() {
                   <DoubleInfoCard title1='$560K' cap1='Total sales' title2='$300K' cap2='Total profit' />
                 </Grid>
                 <Grid item xs={12}>
-                  <TimelineList title='Activity Overview'>
-                    <TimelineItem
-                      color='success'
-                      icon='notifications'
-                      title='$2400 Design changes'
-                      dateTime='22 DEC 7:20 PM'
-                      description='People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of.'
-                      badges={['design']}
-                    />
-                    <TimelineItem
-                      color='error'
-                      icon='inventory_2'
-                      title='New order #1832412'
-                      dateTime='21 DEC 11 PM'
-                      description='People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of.'
-                      badges={['order', '#1832412']}
-                    />
-                    <TimelineItem
-                      icon='shopping_cart'
-                      title='Server payments for April'
-                      dateTime='21 DEC 9:34 PM'
-                      description='People care about how you see the world, how you think, what motivates you, what you’re struggling with or afraid of.'
-                      badges={['server', 'payments']}
-                      lastItem
-                    />
+                  <TimelineList title='Login Tracker'>
+                    {successfulLogins.map((login, i, { length }) => {
+                      let title = `Successful Login [ ${login.username} ]`;
+                      let date = `${login.date}`;
+                      if (i === length - 1) {
+                        return <TimelineItem icon='login' color='success' title={title} dateTime={date} lastItem />;
+                      }
+                      return <TimelineItem icon='login' color='success' title={title} dateTime={date} />;
+                    })}
                   </TimelineList>
                 </Grid>
               </Grid>

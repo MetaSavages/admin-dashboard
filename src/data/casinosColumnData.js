@@ -15,7 +15,20 @@ export const casinosColumnData = [
   },
   {
     Header: 'Casino name',
-    accessor: 'casino_name'
+    accessor: 'casino_name',
+    Cell: ({ row }) => {
+      return (
+        <>
+          <MDBox sx={{ display: 'flex', justifyContent: 'space-around' }}>
+            <NavLink to={`/casino-games/${row.original.casino_id}`}>
+              <MDTypography fontSize='0.875rem'>
+                {row.original.casino_name}
+              </MDTypography>
+            </NavLink>
+          </MDBox>
+        </>
+      );
+    }
   },
   {
     Header: 'Provider',
