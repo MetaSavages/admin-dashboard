@@ -88,7 +88,7 @@ function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, des
             </Icon>
             <MDBox ml={1}>
               <MDTypography display='inline' variant='h5' textTransform='capitalize' fontWeight='bold'>
-                {gameWinsAmount}
+                {Math.floor(Number(gameWinsAmount))}
               </MDTypography>
               <MDTypography variant='caption' component='p' color='text' mt={-0.75} sx={{ fontSize: '1rem' }}>
                 All wins Amount
@@ -99,7 +99,7 @@ function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, des
       </MDBox>
       <MDBox p={3} ml={4} mr={4} mb={3}>
         <MDTypography display='flex' variant='h4' textTransform='capitalize' fontWeight='bold' justifyContent='center'>
-          {gameProfit >= 0 ? `$${gameProfit}` : `-$${Math.abs(gameProfit)}`}
+          {gameProfit >= 0 ? `$${Math.floor(Number(gameProfit))}` : `-$${Math.floor(Math.abs(gameProfit))}`}
           {/* -${2 - 100} */}
         </MDTypography>
         <MDBox mb={3} mt={-0.5} display='flex' justifyContent='center'>
