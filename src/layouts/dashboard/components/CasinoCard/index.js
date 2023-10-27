@@ -68,8 +68,8 @@ function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, des
         /> */}
       </MDBox>
       <MDBox px={3}>
-        <MDBox display='flex' justifyContent='space-around' alignItems='center' gap={10} ml={4} mr={4} mt={2}>
-          <MDBox display='flex' alignItems='center'>
+        <MDBox display='flex' justifyContent='space-around' alignItems='center' ml={4} mr={3} mt={2}>
+          <MDBox display='flex' alignItems='center' pr={5}>
             <Icon fontSize='large' color='info'>
               business_center
             </Icon>
@@ -117,13 +117,17 @@ function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, des
             </MuiLink>
           </MDBox>
         ) : (
-          <MDBox display='flex' justifyContent='space-around' gap={10}>
-            <Link to={action.route}>
-              <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
-            </Link>
-            <Link to={action.route}>
-              <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
-            </Link>
+          <MDBox display='flex' justifyContent='space-around'>
+            <MDBox pr={3}>
+              <Link to={action.route}>
+                <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
+              </Link>
+            </MDBox>
+            <MDBox>
+              <Link to={action.route}>
+                <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
+              </Link>
+            </MDBox>
           </MDBox>
         )}
       </MDBox>
