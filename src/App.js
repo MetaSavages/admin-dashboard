@@ -55,7 +55,8 @@ import {
   setEmail,
   setName,
   setRole,
-  setAbility
+  setAbility,
+  setTwoFactor
 } from 'context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Images
@@ -78,8 +79,7 @@ export default function App() {
     ability,
     name,
     email,
-    darkMode,
-    setTwoFactor
+    darkMode
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
