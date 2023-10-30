@@ -25,11 +25,12 @@ import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
 import TableInfo from 'layouts/game_sessions/components/TableInfo';
 import { getBlackjackTableById } from 'services/tables';
+import { getBlackjackTable, updateBlackjackTable } from 'services/blackjack';
 
 function EditBlackjackTable() {
   const { id } = useParams();
   const { formId, formField } = form;
-  const [initialValues, setInitalValues] = useState(null);
+  const [initialValues, setInitialValues] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,30 +38,36 @@ function EditBlackjackTable() {
   let casinoId = window.location.pathname.split('/')[2];
 
   useEffect(() => {
-    getBlackjackTableById(id).then((response) => {
+    getBlackjackTable(id).then((response) => {
       const { data } = response;
-      setInitalValues({
-        [formField.min_bet.name]: data.min_bet,
-        [formField.max_bet.name]: data.max_bet
+      setInitialValues({
+        [formField.min_bet.name]: data.minBet,
+        [formField.max_bet.name]: data.maxBet
       });
     });
   }, []);
 
-  const submitForm = async (values, actions) => {
-    //   const response = await updatePermission(id, values.action, values.object);
-    //   if (response.status === 201) {
-    //     alert('Permission created successfully');
-    //   } else {
-    //     alert('Permission creation failed');
-    //   }
-    //   // eslint-disable-next-line no-alert
-    //   actions.setSubmitting(false);
-    //   actions.resetForm();
-    navigate(`/blackjack-sessions/${casinoId}`);
+  const handleSubmit = async (values, actions) => {
+    setInitialValues({
+      ...initialValues,
+      [formField.min_bet.name]: values.min_bet,
+      [formField.max_bet.name]: values.max_bet
+    });
+    setOpen(true);
   };
-  const handleSubmit = (values, actions) => {
-    submitForm(values, actions);
+
+  const updateTable = async () => {
+    try {
+      await updateBlackjackTable({ tableId: id, minBet: initialValues.min_bet, maxBet: initialValues.max_bet });
+
+      alert('You updated table successfully!');
+      navigate(`/blackjack-sessions/${casinoId}`);
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+    setOpen(false);
   };
+
   return (
     <>
       <DashboardLayout>
@@ -89,18 +96,7 @@ function EditBlackjackTable() {
                               title={`Edit Blackjack Table`}
                             />
                             <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
-                              <MDButton
-                                type='button'
-                                onClick={async () => {
-                                  const errs = await validateForm();
-                                  setStatus(errs);
-                                  if (!errs?.length) {
-                                    handleOpen();
-                                  }
-                                }}
-                                variant='gradient'
-                                color='dark'
-                              >
+                              <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
                                 Update
                               </MDButton>
                               <Dialog
@@ -118,7 +114,7 @@ function EditBlackjackTable() {
                                   <MDButton onClick={handleClose} variant='text'>
                                     No
                                   </MDButton>
-                                  <MDButton type='submit' disabled={isSubmitting} form={formId} variant='text'>
+                                  <MDButton form={formId} variant='text' onClick={updateTable}>
                                     Yes
                                   </MDButton>
                                 </DialogActions>

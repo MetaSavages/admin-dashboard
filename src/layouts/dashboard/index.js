@@ -176,20 +176,31 @@ function Dashboard() {
 
   useEffect(() => {
     getGameStats(8).then((res) => {
-      let wins = res.map((m) => {
-        m[0] === 12
-          ? setCorrectMonths((prev) => [...prev, months[0]])
-          : setCorrectMonths((prev) => [...prev, months[m[0]]]);
-        return m[1];
-      });
-      setGameWins(wins);
+      console.log('111111111111111111', res);
+      if (res === 0) {
+        let wins = res.map((m) => {
+          m[0] === 12
+            ? setCorrectMonths((prev) => [...prev, months[0]])
+            : setCorrectMonths((prev) => [...prev, months[m[0]]]);
+          return m[1];
+        });
+        setGameWins(wins);
+      } else {
+        setGameWins(res);
+      }
     });
 
     getGameStats(9).then((res) => {
-      let loses = res.map((m) => {
-        return m[1];
-      });
-      setGameLoses(loses);
+      console.log('22222222222222222', res);
+
+      if (res === 0) {
+        let loses = res.map((m) => {
+          return m[1];
+        });
+        setGameLoses(loses);
+      } else {
+        setGameLoses(res);
+      }
     });
   }, []);
 
