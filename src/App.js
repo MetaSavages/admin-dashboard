@@ -12,6 +12,8 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import { useState, useEffect, useMemo } from 'react';
 
@@ -53,7 +55,8 @@ import {
   setEmail,
   setName,
   setRole,
-  setAbility
+  setAbility,
+  setTwoFactor
 } from 'context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Images
@@ -76,8 +79,7 @@ export default function App() {
     ability,
     name,
     email,
-    darkMode,
-    setTwoFactor
+    darkMode
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);

@@ -55,8 +55,13 @@ function PlayerManagement() {
   const [userId, setUserId] = useState(null);
   const [userNickname, setUserNickname] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setAlertVisible(false);
+  };
 
   const link = process.env.REACT_APP_FRONTEND_URL + '?demoUser=';
 

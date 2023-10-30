@@ -1,5 +1,6 @@
+import dayjs from 'dayjs';
 import useAxios from 'hooks/useAxios';
-
+import Slider from 'react-slick';
 export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
   const api = useAxios();
   try {
@@ -91,7 +92,7 @@ export const getEventsAggregated = async (limit = 20, page = 1, filters = null) 
     const res = await api.get('/admin/metrics/aggregated', {
       params: params
     });
-    console.log(res);
+
     const data = res.data.map((event) => {
       return {
         event_type: event?.name ? event.name : '-',
@@ -125,7 +126,7 @@ export const getEventsAggregated = async (limit = 20, page = 1, filters = null) 
   }
 };
 
-export const getTodayNumbers = async (type) => {
+export const getTodayNumbers = async (type, gameType = null) => {
   try {
     const api = useAxios();
     let date = new Date();
@@ -140,7 +141,8 @@ export const getTodayNumbers = async (type) => {
       params: {
         limit: 100000,
         startDate: date,
-        endDate: dateTomorrow
+        endDate: dateTomorrow,
+        gameType: gameType ? gameType : ''
       }
     });
 
@@ -206,86 +208,144 @@ export const getGameStats = async (id) => {
 export const getNewRegistrations = async () => {
   const api = useAxios();
   try {
-    let amounts = [];
+    let startDate = dayjs(new Date()).subtract(12, 'month')['$d'].toISOString();
+    let endDate = new Date().toISOString();
+
     const params = {
-      limit: 100000,
-      'filter.type.id': 1
+      limit: 20,
+      type: 'registration_start',
+      interval: 'month',
+      startDate: startDate,
+      endDate: endDate
     };
-    let month = new Date().getMonth();
 
-    for (let count = 0; count < 12; count++) {
-      let timeFilter = [];
-      let dayFrom, dayTo;
-      let correctMonth = month;
+    const res = await api.get('admin/metrics/metrics-by-interval/', {
+      params: params
+    });
 
-      if (month < 1) {
-        dayFrom = new Date(new Date().getFullYear() - 1, month + 13, 1).toISOString();
-        dayTo = new Date(new Date().getFullYear() - 1, month + 12, 1).toISOString();
-        correctMonth = month + 12;
-      } else {
-        dayFrom = new Date(new Date().getFullYear(), month, 1).toISOString();
-        dayTo = new Date(new Date().getFullYear(), month + 1, 1).toISOString();
-      }
+    const data = res.data.map((registrations) => {
+      return {
+        month: registrations?.intervalStart ? new Date(registrations.intervalStart).getMonth() + 1 : '-',
+        count: registrations?.count ? registrations.count : '-'
+      };
+    });
 
-      timeFilter.push(`$gte:${dayFrom}`);
-      timeFilter.push(`$lte:${dayTo}`);
-
-      params['filter.createdAt'] = timeFilter;
-
-      const res = await api.get('/admin/metrics/', {
-        params: params
-      });
-
-      amounts.unshift([correctMonth, res.data.data.length]);
-      month--;
-    }
-
-    return amounts;
+    return data;
   } catch (err) {
     console.log(err);
-    return 0;
+    return [
+      {
+        month: '-',
+        count: 0
+      }
+    ];
   }
 };
 
 export const getGameSessions = async () => {
-  let sessions = [0, 0, 0];
   try {
     const api = useAxios();
 
-    let dateFrom = new Date();
-    dateFrom.setHours(0, 0, 0, 0);
+    let dateFrom = dayjs(new Date()).subtract(24, 'hour');
     dateFrom = dateFrom.toJSON();
 
-    let dateTo = new Date();
-    dateTo.setHours(24, 0, 0, 0);
+    let dateTo = dayjs(new Date());
     dateTo = dateTo.toJSON();
+
+    const blackjack = await api.get(`admin/metrics/metrics-by-interval`, {
+      params: {
+        limit: 1,
+        startDate: dateFrom,
+        endDate: dateTo,
+        type: `blackjack_session_start`,
+        interval: 'day'
+      }
+    });
+
+    const baccarat = await api.get(`admin/metrics/metrics-by-interval`, {
+      params: {
+        limit: 1,
+        startDate: dateFrom,
+        endDate: dateTo,
+        type: `baccarat_session_start`,
+        interval: 'day'
+      }
+    });
+
+    const roulette = await api.get(`admin/metrics/metrics-by-interval`, {
+      params: {
+        limit: 1,
+        startDate: dateFrom,
+        endDate: dateTo,
+        type: `roulette_session_start`,
+        interval: 'day'
+      }
+    });
+
+    const rouletteCount = roulette ? (roulette?.data[0]?.count ? roulette.data[0].count : '0') : '0';
+    const blackjackCount = blackjack ? (blackjack?.data[0]?.count ? blackjack.data[0].count : '0') : '0';
+    const baccaratCount = baccarat ? (baccarat?.data[0]?.count ? baccarat.data[0].count : '0') : '0';
+
+    return [rouletteCount, blackjackCount, baccaratCount];
+  } catch (error) {
+    console.log(error);
+    return [0, 0, 0];
+  }
+};
+
+export const trackSuccessfulLogins = async () => {
+  try {
+    const api = useAxios();
 
     const res = await api.get(`admin/metrics`, {
       params: {
-        limit: 100000,
-        startDate: dateFrom,
-        endDate: dateTo,
-        'filter.type.id': `$in:13,15,19`
+        limit: 8,
+        'filter.type.id': `$in:38`,
+        sortBy: 'createdAt:DESC'
       }
     });
 
-    res.data.data.map((session) => {
-      switch (session.type.id) {
-        case 13:
-          sessions[1] += 1;
-          break;
-        case 15:
-          sessions[0] += 1;
-          break;
-        case 19:
-          sessions[2] += 1;
-          break;
-      }
+    const data = res.data.data.map((login) => {
+      let date = new Date(login.createdAt);
+      return {
+        username: login.user?.nickname ? login.user.nickname : '-',
+        date: login.createdAt ? date.toLocaleString() : '-'
+      };
     });
 
-    return sessions;
+    return data;
   } catch (error) {
     console.log(error);
     return {};
+  }
+};
+
+export const getTodayAmount = async (type, gameType = null) => {
+  try {
+    const api = useAxios();
+    let date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date = date.toJSON();
+
+    let dateTomorrow = new Date();
+    dateTomorrow.setHours(24, 0, 0, 0);
+    dateTomorrow = dateTomorrow.toJSON();
+
+    const res = await api.get(`admin/metrics/analytics-amount-for-period/${type}`, {
+      params: {
+        limit: 100000,
+        startDate: date,
+        endDate: dateTomorrow,
+        gameType: gameType ? gameType : ''
+      }
+    });
+
+    return await res.data;
+  } catch (error) {
+    console.log(error);
+
+    return {
+      data: []
+    };
   }
 };

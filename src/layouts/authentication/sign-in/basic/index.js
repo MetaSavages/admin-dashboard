@@ -193,6 +193,11 @@ function Basic() {
                             Sign in
                           </MDButton>
                         </MDBox>
+                        <MDBox mt={0.75}>
+                          <MDTypography component='div' variant='caption' color='error' fontWeight='regular'>
+                            {errorCode}
+                          </MDTypography>
+                        </MDBox>
                       </MDBox>
                     </Form>
                   )}
