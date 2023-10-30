@@ -24,7 +24,7 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
   }, [dataInfo]);
 
   const backgroundValue = darkMode ? theme.palette.background.card : theme.palette.white.main;
-  const colorText = darkMode ? '#ffffff' : '#344767';
+  const colorText = darkMode ? 'rgb(210 218 209 )' : '#344767';
 
   useEffect(() => {
     const chartOptions = {
@@ -34,6 +34,14 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
           color: backgroundValue
         },
         textColor: colorText
+      },
+      grid: {
+        vertLines: {
+          color: darkMode ? 'rgb(210 218 209 / 56%)' : '#344767'
+        },
+        horzLines: {
+          color: darkMode ? 'rgb(210 218 209 / 56%)' : '#344767'
+        }
       },
       width: chartContainer.current.offsetWidth,
       height: chartContainer.current.offsetHeight,
