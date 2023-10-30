@@ -176,7 +176,6 @@ function Dashboard() {
 
   useEffect(() => {
     getGameStats(8).then((res) => {
-      console.log('111111111111111111', res);
       if (res === 0) {
         let wins = res.map((m) => {
           m[0] === 12
@@ -191,8 +190,6 @@ function Dashboard() {
     });
 
     getGameStats(9).then((res) => {
-      console.log('22222222222222222', res);
-
       if (res === 0) {
         let loses = res.map((m) => {
           return m[1];

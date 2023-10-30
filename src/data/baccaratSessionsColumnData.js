@@ -4,7 +4,7 @@ import MDTypography from 'components/MDTypography';
 import { NavLink } from 'react-router-dom';
 
 let casinoId = window.location.pathname.split('/')[2];
-console.log('111111111111111111111111', casinoId);
+
 const baccaratSessionsColumnData = [
   {
     Header: 'Table Id',

@@ -24,7 +24,6 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
 import TableInfo from 'layouts/game_sessions/components/TableInfo';
-import { getBlackjackTableById } from 'services/tables';
 import { getBlackjackTable, updateBlackjackTable } from 'services/blackjack';
 
 function EditBlackjackTable() {
