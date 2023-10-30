@@ -14,6 +14,7 @@ const useFetchData = (
     data: []
   });
   const queryClient = useQueryClient();
+
   useEffect(() => {
     // We want to make sure the current page is less than the total page left
     if (queryPageIndex + 1 < queryPageCount) {

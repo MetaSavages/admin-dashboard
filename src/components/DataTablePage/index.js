@@ -20,7 +20,6 @@ function DataTablePage({
   subrowFetchData = null,
   filters = ''
 }) {
-
   return (
     <DashboardLayout>
       <DashboardNavbar />

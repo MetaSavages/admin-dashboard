@@ -18,7 +18,6 @@ function RoleManagement() {
       <Can I='read' a='role'>
         <DataTablePage
           title='Role Management'
-          object='role'
           createButton={
             <MDButton variant='contained' color='info' onClick={() => navigate('/role-management/new-role')}>
               Add Role
@@ -55,6 +54,9 @@ function RoleManagement() {
             <Button onClick={handleCloseModal}>No</Button>
           </DialogActions>
         </Dialog>
+      </Can>
+      <Can not I='read' a='role'>
+        <Navigate to='/dashboard' replace />
       </Can>
     </>
   );
