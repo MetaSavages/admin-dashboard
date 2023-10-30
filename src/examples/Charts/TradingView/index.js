@@ -68,8 +68,6 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
     };
   }, [darkMode, data]);
 
-  console.log('datadatadatadatadatsa', data);
-
   return (
     <Card
       sx={{
