@@ -94,6 +94,7 @@ function DataTable({
   filters = ''
 }) {
   const [openDelete, setOpenDelete] = useState(false);
+
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
   defaultState.queryPageSize = defaultPageSize;
@@ -182,9 +183,10 @@ function DataTable({
     </MDPagination>
   ));
 
-  const handleDelete = (id) => {
-    onDelete(id);
+  const handleDelete = async (id) => {
+    const result = await onDelete(id);
     handleCloseDelete();
+    return result;
   };
   // // Handler for the input to set the pagination index
   const handleInputPagination = ({ target: { value } }) => {
@@ -229,6 +231,7 @@ function DataTable({
   if (isLoading) {
     return <Skeleton variant='rounded' animation='wave' sx={{ borderRadius: 5 }} height={600} />;
   }
+
   return (
     <TableContainer sx={{ boxShadow: 'none' }}>
       {queryPageSize || canSearch ? (
@@ -294,6 +297,7 @@ function DataTable({
                   handleCloseDelete={handleCloseDelete}
                   handleDelete={handleDelete}
                   rowsLength={page.length}
+                  handleOpenDelete={handleOpenDelete}
                 />
                 {row?.isExpanded && renderRowSubComponent({ row, rowProps })}
               </Fragment>

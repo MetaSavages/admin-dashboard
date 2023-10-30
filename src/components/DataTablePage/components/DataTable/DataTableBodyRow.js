@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { TableRow, Tooltip } from '@mui/material';
 import DataTableBodyCell from './DataTableBodyCell';
 import { Can } from 'context';
@@ -15,9 +16,11 @@ function DataTableBodyRow({
   openDelete,
   handleCloseDelete,
   handleDelete,
+  handleOpenDelete,
   rowsLength
 }) {
   const navigate = useNavigate();
+
   return (
     <TableRow {...row.getRowProps()}>
       {row.cells.map((cell, index) => (
