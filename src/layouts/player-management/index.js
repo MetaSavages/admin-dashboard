@@ -25,7 +25,6 @@ import Filters from './components/Filters';
 import { useEffect, useState } from 'react';
 import { deletePlayer } from 'services/players';
 import { Can } from 'context';
-
 import useAxios from 'hooks/useAxios';
 
 import { useMaterialUIController } from 'context';
