@@ -112,7 +112,7 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    getGameStats(8).then((res) => {
+    getGameStats('game_win').then((res) => {
       let wins = res.map((m) => {
         m[0] === 12
           ? setCorrectMonths((prev) => [...prev, months[0]])
@@ -122,7 +122,7 @@ function Dashboard() {
       setGameWins(wins);
     });
 
-    getGameStats(9).then((res) => {
+    getGameStats('game_lose').then((res) => {
       let loses = res.map((m) => {
         return m[1];
       });
@@ -248,7 +248,7 @@ function Dashboard() {
                 <Grid item xs={12}>
                   {gameWins.length > 0 ? (
                     <GradientLineChart
-                      title='Game win / lose'
+                      title='Game Wins vs. Losses ($)'
                       description='Monthly performance'
                       chart={gameData}
                       tension={0.5}
