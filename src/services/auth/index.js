@@ -25,10 +25,8 @@ export const getCurrentUser = async () => {
   try {
     const token = localStorage.getItem('AccessToken');
 
-      const config = token
-        ? { headers: { Authorization: `Bearer ${token}` } }
-        : {};
-      return await api.get('/admin/users/me', config);
+    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+    return (await api.get('/admin/users/me', config)).data;
   } catch (err) {
     console.log(err);
     return {

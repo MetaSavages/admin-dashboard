@@ -49,15 +49,14 @@ function Basic() {
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
-        console.log(res);
         setCookie('access_token', res?.data?.access_token, { path: '/' });
         actions.setSubmitting(false);
         actions.resetForm();
         getCurrentUser().then((res) => {
-          setName(dispatch, `${res.data.firstName} ${res.data.lastName}`);
-          setEmail(dispatch, res.data.email);
-          setRole(dispatch, res.data.role); // no role yet
-          setAbility(dispatch, getUserAbilities(res.data.role));
+          setName(dispatch, `${res.firstName} ${res.lastName}`);
+          setEmail(dispatch, res.email);
+          setRole(dispatch, res.role); // no role yet
+          setAbility(dispatch, getUserAbilities(res.role));
           if (res.isTwoFactorAuthenticationEnabled) {
             setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
           } else {

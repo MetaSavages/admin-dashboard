@@ -99,7 +99,6 @@ export default function App() {
   useMemo(() => {
     getCurrentUser()
       .then((user) => {
-        console.log('useruseruser',user);
         setAbility(dispatch, getUserAbilities(user.role));
         setName(dispatch, `${user?.firstName} ${user?.lastName}`);
         setTwoFactor(dispatch, user?.isTwoFactorAuthenticationEnabled);
