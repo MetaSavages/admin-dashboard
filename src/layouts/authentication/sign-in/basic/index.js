@@ -49,8 +49,8 @@ function Basic() {
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
-        if (res.data.twoFactorEnable) {
-          setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
+        if (res.data.isTwoFactorAuthenticationEnabled) {
+          setIsTwoFactor(res.data.isTwoFactorAuthenticationEnabled);
         } else {
           setCookie('access_token', res?.data?.access_token, { path: '/' });
           actions.setSubmitting(false);
