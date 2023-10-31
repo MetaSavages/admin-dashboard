@@ -1,8 +1,8 @@
 import { Card } from '@mui/material';
 import DashboardNavbar from 'components/DashboardNavbar';
 import MDBox from 'components/MDBox';
-import MDTypography from 'components/MDTypography';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getUser } from 'services/users';
 import { Navigate, useParams } from 'react-router-dom';
@@ -37,28 +37,47 @@ function ShowUser() {
                 alignItems: 'center'
               }}
             >
-              <MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Id: {user.id}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Email: {user.email}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Created at: {user.createdAt}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Updated At: {user.updatedAt}
-                  </MDTypography>
-                </MDBox>
-              </MDBox>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        {user.firstName && user.lastName ? user.firstName + ' ' + user.lastName : 'User'}'s Details
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Id:</TableCell>
+                      <TableCell>{user.id ? user.id : 'Did not fetch ID'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>First Name:</TableCell>
+                      <TableCell>{user.firstName ? user.firstName : 'Did not fetch first name'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Last Name:</TableCell>
+                      <TableCell>{user.lastName ? user.lastName : 'Did not fetch last name'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Role:</TableCell>
+                      <TableCell>{user.role && user.role.name ? user.role.name : 'Did not fetch role'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Email:</TableCell>
+                      <TableCell>{user.email ? user.email : 'Did not fetch email'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Created at:</TableCell>
+                      <TableCell>{user.createdAt ? user.createdAt : 'Did not created time'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Updated At:</TableCell>
+                      <TableCell>{user.updatedAt ? user.updatedAt : 'Did not fetch updated time'}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Card>
           </MDBox>
         </DashboardLayout>

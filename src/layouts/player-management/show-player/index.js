@@ -7,6 +7,8 @@ import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { getPlayer } from 'services/players';
+import { formatNumber, formatDuration } from 'layouts/player-management/helpers';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 function ShowPlayer() {
   const { id } = useParams();
@@ -40,58 +42,63 @@ function ShowPlayer() {
                 alignItems: 'center'
               }}
             >
-              <MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Id: {user.u_id ? user.u_id : 'Did not fetch ID'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Nickname: {user.u_nickname ? user.u_nickname : 'Did not fetch nickname'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Wallet ID: {user.u_walletId ? user.u_walletId : 'Did not fetch wallet ID'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Location: {user.u_lastLocation ? user.u_lastLocation : 'Did not fetch location'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    KYC: {user.u_kycState ? user.u_kycState : 'Did not fetch KYC status'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Current Balance: {user.current_balance ? user.current_balance : 'Did not fetch current balance'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Money Cashed Out: {user.money_cashed_out ? user.money_cashed_out : 'Did not fetch money cashed out'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Money Spent: {user.money_spent ? user.money_spent : 'Did not fetch money spent'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Starting Balance: {user.starting_balance ? user.starting_balance : 'Did not fetch starting balance'}
-                  </MDTypography>
-                </MDBox>
-                <MDBox display='flex' justifyContent='space-between' alignItems='center'>
-                  <MDTypography variant='h6' fontWeight='medium' textTransform='capitalize'>
-                    Time Spent: {user.time_spent ? user.time_spent : 'Did not fetch time spent'}
-                  </MDTypography>
-                </MDBox>
-              </MDBox>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>{user.u_nickname ? user.u_nickname : 'User'}'s Details</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>Nickname:</TableCell>
+                      <TableCell>{user.u_nickname ? user.u_nickname : 'Did not fetch nickname'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Id:</TableCell>
+                      <TableCell>{user.u_id ? user.u_id : 'Did not fetch ID'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Wallet ID:</TableCell>
+                      <TableCell>{user.u_walletId ? user.u_walletId : 'Did not fetch walletID'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Location:</TableCell>
+                      <TableCell>{user.u_lastLocation ? user.u_lastLocation : 'Did not fetch location'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>KYC:</TableCell>
+                      <TableCell>{user.u_kycState ? user.u_kycState : 'Did not fetch KYC status'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Current Balance:</TableCell>
+                      <TableCell>
+                        {user.current_balance ? formatNumber(user.current_balance) : 'Did not fetch current balance'}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Money Cashed Out:</TableCell>
+                      <TableCell>
+                        {user.money_cashed_out ? formatNumber(user.money_cashed_out) : 'Did not fetch money cashed out'}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Money Spent:</TableCell>
+                      <TableCell>{user.money_spent ? formatNumber(user.money_spent) : 'Did not fetch money spent'}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Starting Balance:</TableCell>
+                      <TableCell>
+                        {user.starting_balance ? formatNumber(user.starting_balance) : 'Did not fetch starting balance'}
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Time Spent:</TableCell>
+                      <TableCell>{user.time_spent ? formatDuration(user.time_spent) : 'Did not fetch time spent'}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Card>
           </MDBox>
         </DashboardLayout>

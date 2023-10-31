@@ -24,7 +24,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
 import TableInfo from 'layouts/game_sessions/components/TableInfo';
-import { getCrashTableById } from 'services/tables';
+import { getCrashTableById, updateTable } from 'services/tables';
 
 function EditCrashTable() {
   const { id } = useParams();
@@ -46,15 +46,10 @@ function EditCrashTable() {
     });
   }, []);
   const submitForm = async (values, actions) => {
-    //   const response = await updatePermission(id, values.action, values.object);
-    //   if (response.status === 201) {
-    //     alert('Permission created successfully');
-    //   } else {
-    //     alert('Permission creation failed');
-    //   }
-    //   // eslint-disable-next-line no-alert
-    //   actions.setSubmitting(false);
-    //   actions.resetForm();
+    const response = await updateTable('crash', id, values.min_bet, values.max_bet);
+    // eslint-disable-next-line no-alert
+    actions.setSubmitting(false);
+    actions.resetForm();
     navigate(`/crash-sessions/${casinoId}`);
   };
   const handleSubmit = (values, actions) => {

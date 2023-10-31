@@ -24,7 +24,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
 import TableInfo from 'layouts/game_sessions/components/TableInfo';
-import { getBlackjackTableById } from 'services/tables';
+import { getBlackjackTableById, updateTable } from 'services/tables';
 
 function EditBlackjackTable() {
   const { id } = useParams();
@@ -47,15 +47,10 @@ function EditBlackjackTable() {
   }, []);
 
   const submitForm = async (values, actions) => {
-    //   const response = await updatePermission(id, values.action, values.object);
-    //   if (response.status === 201) {
-    //     alert('Permission created successfully');
-    //   } else {
-    //     alert('Permission creation failed');
-    //   }
-    //   // eslint-disable-next-line no-alert
-    //   actions.setSubmitting(false);
-    //   actions.resetForm();
+    const response = await updateTable('blackjack', id, values.min_bet, values.max_bet);
+    // eslint-disable-next-line no-alert
+    actions.setSubmitting(false);
+    actions.resetForm();
     navigate(`/blackjack-sessions/${casinoId}`);
   };
   const handleSubmit = (values, actions) => {
