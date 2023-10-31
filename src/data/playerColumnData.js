@@ -1,5 +1,7 @@
 import { Icon } from '@mui/material';
 import { getCurrentUser } from 'services/auth';
+import {formatNumber, formatDuration } from 'layouts/player-management/helpers';
+
 export const playerColumnData = async () => {
   const user = await getCurrentUser();
   let arr = [
@@ -9,36 +11,37 @@ export const playerColumnData = async () => {
       Header: 'Time Spent',
       accessor: 'time_spent',
       width: 150,
-      SubCell: (cellProps) => <>{Math.floor(cellProps.value)}</>
+      Cell: (cellProps) => <>{formatDuration(cellProps.value)}</>,
+      SubCell: (cellProps) => <>{formatDuration(cellProps.value)}</>
     },
     {
       Header: 'Current Balance',
       accessor: 'current_balance',
       width: 150,
-      Cell: (cellProps) => <>{Math.floor(cellProps.value)}</>,
-      SubCell: (cellProps) => <>{Math.floor(cellProps.value)}</>
+      Cell: (cellProps) => <>{formatNumber(cellProps.value)}</>,
+      SubCell: (cellProps) => <>{formatNumber(cellProps.value)}</>
     },
     {
       Header: 'Starting Balance',
       accessor: 'starting_balance',
       width: 150,
 
-      Cell: (cellProps) => <>{Math.floor(cellProps.value)}</>,
-      SubCell: (cellProps) => <>{Math.floor(cellProps.value)}</>
+      Cell: (cellProps) => <>{formatNumber(cellProps.value)}</>,
+      SubCell: (cellProps) => <>{formatNumber(cellProps.value)}</>
     },
     {
       Header: 'Spent',
       accessor: 'money_spent',
       width: 100,
-      Cell: (cellProps) => <>{Math.floor(cellProps.value)}</>,
-      SubCell: (cellProps) => <>{Math.floor(cellProps.value)}</>
+      Cell: (cellProps) => <>{formatNumber(cellProps.value)}</>,
+      SubCell: (cellProps) => <>{formatNumber(cellProps.value)}</>
     },
     {
       Header: 'Cashout',
       accessor: 'money_cashed_out',
       width: 100,
-      Cell: (cellProps) => <>{Math.floor(cellProps.value)}</>,
-      SubCell: (cellProps) => <>{Math.floor(cellProps.value)}</>
+      Cell: (cellProps) => <>{formatNumber(cellProps.value)}</>,
+      SubCell: (cellProps) => <>{formatNumber(cellProps.value)}</>
     },
     {
       Header: 'wallet',
