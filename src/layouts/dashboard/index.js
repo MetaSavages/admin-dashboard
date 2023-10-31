@@ -249,6 +249,7 @@ function Dashboard() {
         let loses = res.map((m) => {
           return m[1];
         });
+        setGameLoses(loses);
       }
     });
   }, []);
