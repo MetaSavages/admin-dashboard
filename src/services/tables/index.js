@@ -309,12 +309,13 @@ export const getCrashTables = async () => {
   }
 };
 
-export const updateTable = async (game, casinoId, action, object) => {
+export const updateTable = async (game, tableId, minBet, maxBet) => {
   const api = useAxios();
   try {
-    return await api.put(`/admin/`, {
-      action: action,
-      object: object
+    return await api.patch(`/${game}/update`, {
+      tableId: tableId,
+      minBet: minBet,
+      maxBet: maxBet
     });
   } catch (err) {
     console.log(err);
@@ -328,7 +329,7 @@ export const updateTable = async (game, casinoId, action, object) => {
 };
 
 export const getBlackjackTableById = async (id) => {
-  let casinoId = window.location.pathname.split('/').pop();
+  let casinoId = window.location.pathname.split('/')[2];
   const api = useAxios();
   try {
     return await api.get(`/admin/metrics/table-metrics-by-table-id/`, {
@@ -350,7 +351,7 @@ export const getBlackjackTableById = async (id) => {
 };
 
 export const getBaccaratTableById = async (id) => {
-  let casinoId = window.location.pathname.split('/').pop();
+  let casinoId = window.location.pathname.split('/')[2];
   const api = useAxios();
   try {
     return await api.get(`/admin/metrics/table-metrics-by-table-id/`, {
@@ -372,7 +373,7 @@ export const getBaccaratTableById = async (id) => {
 };
 
 export const getRouletteTableById = async (id) => {
-  let casinoId = window.location.pathname.split('/').pop();
+  let casinoId = window.location.pathname.split('/')[2];
   const api = useAxios();
   try {
     return await api.get(`/admin/metrics/table-metrics-by-table-id/`, {
@@ -394,7 +395,7 @@ export const getRouletteTableById = async (id) => {
 };
 
 export const getSlotsTableById = async (id) => {
-  let casinoId = window.location.pathname.split('/').pop();
+  let casinoId = window.location.pathname.split('/')[2];
   const api = useAxios();
   try {
     return await api.get(`/admin/metrics/table-metrics-by-table-id/`, {
@@ -416,7 +417,7 @@ export const getSlotsTableById = async (id) => {
 };
 
 export const getJetpackTableById = async (id) => {
-  let casinoId = window.location.pathname.split('/').pop();
+  let casinoId = window.location.pathname.split('/')[2];
   const api = useAxios();
   try {
     return await api.get(`/admin/metrics/table-metrics-by-table-id/`, {
@@ -438,7 +439,7 @@ export const getJetpackTableById = async (id) => {
 };
 
 export const getCrashTableById = async (id) => {
-  let casinoId = window.location.pathname.split('/').pop();
+  let casinoId = window.location.pathname.split('/')[2];
   const api = useAxios();
   try {
     return await api.get(`/admin/metrics/table-metrics-by-table-id/`, {

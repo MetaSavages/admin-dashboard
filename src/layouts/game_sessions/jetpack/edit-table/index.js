@@ -24,7 +24,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
 import TableInfo from 'layouts/game_sessions/components/TableInfo';
-import { getJetpackTableById } from 'services/tables';
+import { getJetpackTableById, updateTable } from 'services/tables';
 
 function EditJetpackTable() {
   const { id } = useParams();
@@ -47,15 +47,10 @@ function EditJetpackTable() {
   }, []);
 
   const submitForm = async (values, actions) => {
-    //   const response = await updatePermission(id, values.action, values.object);
-    //   if (response.status === 201) {
-    //     alert('Permission created successfully');
-    //   } else {
-    //     alert('Permission creation failed');
-    //   }
-    //   // eslint-disable-next-line no-alert
-    //   actions.setSubmitting(false);
-    //   actions.resetForm();
+    const response = await updateTable('jetpack', id, values.min_bet, values.max_bet);
+    // eslint-disable-next-line no-alert
+    actions.setSubmitting(false);
+    actions.resetForm();
     navigate(`/jetpack-sessions/${casinoId}`);
   };
   const handleSubmit = (values, actions) => {

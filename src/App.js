@@ -100,7 +100,7 @@ export default function App() {
       .then((user) => {
         setAbility(dispatch, getUserAbilities(user.role));
         setName(dispatch, `${user?.firstName} ${user?.lastName}`);
-        setTwoFactor(dispatch, user?.isTwoFactorAuthenticationEnabled);
+        setTwoFactor(dispatch, false);
         setEmail(dispatch, user?.email ? user.email : null);
         setRole(dispatch, user?.role); // no role yet
       })
