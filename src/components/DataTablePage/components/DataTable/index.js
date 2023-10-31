@@ -186,7 +186,6 @@ function DataTable({
   const handleDelete = async (id) => {
     const result = await onDelete(id);
     handleCloseDelete();
-    return result;
   };
   // // Handler for the input to set the pagination index
   const handleInputPagination = ({ target: { value } }) => {

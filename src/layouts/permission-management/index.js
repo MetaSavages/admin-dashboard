@@ -72,6 +72,9 @@ function PermissionManagement() {
           </DialogActions>
         </Dialog>
       </Can>
+      <Can not I='read' a='permission'>
+        <Navigate to='/dashboard' replace />
+      </Can>
     </>
   );
 }

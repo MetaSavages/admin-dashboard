@@ -49,21 +49,20 @@ function Basic() {
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
-        setCookie('access_token', res?.data?.access_token, { path: '/' });
-        actions.setSubmitting(false);
-        actions.resetForm();
-        getCurrentUser().then((res) => {
-          setName(dispatch, `${res.firstName} ${res.lastName}`);
-          setEmail(dispatch, res.email);
-          setRole(dispatch, res.role); // no role yet
-          setAbility(dispatch, getUserAbilities(res.role));
-          if (res.isTwoFactorAuthenticationEnabled) {
-            setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
+        if (res.data.twoFactorEnable) {
+          setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
+        } else {
+          setCookie('access_token', res?.data?.access_token, { path: '/' });
+          actions.setSubmitting(false);
+          actions.resetForm();
+          if (res.data.access_token == undefined) {
+            setErrorCode('Email or password is incorrect');
           } else {
-            serUserData(res);
+            getCurrentUser().then((res) => {
+              serUserData(res);
+            });
           }
-          navigate('/dashboard', { replace: true });
-        });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -103,7 +102,7 @@ function Basic() {
     try {
       const result = await login2Fa(code);
       if (result.status == 200) {
-        result.data.access_token && localStorage.setItem('AccessToken', result.data.access_token);
+        result.data.access_token && setCookie('access_token', res?.data?.access_token, { path: '/' });
         getCurrentUser()
           .then((user) => {
             serUserData(user);

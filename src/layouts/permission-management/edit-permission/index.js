@@ -65,7 +65,7 @@ function EditPermession() {
     if (response.status === 200 || response.status === 201) {
       alert('Permission created successfully');
     } else {
-      alert('Permission creation failed1111111111');
+      alert('Permission creation failed');
     }
     // eslint-disable-next-line no-alert
     actions.setSubmitting(false);

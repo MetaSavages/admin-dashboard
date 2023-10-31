@@ -56,6 +56,9 @@ function RoleManagement() {
           </DialogActions>
         </Dialog>
       </Can>
+      <Can not I='read' a='role'>
+        <Navigate to='/dashboard' replace />
+      </Can>
     </>
   );
 }
