@@ -41,7 +41,7 @@ const buttonText = {
     },
 
     '&:active, &:active:focus, &:active:hover': {
-      opacity: 0.85,
+      opacity: 1,
       boxShadow: 'none'
     },
 

@@ -92,11 +92,25 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
 
   // Render all the nested collapse items from the routes.js
   const renderNestedCollapse = (collapse) => {
-    const template = collapse.map(({ name, route, key, href }) =>
+    const template = collapse.map(({ name, route, key, href, action, object }) =>
       href ? (
-        <Link key={key} href={href} target='_blank' rel='noreferrer' sx={{ textDecoration: 'none' }}>
-          <SidenavItem name={name} nested />
-        </Link>
+        action && object ? (
+          <Can I={action} a={object} key={key}>
+            <Link key={key} href={href} target='_blank' rel='noreferrer' sx={{ textDecoration: 'none' }}>
+              <SidenavItem name={name} nested />
+            </Link>
+          </Can>
+        ) : (
+          <Link key={key} href={href} target='_blank' rel='noreferrer' sx={{ textDecoration: 'none' }}>
+            <SidenavItem name={name} nested />
+          </Link>
+        )
+      ) : action && object ? (
+        <Can I={action} a={object} key={key}>
+          <NavLink to={route} key={key} sx={{ textDecoration: 'none' }}>
+            <SidenavItem name={name} active={route === pathname} nested />
+          </NavLink>
+        </Can>
       ) : (
         <NavLink to={route} key={key} sx={{ textDecoration: 'none' }}>
           <SidenavItem name={name} active={route === pathname} nested />
@@ -108,9 +122,8 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   };
   // Render the all the collpases from the routes.js
   const renderCollapse = (collapses) =>
-    collapses.map(({ name, collapse, route, href, key, icon }) => {
+    collapses.map(({ name, collapse, route, href, key, icon, object, action }) => {
       let returnValue;
-
       if (collapse) {
         returnValue = (
           <SidenavItem
@@ -131,9 +144,23 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         );
       } else {
         returnValue = href ? (
-          <Link href={href} key={key} target='_blank' rel='noreferrer' sx={{ textDecoration: 'none' }}>
-            <SidenavItem color={color} name={name} icon={icon} active={key === itemName} />
-          </Link>
+          action && object ? (
+            <Can I={action} a={object} key={key}>
+              <Link href={href} key={key} target='_blank' rel='noreferrer' sx={{ textDecoration: 'none' }}>
+                <SidenavItem color={color} name={name} icon={icon} active={key === itemName} />
+              </Link>
+            </Can>
+          ) : (
+            <Link href={href} key={key} target='_blank' rel='noreferrer' sx={{ textDecoration: 'none' }}>
+              <SidenavItem color={color} name={name} icon={icon} active={key === itemName} />
+            </Link>
+          )
+        ) : action && object ? (
+          <Can I={action} a={object} key={key}>
+            <NavLink to={route} key={key} sx={{ textDecoration: 'none' }}>
+              <SidenavItem color={color} name={name} icon={icon} active={key === itemName} />
+            </NavLink>
+          </Can>
         ) : (
           <NavLink to={route} key={key} sx={{ textDecoration: 'none' }}>
             <SidenavItem color={color} name={name} icon={icon} active={key === itemName} />
@@ -147,12 +174,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const renderRoutes = routes.map(
     ({ type, name, icon, title, collapse, noCollapse, key, href, route, action = '', object = '' }) => {
       let returnValue;
-
       if (type === 'collapse') {
         if (href) {
           returnValue =
             action && object ? (
-              <Can action={action} object={object} key={key}>
+              <Can I={action} a={object} key={key}>
                 <Link href={href} key={key} target='_blank' rel='noreferrer' sx={{ textDecoration: 'none' }}>
                   <SidenavCollapse name={name} icon={icon} active={key === collapseName} noCollapse={noCollapse} />
                 </Link>
@@ -165,7 +191,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         } else if (noCollapse && route) {
           returnValue =
             action && object ? (
-              <Can action={action} object={object} key={key}>
+              <Can I={action} a={object} key={key}>
                 <NavLink to={route} key={key}>
                   <SidenavCollapse name={name} icon={icon} noCollapse={noCollapse} active={key === collapseName}>
                     {collapse ? renderCollapse(collapse) : null}
@@ -182,7 +208,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         } else {
           returnValue =
             action && object ? (
-              <Can action={action} object={object} key={key}>
+              <Can I={action} a={object} key={key}>
                 <SidenavCollapse
                   key={key}
                   name={name}

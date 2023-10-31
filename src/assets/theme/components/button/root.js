@@ -19,10 +19,11 @@ import borders from 'assets/theme/base/borders';
 
 // Material Dashboard 2 PRO React Helper Functions
 import pxToRem from 'assets/theme/functions/pxToRem';
-
+import colors from 'assets/theme/base/colors';
+import rgba from 'assets/theme/functions/rgba';
 const { fontWeightBold, size } = typography;
 const { borderRadius } = borders;
-
+const { dark } = colors;
 const root = {
   display: 'inline-flex',
   justifyContent: 'center',
@@ -47,6 +48,10 @@ const root = {
   '& .material-icons': {
     fontSize: pxToRem(15),
     marginTop: pxToRem(-2)
+  },
+  '&:hover': {
+    color: `${rgba(dark.main, 0.7)} !important`,
+    opacity: 0.85
   }
 };
 

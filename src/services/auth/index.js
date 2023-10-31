@@ -1,11 +1,9 @@
-import axios from 'axios';
+import useAxios from 'hooks/useAxios';
+
 export const login = async (email, password) => {
+  const api = useAxios();
   try {
-    return await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/login`,
-      { email, password },
-      { withCredentials: true }
-    );
+    return await api.post('/admin/auth/login', { email, password });
   } catch (err) {
     console.log(err);
     return {
@@ -23,10 +21,9 @@ export const login = async (email, password) => {
 };
 
 export const getCurrentUser = async () => {
+  const api = useAxios();
   try {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/users/me`, {
-      withCredentials: true
-    });
+    return (await api.get('/admin/users/me')).data;
   } catch (err) {
     console.log(err);
     return {
@@ -44,10 +41,9 @@ export const getCurrentUser = async () => {
 };
 
 export const logout = async () => {
+  const api = useAxios();
   try {
-    return await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/logout`, {
-      withCredentials: true
-    });
+    return await api.post('/admin/auth/logout');
   } catch (err) {
     console.log(err);
     return {

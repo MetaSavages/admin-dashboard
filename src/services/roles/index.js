@@ -1,10 +1,10 @@
-import axios from 'axios';
+import useAxios from 'hooks/useAxios';
 
-export const getRoles = async (limit = 20, page = 1, search = '') => {
+export const getRoles = async (limit = 20, page = 1) => {
+  const api = useAxios();
   try {
-    const unformattedData = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/auth/roles`, {
-      withCredentials: true,
-      params: { limit: limit, page: page, search: search }
+    const unformattedData = await api.get('/admin/auth/roles', {
+      params: { limit: limit, page: page }
     });
     unformattedData.data.data = unformattedData.data.data.map((role) => {
       role.permissions = role.permissions
@@ -12,6 +12,7 @@ export const getRoles = async (limit = 20, page = 1, search = '') => {
           return `${permission.action}: ${permission.object}`;
         })
         .join(', ');
+      role.casino = role.casino?.name ? role.casino.name : 'All';
       return role;
     });
     return {
@@ -34,10 +35,9 @@ export const getRoles = async (limit = 20, page = 1, search = '') => {
 };
 
 export const getRole = async (id) => {
+  const api = useAxios();
   try {
-    return await axios.get(`${process.env.REACT_APP_BACKEND_URL}/auth/roles/${id}`, {
-      withCredentials: true
-    });
+    return await api.get(`/admin/auth/roles/${id}`, {});
   } catch (err) {
     console.log(err);
     return {
@@ -49,15 +49,17 @@ export const getRole = async (id) => {
   }
 };
 
-export const createRole = async (name, permissions) => {
+export const createRole = async (name, permissions, casinos) => {
+  const api = useAxios();
   try {
-    return await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/roles`,
-      { name: name, permissionIds: permissions },
-      {
-        withCredentials: true
-      }
-    );
+    const params = {
+      name: name,
+      permissionIds: permissions
+    };
+    if (casinos) {
+      params['casinoId'] = casinos;
+    }
+    return await api.post('/admin/auth/roles', params);
   } catch (err) {
     console.log(err);
     return {
@@ -69,15 +71,30 @@ export const createRole = async (name, permissions) => {
   }
 };
 
-export const updateRole = async (id, name, permissions) => {
+export const updateRole = async (id, name, permissions, casinos) => {
+  const api = useAxios();
   try {
-    return await axios.put(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/roles/${id}`,
-      { name: name, permissionIds: permissions },
-      {
-        withCredentials: true
+    const params = {
+      name: name,
+      permissionIds: permissions,
+      casinoId: casinos ? casinos : null
+    };
+    return await api.put(`/admin/auth/roles/${id}`, params);
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        name: '',
+        permissions: []
       }
-    );
+    };
+  }
+};
+
+export const deleteRole = async (id) => {
+  const api = useAxios();
+  try {
+    return await api.delete(`/admin/auth/roles/${id}`, {});
   } catch (err) {
     console.log(err);
     return {

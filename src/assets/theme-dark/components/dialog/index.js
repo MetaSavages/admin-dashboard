@@ -27,7 +27,7 @@ const dialog = {
     paper: {
       borderRadius: borderRadius.lg,
       boxShadow: xxl,
-      backgroundColor: rgba(dark.main, 0.9)
+      backgroundColor: rgba(dark.main, 1)
     },
 
     paperFullScreen: {
