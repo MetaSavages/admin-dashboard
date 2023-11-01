@@ -27,12 +27,16 @@ function DisplayQrCode({
 
   return (
     <>
-      <DialogContent dividers>
+      <DialogContent>
         <MDBox p={3} width='100%' display='flex' flexDirection='column' justifyContent='center'>
-          <MDTypography paddingLeft='30px' gutterBottom>
-            Please scan the QR-code with your app.
-          </MDTypography>
-          {base64Image && <img src={base64Image} alt='Base64 Image' />}
+          <MDBox width='100%' display='flex' justifyContent='center'>
+            <MDTypography gutterBottom sx={{fontSize: '16px'}} mb={2}>
+              Please scan the QR code with your 2FA app
+            </MDTypography>
+          </MDBox>
+          <MDBox width='100%' display='flex' justifyContent='center'>
+            {base64Image && <img src={base64Image} alt='Base64 Image' width={'250px'} />}
+          </MDBox>
         </MDBox>
       </DialogContent>
       <DialogActions>
