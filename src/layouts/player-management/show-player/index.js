@@ -46,55 +46,59 @@ function ShowPlayer() {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>{user.u_nickname ? user.u_nickname : 'User'}'s Details</TableCell>
+                      <TableCell>
+                        <MDTypography>
+                        {user.u_nickname ? user.u_nickname : 'User'}'s Details
+                        </MDTypography>
+                        </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell>Nickname:</TableCell>
-                      <TableCell>{user.u_nickname ? user.u_nickname : 'Did not fetch nickname'}</TableCell>
+                      <TableCell><MDTypography>Nickname:</MDTypography></TableCell>
+                      <TableCell><MDTypography>{user.u_nickname ? user.u_nickname : 'Did not fetch nickname'}</MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Id:</TableCell>
-                      <TableCell>{user.u_id ? user.u_id : 'Did not fetch ID'}</TableCell>
+                      <TableCell><MDTypography>Id:</MDTypography></TableCell>
+                      <TableCell><MDTypography>{user.u_id ? user.u_id : 'Did not fetch ID'}</MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Wallet ID:</TableCell>
-                      <TableCell>{user.u_walletId ? user.u_walletId : 'Did not fetch walletID'}</TableCell>
+                      <TableCell><MDTypography>Wallet ID:</MDTypography></TableCell>
+                      <TableCell><MDTypography>{user.u_walletId ? user.u_walletId : 'Did not fetch walletID'}</MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Location:</TableCell>
-                      <TableCell>{user.u_lastLocation ? user.u_lastLocation : 'Did not fetch location'}</TableCell>
+                      <TableCell><MDTypography>Location:</MDTypography></TableCell>
+                      <TableCell><MDTypography>{user.u_lastLocation ? user.u_lastLocation : 'Did not fetch location'}</MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>KYC:</TableCell>
-                      <TableCell>{user.u_kycState ? user.u_kycState : 'Did not fetch KYC status'}</TableCell>
+                      <TableCell><MDTypography>KYC:</MDTypography></TableCell>
+                      <TableCell><MDTypography>{user.u_kycState ? user.u_kycState : 'Did not fetch KYC status'}</MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Current Balance:</TableCell>
-                      <TableCell>
+                      <TableCell><MDTypography>Current Balance:</MDTypography></TableCell>
+                      <TableCell><MDTypography>
                         {user.current_balance ? formatNumber(user.current_balance) : 'Did not fetch current balance'}
-                      </TableCell>
+                        </MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Money Cashed Out:</TableCell>
-                      <TableCell>
+                      <TableCell><MDTypography>Money Cashed Out:</MDTypography></TableCell>
+                      <TableCell><MDTypography>
                         {user.money_cashed_out ? formatNumber(user.money_cashed_out) : 'Did not fetch money cashed out'}
-                      </TableCell>
+                        </MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Money Spent:</TableCell>
-                      <TableCell>{user.money_spent ? formatNumber(user.money_spent) : 'Did not fetch money spent'}</TableCell>
+                      <TableCell><MDTypography>Money Spent:</MDTypography></TableCell>
+                      <TableCell><MDTypography>{user.money_spent ? formatNumber(user.money_spent) : 'Did not fetch money spent'}</MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Starting Balance:</TableCell>
-                      <TableCell>
+                      <TableCell><MDTypography>Starting Balance:</MDTypography></TableCell>
+                      <TableCell><MDTypography>
                         {user.starting_balance ? formatNumber(user.starting_balance) : 'Did not fetch starting balance'}
-                      </TableCell>
+                        </MDTypography></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell>Time Spent:</TableCell>
-                      <TableCell>{user.time_spent ? formatDuration(user.time_spent) : 'Did not fetch time spent'}</TableCell>
+                      <TableCell><MDTypography>Time Spent:</MDTypography></TableCell>
+                      <TableCell><MDTypography>{user.time_spent ? formatDuration(user.time_spent) : 'Did not fetch time spent'}</MDTypography></TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
