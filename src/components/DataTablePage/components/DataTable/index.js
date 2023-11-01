@@ -167,7 +167,7 @@ function DataTable({
   useEffect(() => {
     setQueryPageIndexHandler({ pageIndexValue: pageIndex });
   }, [pageIndex]);
-
+console.log('tableDatatableDatatableData',tableData);
   useEffect(() => {
     setQueryPageSizeHandler({ pageSizeChangedValue: pageSize });
   }, [pageSize]);
