@@ -53,7 +53,12 @@ function Authentication() {
     <Card id='2fa' sx={{ overflow: 'visible' }}>
       <MDBox display='flex' justifyContent='space-between' alignItems='center' p={3}>
         <MDTypography variant='h5'>Two-factor authentication</MDTypography>
-        <MDBadge variant='contained' color='success' badgeContent={twoFactor ? 'enabled' : 'disabled'} container />
+        <MDBadge
+          variant='contained'
+          color={twoFactor ? 'success' : 'error'}
+          badgeContent={twoFactor ? 'enabled' : 'disabled'}
+          container
+        />
       </MDBox>
       <MDBox p={3}>
         <MDBox
@@ -63,7 +68,7 @@ function Authentication() {
           flexDirection={{ xs: 'column', sm: 'row' }}
         >
           <MDTypography variant='body2' color='text'>
-            {twoFactor ? 'You are already enabled.' : 'Enable 2FA'}
+            {twoFactor ? 'Disable 2FA' : 'Enable 2FA'}
           </MDTypography>
           <MDBox
             display='flex'
@@ -71,18 +76,12 @@ function Authentication() {
             flexDirection={{ xs: 'column', sm: 'row' }}
           >
             {twoFactor ? (
-              <MDButton variant='outlined' color='dark' size='small' onClick={() => setOpenRemoveDialog(true)}>
-                remove
+              <MDButton color='dark' size='small' onClick={() => setOpenRemoveDialog(true)}>
+                disable
               </MDButton>
             ) : (
-              <MDButton
-                variant='outlined'
-                color='dark'
-                size='small'
-                onClick={() => setOpenAdd2FaCode(true)}
-                disabled={disabledButton}
-              >
-                add
+              <MDButton color='dark' size='small' onClick={() => setOpenAdd2FaCode(true)} disabled={disabledButton}>
+                enable
               </MDButton>
             )}
           </MDBox>
@@ -93,10 +92,10 @@ function Authentication() {
           aria-labelledby='alert-dialog-title'
           aria-describedby='alert-dialog-description'
         >
-          <DialogTitle id='alert-dialog-title'>{`Remove 2FA`}</DialogTitle>
+          <DialogTitle id='alert-dialog-title'>{`Disable 2FA`}</DialogTitle>
           <DialogContent>
-            <DialogContentText id='alert-dialog-description'>
-              Are you sure you want to remove 2FA protection?
+            <DialogContentText id='alert-dialog-description' px={3} sx={{color: 'white !important'}}>
+              Are you sure you want to disable 2FA for your account?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -105,7 +104,6 @@ function Authentication() {
             </MDButton>
             <MDButton
               variant='text'
-              color='error'
               onClick={() => {
                 setOpenRemove2FaCode(true);
                 setOpenRemoveDialog(false);

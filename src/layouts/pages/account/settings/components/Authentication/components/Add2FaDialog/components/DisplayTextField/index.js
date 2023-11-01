@@ -55,8 +55,8 @@ function DisplayTextField({ setSteps }) {
   return (
     <>
       <DialogContent>
-        <MDTypography>Please enter the code from two-factor authentication.</MDTypography>
-        <MDBox className='remove-arrows-from-input' mt={1.5} mb={1.5}>
+        <MDTypography px={3} sx={{textAlign: 'center', fontSize: '16px'}}>Please enter the code from your 2FA app.</MDTypography>
+        <MDBox className='remove-arrows-from-input' mt={1.5} mb={1.5} px={2}>
           <MDInput
             type='number'
             label='Code'
