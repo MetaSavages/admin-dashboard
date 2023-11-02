@@ -2,6 +2,7 @@ import { Card } from '@mui/material';
 import DashboardNavbar from 'components/DashboardNavbar';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
+import SCT from 'examples/CustomTypography/SCT';
 import { Can } from 'context';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import { useEffect, useState } from 'react';
@@ -47,58 +48,100 @@ function ShowPlayer() {
                   <TableHead>
                     <TableRow>
                       <TableCell>
-                        <MDTypography>
-                        {user.u_nickname ? user.u_nickname : 'User'}'s Details
-                        </MDTypography>
-                        </TableCell>
+                        <MDTypography>{user.u_nickname ? user.u_nickname : 'User'}'s Details</MDTypography>
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell><MDTypography>Nickname:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.u_nickname ? user.u_nickname : 'Did not fetch nickname'}</MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Nickname:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.u_nickname ? user.u_nickname : 'Did not fetch nickname'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Id:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.u_id ? user.u_id : 'Did not fetch ID'}</MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Id:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.u_id ? user.u_id : 'Did not fetch ID'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Wallet ID:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.u_walletId ? user.u_walletId : 'Did not fetch walletID'}</MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Wallet ID:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.u_walletId ? user.u_walletId : 'Did not fetch walletID'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Location:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.u_lastLocation ? user.u_lastLocation : 'Did not fetch location'}</MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Location:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.u_lastLocation ? user.u_lastLocation : 'Did not fetch location'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>KYC:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.u_kycState ? user.u_kycState : 'Did not fetch KYC status'}</MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>KYC:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.u_kycState ? user.u_kycState : 'Did not fetch KYC status'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Current Balance:</MDTypography></TableCell>
-                      <TableCell><MDTypography>
-                        {user.current_balance ? formatNumber(user.current_balance) : 'Did not fetch current balance'}
-                        </MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Current Balance:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>
+                          {user.current_balance ? formatNumber(user.current_balance) : 'Did not fetch current balance'}
+                        </SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Money Cashed Out:</MDTypography></TableCell>
-                      <TableCell><MDTypography>
-                        {user.money_cashed_out ? formatNumber(user.money_cashed_out) : 'Did not fetch money cashed out'}
-                        </MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Money Cashed Out:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>
+                          {user.money_cashed_out
+                            ? formatNumber(user.money_cashed_out)
+                            : 'Did not fetch money cashed out'}
+                        </SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Money Spent:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.money_spent ? formatNumber(user.money_spent) : 'Did not fetch money spent'}</MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Money Spent:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.money_spent ? formatNumber(user.money_spent) : 'Did not fetch money spent'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Starting Balance:</MDTypography></TableCell>
-                      <TableCell><MDTypography>
-                        {user.starting_balance ? formatNumber(user.starting_balance) : 'Did not fetch starting balance'}
-                        </MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Starting Balance:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>
+                          {user.starting_balance
+                            ? formatNumber(user.starting_balance)
+                            : 'Did not fetch starting balance'}
+                        </SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Time Spent:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.time_spent ? formatDuration(user.time_spent) : 'Did not fetch time spent'}</MDTypography></TableCell>
+                      <TableCell>
+                        <SCT>Time Spent:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.time_spent ? formatDuration(user.time_spent) : 'Did not fetch time spent'}</SCT>
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>

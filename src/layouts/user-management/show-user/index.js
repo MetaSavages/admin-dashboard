@@ -2,6 +2,7 @@ import { Card } from '@mui/material';
 import DashboardNavbar from 'components/DashboardNavbar';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
+import SCT from 'examples/CustomTypography/SCT';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -48,32 +49,32 @@ function ShowUser() {
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell><MDTypography>Id:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.id ? user.id : 'Did not fetch ID'}</MDTypography></TableCell>
+                      <TableCell><SCT>Id:</SCT></TableCell>
+                      <TableCell><SCT>{user.id ? user.id : 'Did not fetch ID'}</SCT></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>First Name:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.firstName ? user.firstName : 'Did not fetch first name'}</MDTypography></TableCell>
+                      <TableCell><SCT>First Name:</SCT></TableCell>
+                      <TableCell><SCT>{user.firstName ? user.firstName : 'Did not fetch first name'}</SCT></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Last Name:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.lastName ? user.lastName : 'Did not fetch last name'}</MDTypography></TableCell>
+                      <TableCell><SCT>Last Name:</SCT></TableCell>
+                      <TableCell><SCT>{user.lastName ? user.lastName : 'Did not fetch last name'}</SCT></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Role:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.role && user.role.name ? user.role.name : 'Did not fetch role'}</MDTypography></TableCell>
+                      <TableCell><SCT>Role:</SCT></TableCell>
+                      <TableCell><SCT>{user.role && user.role.name ? user.role.name : 'Did not fetch role'}</SCT></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Email:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.email ? user.email : 'Did not fetch email'}</MDTypography></TableCell>
+                      <TableCell><SCT>Email:</SCT></TableCell>
+                      <TableCell><SCT>{user.email ? user.email : 'Did not fetch email'}</SCT></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Created at:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.createdAt ? user.createdAt : 'Did not created time'}</MDTypography></TableCell>
+                      <TableCell><SCT>Created at:</SCT></TableCell>
+                      <TableCell><SCT>{user.createdAt ? user.createdAt : 'Did not created time'}</SCT></TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><MDTypography>Updated At:</MDTypography></TableCell>
-                      <TableCell><MDTypography>{user.updatedAt ? user.updatedAt : 'Did not fetch updated time'}</MDTypography></TableCell>
+                      <TableCell><SCT>Updated At:</SCT></TableCell>
+                      <TableCell><SCT>{user.updatedAt ? user.updatedAt : 'Did not fetch updated time'}</SCT></TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
