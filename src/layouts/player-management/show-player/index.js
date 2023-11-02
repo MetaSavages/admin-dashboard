@@ -30,7 +30,7 @@ function ShowPlayer() {
       <Can I='read' a='player'>
         <DashboardLayout>
           <DashboardNavbar />
-          <MDBox display='flex' justifyContent='center' width='100%'>
+          <MDBox display='flex' justifyContent='center' width='100%' marginTop='3%'>
             <Card
               sx={{
                 borderRadius: '12px',

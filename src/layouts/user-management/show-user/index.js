@@ -27,7 +27,7 @@ function ShowUser() {
       <Can I='read' a='user'>
         <DashboardLayout>
           <DashboardNavbar />
-          <MDBox display='flex' justifyContent='center' width='100%'>
+          <MDBox display='flex' justifyContent='center' width='100%' marginTop='3%'>
             <Card
               sx={{
                 borderRadius: '12px',
