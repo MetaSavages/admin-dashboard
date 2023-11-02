@@ -34,7 +34,7 @@ function PlayerManagement() {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
   const navigate = useNavigate();
-  const [showDeleteModal, setShowDeleteModal] = useState();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const handleCloseDeleteModal = () => setShowDeleteModal(false);
   const handleOpenDeleteModal = () => setShowDeleteModal(true);
   const [deleteRoleId, setDeleteRoleId] = useState(null);
