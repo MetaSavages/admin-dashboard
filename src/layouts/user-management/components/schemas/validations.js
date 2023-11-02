@@ -25,7 +25,7 @@ const validations = [
     [firstName.name]: Yup.string().required(firstName.errorMsg),
     [lastName.name]: Yup.string().required(lastName.errorMsg),
     [email.name]: Yup.string().required(email.errorMsg).email(email.invalidMsg),
-    [role.name]: Yup.string().required(role.errorMsg),
+    [role.name]: Yup.object().required(role.errorMsg),
     [password.name]: Yup.string().required(password.errorMsg).min(6, password.invalidMsg),
     [password.name]: Yup.string().required(password.errorMsg).min(6, password.invalidMsg),
     [repeatPassword.name]: Yup.string()
