@@ -42,12 +42,6 @@ function UserInfo({ formData }) {
   } = values;
 
   useEffect(() => {
-    if (!isSubmitting) {
-      setRoleName('');
-    }
-  }, [isSubmitting]);
-
-  useEffect(() => {
     getRoles().then((res) => {
       setRoleOptions(res.data.map((item) => ({ value: item.id, name: item.name })));
     });
