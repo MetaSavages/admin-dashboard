@@ -43,38 +43,66 @@ function ShowUser() {
               <TableContainer>
                 <Table>
                   <TableHead>
-                        <MDTypography>
-                        {user.firstName && user.lastName ? user.firstName + ' ' + user.lastName : 'User'}'s Details
-                        </MDTypography>
+                    <MDTypography>
+                      {user.firstName && user.lastName ? user.firstName + ' ' + user.lastName : 'User'}'s Details
+                    </MDTypography>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell><SCT>Id:</SCT></TableCell>
-                      <TableCell><SCT>{user.id ? user.id : 'Did not fetch ID'}</SCT></TableCell>
+                      <TableCell>
+                        <SCT>Id:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.id ? user.id : 'Did not fetch ID'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><SCT>First Name:</SCT></TableCell>
-                      <TableCell><SCT>{user.firstName ? user.firstName : 'Did not fetch first name'}</SCT></TableCell>
+                      <TableCell>
+                        <SCT>First Name:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.firstName ? user.firstName : 'Did not fetch first name'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><SCT>Last Name:</SCT></TableCell>
-                      <TableCell><SCT>{user.lastName ? user.lastName : 'Did not fetch last name'}</SCT></TableCell>
+                      <TableCell>
+                        <SCT>Last Name:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.lastName ? user.lastName : 'Did not fetch last name'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><SCT>Role:</SCT></TableCell>
-                      <TableCell><SCT>{user.role && user.role.name ? user.role.name : 'Did not fetch role'}</SCT></TableCell>
+                      <TableCell>
+                        <SCT>Role:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.role && user.role.name ? user.role.name : 'Did not fetch role'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><SCT>Email:</SCT></TableCell>
-                      <TableCell><SCT>{user.email ? user.email : 'Did not fetch email'}</SCT></TableCell>
+                      <TableCell>
+                        <SCT>Email:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.email ? user.email : 'Did not fetch email'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><SCT>Created at:</SCT></TableCell>
-                      <TableCell><SCT>{user.createdAt ? user.createdAt : 'Did not created time'}</SCT></TableCell>
+                      <TableCell>
+                        <SCT>Created at:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.createdAt ? user.createdAt : 'Did not created time'}</SCT>
+                      </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell><SCT>Updated At:</SCT></TableCell>
-                      <TableCell><SCT>{user.updatedAt ? user.updatedAt : 'Did not fetch updated time'}</SCT></TableCell>
+                      <TableCell>
+                        <SCT>Updated At:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>{user.updatedAt ? user.updatedAt : 'Did not fetch updated time'}</SCT>
+                      </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
