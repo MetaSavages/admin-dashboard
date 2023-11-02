@@ -46,7 +46,9 @@ function ShowPlayer() {
               <TableContainer>
                 <Table>
                   <TableHead>
-                    <MDTypography>{user.u_nickname ? user.u_nickname : 'User'}'s Details</MDTypography>
+                    <TableCell>
+                      <MDTypography>{user.u_nickname ? user.u_nickname : 'User'}'s Details</MDTypography>
+                    </TableCell>
                   </TableHead>
                   <TableBody>
                     <TableRow>

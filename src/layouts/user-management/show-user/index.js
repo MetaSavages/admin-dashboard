@@ -43,9 +43,11 @@ function ShowUser() {
               <TableContainer>
                 <Table>
                   <TableHead>
-                    <MDTypography>
-                      {user.firstName && user.lastName ? user.firstName + ' ' + user.lastName : 'User'}'s Details
-                    </MDTypography>
+                    <TableCell>
+                      <MDTypography>
+                        {user.firstName && user.lastName ? user.firstName + ' ' + user.lastName : 'User'}'s Details
+                      </MDTypography>
+                    </TableCell>
                   </TableHead>
                   <TableBody>
                     <TableRow>
