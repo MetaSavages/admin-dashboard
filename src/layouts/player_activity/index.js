@@ -91,7 +91,6 @@ function PlayerActivity() {
 
   useEffect(() => {
     getNewRegistrations().then((res) => {
-      console.log(res)
       let registrations = res.map((m) => {
         m.month === 12
           ? setCorrectMonths((prev) => [...prev, months.month])
