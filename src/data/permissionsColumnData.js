@@ -26,8 +26,6 @@ const permissionsColumnData = [
     accessor: 'actions',
     sorted: false,
     Cell: ({ row }) => {
-      console.log(row);
-
       const [showModal, setShowModal] = useState(false);
       const handleOpenModal = () => setShowModal(true);
       const handleCloseModal = () => setShowModal(false);
