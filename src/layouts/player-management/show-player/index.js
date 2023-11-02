@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { getPlayer } from 'services/players';
 import { formatNumber, formatDuration } from 'layouts/player-management/helpers';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
 function ShowPlayer() {
   const { id } = useParams();
@@ -43,7 +43,7 @@ function ShowPlayer() {
                 alignItems: 'center'
               }}
             >
-              <TableContainer component={Paper}>
+              <TableContainer>
                 <Table>
                   <TableHead>
                     <TableRow>

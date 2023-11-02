@@ -4,7 +4,7 @@ import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import SCT from 'examples/CustomTypography/SCT';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getUser } from 'services/users';
 import { Navigate, useParams } from 'react-router-dom';
