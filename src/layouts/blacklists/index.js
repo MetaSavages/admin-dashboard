@@ -43,6 +43,7 @@ import { getEventsHistory } from 'services/analytics';
 import dataTableBlacklistCountries from 'assets/mockData/dataBlacklistCountries';
 import { Can } from 'context';
 import Filters from './components/Filters';
+import { getBlacklistedCountries } from 'services/blacklists';
 function Blacklists() {
   const location = useLocation();
   const { search } = location;
@@ -70,7 +71,7 @@ function Blacklists() {
             canFilter
             canSearch
             filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
-            fetchData={fetchData}
+            fetchData={getBlacklistedCountries}
             queryKey={'metrics'}
             columnData={dataTableBlacklistCountries.columns}
             object={'metrics'}

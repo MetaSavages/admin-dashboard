@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Fade, Grow, Zoom } from '@mui/material';
+import { updateBlacklistedCountry } from 'services/blacklists';
 
 function CheckBox(row) {
   const [checkedValue, setChecked] = useState(row.row.original.blacklisted);
@@ -14,6 +15,7 @@ function CheckBox(row) {
   const handleChange = () => {
     setModalView(false);
     setChecked(!checkedValue);
+    updateBlacklistedCountry(checkedValue, row.row.original.country, row.row.original.casinoId);
   };
   const handleClose = () => {
     setModalView(false);
