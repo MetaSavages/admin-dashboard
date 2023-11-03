@@ -1,14 +1,30 @@
 import useAxios from 'hooks/useAxios';
 
-export const getCodes = async (limit = 20, page = 1) => {
+export const getCodes = async (limit = 20, page = 1, filters) => {
   const api = useAxios();
+  const params = {
+    limit: limit,
+    page: page
+  };
+
+  if (typeof filters == 'object') {
+    if (Object.keys(filters).length) {
+      if (filters?.search != null) {
+        params['search'] = filters.search;
+      }
+      if (filters?.isClaimed != null) {
+        params['isClaimed'] = filters.isClaimed;
+      }
+    }
+  }
+
   try {
     const response = await api.get('/admin/auth/promo-codes', {
-      params: { limit: limit, page: page }
+      params
     });
     let result;
     if (response?.data?.data?.length > 0) {
-      result = response.data.data.map((el) => {
+      result = response.data.data?.map((el) => {
         return {
           code_id: el.id,
           code: el.code,

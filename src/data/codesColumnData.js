@@ -1,15 +1,72 @@
-import React, { useState } from 'react';
-import { IconButton, Icon, Tooltip } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { IconButton, Icon, Tooltip, Checkbox } from '@mui/material';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 import MDBox from 'components/MDBox';
 
 import { Can } from 'context';
 
 import { deleteCode } from 'services/codes';
-import { useSearchParams } from 'react-router-dom';
+
+import { getFirstObjectKey } from 'helpers';
+
+const label = { inputProps: { 'aria-label': 'Checkbox code' } };
+
+const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
+const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const codesColumnData = [
+  {
+    width: 20,
+    Header: (data) => {
+      console.log();
+      return (
+        <Checkbox
+          sx={{ marginLeft: '25px' }}
+          {...label}
+          icon={icon}
+          checkedIcon={checkedIcon}
+          checked={data?.data[0]?.additionalData?.headerCheck ? data?.data[0]?.additionalData?.headerCheck : false}
+          onChange={(e) => {
+            data.data[0].additionalData.setHeaderCheck(e.target.checked);
+            if (e.target.checked) {
+              const allCodes = data.data.map((item) => item.code);
+              data.data[0].additionalData.setArrayFromCodes(allCodes);
+            } else {
+              data.data[0].additionalData.setArrayFromCodes([]);
+            }
+          }}
+        />
+      );
+    },
+    id: 'checked',
+    Cell: ({ row }) => {
+      return (
+        <Checkbox
+          {...label}
+          icon={icon}
+          checkedIcon={checkedIcon}
+          checked={row.original.additionalData.arrayFromCodes.some((el) => el == row.original.code)}
+          onChange={(e) => {
+            if (e.target.checked) {
+              row.original.additionalData.setArrayFromCodes([
+                ...row.original.additionalData.arrayFromCodes,
+                row.original.code
+              ]);
+            } else {
+              const newArray = row.original.additionalData.arrayFromCodes.filter((item) => item !== row.original.code);
+              row.original.additionalData.setArrayFromCodes(newArray);
+            }
+          }}
+        />
+      );
+    },
+
+    SubCell: () => null
+  },
   {
     Header: 'Code Id',
     accessor: 'code_id'
@@ -36,6 +93,7 @@ const codesColumnData = [
       const handleCloseModal = () => setShowModal(false);
       const [deletePromoCode, setDeletePromoCode] = useState('');
       const [searchParams, setSearchParams] = useSearchParams();
+      const [firstObjectKey, setFirstObjectKey] = useState();
 
       return (
         <>
@@ -57,6 +115,7 @@ const codesColumnData = [
                 onClick={() => {
                   handleOpenModal();
                   setDeletePromoCode(row.original.code);
+                  setFirstObjectKey(getFirstObjectKey(row.original));
                 }}
               >
                 <IconButton size='small' color='error'>
@@ -78,9 +137,16 @@ const codesColumnData = [
                 onClick={async () => {
                   searchParams.set('code', deletePromoCode);
 
-                  // Update the URL in the address bar to reflect the changes
+                  await deleteCode(row.original.code).then(() => {
+                    if (row.original.additionalData.arrayFromCodes) {
+                      const newArray = row.original.additionalData.arrayFromCodes.filter(
+                        (item) => item !== row.original.code
+                      );
+                      row.original.additionalData.setArrayFromCodes(newArray);
+                    }
+                  });
                   setSearchParams(searchParams);
-                  await deleteCode(deletePromoCode);
+
                   handleCloseModal();
                 }}
               >

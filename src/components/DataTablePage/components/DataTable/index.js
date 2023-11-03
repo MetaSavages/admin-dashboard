@@ -91,7 +91,8 @@ function DataTable({
   noActions,
   subrowFetchData,
   defaultPageSize = 20,
-  filters = ''
+  filters = '',
+  additionalData
 }) {
   const [openDelete, setOpenDelete] = useState(false);
   const handleOpenDelete = () => setOpenDelete(true);
@@ -145,7 +146,19 @@ function DataTable({
     setTotalCountHandler
   );
   const tableColumns = useMemo(() => columnData, []);
-  const tableData = useMemo(() => RES_DATA.data, [RES_DATA]);
+
+  const tableData = useMemo(() => {
+    if (additionalData) {
+      const newArray = RES_DATA.data.map((obj) => ({
+        ...obj,
+        additionalData: additionalData
+      }));
+      return newArray;
+    } else {
+      return RES_DATA.data;
+    }
+  }, [RES_DATA, additionalData]);
+
   const navigate = useNavigate();
   const {
     getTableProps,
@@ -167,7 +180,7 @@ function DataTable({
   useEffect(() => {
     setQueryPageIndexHandler({ pageIndexValue: pageIndex });
   }, [pageIndex]);
-console.log('tableDatatableDatatableData',tableData);
+
   useEffect(() => {
     setQueryPageSizeHandler({ pageSizeChangedValue: pageSize });
   }, [pageSize]);
