@@ -27,12 +27,19 @@ import MuiLink from '@mui/material/Link';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import MDButton from 'components/MDButton';
-import { Icon, Typography } from '@mui/material';
+import { Icon } from '@mui/material';
+import { useEffect, useState } from 'react';
 
-function CasinoCard({ image, title, description, action }) {
+function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, description, action }) {
+  const [gameProfit, setGameProfit] = useState(0);
+
+  useEffect(() => {
+    setGameProfit(Number(gameWinsAmount) - Number(gameLoseAmount));
+  }, [gameWinsAmount, gameLoseAmount]);
+
   return (
-    <Card>
-      <MDBox position='relative' borderRadius='lg' mt={-3} mx={2}>
+    <>
+      <MDBox position='relative' borderRadius='lg' mt={-3} mx={2} display='flex' justifyContent='center'>
         <MDBox
           component='img'
           src={image}
@@ -40,11 +47,11 @@ function CasinoCard({ image, title, description, action }) {
           borderRadius='lg'
           shadow='md'
           width='100%'
-          height='100%'
           position='relative'
           zIndex={1}
+          sx={{ height: '250px', objectFit: 'contain' }}
         />
-        <MDBox
+        {/* <MDBox
           borderRadius='lg'
           shadow='md'
           width='100%'
@@ -58,20 +65,20 @@ function CasinoCard({ image, title, description, action }) {
             filter: 'blur(12px)',
             backgroundSize: 'cover'
           }}
-        />
+        /> */}
       </MDBox>
       <MDBox px={3}>
-        <MDBox display='flex' justifyContent='space-around' alignItems='center' gap={10} ml={4} mr={4} mt={2}>
-          <MDBox display='flex' alignItems='center'>
+        <MDBox display='flex' justifyContent='space-around' alignItems='center' ml={4} mr={3} mt={2}>
+          <MDBox display='flex' alignItems='center' pr={5}>
             <Icon fontSize='large' color='info'>
               business_center
             </Icon>
             <MDBox ml={1}>
               <MDTypography display='inline' variant='h5' textTransform='capitalize' fontWeight='bold'>
-                1123
+                {allBets}
               </MDTypography>
-              <MDTypography variant='caption' component='p' color='text' mt={-0.75}>
-                Rounds a day
+              <MDTypography variant='caption' component='p' color='text' mt={-0.75} sx={{ fontSize: '1rem' }}>
+                All bets
               </MDTypography>
             </MDBox>
           </MDBox>
@@ -81,10 +88,10 @@ function CasinoCard({ image, title, description, action }) {
             </Icon>
             <MDBox ml={1}>
               <MDTypography display='inline' variant='h5' textTransform='capitalize' fontWeight='bold'>
-                81K
+                {Math.floor(Number(gameWinsAmount))}
               </MDTypography>
-              <MDTypography variant='caption' component='p' color='text' mt={-0.75}>
-                Cashout requests
+              <MDTypography variant='caption' component='p' color='text' mt={-0.75} sx={{ fontSize: '1rem' }}>
+                All wins Amount
               </MDTypography>
             </MDBox>
           </MDBox>
@@ -92,7 +99,8 @@ function CasinoCard({ image, title, description, action }) {
       </MDBox>
       <MDBox p={3} ml={4} mr={4} mb={3}>
         <MDTypography display='flex' variant='h4' textTransform='capitalize' fontWeight='bold' justifyContent='center'>
-          $405,321,321
+          {gameProfit >= 0 ? `$${Math.floor(Number(gameProfit))}` : `-$${Math.floor(Math.abs(gameProfit))}`}
+          {/* -${2 - 100} */}
         </MDTypography>
         <MDBox mb={3} mt={-0.5} display='flex' justifyContent='center'>
           <MDTypography variant='subtitle2' component='p' color='info'>
@@ -109,22 +117,29 @@ function CasinoCard({ image, title, description, action }) {
             </MuiLink>
           </MDBox>
         ) : (
-          <MDBox display='flex' justifyContent='space-around' gap={10}>
-            <Link to={action.route}>
-              <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
-            </Link>
-            <Link to={action.route}>
-              <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
-            </Link>
+          <MDBox display='flex' justifyContent='space-around'>
+            <MDBox pr={3}>
+              <Link to={action.route}>
+                <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
+              </Link>
+            </MDBox>
+            <MDBox>
+              <Link to={action.route}>
+                <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
+              </Link>
+            </MDBox>
           </MDBox>
         )}
       </MDBox>
-    </Card>
+    </>
   );
 }
 
 // Typechecking props for the CasinoCard
 CasinoCard.propTypes = {
+  allBets: PropTypes.number.isRequired,
+  gameWinsAmount: PropTypes.number.isRequired,
+  gameLoseAmount: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,

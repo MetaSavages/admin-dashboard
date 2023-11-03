@@ -14,11 +14,23 @@ function PermissionManagement() {
   const [deletePermissionId, setDeletePermissionId] = useState('');
   const [filters, setFilters] = useState('');
 
+  async function handleDelete(id) {
+    const response = await deletePermission(id);
+    if (response.status === 200 || response.status === 201) {
+      alert('Permission deleted successfully');
+      return true;
+    } else {
+      alert('Permission deleted failed');
+      return false;
+    }
+  }
+
   return (
     <>
       <Can I='read' a='permission'>
         <DataTablePage
           title='Permission Management'
+          object='permission'
           createButton={
             <MDButton
               variant='contained'

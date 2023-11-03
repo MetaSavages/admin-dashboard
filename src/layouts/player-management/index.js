@@ -18,14 +18,13 @@ import CopyToClipboardButton from 'layouts/player-management/components/CopyToCl
 import { Dialog, DialogTitle, DialogContent, Button, DialogActions } from '@mui/material';
 
 import MDAlert from 'components/MDAlert';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { getPlayers, getPlayerAggregated } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
 import Filters from './components/Filters';
 import { useEffect, useState } from 'react';
 import { deletePlayer } from 'services/players';
 import { Can } from 'context';
-
 import useAxios from 'hooks/useAxios';
 
 import { useMaterialUIController } from 'context';
@@ -33,7 +32,6 @@ import { useMaterialUIController } from 'context';
 function PlayerManagement() {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-  const navigate = useNavigate();
   const [showDeleteModal, setShowDeleteModal] = useState();
   const handleCloseDeleteModal = () => setShowDeleteModal(false);
   const handleOpenDeleteModal = () => setShowDeleteModal(true);
@@ -55,8 +53,13 @@ function PlayerManagement() {
   const [userId, setUserId] = useState(null);
   const [userNickname, setUserNickname] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setAlertVisible(false);
+  };
 
   const link = process.env.REACT_APP_FRONTEND_URL + '?demoUser=';
 
