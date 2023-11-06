@@ -19,7 +19,7 @@ import checkout from 'layouts/game_sessions/components/schemas/form';
 const {
   formField: { min_bet, max_bet }
 } = checkout;
-
+console.log(Yup.ref(`${min_bet.name}`));
 const validations = Yup.object().shape({
   [min_bet.name]: Yup.number().positive(min_bet.name.errorMsg).lessThan(Yup.ref('max_bet'), min_bet.name.errorMsgLess),
   [max_bet.name]: Yup.number().positive(max_bet.name.errorMsg).moreThan(Yup.ref('min_bet'), max_bet.name.errorMsgMore)
