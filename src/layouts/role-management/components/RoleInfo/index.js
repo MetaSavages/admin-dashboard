@@ -167,7 +167,6 @@ function RoleInfo({ formData }) {
                   setOpenCasino(false);
                 }}
                 options={casinoOptions}
-                disableCloseOnSelect
                 value={casinos}
                 onChange={handleCasinos}
                 isOptionEqualToValue={(option, value) => option.value === value.value}
