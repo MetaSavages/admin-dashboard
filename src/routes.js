@@ -273,7 +273,7 @@ const routes = [
     key: 'whitelists',
     icon: <Icon fontSize='medium'>check_circle</Icon>,
     route: '/whitelists',
-    component: <Sales />
+    // component: <Sales />
   },
   {
     type: 'collapse',
@@ -290,7 +290,7 @@ const routes = [
     key: 'support-tickets',
     icon: <Icon fontSize='medium'>support</Icon>,
     route: '/support-tickets',
-    component: <Sales />
+    // component: <Sales />
   },
   {
     type: 'divider',
@@ -318,7 +318,7 @@ const routes = [
     key: 'push-notifications',
     icon: <Icon fontSize='medium'>notifications</Icon>,
     route: '/push-notifications',
-    component: <Sales />
+    // component: <Sales />
   },
   {
     name: 'Sign In',
