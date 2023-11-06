@@ -74,7 +74,16 @@ export const createUser = async (user) => {
 export const updateUser = async (id, user) => {
   const api = useAxios();
   try {
-    return await api.put(`/admin/users/${id}`, user);
+    return await api.put(`/admin/users/${id}`, {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      roleId: user.role ? (typeof user.role == 'object' ? user.role.id : user.role) : undefined,
+      password: user.password ? user.password : undefined,
+      isTwoFactorAuthenticationEnabled: user.isTwoFactorAuthenticationEnabled
+        ? user.isTwoFactorAuthenticationEnabled
+        : undefined
+    });
   } catch (err) {
     console.log(err);
     return {
@@ -110,6 +119,20 @@ export const resetUserPasswordAnd2Fa = async (userId) => {
   const api = useAxios();
   try {
     return await api.post(`/admin/users/reset-password-2fa`, { id: userId });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+export const updateUserByAdmin = async (id, user) => {
+  const api = useAxios();
+  try {
+    return await api.put(`/admin/users/admin/${id}`, {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      roleId: typeof user.role == 'object' ? user.role.id : user.role
+    });
   } catch (err) {
     throw new Error(err.message);
   }

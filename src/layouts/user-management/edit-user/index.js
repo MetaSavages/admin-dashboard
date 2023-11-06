@@ -37,22 +37,24 @@ import validations from 'layouts/user-management/components/schemas/validations'
 import form from 'layouts/user-management/components/schemas/form';
 import initialValues from 'layouts/user-management/components/schemas/initialValues';
 
-import { getUser, resetUserPasswordAnd2Fa } from 'services/users';
+import { getUser, resetUserPasswordAnd2Fa, updateUser, updateUserByAdmin } from 'services/users';
 import { useState, useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, Skeleton, Tooltip } from '@mui/material';
 import MDTypography from 'components/MDTypography';
-import { Can, useMaterialUIController } from 'context';
+import { Can } from 'context';
+import UserInfoEdit from '../components/UserInfoEdit';
+import validationsEdit from '../components/schemas/validationsEdit';
 
 function EditUser() {
-  const [controller] = useMaterialUIController();
   const { formId, formField } = form;
-  const currentValidation = validations[0];
+  const currentValidation = validationsEdit[0];
   const [user, setUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [errorReset, setErrorReset] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [openDialogPassword, setOpenDialogPassword] = useState(false);
+  const navigate = useNavigate();
 
   function closeDialogPassword() {
     setErrorReset('');
@@ -76,12 +78,15 @@ function EditUser() {
       setTimeout(resolve, ms);
     });
   const submitForm = async (values, actions) => {
-    await sleep(1000);
-
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(values, null, 2));
+    try {
+      await updateUserByAdmin(user.id, values);
+      alert('User edited successfully!');
+      actions.resetForm();
+      navigate('/user-management');
+    } catch (error) {
+      alert(error.message);
+    }
     actions.setSubmitting(false);
-    actions.resetForm();
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
@@ -115,9 +120,9 @@ function EditUser() {
                       firstName: user?.firstName || '',
                       lastName: user?.lastName || '',
                       role: user?.role || '',
-                      email: user?.email || '',
-                      password: user?.password || '',
-                      repeatPassword: user?.repeatPassword || ''
+                      email: user?.email || ''
+                      // password: user?.password || '',
+                      // repeatPassword: user?.repeatPassword || ''
                     }}
                     validationSchema={currentValidation}
                     onSubmit={handleSubmit}
@@ -127,7 +132,7 @@ function EditUser() {
                         <Card sx={{ height: '100%' }}>
                           <MDBox p={3}>
                             <MDBox>
-                              <UserInfo
+                              <UserInfoEdit
                                 formData={{
                                   values,
                                   touched,
