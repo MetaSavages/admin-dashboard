@@ -1,17 +1,17 @@
 import useAxios from 'hooks/useAxios';
 
-export const getBlacklistedCountries = async () => {
+export const getBlacklistedCountries = async (limit = 20, page = 1) => {
   try {
     const api = useAxios();
 
     const res = await api.get(`admin/allowed-countries/get-allowed-countries`, {
       params: {
-        limit: 20,
-        page: 1
+        limit: limit,
+        page: page
       }
     });
 
-    const data = res.data.map((country) => {
+    const data = res.data.data.map((country) => {
       return {
         casinoId: country.casino?.id ? country.casino.id : '-',
         casino: country.casino?.name ? country.casino.name : '-',
@@ -23,9 +23,7 @@ export const getBlacklistedCountries = async () => {
 
     return {
       data: data,
-      meta: {
-        totalItems: data.length
-      }
+      meta: res.data.meta
     };
   } catch (error) {
     console.log(error);
@@ -69,7 +67,7 @@ export const getCountryFilterNames = async () => {
         //   page: 1
       }
     });
-    console.log(res);
+
     const data = res.data.data.map((country) => {
       return {
         id: country?.id ? country.id : '-',
@@ -99,14 +97,13 @@ export const getCasinoFilterNames = async () => {
         value: casino.id ? casino.id : '-'
       };
     });
-    
+
     return data;
   } catch (err) {
     console.log(err);
     return {
       data: [],
       meta: {
-        totalItems: 0,
         itemCount: 0,
         itemsPerPage: 0,
         totalPages: 0,
