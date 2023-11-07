@@ -12,6 +12,8 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import { useState, useEffect, useMemo } from 'react';
 
@@ -81,6 +83,7 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
+  const [fetchingUser, setFetchingUser] = useState(true);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   // Cache for the rtl
@@ -101,6 +104,7 @@ export default function App() {
         setTwoFactor(dispatch, false);
         setEmail(dispatch, user?.email ? user.email : null);
         setRole(dispatch, user?.role); // no role yet
+        setFetchingUser(false);
       })
       .catch((err) => {
         console.log(err);
@@ -108,14 +112,18 @@ export default function App() {
         setEmail(dispatch, null);
         setRole(dispatch, null);
         setAbility(dispatch, null);
+        setFetchingUser(false);
       });
   }, [dispatch]);
 
   useEffect(() => {
+    if (fetchingUser) {
+      return;
+    }
     if (email === null) {
       navigate('/authentication/sign-in/basic');
     }
-  }, [email]);
+  }, [email, fetchingUser]);
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {

@@ -18,14 +18,13 @@ import CopyToClipboardButton from 'layouts/player-management/components/CopyToCl
 import { Dialog, DialogTitle, DialogContent, Button, DialogActions } from '@mui/material';
 
 import MDAlert from 'components/MDAlert';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { getPlayers, getPlayerAggregated } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
 import Filters from './components/Filters';
 import { useEffect, useState } from 'react';
 import { deletePlayer } from 'services/players';
 import { Can } from 'context';
-
 import useAxios from 'hooks/useAxios';
 
 import { useMaterialUIController } from 'context';

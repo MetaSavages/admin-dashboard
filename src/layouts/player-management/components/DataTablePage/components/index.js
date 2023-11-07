@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 
 // react-table components
 import { useAsyncDebounce } from 'react-table';
-import { Skeleton } from '@mui/material';
+import { Skeleton, TableHead } from '@mui/material';
 // @mui material components
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -36,17 +36,17 @@ import MDInput from 'components/MDInput';
 import MDPagination from 'components/MDPagination';
 
 // Material Dashboard 2 PRO React examples
-import DataTableHeadCell from 'components/DataTablePage/components/DataTable/DataTableHeadCell';
-import DataTableBodyCell from 'components/DataTablePage/components/DataTable/DataTableBodyCell';
+import PlayerDataTableHeadCell from './PlayerDataTableHeadCell';
+import PlayerDataTableBodyRow from './PlayerDataTableBodyRow';
 import MDButton from 'components/MDButton';
 import { Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton } from '@mui/material';
-import userColumnsData from 'data/usersColumnData';
 import useReactTableInstance from 'hooks/useReactTableInstance';
 import useFetchData from 'hooks/useFetchData';
 import { useNavigate } from 'react-router-dom';
 import { Can } from 'context';
-import DataTableBodyRow from './DataTableBodyRow';
+import useExpandableReactTableInsance from 'hooks/useExpandableReactTableInstance';
 import SubRows from './SubRows';
+
 const ACTION = {
   PAGE_CHANGED: 'page-changed',
   PAGE_SIZE_CHANGED: 'page-sized-changed',
@@ -76,28 +76,19 @@ const tableReducer = (state, action) => {
   }
 };
 
-function DataTable({
+function PlayerDataTable({
+  canSearch,
   showTotalEntries,
   pagination,
   isSorted,
   noEndBorder,
   canFilter = false,
-  filtersComponent,
   columnData,
   fetchData,
   queryKey,
   object,
-  onDelete,
-  noActions,
-  subrowFetchData,
-  defaultPageSize = 20,
-  filters = ''
+  onDelete
 }) {
-  const [openDelete, setOpenDelete] = useState(false);
-
-  const handleOpenDelete = () => setOpenDelete(true);
-  const handleCloseDelete = () => setOpenDelete(false);
-  defaultState.queryPageSize = defaultPageSize;
   const [tableState, dispatchTableAction] = useReducer(tableReducer, defaultState);
   const setQueryPageIndexHandler = ({ pageIndexValue }) => {
     dispatchTableAction({
@@ -142,7 +133,7 @@ function DataTable({
     queryTotalPageCount,
     queryKey,
     fetchData,
-    filters,
+    searchParam,
     setTotalCountHandler
   );
   const tableColumns = useMemo(() => columnData, []);
@@ -154,6 +145,7 @@ function DataTable({
     headerGroups,
     prepareRow,
     page,
+    rows,
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -163,8 +155,19 @@ function DataTable({
     previousPage,
     setPageSize,
     pageIndex,
-    pageSize
-  } = useReactTableInstance(tableColumns, tableData, queryPageIndex, queryPageSize, queryTotalPageCount);
+    pageSize,
+    globalFilter,
+    setGlobalFilter,
+    visibleColumns
+  } = useExpandableReactTableInsance(tableColumns, tableData, queryPageIndex, queryPageSize, queryTotalPageCount);
+  const [openFilters, setOpenFilters] = useState(false);
+  const [search, setSearch] = useState(globalFilter);
+  const handleOpenFilters = () => setOpenFilters(!openFilters);
+
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => setOpenDelete(false);
+
   useEffect(() => {
     setQueryPageIndexHandler({ pageIndexValue: pageIndex });
   }, [pageIndex]);
@@ -183,8 +186,8 @@ function DataTable({
     </MDPagination>
   ));
 
-  const handleDelete = async (id) => {
-    const result = await onDelete(id);
+  const handleDelete = (id) => {
+    onDelete(id);
     handleCloseDelete();
   };
   // // Handler for the input to set the pagination index
@@ -201,26 +204,29 @@ function DataTable({
   // Search input value state
 
   // // Search input state handle
-
-  const renderRowSubComponent = useCallback(
-    ({ row, rowProps }) => <SubRows row={row} rowProps={rowProps} subrowFetchData={subrowFetchData} />,
-    []
-  );
+  const onSearchChange = useAsyncDebounce((value) => {
+    setSearchHandler({ searchChangedValue: value || '' });
+    setQueryPageIndexHandler({ pageIndexValue: 0 });
+    setGlobalFilter(value || undefined);
+  }, 100);
 
   // A function that sets the sorted value for the table
   const setSortedValue = (column) => {
     let sortedValue;
-    if (isSorted && column.isSorted) {
+    if (isSorted && column.isSorted && column?.id !== 'expander' && column?.id !== 'action') {
       sortedValue = column.isSortedDesc ? 'desc' : 'asce';
-    } else if (isSorted) {
+    } else if (isSorted && column?.id !== 'expander' && column?.id !== 'action') {
       sortedValue = 'none';
-    } else {
+    } else if (!isSorted || column?.id === 'expander' || column?.id === 'action') {
       sortedValue = false;
     }
 
     return sortedValue;
   };
-
+  const renderRowSubComponent = useCallback(
+    ({ row, rowProps, visibleColumns }) => <SubRows row={row} rowProps={rowProps} visibleColumns={visibleColumns} />,
+    []
+  );
   // Setting the entries starting point
   const entriesStart = pageIndex === 0 ? pageIndex + 1 : pageIndex * pageSize + 1;
 
@@ -230,7 +236,6 @@ function DataTable({
   if (isLoading) {
     return <Skeleton variant='rounded' animation='wave' sx={{ borderRadius: 5 }} height={600} />;
   }
-
   return (
     <TableContainer sx={{ boxShadow: 'none' }}>
       {queryPageSize || canSearch ? (
@@ -253,8 +258,51 @@ function DataTable({
               </MDTypography>
             </MDBox>
           )}
-          <MDBox display='flex' alignItems='center' justifyContent='space-between' width='80%'>
-            {canFilter && filtersComponent ? <>{filtersComponent}</> : null}
+          <MDBox display='flex' alignItems='center' justifyContent='space-between' width='20rem'>
+            {canSearch && (
+              <MDBox width='12rem' ml='auto'>
+                <MDInput
+                  placeholder='Search...'
+                  value={search}
+                  size='small'
+                  fullWidth
+                  onChange={({ currentTarget }) => {
+                    setSearch(search);
+                    onSearchChange(currentTarget.value);
+                  }}
+                />
+              </MDBox>
+            )}
+            {canFilter && (
+              <MDBox display='flex' alignItems='center' justifyContent='space-between' width='5rem' ml='auto'>
+                <MDButton variant='text' onClick={handleOpenFilters}>
+                  <Icon>filter_alt</Icon>
+                  Filter
+                </MDButton>
+                <Dialog
+                  open={openFilters}
+                  onClose={handleOpenFilters}
+                  aria-labelledby='alert-dialog-title'
+                  aria-describedby='alert-dialog-description'
+                >
+                  <DialogTitle id='alert-dialog-title'>{"Use Google's location service?"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id='alert-dialog-description'>
+                      Let Google help apps determine location. This means sending anonymous location data to Google,
+                      even when no apps are running.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <MDButton variant='text' onClick={handleOpenFilters}>
+                      Disagree
+                    </MDButton>
+                    <MDButton variant='text' onClick={handleOpenFilters}>
+                      Agree
+                    </MDButton>
+                  </DialogActions>
+                </Dialog>
+              </MDBox>
+            )}
           </MDBox>
         </MDBox>
       ) : null}
@@ -263,42 +311,26 @@ function DataTable({
           {headerGroups.map((headerGroup) => (
             <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <DataTableHeadCell
+                <PlayerDataTableHeadCell
                   {...column.getHeaderProps(isSorted && column.getSortByToggleProps())}
                   width={column.width ? column.width : 'auto'}
                   align={column.align ? column.align : 'left'}
-                  sorted={column?.sorted !== null ? column?.sorted : setSortedValue(column)}
+                  sorted={setSortedValue(column)}
                 >
                   {column.render('Header')}
-                </DataTableHeadCell>
+                </PlayerDataTableHeadCell>
               ))}
-              {!noActions && (
-                <DataTableHeadCell width='0.5rem' align='left' sorted={false}>
-                  Actions
-                </DataTableHeadCell>
-              )}
             </TableRow>
           ))}
         </MDBox>
         <TableBody {...getTableBodyProps()}>
           {page.map((row, key) => {
             prepareRow(row);
-
             const rowProps = row.getRowProps();
             return (
               <Fragment key={key}>
-                <DataTableBodyRow
-                  row={row}
-                  noEndBorder={noEndBorder}
-                  object={object}
-                  noActions={noActions}
-                  openDelete={openDelete}
-                  handleCloseDelete={handleCloseDelete}
-                  handleDelete={handleDelete}
-                  rowsLength={page.length}
-                  handleOpenDelete={handleOpenDelete}
-                />
-                {row?.isExpanded && renderRowSubComponent({ row, rowProps })}
+                <PlayerDataTableBodyRow row={row} noEndBorder={noEndBorder} object={object} />
+                {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
               </Fragment>
             );
           })}
@@ -353,7 +385,7 @@ function DataTable({
 }
 
 // Setting default values for the props of DataTable
-DataTable.defaultProps = {
+PlayerDataTable.defaultProps = {
   canSearch: false,
   showTotalEntries: true,
   pagination: { variant: 'gradient', color: 'info' },
@@ -362,7 +394,7 @@ DataTable.defaultProps = {
 };
 
 // Typechecking props for the DataTable
-DataTable.propTypes = {
+PlayerDataTable.propTypes = {
   canSearch: PropTypes.bool,
   showTotalEntries: PropTypes.bool,
   pagination: PropTypes.shape({
@@ -373,4 +405,4 @@ DataTable.propTypes = {
   noEndBorder: PropTypes.bool
 };
 
-export default DataTable;
+export default PlayerDataTable;

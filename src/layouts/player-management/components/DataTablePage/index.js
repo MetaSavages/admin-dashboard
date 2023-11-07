@@ -5,22 +5,19 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import Card from '@mui/material/Card';
+import PlayerDataTable from './components';
 
-function DataTablePage({
+function PlayerDataTablePage({
   title,
   createButton = false,
   canFilter = false,
-  filtersComponent = null,
+  canSearch = false,
   fetchData,
   queryKey,
   columnData,
   object,
-  onDelete,
-  noActions = false,
-  subrowFetchData = null,
-  filters = ''
+  onDelete
 }) {
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -32,17 +29,14 @@ function DataTablePage({
             </MDTypography>
             {createButton ? createButton : null}
           </MDBox>
-          <DataTable
+          <PlayerDataTable
+            canSearch={canSearch}
             canFilter={canFilter}
-            filtersComponent={filtersComponent}
             fetchData={fetchData}
             queryKey={queryKey}
             columnData={columnData}
             object={object}
             onDelete={onDelete}
-            noActions={noActions}
-            subrowFetchData={subrowFetchData}
-            filters={filters}
           />
         </Card>
       </MDBox>
@@ -51,4 +45,4 @@ function DataTablePage({
   );
 }
 
-export default DataTablePage;
+export default PlayerDataTablePage;
