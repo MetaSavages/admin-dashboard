@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -20,7 +20,9 @@ function CheckBox(row) {
   const handleClose = () => {
     setModalView(false);
   };
-
+  useEffect(() => {
+    setChecked(row.row.original.blacklisted);
+  }, [row.row.original.blacklisted]);
   return (
     <div>
       <Checkbox onChange={() => setModalView(true)} checked={checkedValue} />
