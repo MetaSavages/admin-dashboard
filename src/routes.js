@@ -90,6 +90,8 @@ import EditBaccaratTable from 'layouts/game_sessions/baccarat-sessions/edit-tabl
 import EditRouletteTable from 'layouts/game_sessions/roulette-sessions/edit-table';
 import EditJetpackTable from 'layouts/game_sessions/jetpack/edit-table';
 import EditCrashTable from 'layouts/game_sessions/crash/edit-table';
+import SlotsManagement from 'layouts/slots-managment';
+import EditSlot from 'layouts/slots-managment/edit-slot';
 
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
@@ -192,6 +194,17 @@ const routes = [
     component: <CasinoManagement />,
     action: 'read',
     object: 'casino'
+  },
+  {
+    type: 'collapse',
+    noCollapse: true,
+    name: 'Slots',
+    key: 'slots',
+    icon: <Icon fontSize='medium'>games</Icon>,
+    route: '/slots',
+    component: <SlotsManagement />,
+    action: 'read',
+    object: 'slot'
   },
   {
     type: 'collapse',
@@ -478,6 +491,12 @@ const routes = [
     key: 'casino-games',
     route: '/casino-games/:id',
     component: <CasinoGames />
+  },
+  {
+    name: 'Edit Slot',
+    key: 'edit-slot',
+    route: '/slots/edit/:id',
+    component: <EditSlot />
   }
 ];
 
