@@ -34,6 +34,7 @@ function RoleManagement() {
             handleOpenModal();
           }}
           filters={filters}
+          noActions
         />
         <Dialog
           open={showModal}

@@ -92,10 +92,10 @@ function PlayerActivity() {
   useEffect(() => {
     getNewRegistrations().then((res) => {
       let registrations = res.map((m) => {
-        m[0] === 12
-          ? setCorrectMonths((prev) => [...prev, months[0]])
-          : setCorrectMonths((prev) => [...prev, months[m[0]]]);
-        return m[1];
+        m.month === 12
+          ? setCorrectMonths((prev) => [...prev, months.month])
+          : setCorrectMonths((prev) => [...prev, months[m.month]]);
+        return m.count;
       });
       setNewRegistrations(registrations);
     });

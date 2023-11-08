@@ -18,7 +18,7 @@ import CopyToClipboardButton from 'layouts/player-management/components/CopyToCl
 import { Dialog, DialogTitle, DialogContent, Button, DialogActions } from '@mui/material';
 
 import MDAlert from 'components/MDAlert';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { getPlayers, getPlayerAggregated } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
 import Filters from './components/Filters';
@@ -32,7 +32,8 @@ import { useMaterialUIController } from 'context';
 function PlayerManagement() {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-  const [showDeleteModal, setShowDeleteModal] = useState();
+  const navigate = useNavigate();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const handleCloseDeleteModal = () => setShowDeleteModal(false);
   const handleOpenDeleteModal = () => setShowDeleteModal(true);
   const [deleteRoleId, setDeleteRoleId] = useState(null);

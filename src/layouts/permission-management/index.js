@@ -50,6 +50,7 @@ function PermissionManagement() {
             handleOpenModal();
           }}
           filters={filters}
+          noActions
         />
         <Dialog
           open={showModal}

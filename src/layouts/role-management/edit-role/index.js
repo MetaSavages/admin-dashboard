@@ -75,12 +75,7 @@ function EditRole() {
   }, []);
 
   const submitForm = async (values, actions) => {
-    const response = await updateRole(id, values.roleName, values.rolePermissions, values.casino);
-    if (response.status === 201 || response.status === 200) {
-      alert('Role edited successfully');
-    } else {
-      alert('Role edit failed');
-    }
+    const response = await updateRole(id, values.roleName, values.rolePermissions, values?.casino ? values.casino : null);
     // eslint-disable-next-line no-alert
 
     actions.setSubmitting(false);
