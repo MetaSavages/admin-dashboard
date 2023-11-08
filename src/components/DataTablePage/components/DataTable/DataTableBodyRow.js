@@ -13,6 +13,7 @@ function DataTableBodyRow({
   openDelete,
   handleCloseDelete,
   handleDelete,
+  handleOpenDelete,
   rowsLength
 }) {
   const navigate = useNavigate();

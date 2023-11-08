@@ -148,6 +148,9 @@ function DataTable({
   const tableColumns = useMemo(() => columnData, []);
 
   const tableData = useMemo(() => {
+    if (RES_DATA.data == undefined) {
+      return [];
+    }
     if (additionalData) {
       const newArray = RES_DATA.data.map((obj) => ({
         ...obj,
@@ -307,6 +310,7 @@ function DataTable({
                   handleCloseDelete={handleCloseDelete}
                   handleDelete={handleDelete}
                   rowsLength={page.length}
+                  handleOpenDelete={handleOpenDelete}
                 />
                 {row?.isExpanded && renderRowSubComponent({ row, rowProps })}
               </Fragment>
