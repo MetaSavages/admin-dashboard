@@ -90,6 +90,8 @@ import EditBaccaratTable from 'layouts/game_sessions/baccarat-sessions/edit-tabl
 import EditRouletteTable from 'layouts/game_sessions/roulette-sessions/edit-table';
 import EditJetpackTable from 'layouts/game_sessions/jetpack/edit-table';
 import EditCrashTable from 'layouts/game_sessions/crash/edit-table';
+import CodeManagement from 'layouts/codes';
+import NewCodes from 'layouts/codes/components/new-codes';
 
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
@@ -293,6 +295,16 @@ const routes = [
     component: <Sales />
   },
   {
+    type: 'collapse',
+    noCollapse: true,
+    name: 'Promo Codes',
+    key: 'promo-codes',
+    icon: <Icon fontSize='medium'>local_activity</Icon>,
+    route: '/promo-codes',
+    component: <CodeManagement />,
+    action: 'code'
+  },
+  {
     type: 'divider',
     key: 'divider-0'
   },
@@ -478,6 +490,12 @@ const routes = [
     key: 'casino-games',
     route: '/casino-games/:id',
     component: <CasinoGames />
+  },
+  {
+    name: 'New codes',
+    key: 'new-codes',
+    route: '/promo-codes/new-codes',
+    component: <NewCodes />
   }
 ];
 

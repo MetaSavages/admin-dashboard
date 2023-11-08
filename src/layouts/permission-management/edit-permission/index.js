@@ -62,7 +62,7 @@ function EditPermession() {
 
   const submitForm = async (values, actions) => {
     const response = await updatePermission(id, values.action, values.object);
-    if (response.status === 200 || response.status === 201) {
+    if (response.status === 201) {
       alert('Permission created successfully');
     } else {
       alert('Permission creation failed');
