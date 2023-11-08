@@ -422,13 +422,13 @@ const routes = [
   {
     name: 'Blackjack Sessions',
     key: 'blackjack-sessions',
-    route: '/blackjack-sessions/:id',
+    route: '/blackjack-sessions/:id1',
     component: <BlackjackSessions />
   },
   {
     name: 'Edit Blackjack Table',
     key: 'edit-blackjack-table',
-    route: '/blackjack-sessions/:id/edit/:id',
+    route: '/blackjack-sessions/:id1/edit/:id',
     component: <EditBlackjackTable />
   },
   {
@@ -458,7 +458,7 @@ const routes = [
   {
     name: 'Slot Sessions',
     key: 'slot-sessions',
-    route: '/slot-sessions/:id1',
+    route: '/slot-sessions/:id',
     component: <SlotSessions />
   },
   {

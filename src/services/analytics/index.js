@@ -156,49 +156,29 @@ export const getTodayNumbers = async (type, gameType = null) => {
   }
 };
 
-export const getGameStats = async (id) => {
+export const getGameStats = async (type) => {
   const api = useAxios();
   try {
-    let amounts = [];
+    let startDate = dayjs(new Date()).subtract(12, 'month')['$d'].toISOString();
+    let endDate = new Date().toISOString();
+
     const params = {
       limit: 100000,
-      'filter.type.id': id
+      type: type,
+      startDate: startDate,
+      endDate: endDate,
+      interval: 'month'
     };
-    let month = new Date().getMonth();
 
-    for (let count = 0; count < 12; count++) {
-      let timeFilter = [];
-      let dayFrom, dayTo;
-      let correctMonth = month;
+    const res = await api.get('/admin/metrics/metric-amounts-by-interval', {
+      params: params
+    });
 
-      if (month < 1) {
-        dayFrom = new Date(new Date().getFullYear() - 1, month + 12, 1).toISOString();
-        dayTo = new Date(new Date().getFullYear() - 1, month + 13, 1).toISOString();
-        correctMonth = month + 12;
-      } else {
-        dayFrom = new Date(new Date().getFullYear(), month, 1).toISOString();
-        dayTo = new Date(new Date().getFullYear(), month + 1, 1).toISOString();
-      }
+    const data = res.data.map((stat) => {
+      return [stat?.intervalStart ? new Date(stat.intervalStart).getMonth() : '-', stat?.amount ? stat.amount : 0];
+    });
 
-      timeFilter.push(`$gte:${dayFrom}`);
-      timeFilter.push(`$lte:${dayTo}`);
-
-      params['filter.createdAt'] = timeFilter;
-
-      const res = await api.get('/admin/metrics/', {
-        params: params
-      });
-
-      let amount = 0;
-      res.data.data.map((e) => {
-        amount += e.payload.amount;
-      });
-
-      amounts.unshift([correctMonth, amount]);
-      month--;
-    }
-
-    return amounts;
+    return data;
   } catch (err) {
     console.log(err);
     return 0;
@@ -225,8 +205,8 @@ export const getNewRegistrations = async () => {
 
     const data = res.data.map((registrations) => {
       return {
-        month: registrations?.intervalStart ? new Date(registrations.intervalStart).getMonth() + 1 : '-',
-        count: registrations?.count ? registrations.count : '-'
+        month: registrations?.intervalStart ? new Date(registrations.intervalStart).getMonth() : '-',
+        count: registrations?.count ? registrations.count : 0
       };
     });
 

@@ -4,8 +4,6 @@ import { Can } from 'context';
 import { useNavigate } from 'react-router-dom';
 import { IconButton, Icon, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import MDButton from 'components/MDButton';
-import SubRows from './SubRows';
-import { useEffect } from 'react';
 
 function DataTableBodyRow({
   row,
@@ -51,8 +49,8 @@ function DataTableBodyRow({
             <Tooltip title='Delete'>
               <IconButton
                 color='error'
-                onClick={() => handleDelete(row?.original?.id)}
-                // onClick={handleOpenDelete}
+                // onClick={() => handleDelete(row?.original?.id)}
+                onClick={handleOpenDelete}
               >
                 <Icon>delete</Icon>
               </IconButton>

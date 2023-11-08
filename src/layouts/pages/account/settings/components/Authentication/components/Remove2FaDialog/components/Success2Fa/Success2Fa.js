@@ -7,10 +7,10 @@ const { default: MDTypography } = require('components/MDTypography');
 function Success2Fa({ setSteps, setOpen }) {
   return (
     <>
-      <DialogContent dividers>
+      <DialogContent>
         <MDBox p={3} width='100%' display='flex' flexDirection='column' justifyContent='center'>
-          <MDTypography paddingLeft='30px' gutterBottom color='success'>
-            You successfully remove two-factor authentication
+          <MDTypography paddingLeft='30px' gutterBottom color='white' sx={{ fontWeight: '600' }}>
+            2FA is successfully disabled for your account.
           </MDTypography>
         </MDBox>
       </DialogContent>

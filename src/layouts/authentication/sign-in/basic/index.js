@@ -45,24 +45,27 @@ function Basic() {
   const [isTwoFactor, setIsTwoFactor] = useState(false);
   const [code, setCode] = useState('');
   const [errorCode, setErrorCode] = useState('');
+  const [values, setValues] = useState({ email: '', password: '' });
   const [cookie, setCookie] = useCookies(['access_token']);
   const handleSubmit = (values, actions) =>
     login(values.email, values.password)
       .then((res) => {
-        console.log(res);
-        if(res.data.access_token == undefined){
-          setErrorCode('Email or password is incorrect')
+        if (res.data.isTwoFactorAuthenticationEnabled) {
+          setIsTwoFactor(res.data.isTwoFactorAuthenticationEnabled);
+          setValues(values);
+          actions.setSubmitting(false);
+          actions.resetForm();
         } else {
           setCookie('access_token', res?.data?.access_token, { path: '/' });
           actions.setSubmitting(false);
           actions.resetForm();
-          getCurrentUser().then((res) => {
-            if (res.isTwoFactorAuthenticationEnabled) {
-              setIsTwoFactor(res.isTwoFactorAuthenticationEnabled);
-            } else {
+          if (res.data.access_token == undefined) {
+            setErrorCode('Email or password is incorrect');
+          } else {
+            getCurrentUser().then((res) => {
               serUserData(res);
-            }
-          });
+            });
+          }
         }
       })
       .catch((err) => {
@@ -101,9 +104,9 @@ function Basic() {
       return;
     }
     try {
-      const result = await login2Fa(code);
+      const result = await login2Fa(code, values.email, values.password);
       if (result.status == 200) {
-        result.data.access_token && localStorage.setItem('AccessToken', result.data.access_token);
+        result.data.access_token && setCookie('access_token', result?.data?.access_token, { path: '/' });
         getCurrentUser()
           .then((user) => {
             serUserData(user);
@@ -113,6 +116,7 @@ function Basic() {
           });
       }
     } catch (error) {
+      console.log(error);
       setErrorCode('INCORRECT AUTHENTICATION CODE!');
     }
   }
