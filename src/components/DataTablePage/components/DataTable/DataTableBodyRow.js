@@ -50,8 +50,8 @@ function DataTableBodyRow({
             <Tooltip title='Delete'>
               <IconButton
                 color='error'
-                // onClick={() => handleDelete(row?.original?.id)}
-                onClick={handleOpenDelete}
+                onClick={() => handleDelete(row?.original?.id)}
+                // onClick={handleOpenDelete}
               >
                 <Icon>delete</Icon>
               </IconButton>
