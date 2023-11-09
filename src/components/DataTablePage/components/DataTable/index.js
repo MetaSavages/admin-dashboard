@@ -90,9 +90,10 @@ function DataTable({
   onDelete,
   noActions,
   subrowFetchData,
-  defaultPageSize = 20
+  defaultPageSize = 20,
+  filters = '',
+  additionalData
 }) {
-  console.log('columnData', subrowFetchData);
   const [openDelete, setOpenDelete] = useState(false);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
@@ -141,11 +142,26 @@ function DataTable({
     queryTotalPageCount,
     queryKey,
     fetchData,
-    searchParam,
+    filters,
     setTotalCountHandler
   );
   const tableColumns = useMemo(() => columnData, []);
-  const tableData = useMemo(() => RES_DATA.data, [RES_DATA]);
+
+  const tableData = useMemo(() => {
+    if (RES_DATA.data == undefined) {
+      return [];
+    }
+    if (additionalData) {
+      const newArray = RES_DATA.data.map((obj) => ({
+        ...obj,
+        additionalData: additionalData
+      }));
+      return newArray;
+    } else {
+      return RES_DATA.data;
+    }
+  }, [RES_DATA, additionalData]);
+
   const navigate = useNavigate();
   const {
     getTableProps,
@@ -294,6 +310,7 @@ function DataTable({
                   handleCloseDelete={handleCloseDelete}
                   handleDelete={handleDelete}
                   rowsLength={page.length}
+                  handleOpenDelete={handleOpenDelete}
                 />
                 {row?.isExpanded && renderRowSubComponent({ row, rowProps })}
               </Fragment>

@@ -33,10 +33,12 @@ import Footer from 'examples/Footer';
 import UserInfo from 'layouts/user-management/components/UserInfo';
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/user-management/schemas/validations';
-import form from 'layouts/user-management/schemas/form';
-import initialValues from 'layouts/user-management/schemas/initialValues';
-
+import validations from 'layouts/user-management/components/schemas/validations';
+import form from 'layouts/user-management/components/schemas/form';
+import initialValues from 'layouts/user-management/components/schemas/initialValues';
+import { createUser } from 'services/users';
+import { Can } from 'context';
+import { Navigate } from 'react-router-dom';
 function NewUser() {
   const { formId, formField } = form;
   const currentValidation = validations[0];
@@ -46,10 +48,10 @@ function NewUser() {
       setTimeout(resolve, ms);
     });
   const submitForm = async (values, actions) => {
-    await sleep(1000);
-
-    // eslint-disable-next-line no-alert
-    alert(JSON.stringify(values, null, 2));
+    // await sleep(1000);
+    await createUser(values);
+    // // eslint-disable-next-line no-alert
+    // alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
     actions.resetForm();
   };
@@ -58,43 +60,50 @@ function NewUser() {
   };
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3} mb={20} height='65vh'>
-        <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
-          <Grid item xs={12} lg={8}>
-            <Formik initialValues={initialValues} validationSchema={currentValidation} onSubmit={handleSubmit}>
-              {({ values, errors, touched, isSubmitting, setFieldValue }) => (
-                <Form id={formId} autoComplete='off'>
-                  <Card sx={{ height: '100%' }}>
-                    <MDBox p={3}>
-                      <MDBox>
-                        <UserInfo
-                          formData={{
-                            values,
-                            touched,
-                            formField,
-                            errors,
-                            setFieldValue,
-                            isSubmitting
-                          }}
-                        />
-                        <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
-                          <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
-                            Send
-                          </MDButton>
+    <>
+      <Can I='create' a='user'>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox py={3} mb={20} height='65vh'>
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
+              <Grid item xs={12} lg={8}>
+                <Formik initialValues={initialValues} validationSchema={currentValidation} onSubmit={handleSubmit}>
+                  {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+                    <Form id={formId} autoComplete='off'>
+                      <Card sx={{ height: '100%' }}>
+                        <MDBox p={3}>
+                          <MDBox>
+                            <UserInfo
+                              formData={{
+                                values,
+                                touched,
+                                formField,
+                                errors,
+                                setFieldValue,
+                                isSubmitting
+                              }}
+                            />
+                            <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
+                              <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
+                                Send
+                              </MDButton>
+                            </MDBox>
+                          </MDBox>
                         </MDBox>
-                      </MDBox>
-                    </MDBox>
-                  </Card>
-                </Form>
-              )}
-            </Formik>
-          </Grid>
-        </Grid>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+                      </Card>
+                    </Form>
+                  )}
+                </Formik>
+              </Grid>
+            </Grid>
+          </MDBox>
+          <Footer />
+        </DashboardLayout>
+      </Can>
+      <Can not I='create' a='user'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

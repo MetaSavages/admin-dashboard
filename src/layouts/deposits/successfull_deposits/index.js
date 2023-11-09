@@ -4,29 +4,27 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import React from 'react';
 import dataTableSuccessfullPayouts from 'assets/mockData/dataSuccessfullPayouts';
+import { successfulPaymentsColumnData } from 'data/successfulPaymentsColumnData';
+import { getSuccesfulDeposits } from 'services/deposits';
+import { Can } from 'context';
+import { Navigate } from 'react-router-dom';
 const SuccessfullDeposits = () => {
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataTableSuccessfullPayouts.rows,
-          meta: {
-            totalItems: 100
-          }
-        });
-      }, 100);
-    });
-  };
-
   return (
-    <DataTablePage
-      title='Successful Deposits'
-      fetchData={fetchData}
-      queryKey='successful_deposits'
-      columnData={dataTableSuccessfullPayouts.columns}
-      object={'successful_deposits'}
-      noActions
-    />
+    <>
+      <Can I='read' a='deposit'>
+        <DataTablePage
+          title='Successful Deposits'
+          fetchData={getSuccesfulDeposits}
+          queryKey='successful_deposits'
+          columnData={successfulPaymentsColumnData}
+          object={'successful_deposits'}
+          noActions
+        />
+      </Can>
+      <Can not I='read' a='deposit'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 };
 

@@ -12,6 +12,8 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import { useState, useEffect, useMemo } from 'react';
 
@@ -46,7 +48,16 @@ import createCache from '@emotion/cache';
 import routes from 'routes';
 
 // Material Dashboard 2 PRO React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator, setUser, setRole, setAbility } from 'context';
+import {
+  useMaterialUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+  setEmail,
+  setName,
+  setRole,
+  setAbility,
+  setTwoFactor
+} from 'context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // Images
 import brand from 'assets/images/logo.png';
@@ -66,7 +77,8 @@ export default function App() {
     transparentSidenav,
     whiteSidenav,
     ability,
-    user,
+    name,
+    email,
     darkMode
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
@@ -86,22 +98,26 @@ export default function App() {
   useMemo(() => {
     getCurrentUser()
       .then((user) => {
-        setAbility(dispatch, getUserAbilities(user.data.role));
-        setUser(dispatch, user.data.email);
-        setRole(dispatch, user.data.role); // no role yet
+        setAbility(dispatch, getUserAbilities(user.role));
+        setName(dispatch, `${user?.firstName} ${user?.lastName}`);
+        setTwoFactor(dispatch, false);
+        setEmail(dispatch, user?.email ? user.email : null);
+        setRole(dispatch, user?.role); // no role yet
       })
       .catch((err) => {
         console.log(err);
-        setUser(dispatch, null);
+        setName(dispatch, null);
+        setEmail(dispatch, null);
+        setRole(dispatch, null);
         setAbility(dispatch, null);
       });
   }, [dispatch]);
 
   useEffect(() => {
-    if (user === null) {
+    if (email === null) {
       navigate('/authentication/sign-in/basic');
     }
-  }, [user]);
+  }, [email]);
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
@@ -167,7 +183,8 @@ export default function App() {
       </Icon>
     </MDBox>
   );
-  if ((ability === null && user) || (user === '' && ability === undefined)) {
+
+  if (ability === undefined) {
     return <></>;
   }
   return direction === 'rtl' ? (
@@ -192,7 +209,7 @@ export default function App() {
             {layout === 'vr' && <Configurator />}
             <Routes>
               {getRoutes(routes)}
-              <Route path='*' element={<Navigate to='/dashboard' />} />
+              <Route path='*' element={<Navigate to='/dashboard' replace />} />
             </Routes>
           </ThemeProvider>
         </CacheProvider>
@@ -219,7 +236,7 @@ export default function App() {
           {layout === 'vr' && <Configurator />}
           <Routes>
             {getRoutes(routes)}
-            <Route path='*' element={<Navigate to='/dashboard' />} />
+            <Route path='*' element={<Navigate to='/dashboard' replace />} />
           </Routes>
         </ThemeProvider>
       </QueryClientProvider>

@@ -33,13 +33,14 @@ import Footer from 'examples/Footer';
 import RoleInfo from 'layouts/role-management/components/RoleInfo';
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/role-management/schemas/validations';
-import form from 'layouts/role-management/schemas/form';
+import validations from 'layouts/role-management/components/schemas/validations';
+import form from 'layouts/role-management/components/schemas/form';
 import { getRole, updateRole } from 'services/roles';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, Skeleton } from '@mui/material';
 import MDTypography from 'components/MDTypography';
+import { Can } from 'context';
 function EditRole() {
   const { id } = useParams();
   const { formId, formField } = form;
@@ -64,7 +65,8 @@ function EditRole() {
             value: permission.id,
             name: `${permission.action}: ${permission.object}`
           };
-        })
+        }),
+        [formField.casino.name]: response.data.casino
       });
     });
     return () => {
@@ -73,12 +75,7 @@ function EditRole() {
   }, []);
 
   const submitForm = async (values, actions) => {
-    const response = await updateRole(id, values.roleName, values.rolePermissions);
-    if (response.status === 201 || response.status === 200) {
-      alert('Role edited successfully');
-    } else {
-      alert('Role edit failed');
-    }
+    const response = await updateRole(id, values.roleName, values.rolePermissions, values?.casino ? values.casino : null);
     // eslint-disable-next-line no-alert
 
     actions.setSubmitting(false);
@@ -91,78 +88,85 @@ function EditRole() {
   };
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3} mb={20} height='65vh'>
-        {initialValues === null ? (
-          <Skeleton variant='reactangular' width='100%' height='100%' />
-        ) : (
-          <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
-            <Grid item xs={12} lg={8}>
-              <Formik initialValues={initialValues} validationSchema={currentValidation} onSubmit={handleSubmit}>
-                {({ values, errors, touched, isSubmitting, setFieldValue, validateForm, setStatus }) => (
-                  <Form id={formId} autoComplete='off'>
-                    <Card sx={{ height: '100%' }}>
-                      <MDBox p={3}>
-                        <MDBox>
-                          <RoleInfo
-                            formData={{
-                              values,
-                              touched,
-                              formField,
-                              errors,
-                              setFieldValue,
-                              isSubmitting
-                            }}
-                          />
-                          <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
-                            <MDButton
-                              type='button'
-                              onClick={async () => {
-                                const errs = await validateForm();
-                                setStatus(errs);
-                                if (!errs?.length) {
-                                  handleOpen();
-                                }
-                              }}
-                              variant='gradient'
-                              color='dark'
-                            >
-                              Update
-                            </MDButton>
-                            <Dialog
-                              open={open}
-                              onClose={handleClose}
-                              aria-labelledby='alert-dialog-title'
-                              aria-describedby='alert-dialog-description'
-                            >
-                              <DialogContent>
-                                <MDTypography variant='h6' fontWeight='medium'>
-                                  Are you sure you want to update this role?
-                                </MDTypography>
-                              </DialogContent>
-                              <DialogActions>
-                                <MDButton onClick={handleClose} variant='text'>
-                                  No
+    <>
+      <Can I='update' a='role'>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox py={3} mb={20} height='65vh'>
+            {initialValues === null ? (
+              <Skeleton variant='reactangular' width='100%' height='100%' />
+            ) : (
+              <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
+                <Grid item xs={12} lg={8}>
+                  <Formik initialValues={initialValues} validationSchema={currentValidation} onSubmit={handleSubmit}>
+                    {({ values, errors, touched, isSubmitting, setFieldValue, validateForm, setStatus }) => (
+                      <Form id={formId} autoComplete='off'>
+                        <Card sx={{ height: '100%' }}>
+                          <MDBox p={3}>
+                            <MDBox>
+                              <RoleInfo
+                                formData={{
+                                  values,
+                                  touched,
+                                  formField,
+                                  errors,
+                                  setFieldValue,
+                                  isSubmitting
+                                }}
+                              />
+                              <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
+                                <MDButton
+                                  type='button'
+                                  onClick={async () => {
+                                    const errs = await validateForm();
+                                    setStatus(errs);
+                                    if (!errs?.length) {
+                                      handleOpen();
+                                    }
+                                  }}
+                                  variant='gradient'
+                                  color='dark'
+                                >
+                                  Update
                                 </MDButton>
-                                <MDButton type='submit' disabled={isSubmitting} form={formId} variant='text'>
-                                  Yes
-                                </MDButton>
-                              </DialogActions>
-                            </Dialog>
+                                <Dialog
+                                  open={open}
+                                  onClose={handleClose}
+                                  aria-labelledby='alert-dialog-title'
+                                  aria-describedby='alert-dialog-description'
+                                >
+                                  <DialogContent>
+                                    <MDTypography variant='h6' fontWeight='medium'>
+                                      Are you sure you want to update this role?
+                                    </MDTypography>
+                                  </DialogContent>
+                                  <DialogActions>
+                                    <MDButton onClick={handleClose} variant='text'>
+                                      No
+                                    </MDButton>
+                                    <MDButton type='submit' disabled={isSubmitting} form={formId} variant='text'>
+                                      Yes
+                                    </MDButton>
+                                  </DialogActions>
+                                </Dialog>
+                              </MDBox>
+                            </MDBox>
                           </MDBox>
-                        </MDBox>
-                      </MDBox>
-                    </Card>
-                  </Form>
-                )}
-              </Formik>
-            </Grid>
-          </Grid>
-        )}
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+                        </Card>
+                      </Form>
+                    )}
+                  </Formik>
+                </Grid>
+              </Grid>
+            )}
+          </MDBox>
+          <Footer />
+        </DashboardLayout>
+      </Can>
+      <Can not I='update' a='role'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

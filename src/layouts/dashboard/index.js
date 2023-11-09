@@ -222,10 +222,45 @@ function Dashboard() {
       {
         label: 'Sessions',
         data: gameSessions,
+        label: 'Sessions',
+        data: gameSessions,
         color: 'info'
       }
     ]
   };
+
+  useEffect(() => {
+    getGameStats('game_win').then((res) => {
+      let wins = res.map((m) => {
+        m[0] === 12
+          ? setCorrectMonths((prev) => [...prev, months[0]])
+          : setCorrectMonths((prev) => [...prev, months[m[0]]]);
+        return m[1];
+      });
+      setGameWins(wins);
+    });
+
+    getGameStats('game_lose').then((res) => {
+      let loses = res.map((m) => {
+        return m[1];
+      });
+      setGameLoses(loses);
+    });
+  }, []);
+
+  useEffect(() => {
+    getNewRegistrations().then((res) => {
+      let registrations = res.map((m) => {
+        return m.count;
+      });
+      setNewRegistrations(registrations);
+    });
+  }, []);
+
+  useEffect(() => {
+    getGameSessions().then((res) => setGameSessions(res));
+  }, []);
+
 
   useEffect(() => {
     getGameStats('game_win').then((res) => {
@@ -412,6 +447,124 @@ function Dashboard() {
       });
   }
 
+
+  useEffect(() => {
+    getTodayNumbers('game_win').then((res) => setGameWin(res));
+    getTodayNumbers('game_lose').then((res) => setGameLose(res));
+    getTodayNumbers('game_bet').then((res) => setGameBet(res));
+    getTodayNumbers('registration_start').then((res) => setRegistrationStart(res));
+    getBaccaratDetails();
+    getBlackjackDetails();
+    getSlotsDetails();
+    getRouletteDetails();
+    getCrashDetails();
+    trackSuccessfulLogins().then((res) => setSuccessfulLogins(res));
+  }, []);
+
+  function getBlackjackDetails() {
+    const gameType = GameType.Blackjack;
+    Promise.all([
+      getTodayNumbers('game_bet', gameType),
+      getTodayAmount('game_win', gameType),
+      getTodayAmount('game_lose', gameType),
+      getTodayNumbers('blackjack_session_start')
+    ])
+      .then((results) => {
+        const [gameWinResult, gameWinsAmount, gameLosesAmount, sessionStart] = results;
+        setBlackjack({
+          sessionStart: sessionStart,
+          allBets: gameWinResult,
+          gameWinsAmount: gameWinsAmount,
+          gameLoseAmount: gameLosesAmount
+        });
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  }
+
+  function getBaccaratDetails() {
+    const gameType = GameType.Baccarat;
+    Promise.all([
+      getTodayNumbers('game_bet', gameType),
+      getTodayAmount('game_win', gameType),
+      getTodayAmount('game_lose', gameType),
+      getTodayNumbers('baccarat_session_start')
+    ])
+      .then((results) => {
+        const [gameWinResult, gameWinsAmount, gameLosesAmount, sessionStart] = results;
+        setBaccarat({
+          sessionStart: sessionStart,
+          allBets: gameWinResult,
+          gameWinsAmount: gameWinsAmount,
+          gameLoseAmount: gameLosesAmount
+        });
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  }
+
+  function getSlotsDetails() {
+    const gameType = GameType.Slots;
+    Promise.all([
+      getTodayNumbers('game_bet', gameType),
+      getTodayAmount('game_win', gameType),
+      getTodayAmount('game_lose', gameType)
+    ])
+      .then((results) => {
+        const [gameWinResult, gameWinsAmount, gameLosesAmount] = results;
+        setSlots({
+          allBets: gameWinResult,
+          gameWinsAmount: gameWinsAmount,
+          gameLoseAmount: gameLosesAmount
+        });
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  }
+
+  function getRouletteDetails() {
+    const gameType = GameType.Roulette;
+    Promise.all([
+      getTodayNumbers('game_bet', gameType),
+      getTodayAmount('game_win', gameType),
+      getTodayAmount('game_lose', gameType)
+    ])
+      .then((results) => {
+        const [gameWinResult, gameWinsAmount, gameLosesAmount] = results;
+        setRoulette({
+          allBets: gameWinResult,
+          gameWinsAmount: gameWinsAmount,
+          gameLoseAmount: gameLosesAmount
+        });
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  }
+
+  function getCrashDetails() {
+    const gameType = GameType.Crash;
+    Promise.all([
+      getTodayNumbers('game_bet', gameType),
+      getTodayAmount('game_win', gameType),
+      getTodayAmount('game_lose', gameType)
+    ])
+      .then((results) => {
+        const [gameWinResult, gameWinsAmount, gameLosesAmount] = results;
+        setCrash({
+          allBets: gameWinResult,
+          gameWinsAmount: gameWinsAmount,
+          gameLoseAmount: gameLosesAmount
+        });
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  }
+
   // Action buttons for the BookingCard
   const actionButtons = (
     <>
@@ -434,18 +587,24 @@ function Dashboard() {
       <MDBox py={3}>
         <MDBox mb={3}>
           <MDTypography variant='h3' fontWeight='medium'>
+          <MDTypography variant='h3' fontWeight='medium'>
             Today's numbers
           </MDTypography>
         </MDBox>
         <MDBox display='flex' justifyContent='space-between' alignItems='center'>
           <Grid container spacing={2} direction='row' justify='center' alignItems='stretch'>
+        <MDBox display='flex' justifyContent='space-between' alignItems='center'>
+          <Grid container spacing={2} direction='row' justify='center' alignItems='stretch'>
             <Grid item xs={2}>
+              <InfoCard color='info' icon='trending_up' title='Total game wins' description={`${gameWin}`} />
               <InfoCard color='info' icon='trending_up' title='Total game wins' description={`${gameWin}`} />
             </Grid>
             <Grid item xs={2}>
               <InfoCard color='info' icon='trending_up' title='Total game loses' description={`${gameLose}`} />
+              <InfoCard color='info' icon='trending_up' title='Total game loses' description={`${gameLose}`} />
             </Grid>
             <Grid item xs={2}>
+              <InfoCard color='info' icon='trending_up' title='Total game bets' description={`${gameBet}`} />
               <InfoCard color='info' icon='trending_up' title='Total game bets' description={`${gameBet}`} />
             </Grid>
             <Grid item xs={2}>
@@ -463,8 +622,20 @@ function Dashboard() {
                 title='Total baccarat sessions'
                 description={baccarat.sessionStart}
               />
+              <InfoCard
+                color='info'
+                icon='trending_up'
+                title='Total baccarat sessions'
+                description={baccarat.sessionStart}
+              />
             </Grid>
             <Grid item xs={2}>
+              <InfoCard
+                color='info'
+                icon='trending_up'
+                title='Total blackjack sessions'
+                description={blackjack.sessionStart}
+              />
               <InfoCard
                 color='info'
                 icon='trending_up'
@@ -474,6 +645,7 @@ function Dashboard() {
             </Grid>
           </Grid>
         </MDBox>
+        <MDBox mt={5}>
         <MDBox mt={5}>
           <Grid container spacing={3} direction='row' justify='center' alignItems='stretch'>
             <Grid item xs={8}>
@@ -607,10 +779,107 @@ function Dashboard() {
                       </div>
                     </CustomSlider>
                   </Card>
+                <Grid item xs={12} mt={3} className='aaaaaaaaaaaaaaaaaa'>
+                  <Card sx={{ padding: '30px', marginBottom: '20px' }}>
+                    <CustomSlider {...settings}>
+                      <div>
+                        <CasinoCard
+                          title='Blackjack'
+                          description='Last campaign performance'
+                          image={blackjackImg}
+                          action={{
+                            type: 'internal',
+                            route: '/somewhere',
+                            color: 'info',
+                            label: 'Go Somewhere'
+                          }}
+                          allBets={blackjack.allBets}
+                          gameWinsAmount={blackjack.gameWinsAmount}
+                          gameLoseAmount={blackjack.gameLoseAmount}
+                        />
+                      </div>
+                      <div>
+                        <CasinoCard
+                          title='Baccarat'
+                          description='Last campaign performance'
+                          image={baccaratImg}
+                          action={{
+                            type: 'internal',
+                            route: '/somewhere',
+                            color: 'info',
+                            label: 'Go Somewhere'
+                          }}
+                          allBets={baccarat.allBets}
+                          gameWinsAmount={baccarat.gameWinsAmount}
+                          gameLoseAmount={baccarat.gameLoseAmount}
+                        />
+                      </div>
+
+                      <div>
+                        <CasinoCard
+                          title='Roulette'
+                          description='Last campaign performance'
+                          image={rouletteImg}
+                          action={{
+                            type: 'internal',
+                            route: '/somewhere',
+                            color: 'info',
+                            label: 'Go Somewhere'
+                          }}
+                          allBets={roulette.allBets}
+                          gameWinsAmount={roulette.gameWinsAmount}
+                          gameLoseAmount={roulette.gameLoseAmount}
+                        />
+                      </div>
+                      <div>
+                        <CasinoCard
+                          title='Slots'
+                          description='Last campaign performance'
+                          image={slotsImg}
+                          action={{
+                            type: 'internal',
+                            route: '/somewhere',
+                            color: 'info',
+                            label: 'Go Somewhere'
+                          }}
+                          allBets={slots.allBets}
+                          gameWinsAmount={slots.gameWinsAmount}
+                          gameLoseAmount={slots.gameLoseAmount}
+                        />
+                      </div>
+                      <div>
+                        <CasinoCard
+                          title='Crash'
+                          description='Last campaign performance'
+                          image={crashImg}
+                          action={{
+                            type: 'internal',
+                            route: '/somewhere',
+                            color: 'info',
+                            label: 'Go Somewhere'
+                          }}
+                          allBets={crash.allBets}
+                          gameWinsAmount={crash.gameWinsAmount}
+                          gameLoseAmount={crash.gameLoseAmount}
+                        />
+                      </div>
+                    </CustomSlider>
+                  </Card>
                 </Grid>
+                <Grid item xs={12}>
                 <Grid item xs={12}>
                   <DoubleInfoCard title1='$560K' cap1='Total sales' title2='$300K' cap2='Total profit' />
                 </Grid>
+                <Grid item xs={12}>
+                  <TimelineList title='Login Tracker'>
+                    {successfulLogins.map((login, i, { length }) => {
+                      let title = `Successful Login [ ${login.username} ]`;
+                      let date = `${login.date}`;
+                      if (i === length - 1) {
+                        return <TimelineItem icon='login' color='success' title={title} dateTime={date} lastItem />;
+                      }
+                      return <TimelineItem icon='login' color='success' title={title} dateTime={date} />;
+                    })}
                 <Grid item xs={12}>
                   <TimelineList title='Login Tracker'>
                     {successfulLogins.map((login, i, { length }) => {

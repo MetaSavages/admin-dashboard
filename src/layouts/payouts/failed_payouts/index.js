@@ -1,29 +1,28 @@
 import DataTablePage from 'components/DataTablePage';
 import React from 'react';
 import dataTableFailedPayouts from 'assets/mockData/dataFailedPayouts';
-const FailedPayouts = () => {
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataTableFailedPayouts.rows,
-          meta: {
-            totalItems: 100
-          }
-        });
-      }, 100);
-    });
-  };
+import { getFailedWithdraws } from 'services/withdraws';
+import { failedWithdrawsColumnData } from 'data/failedWithdrawsColumnData';
+import { Can } from 'context';
+import { Navigate } from 'react-router-dom';
 
+const FailedPayouts = () => {
   return (
-    <DataTablePage
-      title='Failed Payouts'
-      fetchData={fetchData}
-      queryKey='failed_payouts'
-      columnData={dataTableFailedPayouts.columns}
-      object={'failed_payouts'}
-      noActions
-    />
+    <>
+      <Can I='read' a='payout'>
+        <DataTablePage
+          title='Failed Payouts'
+          fetchData={getFailedWithdraws}
+          queryKey='failed_payouts'
+          columnData={failedWithdrawsColumnData}
+          object={'failed_payouts'}
+          noActions
+        />
+      </Can>
+      <Can not I='read' a='payout'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 };
 

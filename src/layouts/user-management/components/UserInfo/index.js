@@ -29,7 +29,11 @@ import { Autocomplete } from '@mui/material';
 import { ErrorMessage, Field } from 'formik';
 import MDInput from 'components/MDInput';
 import { getRoles } from 'services/roles';
+
+import { useMaterialUIController } from 'context';
+
 function UserInfo({ formData }) {
+  const [controller] = useMaterialUIController();
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { firstName, lastName, role, email, password, repeatPassword } = formField;
   const {
@@ -42,25 +46,25 @@ function UserInfo({ formData }) {
   } = values;
 
   useEffect(() => {
-    if (!isSubmitting) {
-      setRoleName('');
-    }
-  }, [isSubmitting]);
-
-  useEffect(() => {
     getRoles().then((res) => {
       setRoleOptions(res.data.map((item) => ({ value: item.id, name: item.name })));
     });
   }, []);
 
-  const [roleName, setRoleName] = useState('');
+  const url = window.location.href;
+  const [roleName, setRoleName] = useState(roleV);
   const [open, setOpen] = useState(false);
   const [roleOptions, setRoleOptions] = useState([]);
   const loading = open && roleOptions.length === 0;
+
+  useEffect(() => {
+    setRoleName(roleV);
+  }, [roleV]);
+
   return (
     <MDBox>
       <MDBox lineHeight={0}>
-        <MDTypography variant='h5'>Create user</MDTypography>
+        <MDTypography variant='h5'>{url.includes('edit') ? 'Edit user' : 'Create user'}</MDTypography>
       </MDBox>
       <MDBox mt={1.625}>
         <Grid container spacing={3}>
@@ -100,15 +104,15 @@ function UserInfo({ formData }) {
                   setOpen(false);
                 }}
                 options={roleOptions}
-                inputValue={roleName}
+                value={roleName}
                 onChange={(e, value) => {
                   if (!value) {
-                    setFieldValue(role.name, '');
+                    setFieldValue(role.name, {});
                     setRoleName('');
                     return;
                   }
-                  setFieldValue(role.name, value.value);
-                  setRoleName(value.name);
+                  setFieldValue(role.name, value);
+                  setRoleName(value);
                 }}
                 getOptionLabel={(option) => option.name}
                 isOptionEqualToValue={(option, value) => option.value === value.value}

@@ -23,7 +23,6 @@ import { createContext, useContext, useMemo, useReducer } from 'react';
 // prop-types is a library for typechecking of props
 import PropTypes from 'prop-types';
 
-import { getCurrentUser } from 'services/auth';
 import { createContextualCan } from '@casl/react';
 const AbilityContext = createContext();
 const Can = createContextualCan(AbilityContext.Consumer);
@@ -66,14 +65,20 @@ function reducer(state, action) {
     case 'DARKMODE': {
       return { ...state, darkMode: action.value };
     }
-    case 'USER': {
-      return { ...state, user: action.value };
+    case 'NAME': {
+      return { ...state, name: action.value };
+    }
+    case 'EMAIL': {
+      return { ...state, email: action.value };
     }
     case 'ROLE': {
       return { ...state, role: action.value };
     }
     case 'ABILITY': {
       return { ...state, ability: action.value };
+    }
+    case 'TWO_FACTOR': {
+      return { ...state, twoFactor: action.value };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -93,9 +98,11 @@ function MaterialUIControllerProvider({ children }) {
     openConfigurator: false,
     direction: 'ltr',
     layout: 'dashboard',
-    user: '',
+    name: '',
+    email: '',
     role: '',
     ability: undefined,
+    twoFactor: false,
     darkMode: localStorage.getItem('darkMode') === 'true'
   };
   const [controller, dispatch] = useReducer(reducer, initialState);
@@ -132,9 +139,11 @@ const setOpenConfigurator = (dispatch, value) => dispatch({ type: 'OPEN_CONFIGUR
 const setDirection = (dispatch, value) => dispatch({ type: 'DIRECTION', value });
 const setLayout = (dispatch, value) => dispatch({ type: 'LAYOUT', value });
 const setDarkMode = (dispatch, value) => dispatch({ type: 'DARKMODE', value });
-const setUser = (dispatch, value) => dispatch({ type: 'USER', value });
+const setEmail = (dispatch, value) => dispatch({ type: 'EMAIL', value });
+const setName = (dispatch, value) => dispatch({ type: 'NAME', value });
 const setRole = (dispatch, value) => dispatch({ type: 'ROLE', value });
 const setAbility = (dispatch, value) => dispatch({ type: 'ABILITY', value });
+const setTwoFactor = (dispatch, value) => dispatch({ type: 'TWO_FACTOR', value });
 
 export {
   MaterialUIControllerProvider,
@@ -149,7 +158,9 @@ export {
   setDirection,
   setLayout,
   setDarkMode,
-  setUser,
+  setEmail,
+  setTwoFactor,
+  setName,
   setRole,
   setAbility,
   Can,

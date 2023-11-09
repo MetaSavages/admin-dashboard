@@ -8,7 +8,7 @@ export const eventsColumnData = [
     accessor: 'event_type',
     Cell: ({ row }) => {
       const filters = {
-        event_types: [row.original.event_type]
+        eventType: row.original.id
       };
       const queryStringParams = queryString.stringify(filters);
       return (

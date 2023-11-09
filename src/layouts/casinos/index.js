@@ -23,10 +23,10 @@ function CasinoManagement() {
       }, 100);
     });
   };
-
+  
   return (
     <>
-      <Can I='read' a='user'>
+      <Can I='read' a='casino'>
         <DataTablePage
           title='Casino Management'
           createButton={
@@ -42,12 +42,11 @@ function CasinoManagement() {
           queryKey='casinos'
           columnData={casinosColumnData}
           object={'casino'}
-          onDelete={onDelete}
           noActions
         />
       </Can>
-      <Can not I='read' a='user'>
-        <Navigate to='/dashboard' />
+      <Can not I='read' a='casino'>
+        <Navigate to='/dashboard' replace />
       </Can>
     </>
   );

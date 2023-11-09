@@ -62,7 +62,7 @@ import MDTypography from 'components/MDTypography';
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode, user, role } = controller;
+  const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode, name, email, role } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split('/').slice(1);
   useEffect(() => {
@@ -188,11 +188,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 <Icon sx={iconsStyle}>settings</Icon>
               </IconButton>
-              <Link to='/authentication/sign-in/basic'>
+              {/* <Link to='/authentication/sign-in/basic'>
                 <IconButton sx={navbarIconButton} size='small' disableRipple>
                   <MDAvatar src='https://i.pravatar.cc/150?img=3' alt='user-avatar' />
                 </IconButton>
-              </Link>
+              </Link> */}
             </MDBox>
             <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
               <IconButton size='small' disableRipple color='inherit' sx={navbarMobileMenu} onClick={handleMiniSidenav}>
@@ -200,11 +200,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   {miniSidenav ? 'menu_open' : 'menu'}
                 </Icon>
               </IconButton>
-              {!(user && role) ? (
+              {!(name && role) ? (
                 <Skeleton variant='text' width={100} height={20} />
               ) : (
                 <MDBox>
-                  <MDTypography variant='h6'>{user}</MDTypography>
+                  <MDTypography variant='h6'>{name}</MDTypography>
                   <MDTypography variant='subtitle2'>{role.name}</MDTypography>
                 </MDBox>
               )}
