@@ -107,7 +107,7 @@ export const getPlayer = async (id) => {
 export const deletePlayer = async (id) => {
   const api = useAxios();
   try {
-    return await api.delete('user', {
+    return await api.delete('admin/users', {
       data: { userId: id }
     });
   } catch (err) {
@@ -119,7 +119,7 @@ export const deletePlayer = async (id) => {
 export const updatePlayerName = async (id, name) => {
   const api = useAxios();
   try {
-    const response = await api.post('user/update-nickname', {
+    const response = await api.post('admin/users/update-nickname', {
       userId: id,
       nickname: name
     });
