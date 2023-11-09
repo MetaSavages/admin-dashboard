@@ -205,8 +205,8 @@ export const getNewRegistrations = async () => {
 
     const data = res.data.map((registrations) => {
       return {
-        month: registrations?.intervalStart ? new Date(registrations.intervalStart).getMonth() + 1 : '-',
-        count: registrations?.count ? registrations.count : '-'
+        month: registrations?.intervalStart ? new Date(registrations.intervalStart).getMonth() : '-',
+        count: registrations?.count ? registrations.count : 0
       };
     });
 

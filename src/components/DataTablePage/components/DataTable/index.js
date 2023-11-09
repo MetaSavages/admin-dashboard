@@ -91,10 +91,10 @@ function DataTable({
   noActions,
   subrowFetchData,
   defaultPageSize = 20,
-  filters = ''
+  filters = '',
+  additionalData
 }) {
   const [openDelete, setOpenDelete] = useState(false);
-
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseDelete = () => setOpenDelete(false);
   defaultState.queryPageSize = defaultPageSize;
@@ -146,7 +146,22 @@ function DataTable({
     setTotalCountHandler
   );
   const tableColumns = useMemo(() => columnData, []);
-  const tableData = useMemo(() => RES_DATA.data, [RES_DATA]);
+
+  const tableData = useMemo(() => {
+    if (RES_DATA.data == undefined) {
+      return [];
+    }
+    if (additionalData) {
+      const newArray = RES_DATA.data.map((obj) => ({
+        ...obj,
+        additionalData: additionalData
+      }));
+      return newArray;
+    } else {
+      return RES_DATA.data;
+    }
+  }, [RES_DATA, additionalData]);
+
   const navigate = useNavigate();
   const {
     getTableProps,
@@ -183,8 +198,8 @@ function DataTable({
     </MDPagination>
   ));
 
-  const handleDelete = async (id) => {
-    const result = await onDelete(id);
+  const handleDelete = (id) => {
+    onDelete(id);
     handleCloseDelete();
   };
   // // Handler for the input to set the pagination index
@@ -230,7 +245,6 @@ function DataTable({
   if (isLoading) {
     return <Skeleton variant='rounded' animation='wave' sx={{ borderRadius: 5 }} height={600} />;
   }
-
   return (
     <TableContainer sx={{ boxShadow: 'none' }}>
       {queryPageSize || canSearch ? (

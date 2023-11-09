@@ -45,6 +45,15 @@ const Filters = ({ filters, setFilters }) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (!playerUsernames.length) {
+      setFilters({
+        users: [],
+        isDemo: isDemoChecked
+      });
+    }
+  }, [playerUsernames]);
+
   const onSubmit = () => {
     setFilters({
       users: playerUsernames,
@@ -89,7 +98,7 @@ const Filters = ({ filters, setFilters }) => {
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
-          <MDBox sx={{display: 'flex', alignItems: 'center', padding: '2px'}}>
+          <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
             <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
               <Checkbox
                 icon={icon}

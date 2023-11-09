@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Fade, Grow, Zoom } from '@mui/material';
+import { updateBlacklistedCountry } from 'services/blacklists';
 
 function CheckBox(row) {
   const [checkedValue, setChecked] = useState(row.row.original.blacklisted);
@@ -14,11 +15,14 @@ function CheckBox(row) {
   const handleChange = () => {
     setModalView(false);
     setChecked(!checkedValue);
+    updateBlacklistedCountry(checkedValue, row.row.original.country, row.row.original.casinoId);
   };
   const handleClose = () => {
     setModalView(false);
   };
-
+  useEffect(() => {
+    setChecked(row.row.original.blacklisted);
+  }, [row.row.original.blacklisted]);
   return (
     <div>
       <Checkbox onChange={() => setModalView(true)} checked={checkedValue} />

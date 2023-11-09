@@ -47,7 +47,7 @@ const jetpackSessionsColumnData = [
         <>
           <MDBox sx={{ display: 'flex', justifyContent: 'space-around' }}>
             <Tooltip title='Edit'>
-              <NavLink to={`/jetpack-sessions/${casinoId}/edit/${row.original.id}`}>
+              <NavLink to={`/jetpack-sessions/${ window.location.pathname.split('/')[2]}/edit/${row.original.id}`}>
                 <MDTypography fontSize='0.875rem'>
                   <IconButton size='small' color='info'>
                     <Icon fontSize='small'>edit</Icon>

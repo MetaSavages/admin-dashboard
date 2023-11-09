@@ -4,55 +4,21 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MDBox from 'components/MDBox';
 import React, { useState, useEffect } from 'react';
 import MDButton from 'components/MDButton';
+import { getCasinoFilterNames, getCountryFilterNames } from 'services/blacklists';
+import { getCurrentUser } from 'services/auth';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const Filters = ({ filters, setFilters }) => {
-  const casinoOptions = [
-    {
-      label: 'Casino 1',
-      value: '1'
-    },
-    {
-      label: 'Casino 2',
-      value: '2'
-    },
-    {
-      label: 'Casino 3',
-      value: '3'
-    },
-    {
-      label: 'Casino 4',
-      value: '4'
-    }
-  ];
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [casinoOptions, setCasinoOptions] = useState([]);
+  const [user, setUser] = useState(null);
 
-  const countryOptions = [
-    {
-      label: 'Brazil',
-      value: '1'
-    },
-    {
-      label: 'Serbia',
-      value: '2'
-    },
-    {
-      label: 'Hungary',
-      value: '3'
-    },
-    {
-      label: 'USA',
-      value: '4'
-    },
-    {
-      label: 'Canada',
-      value: '5'
-    },
-    {
-      label: 'Netherlands',
-      value: '6'
-    }
-  ];
+  useEffect(() => {
+    getCountryFilterNames().then((res) => setCountryOptions(res));
+    getCasinoFilterNames().then((res) => setCasinoOptions(res));
+    getCurrentUser().then((res) => setUser(res));
+  }, []);
 
   const updateCasinos = (event, value) => {
     setCasinos(value);
@@ -84,6 +50,13 @@ const Filters = ({ filters, setFilters }) => {
     });
   }, []);
 
+  const onSubmit = () => {
+    setFilters({
+      country: countries,
+      casino: casinos
+    });
+  };
+
   return (
     <MDBox
       sx={{
@@ -113,29 +86,31 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item sm={4}>
-          <MDBox>
-            <Autocomplete
-              multiple
-              limitTags={2}
-              options={casinoOptions}
-              disableCloseOnSelect
-              value={casinos}
-              onChange={updateCasinos}
-              isOptionEqualToValue={(option, value) => option.value === value.value}
-              getOptionLabel={(option) => option.label}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
-                  {option.label}
-                </li>
-              )}
-              renderInput={(params) => <TextField {...params} label='Casino' variant='standard' />}
-            />
-          </MDBox>
-        </Grid>
+        {!user?.role?.casino && (
+          <Grid item sm={4}>
+            <MDBox>
+              <Autocomplete
+                multiple
+                limitTags={2}
+                options={casinoOptions}
+                disableCloseOnSelect
+                value={casinos}
+                onChange={updateCasinos}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+                getOptionLabel={(option) => option.label}
+                renderOption={(props, option, { selected }) => (
+                  <li {...props}>
+                    <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
+                    {option.label}
+                  </li>
+                )}
+                renderInput={(params) => <TextField {...params} label='Casino' variant='standard' />}
+              />
+            </MDBox>
+          </Grid>
+        )}
         <Grid item md={1}>
-          <MDButton variant='text' disabled={!casinos.length}>
+          <MDButton variant='text' disabled={!casinos.length && !countries.length} onClick={onSubmit}>
             Apply
           </MDButton>
         </Grid>

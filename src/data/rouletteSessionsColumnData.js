@@ -1,7 +1,7 @@
-import { Icon, IconButton, Tooltip } from "@mui/material";
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import { NavLink } from "react-router-dom";
+import { Icon, IconButton, Tooltip } from '@mui/material';
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import { NavLink } from 'react-router-dom';
 
 let casinoId = window.location.pathname.split('/')[2];
 
@@ -47,7 +47,7 @@ const rouletteSessionsColumnData = [
         <>
           <MDBox sx={{ display: 'flex', justifyContent: 'space-around' }}>
             <Tooltip title='Edit'>
-              <NavLink to={`/roulette-sessions/${casinoId}/edit/${row.original.id}`}>
+              <NavLink to={`/roulette-sessions/${window.location.pathname.split('/')[2]}/edit/${row.original.id}`}>
                 <MDTypography fontSize='0.875rem'>
                   <IconButton size='small' color='info'>
                     <Icon fontSize='small'>edit</Icon>
