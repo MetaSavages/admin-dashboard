@@ -71,13 +71,13 @@ export const createRole = async (name, permissions, casinos) => {
   }
 };
 
-export const updateRole = async (id, name, permissions, casinos) => {
+export const updateRole = async (id, name, permissions, casinoId) => {
   const api = useAxios();
   try {
     const params = {
       name: name,
       permissionIds: permissions,
-      casinoId: casinos ? casinos : null
+      casinoId: casinoId ? casinoId : null
     };
     return await api.put(`/admin/auth/roles/${id}`, params);
   } catch (err) {

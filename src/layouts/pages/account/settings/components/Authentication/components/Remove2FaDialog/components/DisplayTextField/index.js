@@ -55,8 +55,10 @@ function DisplayTextField({ setSteps }) {
   return (
     <>
       <DialogContent>
-        <MDTypography>To remove code please enter the code from two-factor authentication.</MDTypography>
-        <MDBox className='remove-arrows-from-input' mt={1.5} mb={1.5}>
+        <MDTypography px={2} sx={{ textAlign: 'center', fontSize: '16px' }}>
+          Enter the code from your auth app below to disable 2FA
+        </MDTypography>
+        <MDBox className='remove-arrows-from-input' mt={1.5} mb={1.5} px={2}>
           <MDInput
             type='number'
             label='Code'

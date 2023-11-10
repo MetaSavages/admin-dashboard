@@ -8,7 +8,7 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
       page: page,
       sortBy: 'createdAt:DESC'
     };
-    console.log('fifafasd', filters);
+
     if (Object.keys(filters).length) {
       if (filters.users.length) {
         params['id'] = `${filters.users.map((u) => u.id).toString()}`;

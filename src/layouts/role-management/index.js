@@ -18,7 +18,6 @@ function RoleManagement() {
       <Can I='read' a='role'>
         <DataTablePage
           title='Role Management'
-          object='role'
           createButton={
             <MDButton variant='contained' color='info' onClick={() => navigate('/role-management/new-role')}>
               Add Role
@@ -34,6 +33,7 @@ function RoleManagement() {
             handleOpenModal();
           }}
           filters={filters}
+          noActions
         />
         <Dialog
           open={showModal}

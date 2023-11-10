@@ -37,9 +37,9 @@ import validations from 'layouts/user-management/components/schemas/validations'
 import form from 'layouts/user-management/components/schemas/form';
 import initialValues from 'layouts/user-management/components/schemas/initialValues';
 
-import { getUser, resetUserPasswordAnd2Fa } from 'services/users';
+import { getUser, resetUserPasswordAnd2Fa, updateUser } from 'services/users';
 import { useState, useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, Skeleton, Tooltip } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can, useMaterialUIController } from 'context';
@@ -59,6 +59,7 @@ function EditUser() {
     setNewPassword('');
     setOpenDialogPassword(false);
   }
+  const navigate = useNavigate();
 
   const { id } = useParams();
   useEffect(() => {
@@ -76,12 +77,18 @@ function EditUser() {
       setTimeout(resolve, ms);
     });
   const submitForm = async (values, actions) => {
-    await sleep(1000);
+    const result = await updateUser(id, {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+      roleId: values.role.value
+    });
 
     // eslint-disable-next-line no-alert
-    alert(JSON.stringify(values, null, 2));
     actions.setSubmitting(false);
     actions.resetForm();
+    navigate('/user-management');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
@@ -114,7 +121,7 @@ function EditUser() {
                     initialValues={{
                       firstName: user?.firstName || '',
                       lastName: user?.lastName || '',
-                      role: user?.role || '',
+                      role: user?.role ? { value: user?.role.id, name: user?.role.name } : '',
                       email: user?.email || '',
                       password: user?.password || '',
                       repeatPassword: user?.repeatPassword || ''
