@@ -52,6 +52,7 @@ import Icon from '@mui/material/Icon';
 import PlayerManagement from 'layouts/player-management';
 import UserManagement from 'layouts/user-management';
 import SupportTickets from 'layouts/support-tickets';
+import ShowTicket from 'layouts/support-tickets/show-ticket';
 import RTL from 'layouts/pages/rtl';
 import Dashboard from 'layouts/dashboard';
 import RoleManagement from 'layouts/role-management';
@@ -377,6 +378,12 @@ const routes = [
     key: 'new-player',
     route: '/player-management/new-player',
     component: <NewPlayer />
+  },
+  {
+    name: 'Show Ticket',
+    key: 'show-ticket',
+    route: '/support-tickets/show/:id',
+    component: <ShowTicket />
   },
   {
     name: 'Show Player',

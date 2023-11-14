@@ -9,11 +9,8 @@ import { getUsers, deleteUser } from 'services/users';
 import userColumnData from 'data/usersColumnData';
 
 function SupportTickets() {
+  
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-  const [deleteUserId, setDeleteUserId] = useState('');
   const [filters, setFilters] = useState('');
 
   return (
@@ -34,10 +31,6 @@ function SupportTickets() {
           queryKey='users'
           columnData={userColumnData}
           object={'support'}
-          onDelete={(id) => {
-            setDeleteUserId(id);
-            handleOpenModal();
-          }}
           filters={filters}
         />
       </Can>
