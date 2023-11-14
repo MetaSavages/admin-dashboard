@@ -4,12 +4,13 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { Dialog, DialogTitle, DialogActions, Card } from '@mui/material';
 import { Can } from 'context';
 import { useState, useEffect } from 'react';
+import supportTicketsColumnData from 'data/supportTicketsColumnData';
 
 import { getUsers, deleteUser } from 'services/users';
 import userColumnData from 'data/usersColumnData';
 
 function SupportTickets() {
-  
+
   const navigate = useNavigate();
   const [filters, setFilters] = useState('');
 

@@ -1,4 +1,4 @@
-const SupportTicketsColumnData = [
+const supportTicketsColumnData = [
     {
       Header: 'Id',
       accessor: 'id'
@@ -24,4 +24,4 @@ const SupportTicketsColumnData = [
       accessor: 'status'
     }
   ];
-  export default SupportTicketsColumnData;
+  export default supportTicketsColumnData;
