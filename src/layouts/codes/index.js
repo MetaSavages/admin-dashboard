@@ -3,7 +3,6 @@ import MDButton from 'components/MDButton';
 import { Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { Can } from 'context';
-// import codesColumnData from 'data/codesColumnData copy';
 import { createCodes, getCodes } from 'services/codes';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogActions, DialogTitle } from '@mui/material';
@@ -61,7 +60,7 @@ function CodeManagement() {
     <>
       <Can I='read' a='code'>
         <DataTablePage
-          title='Cade Management'
+          title='Code Management'
           createButton={
             <Can I='create' a='code'>
               {/* This is to show a window where user can write how much promo codes want to be  generated  */}

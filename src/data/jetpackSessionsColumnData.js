@@ -1,9 +1,7 @@
-import { Icon, IconButton, Tooltip } from "@mui/material";
-import MDBox from "components/MDBox";
-import MDTypography from "components/MDTypography";
-import { NavLink } from "react-router-dom";
-
-let casinoId = window.location.pathname.split('/')[2];
+import { Icon, IconButton, Tooltip } from '@mui/material';
+import MDBox from 'components/MDBox';
+import MDTypography from 'components/MDTypography';
+import { NavLink } from 'react-router-dom';
 
 const jetpackSessionsColumnData = [
   {
@@ -47,7 +45,7 @@ const jetpackSessionsColumnData = [
         <>
           <MDBox sx={{ display: 'flex', justifyContent: 'space-around' }}>
             <Tooltip title='Edit'>
-              <NavLink to={`/jetpack-sessions/${ window.location.pathname.split('/')[2]}/edit/${row.original.id}`}>
+              <NavLink to={`/jetpack-sessions/${window.location.pathname.split('/')[2]}/edit/${row.original.id}`}>
                 <MDTypography fontSize='0.875rem'>
                   <IconButton size='small' color='info'>
                     <Icon fontSize='small'>edit</Icon>
