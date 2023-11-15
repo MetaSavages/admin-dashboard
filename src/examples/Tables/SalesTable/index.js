@@ -32,19 +32,47 @@ import MDBox from 'components/MDBox';
 // Material Dashboard 2 PRO React examples
 import SalesTableCell from 'examples/Tables/SalesTable/SalesTableCell';
 
-function SalesTable({ title, rows, shadow }) {
-  const renderTableCells = rows.map((row, key) => {
+function SalesTable({ rows, shadow }) {
+  let defaultCountries = [
+    {
+      country: ['AU', 'Australia'],
+      registered: 0,
+      active: 0
+    },
+    {
+      country: ['JP', 'Japan'],
+      registered: 0,
+      active: 0
+    },
+    {
+      country: ['KR', 'South Korea'],
+      registered: 0,
+      active: 0
+    },
+    {
+      country: ['US', 'United States'],
+      registered: 0,
+      active: 0
+    }
+  ];
+
+  const rowsToShow = [...rows.slice(1)];
+  defaultCountries = defaultCountries.filter((c) =>
+    rowsToShow.find((cc) => c.country[0] === cc.country[0] && (cc.registered === 0 || cc.active === 0))
+  );
+  const rowsDescending = [...defaultCountries, ...rowsToShow].sort((a, b) => b.active - a.active);
+
+  const renderTableCells = rowsDescending.slice(0, 4).map((row, key) => {
     const tableRows = [];
     const rowKey = `row-${key}`;
-
-    Object.entries(row).map(([cellTitle, cellContent]) =>
+    Object.entries(row).map(([cellTitle, cellContent]) => {
       Array.isArray(cellContent)
         ? tableRows.push(
             <SalesTableCell
               key={cellContent[1]}
               title={cellTitle}
               content={cellContent[1]}
-              image={cellContent[0]}
+              image={`https://flagsapi.com/${cellContent[0]}/shiny/64.png`}
               noBorder={key === rows.length - 1}
             />
           )
@@ -55,8 +83,8 @@ function SalesTable({ title, rows, shadow }) {
               content={cellContent}
               noBorder={key === rows.length - 1}
             />
-          )
-    );
+          );
+    });
 
     return <TableRow key={rowKey}>{tableRows}</TableRow>;
   });
@@ -64,15 +92,6 @@ function SalesTable({ title, rows, shadow }) {
   return (
     <TableContainer sx={{ height: '100%', boxShadow: !shadow && 'none' }}>
       <Table>
-        {title ? (
-          <TableHead>
-            <MDBox component='tr' width='max-content' display='block' mb={1.5}>
-              <MDTypography variant='h6' component='td'>
-                {title}
-              </MDTypography>
-            </MDBox>
-          </TableHead>
-        ) : null}
         <TableBody>{useMemo(() => renderTableCells, [rows])}</TableBody>
       </Table>
     </TableContainer>

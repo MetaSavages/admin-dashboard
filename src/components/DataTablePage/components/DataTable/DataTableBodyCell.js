@@ -19,19 +19,31 @@ import PropTypes from 'prop-types';
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 
-function DataTableBodyCell({ noBorder, align, children }) {
+function DataTableBodyCell({ noBorder, align, children, expanded = false }) {
   return (
     <MDBox
       component='td'
       textAlign={align}
       py={1.5}
-      px={3}
+      pl={children?.props?.column?.id === 'expander' ? 1.5 : 3}
       sx={({ palette: { light }, typography: { size }, borders: { borderWidth } }) => ({
         fontSize: size.sm,
+        fontWeight: expanded ? 600 : 400,
         borderBottom: noBorder ? 'none' : `${borderWidth[1]} solid ${light.main}`
       })}
     >
-      <MDBox display='inline-block' width='max-content' color='text' sx={{ verticalAlign: 'middle' }}>
+      <MDBox
+        display='inline-block'
+        width='max-content'
+        color='text'
+        sx={{
+          verticalAlign: 'middle',
+          textDecoration:
+            expanded && (children?.props?.column?.id === 'nickname' || children?.props?.column?.id === 'username')
+              ? 'underline'
+              : 'none'
+        }}
+      >
         {children}
       </MDBox>
     </MDBox>

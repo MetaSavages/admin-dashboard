@@ -1,4 +1,4 @@
-import { useTable, usePagination, useSortBy, useGlobalFilter } from 'react-table';
+import { useTable, usePagination, useSortBy, useGlobalFilter, useExpanded } from 'react-table';
 
 const useReactTableInstance = (tableColumns, tableData, queryPageIndex, queryPageSize, queryTotalCount) => {
   const {
@@ -33,6 +33,7 @@ const useReactTableInstance = (tableColumns, tableData, queryPageIndex, queryPag
     },
     useGlobalFilter,
     useSortBy,
+    useExpanded,
     usePagination
   );
 

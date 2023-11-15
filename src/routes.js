@@ -36,9 +36,10 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 PRO React layouts
-import Analytics from 'layouts/analytics';
+import Analytics from 'layouts/player_activity';
 import Sales from 'layouts/sales';
 import NewUser from 'layouts/user-management/new-user';
+import NewPlayer from 'layouts/player-management/new-player';
 
 import SignInBasic from 'layouts/authentication/sign-in/basic';
 
@@ -55,12 +56,45 @@ import Dashboard from 'layouts/dashboard';
 import RoleManagement from 'layouts/role-management';
 import NewRole from 'layouts/role-management/new-role';
 import EditUser from 'layouts/user-management/edit-user';
+import EditPlayer from 'layouts/player-management/edit-player';
+import ShowPlayer from 'layouts/player-management/show-player';
 import Logout from 'layouts/authentication/logout';
 import ShowUser from 'layouts/user-management/show-user';
 import PermissionManagement from 'layouts/permission-management';
 import NewPermission from 'layouts/permission-management/new-permission';
 import EditPermession from 'layouts/permission-management/edit-permission';
 import EditRole from 'layouts/role-management/edit-role';
+import EventsAnalytics from 'layouts/events_analytics';
+import PlayerActivity from 'layouts/player_activity';
+import EventHistory from 'layouts/event_history';
+import SuccessfullPayouts from 'layouts/payouts/successfull_payouts';
+import FailedPayouts from 'layouts/payouts/failed_payouts';
+import PendingPayouts from 'layouts/payouts/pending_payouts';
+import SuccessfullDeposits from 'layouts/deposits/successfull_deposits';
+import FailedDeposits from 'layouts/deposits/failed_deposits';
+import PendingDeposits from 'layouts/deposits/pending_deposits';
+import CasinoManagement from 'layouts/casinos';
+import NewCasino from 'layouts/casinos/new-casino';
+import EditCasino from 'layouts/casinos/edit-casino';
+import Blacklists from 'layouts/blacklists';
+import Settings from 'layouts/pages/account/settings';
+import BlackjackSessions from 'layouts/game_sessions/blackjack-sessions';
+import BaccaratSessions from 'layouts/game_sessions/baccarat-sessions';
+import RouletteSessions from 'layouts/game_sessions/roulette-sessions';
+import CasinoGames from 'layouts/casino-games';
+import JetpackSessions from 'layouts/game_sessions/jetpack';
+import CrashSessions from 'layouts/game_sessions/crash';
+import SlotSessions from 'layouts/game_sessions/slots';
+import EditBlackjackTable from 'layouts/game_sessions/blackjack-sessions/edit-table';
+import EditBaccaratTable from 'layouts/game_sessions/baccarat-sessions/edit-table';
+import EditRouletteTable from 'layouts/game_sessions/roulette-sessions/edit-table';
+import EditJetpackTable from 'layouts/game_sessions/jetpack/edit-table';
+import EditCrashTable from 'layouts/game_sessions/crash/edit-table';
+import SlotsManagement from 'layouts/slots-managment';
+import EditSlot from 'layouts/slots-managment/edit-slot';
+import CodeManagement from 'layouts/codes';
+import NewCodes from 'layouts/codes/components/new-codes';
+
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
   {
@@ -76,14 +110,14 @@ const routes = [
   {
     type: 'collapse',
     name: 'Admin management',
-    // action: 'manage',
-    // object: 'all',
+    // action: 'read',
+    // object: 'admin', // not yet implemented in the backend
     key: 'admin-management',
     icon: <Icon fontSize='medium'>manageAccounts</Icon>,
     collapse: [
       {
         name: 'User management',
-        key: 'user-mangement',
+        key: 'user-management',
         action: 'read',
         object: 'user',
         icon: <Icon fontSize='medium'>people</Icon>,
@@ -92,17 +126,21 @@ const routes = [
       },
       {
         name: 'Role management',
-        key: 'role-mangement',
+        key: 'role-management',
         icon: <Icon fontSize='medium'>manageAccounts</Icon>,
         route: '/role-management',
-        component: <RoleManagement />
+        component: <RoleManagement />,
+        action: 'read',
+        object: 'role'
       },
       {
         name: 'Permission management',
-        key: 'permission-mangement',
+        key: 'permission-management',
         icon: <Icon fontSize='medium'>check_circle</Icon>,
         route: '/permission-management',
-        component: <PermissionManagement />
+        component: <PermissionManagement />,
+        action: 'read',
+        object: 'permission'
       }
     ]
   },
@@ -113,40 +151,135 @@ const routes = [
     key: 'player-management',
     icon: <Icon fontSize='medium'>people</Icon>,
     route: '/player-management',
-    component: <PlayerManagement />
+    component: <PlayerManagement />,
+    action: 'read',
+    object: 'player'
   },
-
   {
     type: 'collapse',
     name: 'Analytics',
     key: 'analytics',
     icon: <Icon fontSize='medium'>analytics</Icon>,
-    route: '/dashboards/analytics',
-    component: <Analytics />
+    action: 'read',
+    object: 'metric',
+    collapse: [
+      {
+        name: 'Player Analytics',
+        key: 'player-analytics',
+        icon: <Icon fontSize='medium'>timeline</Icon>,
+        route: '/analytics/player-analytics',
+        component: <PlayerActivity />
+      },
+      {
+        name: 'Events',
+        key: 'events',
+        icon: <Icon fontSize='medium'>event</Icon>,
+        route: '/analytics/events',
+        component: <EventsAnalytics />
+      },
+      {
+        name: 'Event History',
+        key: 'event-history',
+        icon: <Icon fontSize='medium'>history</Icon>,
+        route: '/analytics/event-history',
+        component: <EventHistory />
+      }
+    ]
   },
   {
     type: 'collapse',
-    name: 'Casino',
-    key: 'casino',
+    noCollapse: true,
+    name: 'Casinos',
+    key: 'casinos',
     icon: <Icon fontSize='medium'>casino</Icon>,
-    route: '/casino',
-    component: <Sales />
+    route: '/casinos',
+    component: <CasinoManagement />,
+    action: 'read',
+    object: 'casino'
+  },
+  {
+    type: 'collapse',
+    noCollapse: true,
+    name: 'Slots',
+    key: 'slots',
+    icon: <Icon fontSize='medium'>games</Icon>,
+    route: '/slots',
+    component: <SlotsManagement />,
+    action: 'read',
+    object: 'slot'
   },
   {
     type: 'collapse',
     name: 'Blacklists',
     key: 'blacklists',
     icon: <Icon fontSize='medium'>block</Icon>,
-    route: '/blacklists',
-    component: <Sales />
+    noCollapse: true,
+    route: '/blacklists/countries',
+    component: <Blacklists />,
+    action: 'read',
+    object: 'blacklist'
+  },
+  {
+    type: 'collapse',
+    name: 'Deposits',
+    key: 'deposits',
+    icon: <Icon fontSize='medium'>add_card_payment</Icon>,
+    action: 'read',
+    object: 'deposit',
+    collapse: [
+      {
+        name: 'Successful Deposits',
+        key: 'successful-deposits',
+        icon: <Icon fontSize='medium'>done</Icon>,
+        route: '/deposits/successful-deposits',
+        component: <SuccessfullDeposits />
+      },
+      {
+        name: 'Failed Deposits',
+        key: 'failed-deposits',
+        icon: <Icon fontSize='medium'>clear</Icon>,
+        route: '/deposits/failed-deposits',
+        component: <FailedDeposits />
+      },
+      {
+        name: 'Pending Deposits',
+        key: 'pending-deposits',
+        icon: <Icon fontSize='medium'>pending</Icon>,
+        route: '/deposits/pending-deposits',
+        component: <PendingDeposits />
+      }
+    ]
   },
   {
     type: 'collapse',
     name: 'Payouts',
     key: 'payouts',
     icon: <Icon fontSize='medium'>payments</Icon>,
-    route: '/sales',
-    component: <Sales />
+    action: 'read',
+    object: 'payout',
+    collapse: [
+      {
+        name: 'Successful Payouts',
+        key: 'successful-payouts',
+        icon: <Icon fontSize='medium'>done</Icon>,
+        route: '/payouts/successful-payouts',
+        component: <SuccessfullPayouts />
+      },
+      {
+        name: 'Failed Payouts',
+        key: 'failed-payouts',
+        icon: <Icon fontSize='medium'>clear</Icon>,
+        route: '/payouts/failed-payouts',
+        component: <FailedPayouts />
+      },
+      {
+        name: 'Pending Payouts',
+        key: 'pending-payouts',
+        icon: <Icon fontSize='medium'>pending</Icon>,
+        route: '/payouts/pending-payouts',
+        component: <PendingPayouts />
+      }
+    ]
   },
   {
     type: 'collapse',
@@ -175,6 +308,16 @@ const routes = [
     component: <Sales />
   },
   {
+    type: 'collapse',
+    noCollapse: true,
+    name: 'Promo Codes',
+    key: 'promo-codes',
+    icon: <Icon fontSize='medium'>local_activity</Icon>,
+    route: '/promo-codes',
+    component: <CodeManagement />,
+    action: 'code'
+  },
+  {
     type: 'divider',
     key: 'divider-0'
   },
@@ -183,8 +326,15 @@ const routes = [
     name: 'Settings',
     key: 'settings',
     icon: <Icon fontSize='medium'>settings</Icon>,
-    route: '/settings',
-    component: <Sales />
+    collapse: [
+      {
+        name: 'Edit user',
+        key: 'edit user',
+        icon: <Icon fontSize='medium'>edit</Icon>,
+        route: '/settings/user',
+        component: <Settings />
+      }
+    ]
   },
   {
     type: 'collapse',
@@ -220,6 +370,24 @@ const routes = [
     component: <EditUser />
   },
   {
+    name: 'New Player',
+    key: 'new-player',
+    route: '/player-management/new-player',
+    component: <NewPlayer />
+  },
+  {
+    name: 'Show Player',
+    key: 'show-player',
+    route: '/player-management/show/:id',
+    component: <ShowPlayer />
+  },
+  {
+    name: 'Edit Player',
+    key: 'edit-player',
+    route: '/player-management/edit/:id',
+    component: <EditPlayer />
+  },
+  {
     name: 'New Role',
     key: 'new-role',
     route: '/role-management/new-role',
@@ -244,6 +412,18 @@ const routes = [
     component: <EditPermession />
   },
   {
+    name: 'New Casino',
+    key: 'new-casino',
+    route: '/casinos/new-casino',
+    component: <NewCasino />
+  },
+  {
+    name: 'Edit Casino',
+    key: 'edit-casino',
+    route: '/casinos/edit/:id',
+    component: <EditCasino />
+  },
+  {
     type: 'collapse',
     noCollapse: true,
     icon: <Icon fontSize='medium'>logout</Icon>,
@@ -251,6 +431,90 @@ const routes = [
     key: 'logout',
     route: '/authentication/logout',
     component: <Logout />
+  },
+  {
+    name: 'Blackjack Sessions',
+    key: 'blackjack-sessions',
+    route: '/blackjack-sessions/:id1',
+    component: <BlackjackSessions />
+  },
+  {
+    name: 'Edit Blackjack Table',
+    key: 'edit-blackjack-table',
+    route: '/blackjack-sessions/:id1/edit/:id',
+    component: <EditBlackjackTable />
+  },
+  {
+    name: 'Baccarat Sessions',
+    key: 'baccarat-sessions',
+    route: '/baccarat-sessions/:id1',
+    component: <BaccaratSessions />
+  },
+  {
+    name: 'Edit Baccarat Table',
+    key: 'edit-baccarat-table',
+    route: '/baccarat-sessions/:id1/edit/:id',
+    component: <EditBaccaratTable />
+  },
+  {
+    name: 'Roulette Sessions',
+    key: 'roulette-sessions',
+    route: '/roulette-sessions/:id1',
+    component: <RouletteSessions />
+  },
+  {
+    name: 'Edit Roulette Table',
+    key: 'edit-roulette-table',
+    route: '/roulette-sessions/:id1/edit/:id',
+    component: <EditRouletteTable />
+  },
+  {
+    name: 'Slot Sessions',
+    key: 'slot-sessions',
+    route: '/slot-sessions/:id',
+    component: <SlotSessions />
+  },
+  {
+    name: 'Jetpack Sessions',
+    key: 'jetpack-sessions',
+    route: '/jetpack-sessions/:id1',
+    component: <JetpackSessions />
+  },
+  {
+    name: 'Edit Jetpack Table',
+    key: 'edit-jetpack-table',
+    route: '/jetpack-sessions/:id1/edit/:id',
+    component: <EditJetpackTable />
+  },
+  {
+    name: 'Crash Sessions',
+    key: 'crash-sessions',
+    route: '/crash-sessions/:id1',
+    component: <CrashSessions />
+  },
+  {
+    name: 'Edit Crash Table',
+    key: 'edit-crash-table',
+    route: '/crash-sessions/:id1/edit/:id',
+    component: <EditCrashTable />
+  },
+  {
+    name: 'Casino Games',
+    key: 'casino-games',
+    route: '/casino-games/:id',
+    component: <CasinoGames />
+  },
+  {
+    name: 'New codes',
+    key: 'new-codes',
+    route: '/promo-codes/new-codes',
+    component: <NewCodes />
+  },
+  {
+    name: 'Edit Slot',
+    key: 'edit-slot',
+    route: '/slots/edit/:id',
+    component: <EditSlot />
   }
 ];
 

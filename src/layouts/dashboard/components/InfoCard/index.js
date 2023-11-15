@@ -27,27 +27,28 @@ import MDTypography from 'components/MDTypography';
 function InfoCard({ color, icon, title, description }) {
   return (
     <Card width={'4rem'}>
-      <MDBox p={2} display='flex' justifyContent='space-between' alignItems='center'>
+      <MDBox p={3} display='flex' justifyContent='space-between' alignItems='center'>
         <MDBox
           display='grid'
           justifyContent='center'
           alignItems='center'
           bgColor={color}
           color='white'
-          width='2.5rem'
-          height='2.5rem'
+          width='2rem'
+          height='2rem'
           shadow='md'
           borderRadius='lg'
           variant='gradient'
           mr={2}
+          px={2}
         >
           <Icon fontSize='default'>{icon}</Icon>
         </MDBox>
         <MDBox mt={1}>
-          <MDTypography variant='h5' fontWeight='medium' textTransform='capitalize'>
+          <MDTypography variant='h5' fontWeight='medium' textTransform='capitalize' fontSize='1.2rem'>
             {title}
           </MDTypography>
-          <MDTypography variant='body2' color='text' fontWeight='regular'>
+          <MDTypography variant='body2' color='text' fontWeight='regular' fontSize='1.2rem'>
             {description}
           </MDTypography>
         </MDBox>

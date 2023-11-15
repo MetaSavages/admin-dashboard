@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 const form = {
-  formId: 'new-user-form',
+  formId: 'new-role-form',
   formField: {
     roleName: {
       name: 'roleName',
@@ -27,6 +27,12 @@ const form = {
       label: 'Role Permissions',
       type: 'select',
       errorMsg: 'Role permissions is required.'
+    },
+    casino: {
+      name: 'casino',
+      label: 'Casino',
+      type: 'select',
+      errorMsg: 'Casino is required.'
     }
   }
 };

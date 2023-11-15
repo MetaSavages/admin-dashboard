@@ -16,22 +16,22 @@ const dataTablePlayersData = {
       SubCell: () => null
     },
     { Header: 'Username', accessor: 'username', width: 100 },
-    { Header: 'Time Spent', accessor: 'time_spent', width: 100, SubCell: (cellProps) => <>{cellProps.value}</> },
+    { Header: 'Time Spent', accessor: 'time_spent', width: 150, SubCell: (cellProps) => <>{cellProps.value}</> },
     {
       Header: 'Current Balance',
       accessor: 'current_balance',
-      width: 100,
+      width: 150,
       SubCell: (cellProps) => <>{cellProps.value}</>
     },
-    { Header: 'Spent', accessor: 'spent', width: 100, SubCell: (cellProps) => <>{cellProps.value}</> },
     {
       Header: 'Starting Balance',
       accessor: 'starting_balance',
-      width: 100,
+      width: 150,
       SubCell: (cellProps) => <>{cellProps.value}</>
     },
+    { Header: 'Spent', accessor: 'spent', width: 100, SubCell: (cellProps) => <>{cellProps.value}</> },
     { Header: 'Cashout', accessor: 'cashout', width: 100, SubCell: (cellProps) => <>{cellProps.value}</> },
-    { Header: 'wallet', accessor: 'wallet', width: 300 },
+    { Header: 'wallet', accessor: 'wallet', width: 200 },
     { Header: 'location', accessor: 'location', width: 200 },
     { Header: 'kyc_status', accessor: 'kyc_status', width: 100 }
   ],

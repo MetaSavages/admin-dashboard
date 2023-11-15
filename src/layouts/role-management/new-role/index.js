@@ -33,19 +33,20 @@ import Footer from 'examples/Footer';
 import RoleInfo from 'layouts/role-management/components/RoleInfo';
 
 // NewUser layout schemas for form and form feilds
-import validations from 'layouts/role-management/schemas/validations';
-import form from 'layouts/role-management/schemas/form';
-import initialValues from 'layouts/role-management/schemas/initialValues';
+import validations from 'layouts/role-management/components/schemas/validations';
+import form from 'layouts/role-management/components/schemas/form';
+import initialValues from 'layouts/role-management/components/schemas/initialValues';
 import { createRole } from 'services/roles';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Can } from 'context';
 
 function NewRole() {
   const { formId, formField } = form;
   const currentValidation = validations[0];
   const navigate = useNavigate();
   const submitForm = async (values, actions) => {
-    const response = await createRole(values.roleName, values.rolePermissions);
-    if (response.status === 201) {
+    const response = await createRole(values.roleName, values.rolePermissions, values.casino);
+    if (response.status === 200 || response.status === 201) {
       alert('Role created successfully');
     } else {
       alert('Role creation failed');
@@ -61,43 +62,50 @@ function NewRole() {
   };
 
   return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox py={3} mb={20} height='65vh'>
-        <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
-          <Grid item xs={12} lg={8}>
-            <Formik initialValues={initialValues} validationSchema={currentValidation} onSubmit={handleSubmit}>
-              {({ values, errors, touched, isSubmitting, setFieldValue }) => (
-                <Form id={formId} autoComplete='off'>
-                  <Card sx={{ height: '100%' }}>
-                    <MDBox p={3}>
-                      <MDBox>
-                        <RoleInfo
-                          formData={{
-                            values,
-                            touched,
-                            formField,
-                            errors,
-                            setFieldValue,
-                            isSubmitting
-                          }}
-                        />
-                        <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
-                          <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
-                            Add
-                          </MDButton>
+    <>
+      <Can I='create' a='role'>
+        <DashboardLayout>
+          <DashboardNavbar />
+          <MDBox py={3} mb={20} height='65vh'>
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '100%', mt: 8 }}>
+              <Grid item xs={12} lg={8}>
+                <Formik initialValues={initialValues} validationSchema={currentValidation} onSubmit={handleSubmit}>
+                  {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+                    <Form id={formId} autoComplete='off'>
+                      <Card sx={{ height: '100%' }}>
+                        <MDBox p={3}>
+                          <MDBox>
+                            <RoleInfo
+                              formData={{
+                                values,
+                                touched,
+                                formField,
+                                errors,
+                                setFieldValue,
+                                isSubmitting
+                              }}
+                            />
+                            <MDBox mt={2} width='100%' display='flex' justifyContent='space-between'>
+                              <MDButton disabled={isSubmitting} type='submit' variant='gradient' color='dark'>
+                                Add
+                              </MDButton>
+                            </MDBox>
+                          </MDBox>
                         </MDBox>
-                      </MDBox>
-                    </MDBox>
-                  </Card>
-                </Form>
-              )}
-            </Formik>
-          </Grid>
-        </Grid>
-      </MDBox>
-      <Footer />
-    </DashboardLayout>
+                      </Card>
+                    </Form>
+                  )}
+                </Formik>
+              </Grid>
+            </Grid>
+          </MDBox>
+          <Footer />
+        </DashboardLayout>
+      </Can>
+      <Can not I='create' a='role'>
+        <Navigate to='/dashboard' replace />
+      </Can>
+    </>
   );
 }
 

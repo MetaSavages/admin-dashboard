@@ -37,8 +37,8 @@ const useFetchData = (
     [queryKey, queryPageIndex, queryPageSize, queryPageCount, search],
     () => fetchData(queryPageSize, queryPageIndex + 1, search),
     {
-      keepPreviousData: true,
-      staleTime: Infinity
+      keepPreviousData: true
+      // staleTime: Infinity
     }
   );
   useEffect(() => {
