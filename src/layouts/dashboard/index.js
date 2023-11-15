@@ -13,6 +13,9 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import { useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+
 // @mui material components
 import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
@@ -51,6 +54,10 @@ import DataTable from 'components/DataTablePage/components/DataTable';
 import VerticalBarChart from 'examples/Charts/BarCharts/VerticalBarChart';
 import MultiLayerPieChart from 'examples/Charts/MultiLayerPieChart';
 import DoubleInfoCard from './components/DoubleInfoCard';
+import TradingViewChart from 'examples/Charts/TradingView';
+
+// Services
+import { getDepositData } from 'services/deposits';
 import {
   getTodayNumbers,
   getGameStats,
@@ -59,7 +66,6 @@ import {
   trackSuccessfulLogins,
   getTodayAmount
 } from 'services/analytics';
-import { useEffect, useRef, useState } from 'react';
 import { Card, Skeleton } from '@mui/material';
 import HorizontalBarChart from 'examples/Charts/BarCharts/HorizontalBarChart';
 import { useMaterialUIController } from 'context';
@@ -73,6 +79,16 @@ function Dashboard() {
   const [gameLose, setGameLose] = useState('');
   const [gameBet, setGameBet] = useState('');
   const [registrationStart, setRegistrationStart] = useState('');
+  const [data, setData] = useState([]);
+  const today = new Date();
+
+  // Create a new date object for before 1 week
+  const weekBefore = new Date();
+  weekBefore.setDate(today.getDate() - 7);
+
+  const [from, setFrom] = useState(dayjs(weekBefore));
+  const [to, setTo] = useState(dayjs(today));
+
   const [allBets, setGameWins] = useState([]);
   const [gameLoses, setGameLoses] = useState([]);
   const [correctMonths, setCorrectMonths] = useState([]);
@@ -107,6 +123,43 @@ function Dashboard() {
     gameWinsAmount: 0,
     gameLoseAmount: 0
   });
+
+  useEffect(() => {
+    submitDepositData();
+  }, [from, to]);
+
+  const submitDepositData = () => {
+    getDepositData(from, to, 'SUCCESSFUL', 'day')
+      .then((result) => {
+        if (result.data) {
+          setData(result.data);
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const handleFromChange = (date) => {
+    if (to) {
+      if (date > to) {
+        setFrom(to);
+        setTo(date);
+      } else {
+        setFrom(date);
+      }
+    } else {
+      setFrom(date);
+    }
+  };
+  const handleToChange = (date) => {
+    if (from) {
+      if (date < from) {
+        setFrom(date);
+        setTo(from);
+      }
+    } else {
+      setTo(date);
+    }
+  };
 
   const gameData = {
     labels: correctMonths,
@@ -399,8 +452,8 @@ function Dashboard() {
               <InfoCard
                 color='info'
                 icon='trending_up'
-                title='Total registrations'
-                description={`${registrationStart}`}
+                title='Total registration starts'
+                description={registrationStart}
               />
             </Grid>
             <Grid item xs={2}>
@@ -436,6 +489,16 @@ function Dashboard() {
                   ) : (
                     <Skeleton height={400} />
                   )}
+                </Grid>
+                <Grid item xs={12}>
+                  <TradingViewChart
+                    from={from}
+                    handleFromChange={handleFromChange}
+                    to={to}
+                    handleToChange={handleToChange}
+                    dataInfo={data}
+                    submitDepositData={submitDepositData}
+                  />
                 </Grid>
                 <Grid item xs={4}>
                   <MultiLayerPieChart title='Earnings' description='24 Hours performance' chart={pieData} />
