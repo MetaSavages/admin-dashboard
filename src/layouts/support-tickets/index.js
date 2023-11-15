@@ -23,20 +23,20 @@ function SupportTickets() {
 
   return (
     <>
-      <Can I='read' a='ticket'>
+      <Can I='read' a='support'>
         <DataTablePage
           title='Support Tickets'
           canSearch
           canFilter
           fetchData={fetchData}
-          queryKey='support-tickets'
+          queryKey='support'
           columnData={supportTicketsColumnData}
-          object={'support-ticket'}
+          object={'support'}
           noActions
           //filtersComponent={<Filters filters={filters} setFilters={setFilters} />} <Filters
         />
       </Can>
-      <Can not I='read' a='ticket'>
+      <Can not I='read' a='support'>
         <Navigate to='/dashboard' replace />
       </Can>
     </>
