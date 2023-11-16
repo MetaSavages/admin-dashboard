@@ -84,6 +84,10 @@ const codesColumnData = [
     accessor: 'date_create'
   },
   {
+    Header: 'Date Claimed',
+    accessor: 'date_claimed'
+  },
+  {
     Header: 'Actions',
     accessor: 'actions',
     sorted: false,
