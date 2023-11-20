@@ -32,7 +32,7 @@ import { blue, grey } from '@mui/material/colors';
 import { Button } from '@mui/base';
 import { setNotificationToSeen } from 'services/notifications';
 
-const NotificationItem = forwardRef(({ type, notification, ...rest }, ref) => {
+const NotificationItem = forwardRef(({ type, notification, darkMode, ...rest }, ref) => {
   const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState('');
   useEffect(() => {
@@ -65,7 +65,7 @@ const NotificationItem = forwardRef(({ type, notification, ...rest }, ref) => {
           variant='button'
           fontWeight='regular'
           sx={{ ml: 1 }}
-          color={notification?.seen ? 'light' : 'white'}
+          color={notification?.seen ? (darkMode ? 'light' : 'dark') : darkMode ? 'white' : 'black'}
         >
           {message}
         </MDTypography>
@@ -76,7 +76,8 @@ const NotificationItem = forwardRef(({ type, notification, ...rest }, ref) => {
 
 NotificationItem.propTypes = {
   type: PropTypes.string.isRequired,
-  notification: PropTypes.object.isRequired
+  notification: PropTypes.object.isRequired,
+  darkMode: PropTypes.bool
 };
 
 export default NotificationItem;

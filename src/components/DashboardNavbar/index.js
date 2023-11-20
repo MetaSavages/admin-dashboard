@@ -176,7 +176,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
     >
       {notifications?.data ? (
         notifications?.data?.map((notification) => (
-          <NotificationItem key={notification.id} type={notification.type} notification={notification} />
+          <NotificationItem
+            key={notification.id}
+            type={notification.type}
+            notification={notification}
+            darkMode={darkMode}
+          />
         ))
       ) : (
         <MDTypography variant='button' fontWeight='regular' sx={{ ml: 1 }}>
