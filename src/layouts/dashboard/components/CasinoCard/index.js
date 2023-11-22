@@ -34,7 +34,7 @@ function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, des
   const [gameProfit, setGameProfit] = useState(0);
 
   useEffect(() => {
-    setGameProfit(Number(gameWinsAmount) - Number(gameLoseAmount));
+    setGameProfit(Number(gameLoseAmount) - Number(gameWinsAmount));
   }, [gameWinsAmount, gameLoseAmount]);
 
   return (
@@ -104,7 +104,7 @@ function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, des
         </MDTypography>
         <MDBox mb={3} mt={-0.5} display='flex' justifyContent='center'>
           <MDTypography variant='subtitle2' component='p' color='info'>
-            Life time sales
+            Today's profit
           </MDTypography>
         </MDBox>
         {action.type === 'external' ? (

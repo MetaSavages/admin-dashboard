@@ -35,7 +35,8 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
           wallet: x.u_walletId,
           location: x.u_lastLocation,
           kyc_status: x.u_kycState,
-          isDemo: x.u_isDemo
+          isDemo: x.u_isDemo,
+          createdDate: x.createdDate
         };
       }),
       meta: unformattedData.data.meta

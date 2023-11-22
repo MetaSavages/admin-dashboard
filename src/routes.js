@@ -305,7 +305,9 @@ const routes = [
     key: 'support-tickets',
     icon: <Icon fontSize='medium'>support</Icon>,
     route: '/support-tickets',
-    component: <Sales />
+    component: <Sales />,
+    action: 'read',
+    object: 'support',
   },
   {
     type: 'collapse',

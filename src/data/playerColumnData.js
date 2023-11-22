@@ -1,6 +1,6 @@
 import { Icon } from '@mui/material';
 import { getCurrentUser } from 'services/auth';
-import {formatNumber, formatDuration } from 'layouts/player-management/helpers';
+import { formatNumber, formatDuration } from 'layouts/player-management/helpers';
 
 export const playerColumnData = async () => {
   const user = await getCurrentUser();
@@ -56,7 +56,11 @@ export const playerColumnData = async () => {
       )
     },
     { Header: 'location', accessor: 'location', width: 200 },
-    { Header: 'kyc_status', accessor: 'kyc_status', width: 100 }
+    { Header: 'kyc_status', accessor: 'kyc_status', width: 100 },
+    {
+      Header: 'Creation Date',
+      accessor: 'createdDate'
+    }
   ];
   if (!user.role?.casino) {
     arr = [
