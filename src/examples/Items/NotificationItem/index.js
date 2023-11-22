@@ -36,6 +36,7 @@ const NotificationItem = forwardRef(({ type, notification, darkMode, ...rest }, 
   const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState('');
   useEffect(() => {
+    console.log(notification);
     switch (type) {
       case 'PROMO_CODE_REGISTRATION':
         if (notification?.user?.promoCode?.code != null) {
@@ -45,6 +46,16 @@ const NotificationItem = forwardRef(({ type, notification, darkMode, ...rest }, 
         }
         setRedirect(`/player-management/show/${notification?.user?.id}`);
         break;
+      case 'GAME_WIN':
+        setMessage(
+          `${notification?.user?.nickname} has won ${notification?.metric?.payload?.amount} on ${notification?.metric?.payload?.gameType}`
+        );
+        break;
+      case 'DEPOSIT':
+        setMessage(`${notification?.user?.nickname} has deposited ${notification?.metric?.payload?.amount}`);
+        break;
+      case 'WITHDRAWAL':
+        setMessage(`${notification?.user?.nickname} has withdrawn ${notification?.metric?.payload?.amount}`);
     }
   }, [type]);
 
