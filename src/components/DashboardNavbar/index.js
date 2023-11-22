@@ -174,7 +174,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onScrollCapture={handleNotificationScroll}
       sx={{ mt: 2, height: '50%', overflowY: 'scroll' }}
     >
-      {notifications?.data ? (
+      {notifications?.data?.length ? (
         notifications?.data?.map((notification) => (
           <NotificationItem
             key={notification.id}
