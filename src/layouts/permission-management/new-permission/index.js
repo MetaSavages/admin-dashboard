@@ -47,13 +47,12 @@ function NewPermission() {
     const response = await createPermission(values.action, values.object);
     if (response.status === 201) {
       alert('Permission created successfully');
+      navigate('/permission-management');
     } else {
       alert('Permission creation failed');
+      actions.setSubmitting(false);
+      actions.resetForm();
     }
-    // eslint-disable-next-line no-alert
-    actions.setSubmitting(false);
-    actions.resetForm();
-    navigate('/permission-management');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);

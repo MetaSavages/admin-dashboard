@@ -21,8 +21,8 @@ const {
 } = checkout;
 
 const validations = Yup.object().shape({
-  [action.name]: Yup.string().required(`${action.errorMsg}`),
-  [object.name]: Yup.string().required(`${object.errorMsg}`)
+  [action.name]: Yup.string().required(action.errorMsg),
+  [object.name]: Yup.string().required(object.errorMsg)
 });
 
 export default validations;

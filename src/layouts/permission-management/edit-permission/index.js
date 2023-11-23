@@ -62,15 +62,14 @@ function EditPermession() {
 
   const submitForm = async (values, actions) => {
     const response = await updatePermission(id, values.action, values.object);
-    if (response.status === 201) {
+    if (response.status === 200) {
       alert('Permission created successfully');
+      navigate('/permission-management');
     } else {
-      alert('Permission creation failed');
+      alert('Permission creation failed' + response);
+      actions.setSubmitting(false);
+      actions.resetForm();
     }
-    // eslint-disable-next-line no-alert
-    actions.setSubmitting(false);
-    actions.resetForm();
-    navigate('/permission-management');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
@@ -133,7 +132,7 @@ function EditPermession() {
                                     <MDButton onClick={handleClose} variant='text'>
                                       No
                                     </MDButton>
-                                    <MDButton type='submit' disabled={isSubmitting} form={formId} variant='text'>
+                                    <MDButton type='submit' onClick={handleClose} disabled={isSubmitting} form={formId} variant='text'>
                                       Yes
                                     </MDButton>
                                   </DialogActions>

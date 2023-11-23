@@ -48,14 +48,12 @@ function NewRole() {
     const response = await createRole(values.roleName, values.rolePermissions, values.casino);
     if (response.status === 200 || response.status === 201) {
       alert('Role created successfully');
+      navigate('/role-management');
     } else {
       alert('Role creation failed');
+      actions.setSubmitting(false);
+      actions.resetForm();
     }
-    // eslint-disable-next-line no-alert
-
-    actions.setSubmitting(false);
-    actions.resetForm();
-    navigate('/role-management');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
