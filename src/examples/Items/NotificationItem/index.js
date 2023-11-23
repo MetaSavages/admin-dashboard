@@ -50,12 +50,16 @@ const NotificationItem = forwardRef(({ type, notification, darkMode, ...rest }, 
         setMessage(
           `${notification?.user?.nickname} has won ${notification?.metric?.payload?.amount} on ${notification?.metric?.payload?.gameType}`
         );
+        setRedirect(`/player-management/show/${notification?.user?.id}`);
         break;
       case 'DEPOSIT':
         setMessage(`${notification?.user?.nickname} has deposited ${notification?.metric?.payload?.amount}`);
+        setRedirect(`/player-management/show/${notification?.user?.id}`);
         break;
       case 'WITHDRAWAL':
         setMessage(`${notification?.user?.nickname} has withdrawn ${notification?.metric?.payload?.amount}`);
+        setRedirect(`/player-management/show/${notification?.user?.id}`);
+        break;
     }
   }, [type]);
 
