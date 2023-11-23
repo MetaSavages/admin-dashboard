@@ -20,14 +20,12 @@ const form = {
       name: 'action',
       label: 'Action',
       type: 'select', 
-      options: ['manage', 'create', 'read', 'update', 'delete'],
       errorMsg: 'Action is required.'
     },
     object: {
       name: 'object',
       label: 'Object',
       type: 'select', 
-      options: ['all', 'user', 'role', 'permission', 'admin', 'casino', 'blacklist', 'metric', 'player', 'payout', 'deposit', 'support', 'reset-password-and-2fa'],
       errorMsg: 'Object is required.'
     }
   }

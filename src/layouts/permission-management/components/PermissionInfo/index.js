@@ -1,34 +1,37 @@
-/**
-=========================================================
-* Material Dashboard 2 PRO React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-pro-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// prop-type is a library for typechecking of props
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
-// @mui material components
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import Grid from '@mui/material/Grid';
-
-// Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-
+import { getPermissionOptions } from 'services/permissions';
 
 function PermissionInfo({ formData, title }) {
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { action, object } = formField;
   const { action: actionV, object: objectV } = values;
+  const [actionOptions, setActionOptions] = useState([]);
+  const [objectOptions, setObjectOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const options = (await getPermissionOptions()).data;
+        if (options && options.actions && options.objects) {
+          setActionOptions(options.actions);
+          setObjectOptions(options.objects);
+        } else {
+          console.log('Something happend: ' + options);
+        }
+      } catch (error) {
+        console.log(error);
+        alert('Error fetching permission options');
+      }
+    };
+    
+    fetchOptions();
+  }, []);
+  
 
   const handleActionChange = (event) => {
     setFieldValue(action.name, event.target.value);
@@ -56,9 +59,9 @@ function PermissionInfo({ formData, title }) {
                   name: action.name,
                   id: action.name,
                 }}
-                sx={{ minHeight: '36px', marginTop: '8px' }} // Adjust styles as needed
+                sx={{ minHeight: '36px', marginTop: '8px' }}
               >
-                {action.options.map((option) => (
+                {actionOptions.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
@@ -78,9 +81,9 @@ function PermissionInfo({ formData, title }) {
                   name: object.name,
                   id: object.name,
                 }}
-                sx={{ minHeight: '36px', marginTop: '8px' }} // Adjust styles as needed
+                sx={{ minHeight: '36px', marginTop: '8px' }}
               >
-                {object.options.map((option) => (
+                {objectOptions.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
@@ -100,4 +103,5 @@ PermissionInfo.propTypes = {
 };
 
 export default PermissionInfo;
+
 
