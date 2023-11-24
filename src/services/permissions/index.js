@@ -61,12 +61,7 @@ export const createPermission = async (action, object) => {
     });
   } catch (err) {
     console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    return err.response;
   }
 };
 
@@ -79,12 +74,7 @@ export const updatePermission = async (id, action, object) => {
     });
   } catch (err) {
     console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    return err.response;
   }
 };
 
