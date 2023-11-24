@@ -59,11 +59,11 @@ function CodeManagement() {
 
   return (
     <>
-      <Can I='read' a='code'>
+      <Can I='read' a='promocode'>
         <DataTablePage
           title='Cade Management'
           createButton={
-            <Can I='create' a='code'>
+            <Can I='create' a='promocode'>
               {/* This is to show a window where user can write how much promo codes want to be  generated  */}
               {/* <MDButton variant='contained' color='info' onClick={() => navigate('/promo-codes/new-codes')}>
                 Add Codes
@@ -79,7 +79,7 @@ function CodeManagement() {
           fetchData={getCodes}
           queryKey='codes'
           columnData={codesColumnData}
-          object={'code'}
+          object={'promocode'}
           onDelete={(id) => {
             handleOpenModal();
           }}
@@ -122,7 +122,7 @@ function CodeManagement() {
           </DialogActions>
         </Dialog>
       </Can>
-      <Can not I='read' a='code'>
+      <Can not I='read' a='promocode'>
         <Navigate to='/dashboard' replace />
       </Can>
     </>

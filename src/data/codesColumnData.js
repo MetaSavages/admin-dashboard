@@ -113,7 +113,7 @@ const codesColumnData = [
                 </NavLink>
               </Tooltip>
             </Can> */}
-            <Can I='delete' a='casino'>
+            <Can I='delete' a='promocode'>
               <Tooltip
                 title='Delete'
                 onClick={() => {

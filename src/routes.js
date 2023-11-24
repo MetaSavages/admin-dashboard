@@ -317,7 +317,8 @@ const routes = [
     icon: <Icon fontSize='medium'>local_activity</Icon>,
     route: '/promo-codes',
     component: <CodeManagement />,
-    action: 'code'
+    action: 'read',
+    object: 'promocode'
   },
   {
     type: 'divider',
