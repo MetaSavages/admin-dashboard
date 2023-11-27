@@ -59,7 +59,7 @@ export const createUser = async (user) => {
       lastName: user.lastName,
       email: user.email,
       password: user.password,
-      roleId: user.role
+      roleId: user.role.value
     });
   } catch (err) {
     console.log(err);

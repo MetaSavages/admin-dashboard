@@ -33,9 +33,8 @@ import Footer from 'examples/Footer';
 import UserInfo from 'layouts/user-management/components/UserInfo';
 
 // EditUser layout schemas for form and form feilds
-import validations from 'layouts/user-management/components/schemas/validations';
 import form from 'layouts/user-management/components/schemas/form';
-import initialValues from 'layouts/user-management/components/schemas/initialValues';
+import validations from 'layouts/user-management/components/schemas/editValidations';
 
 import { getUser, resetUserPasswordAnd2Fa, updateUser } from 'services/users';
 import { useState, useEffect } from 'react';
@@ -72,10 +71,6 @@ function EditUser() {
       });
   }, []);
 
-  const sleep = (ms) =>
-    new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
   const submitForm = async (values, actions) => {
     const result = await updateUser(id, {
       firstName: values.firstName,
@@ -84,11 +79,13 @@ function EditUser() {
       password: values.password,
       roleId: values.role.value
     });
-
-    // eslint-disable-next-line no-alert
-    actions.setSubmitting(false);
-    actions.resetForm();
-    navigate('/user-management');
+    if (result.status === 200 || result.status === 201) {
+      alert('User updated successfully');
+      navigate('/user-management');
+    } else {
+      alert('User update failed');
+      actions.resetForm();
+    }
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
