@@ -32,10 +32,11 @@ const useReactTableInstance = (tableColumns, tableData, queryPageIndex, queryPag
       pageCount: queryTotalCount // used for counting how many page left
     },
     useGlobalFilter,
-    useSortBy,
+    // useSortBy,
     useExpanded,
     usePagination
   );
+  console.log(page);
 
   return {
     getTableProps,
