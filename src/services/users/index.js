@@ -73,12 +73,7 @@ export const updateUser = async (id, user) => {
     return await api.put(`/admin/users/${id}`, user);
   } catch (err) {
     console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    return err.response;
   }
 };
 

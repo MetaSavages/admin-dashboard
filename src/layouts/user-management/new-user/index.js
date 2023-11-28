@@ -51,7 +51,7 @@ function NewUser() {
       alert('User created successfully');
       navigate('/user-management');
     } else if (response.status === 400) {
-      alert('Email already exists');
+      alert('Email taken by another user');
     } else {
       alert('User creation failed');
     }

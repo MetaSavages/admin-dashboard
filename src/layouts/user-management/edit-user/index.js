@@ -82,6 +82,9 @@ function EditUser() {
     if (result.status === 200 || result.status === 201) {
       alert('User updated successfully');
       navigate('/user-management');
+    } else if (result.status === 400) {
+      alert('Email taken by another user');
+      actions.resetForm();
     } else {
       alert('User update failed');
       actions.resetForm();
