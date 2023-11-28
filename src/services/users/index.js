@@ -63,14 +63,10 @@ export const createUser = async (user) => {
     });
   } catch (err) {
     console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    return err.response;
   }
 };
+
 export const updateUser = async (id, user) => {
   const api = useAxios();
   try {

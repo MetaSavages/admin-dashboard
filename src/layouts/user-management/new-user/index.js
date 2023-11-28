@@ -50,8 +50,10 @@ function NewUser() {
     if (response.status === 200 || response.status === 201) {
       alert('User created successfully');
       navigate('/user-management');
+    } else if (response.status === 400) {
+      alert('Email already exists');
     } else {
-      alert('Error creating user');
+      alert('User creation failed');
     }
     actions.setSubmitting(false);
   };
