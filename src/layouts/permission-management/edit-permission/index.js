@@ -39,7 +39,7 @@ import { useEffect, useState } from 'react';
 import { updatePermission, getPermission } from 'services/permissions';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogContent, DialogActions } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
 
