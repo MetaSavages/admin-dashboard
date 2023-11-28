@@ -42,6 +42,7 @@ import { Skeleton } from '@mui/material';
 import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
+
 function EditPermession() {
   const { id } = useParams();
   const { formId, formField } = form;
@@ -62,7 +63,7 @@ function EditPermession() {
 
   const submitForm = async (values, actions) => {
     const response = await updatePermission(id, values.action, values.object);
-    if (response.status === 200) {
+    if (response.status === 200 || response.status === 201) {
       alert('Permission created successfully');
       navigate('/permission-management');
     } else if (response.status === 400){

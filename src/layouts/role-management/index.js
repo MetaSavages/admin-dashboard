@@ -6,6 +6,7 @@ import rolesColumnData from 'data/rolesColumnData';
 import { useState } from 'react';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
 import { Can } from 'context';
+
 function RoleManagement() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);

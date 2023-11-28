@@ -49,10 +49,12 @@ function NewRole() {
     if (response.status === 200 || response.status === 201) {
       alert('Role created successfully');
       navigate('/role-management');
+    } else if (response.status === 400) {
+      alert(response.data.message);
+      actions.setSubmitting(false);
     } else {
       alert('Role creation failed');
       actions.setSubmitting(false);
-      actions.resetForm();
     }
   };
   const handleSubmit = (values, actions) => {

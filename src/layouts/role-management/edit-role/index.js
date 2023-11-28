@@ -44,7 +44,7 @@ import { useEffect, useState } from 'react';
 import { Dialog, DialogActions, DialogContent, Skeleton } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
-import { object } from 'prop-types';
+
 function EditRole() {
   const { id } = useParams();
   const { formId, formField } = form;
@@ -136,10 +136,13 @@ function EditRole() {
     if (response.status === 200 || response.status === 201) {
       alert('Role edited successfully');
       navigate('/role-management');
+    } else if(response.status === 400){
+      alert(response.data.message);
+      actions.setSubmitting(false);
+      handleClose();
     } else {
       alert('Role edit failed');
       actions.setSubmitting(false);
-      actions.resetForm();
       handleClose();
     }
   };
