@@ -529,12 +529,6 @@ function Dashboard() {
                           title='Blackjack'
                           description='Last campaign performance'
                           image={blackjackImg}
-                          action={{
-                            type: 'internal',
-                            route: '/somewhere',
-                            color: 'info',
-                            label: 'Go Somewhere'
-                          }}
                           allBets={blackjack.allBets}
                           gameWinsAmount={blackjack.gameWinsAmount}
                           gameLoseAmount={blackjack.gameLoseAmount}
@@ -545,12 +539,6 @@ function Dashboard() {
                           title='Baccarat'
                           description='Last campaign performance'
                           image={baccaratImg}
-                          action={{
-                            type: 'internal',
-                            route: '/somewhere',
-                            color: 'info',
-                            label: 'Go Somewhere'
-                          }}
                           allBets={baccarat.allBets}
                           gameWinsAmount={baccarat.gameWinsAmount}
                           gameLoseAmount={baccarat.gameLoseAmount}
@@ -562,12 +550,6 @@ function Dashboard() {
                           title='Roulette'
                           description='Last campaign performance'
                           image={rouletteImg}
-                          action={{
-                            type: 'internal',
-                            route: '/somewhere',
-                            color: 'info',
-                            label: 'Go Somewhere'
-                          }}
                           allBets={roulette.allBets}
                           gameWinsAmount={roulette.gameWinsAmount}
                           gameLoseAmount={roulette.gameLoseAmount}
@@ -578,12 +560,6 @@ function Dashboard() {
                           title='Slots'
                           description='Last campaign performance'
                           image={slotsImg}
-                          action={{
-                            type: 'internal',
-                            route: '/somewhere',
-                            color: 'info',
-                            label: 'Go Somewhere'
-                          }}
                           allBets={slots.allBets}
                           gameWinsAmount={slots.gameWinsAmount}
                           gameLoseAmount={slots.gameLoseAmount}
@@ -594,12 +570,6 @@ function Dashboard() {
                           title='Crash'
                           description='Last campaign performance'
                           image={crashImg}
-                          action={{
-                            type: 'internal',
-                            route: '/somewhere',
-                            color: 'info',
-                            label: 'Go Somewhere'
-                          }}
                           allBets={crash.allBets}
                           gameWinsAmount={crash.gameWinsAmount}
                           gameLoseAmount={crash.gameLoseAmount}
