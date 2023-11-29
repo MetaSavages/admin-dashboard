@@ -49,3 +49,24 @@ export const setNotificationToSeen = async (id) => {
     };
   }
 };
+
+export const markAllAsRead = async () => {
+  const api = useAxios();
+  try {
+    return await api.patch(`/admin/backoffice-notifications/mark-all-as-read`, {});
+  } catch (err) {
+    console.log(err);
+    return {
+      data: [],
+      meta: {
+        totalItems: 0,
+        itemCount: 0,
+        itemsPerPage: 0,
+        totalPages: 0,
+        currentPage: 0
+      }
+    };
+  }
+};
+
+

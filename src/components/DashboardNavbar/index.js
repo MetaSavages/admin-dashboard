@@ -60,7 +60,7 @@ import { Skeleton, Switch } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import Notifications from 'components/Notifications';
 import { io } from 'socket.io-client';
-import { getNotifications } from 'services/notifications';
+import { getNotifications, markAllAsRead } from 'services/notifications';
 import { MenuItem } from '@mui/base';
 
 function DashboardNavbar({ absolute, light, isMini }) {
@@ -174,6 +174,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onScrollCapture={handleNotificationScroll}
       sx={{ mt: 2, height: '50%', overflowY: 'scroll' }}
     >
+      <MDTypography
+        sx={{ fontSize: '13px', textAlign: 'right', cursor: 'pointer', color: '#7d7d7d' }}
+        onClick={markAllAsRead}
+      >
+        Mark all as read
+      </MDTypography>
       {notifications?.data?.length ? (
         notifications?.data?.map((notification) => (
           <NotificationItem
