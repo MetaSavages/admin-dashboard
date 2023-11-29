@@ -54,13 +54,24 @@ export const getUser = async (id) => {
 export const createUser = async (user) => {
   const api = useAxios();
   try {
-    return await api.post('/admin/users', {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password,
-      roleId: user.role.value
-    });
+    console.log(process.env.REACT_APP_ENV)
+    if (process.env.REACT_APP_ENV == 'PROD') {
+      return await api.post('/admin/users', {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        password: user.password,
+        roleId: user.role.value
+      });
+    } else {
+      return await api.post('/admin/users/dev', {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        password: user.password,
+        roleId: user.role.value
+      });
+    }
   } catch (err) {
     console.log(err);
     return err.response;
@@ -70,7 +81,11 @@ export const createUser = async (user) => {
 export const updateUser = async (id, user) => {
   const api = useAxios();
   try {
-    return await api.put(`/admin/users/${id}`, user);
+    if (process.env.REACT_APP_ENV == 'PROD') {
+      return await api.put(`/admin/users/admin/${id}`, user);
+    } else {
+      return await api.put(`/admin/users/admin/dev/${id}`, user);
+    }
   } catch (err) {
     console.log(err);
     return err.response;

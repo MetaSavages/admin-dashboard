@@ -83,7 +83,7 @@ function EditUser() {
       alert('User updated successfully');
       navigate('/user-management');
     } else if (result.status === 400) {
-      alert('Email taken by another user');
+      alert('Email is not valid or taken by another user');
       actions.resetForm();
     } else {
       alert('User update failed');
