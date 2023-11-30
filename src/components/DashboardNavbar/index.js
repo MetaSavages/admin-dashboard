@@ -71,6 +71,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const route = useLocation().pathname.split('/').slice(1);
   const [notificationCount, setNotificationCount] = useState(0);
   const [notifications, setNotifications] = useState({});
+  const [isRead, setIsRead] = useState(false);
   const menuRef = useRef(null);
   useEffect(() => {
     const value = `; ${document.cookie}`;
@@ -92,6 +93,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
       setNotificationCount(Number(notifications));
     });
   }, []);
+
+  useEffect(() => {
+    const getNotificationsData = async () => {
+      setNotifications(await getNotifications());
+    };
+    getNotificationsData();
+  }, [isRead]);
 
   const handleNotificationScroll = async () => {
     const paper = menuRef?.current?.children[2];
@@ -177,7 +185,10 @@ function DashboardNavbar({ absolute, light, isMini }) {
       {notifications?.data?.length && (
         <MDTypography
           sx={{ fontSize: '13px', textAlign: 'right', cursor: 'pointer', color: '#7d7d7d' }}
-          onClick={markAllAsRead}
+          onClick={() => {
+            markAllAsRead();
+            setIsRead(true);
+          }}
         >
           Mark all as read
         </MDTypography>
