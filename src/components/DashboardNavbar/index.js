@@ -174,12 +174,14 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onScrollCapture={handleNotificationScroll}
       sx={{ mt: 2, height: '50%', overflowY: 'scroll' }}
     >
-      <MDTypography
-        sx={{ fontSize: '13px', textAlign: 'right', cursor: 'pointer', color: '#7d7d7d' }}
-        onClick={markAllAsRead}
-      >
-        Mark all as read
-      </MDTypography>
+      {notifications?.data?.length && (
+        <MDTypography
+          sx={{ fontSize: '13px', textAlign: 'right', cursor: 'pointer', color: '#7d7d7d' }}
+          onClick={markAllAsRead}
+        >
+          Mark all as read
+        </MDTypography>
+      )}
       {notifications?.data?.length ? (
         notifications?.data?.map((notification) => (
           <NotificationItem
