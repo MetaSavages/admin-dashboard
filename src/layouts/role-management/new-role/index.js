@@ -50,7 +50,7 @@ function NewRole() {
       alert('Role created successfully');
       navigate('/role-management');
     } else if (response.status === 400) {
-      alert(response.data.message);
+      alert('Role name is taken');
       actions.setSubmitting(false);
     } else {
       alert('Role creation failed');

@@ -67,7 +67,7 @@ function EditPermession() {
       alert('Permission created successfully');
       navigate('/permission-management');
     } else if (response.status === 400){
-      alert(response.data.message);
+      alert('That permission already exists');
       actions.setSubmitting(false);
       actions.resetForm();
     } else {
