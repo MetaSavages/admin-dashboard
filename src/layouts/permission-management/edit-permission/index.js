@@ -64,14 +64,14 @@ function EditPermession() {
   const submitForm = async (values, actions) => {
     const response = await updatePermission(id, values.action, values.object);
     if (response.status === 200 || response.status === 201) {
-      alert('Permission created successfully');
+      alert('Permission edited successfully');
       navigate('/permission-management');
     } else if (response.status === 400){
       alert('That permission already exists');
       actions.setSubmitting(false);
       actions.resetForm();
     } else {
-      alert('Permission creation failed');
+      alert('Permission edit failed');
       actions.setSubmitting(false);
       actions.resetForm();
     }
