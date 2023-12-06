@@ -41,10 +41,9 @@ import { useState, useEffect } from 'react';
 import { Navigate, useParams, useNavigate } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, Skeleton, Tooltip } from '@mui/material';
 import MDTypography from 'components/MDTypography';
-import { Can, useMaterialUIController } from 'context';
+import { Can } from 'context';
 
 function EditUser() {
-  const [controller] = useMaterialUIController();
   const { formId, formField } = form;
   const currentValidation = validations[0];
   const [user, setUser] = useState(null);
