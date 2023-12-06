@@ -34,7 +34,7 @@ import UserInfo from 'layouts/user-management/components/UserInfo';
 
 // EditUser layout schemas for form and form feilds
 import form from 'layouts/user-management/components/schemas/form';
-import validations from 'layouts/user-management/components/schemas/editValidations';
+import validations from 'layouts/user-management/components/schemas/validations';
 
 import { getUser, resetUserPasswordAnd2Fa, updateUser } from 'services/users';
 import { useState, useEffect } from 'react';
