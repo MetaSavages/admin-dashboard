@@ -54,7 +54,6 @@ export const getUser = async (id) => {
 export const createUser = async (user) => {
   const api = useAxios();
   try {
-    console.log(process.env.REACT_APP_ENV)
     if (process.env.REACT_APP_ENV == 'PROD') {
       return await api.post('/admin/users', {
         firstName: user.firstName,
