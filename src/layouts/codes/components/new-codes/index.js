@@ -59,7 +59,7 @@ function NewCodes() {
 
   return (
     <>
-      <Can I='create' a='code'>
+      <Can I='create' a='promocode'>
         <DashboardLayout>
           <DashboardNavbar />
           <MDBox py={3} mb={20} height='65vh'>
@@ -98,7 +98,7 @@ function NewCodes() {
           <Footer />
         </DashboardLayout>
       </Can>
-      <Can not I='create' a='code'>
+      <Can not I='create' a='promocode'>
         <Navigate to='/dashboard' replace />
       </Can>
     </>

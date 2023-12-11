@@ -38,23 +38,26 @@ import form from 'layouts/user-management/components/schemas/form';
 import initialValues from 'layouts/user-management/components/schemas/initialValues';
 import { createUser } from 'services/users';
 import { Can } from 'context';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 function NewUser() {
   const { formId, formField } = form;
   const currentValidation = validations[0];
+  const navigate = useNavigate();
 
-  const sleep = (ms) =>
-    new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
   const submitForm = async (values, actions) => {
-    // await sleep(1000);
-    await createUser(values);
-    // // eslint-disable-next-line no-alert
-    // alert(JSON.stringify(values, null, 2));
+    const response = await createUser(values);
+    if (response.status === 200 || response.status === 201) {
+      alert('User created successfully');
+      navigate('/user-management');
+    } else if (response.status === 400) {
+      alert('Email is not valid or taken by another user');
+    } else {
+      alert('User creation failed');
+    }
     actions.setSubmitting(false);
-    actions.resetForm();
   };
+
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };

@@ -39,9 +39,10 @@ import { useEffect, useState } from 'react';
 import { updatePermission, getPermission } from 'services/permissions';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogContent, DialogActions } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
+
 function EditPermession() {
   const { id } = useParams();
   const { formId, formField } = form;
@@ -62,15 +63,18 @@ function EditPermession() {
 
   const submitForm = async (values, actions) => {
     const response = await updatePermission(id, values.action, values.object);
-    if (response.status === 201) {
-      alert('Permission created successfully');
+    if (response.status === 200 || response.status === 201) {
+      alert('Permission edited successfully');
+      navigate('/permission-management');
+    } else if (response.status === 400){
+      alert('That permission already exists');
+      actions.setSubmitting(false);
+      actions.resetForm();
     } else {
-      alert('Permission creation failed');
+      alert('Permission edit failed');
+      actions.setSubmitting(false);
+      actions.resetForm();
     }
-    // eslint-disable-next-line no-alert
-    actions.setSubmitting(false);
-    actions.resetForm();
-    navigate('/permission-management');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
@@ -133,7 +137,7 @@ function EditPermession() {
                                     <MDButton onClick={handleClose} variant='text'>
                                       No
                                     </MDButton>
-                                    <MDButton type='submit' disabled={isSubmitting} form={formId} variant='text'>
+                                    <MDButton type='submit' onClick={handleClose} disabled={isSubmitting} form={formId} variant='text'>
                                       Yes
                                     </MDButton>
                                   </DialogActions>

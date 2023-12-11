@@ -62,12 +62,7 @@ export const createRole = async (name, permissions, casinos) => {
     return await api.post('/admin/auth/roles', params);
   } catch (err) {
     console.log(err);
-    return {
-      data: {
-        name: '',
-        permissions: []
-      }
-    };
+    return err.response;
   }
 };
 
@@ -82,12 +77,7 @@ export const updateRole = async (id, name, permissions, casinoId) => {
     return await api.put(`/admin/auth/roles/${id}`, params);
   } catch (err) {
     console.log(err);
-    return {
-      data: {
-        name: '',
-        permissions: []
-      }
-    };
+    return err.response;
   }
 };
 

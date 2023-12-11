@@ -19,13 +19,13 @@ const form = {
     action: {
       name: 'action',
       label: 'Action',
-      type: 'text',
+      type: 'select', 
       errorMsg: 'Action is required.'
     },
     object: {
       name: 'object',
       label: 'Object',
-      type: 'text',
+      type: 'select', 
       errorMsg: 'Object is required.'
     }
   }

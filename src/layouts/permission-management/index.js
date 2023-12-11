@@ -3,9 +3,10 @@ import MDButton from 'components/MDButton';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getPermissions, deletePermission } from 'services/permissions';
 import permissionsColumnData from 'data/permissionsColumnData';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
 import { Can } from 'context';
+
 function PermissionManagement() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
