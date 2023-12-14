@@ -15,7 +15,6 @@ import { MetricsType } from 'constants/metricsType';
 
 function ShowPlayer() {
   const { id } = useParams();
-  console.log(id);
   const [user, setUser] = useState({});
   useEffect(() => {
     getPlayer(id)
