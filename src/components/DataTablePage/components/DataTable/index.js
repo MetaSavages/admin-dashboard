@@ -37,7 +37,6 @@ import MDPagination from 'components/MDPagination';
 
 // Material Dashboard 2 PRO React examples
 import DataTableHeadCell from 'components/DataTablePage/components/DataTable/DataTableHeadCell';
-import DataTableBodyCell from 'components/DataTablePage/components/DataTable/DataTableBodyCell';
 import MDButton from 'components/MDButton';
 import { Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton } from '@mui/material';
 import userColumnsData from 'data/usersColumnData';

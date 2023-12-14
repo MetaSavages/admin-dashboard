@@ -5,6 +5,7 @@ import MDBox from 'components/MDBox';
 import React, { useState, useEffect } from 'react';
 import MDButton from 'components/MDButton';
 import { getAllPlayers } from 'services/filters';
+import { useSearchParams } from 'react-router-dom';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
@@ -13,26 +14,10 @@ const Filters = ({ filters, setFilters }) => {
   const [usernameOptions, setUsernameOptions] = useState([]);
   const [usernameInput, setUsernameInput] = useState('');
   const [isDemoChecked, setIsDemoChecked] = useState(false);
-  const updateUsernames = (event, value) => {
-    setPlayerUsernames(value);
-  };
-  const handleCheckboxChange = (event) => {
-    const isChecked = event.target.checked;
-    setIsDemoChecked(isChecked);
-  };
-
-  const handleUsernameInput = (event) => {
-    setUsernameInput(event.target.value);
-    if (event.target.value.length > 2) {
-      getAllPlayers(event.target.value, filters?.isDemo).then((players) => {
-        setUsernameOptions(players);
-      });
-    } else if (event.target.value.length < 2) {
-      setUsernameOptions([]);
-    }
-  };
-
+  const [isClaimedCodes, setIsClaimedCodes] = useState(false);
   const [playerUsernames, setPlayerUsernames] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   // fetch options
   useEffect(() => {
     // fetch player usernames
@@ -49,17 +34,69 @@ const Filters = ({ filters, setFilters }) => {
     if (!playerUsernames.length) {
       setFilters({
         users: [],
-        isDemo: isDemoChecked
+        isDemo: isDemoChecked,
+        isCodesClaimed: isClaimedCodes
       });
     }
   }, [playerUsernames]);
 
+  useEffect(() => {
+    if (searchParams.get('userId')) {
+      const nickname = searchParams.get('nickname');
+      const userId = searchParams.get('userId');
+      const params = {
+        id: userId,
+        value: userId,
+        nickname: nickname,
+        label: nickname
+      };
+      setPlayerUsernames([params]);
+      setFilters({ users: [params] });
+      searchParams.delete('userId');
+      searchParams.delete('nickname');
+    }
+    setSearchParams(searchParams);
+  }, [location.search]);
+
+  const updateUsernames = (event, value) => {
+    setPlayerUsernames(value);
+  };
+  const handleCheckboxChange = (event) => {
+    const isChecked = event.target.checked;
+    setIsDemoChecked(isChecked);
+  };
+
+  const handleCheckboxCodesChange = (event) => {
+    const isChecked = event.target.checked;
+    setIsClaimedCodes(isChecked);
+  };
+
+  const handleUsernameInput = (event) => {
+    setUsernameInput(event.target.value);
+    if (event.target.value.length > 2) {
+      getAllPlayers(event.target.value, filters?.isDemo).then((players) => {
+        setUsernameOptions(players);
+      });
+    } else if (event.target.value.length < 2) {
+      setUsernameOptions([]);
+    }
+  };
+
   const onSubmit = () => {
     setFilters({
       users: playerUsernames,
-      isDemo: isDemoChecked
+      isDemo: isDemoChecked,
+      isCodesClaimed: isClaimedCodes
     });
   };
+
+  function checkActiveButton() {
+    return (
+      !playerUsernames.length &&
+      ((filters?.isDemo == null && isDemoChecked === false) || isDemoChecked === filters?.isDemo) &&
+      ((filters?.isCodesClaimed == null && isClaimedCodes === false) || isClaimedCodes === filters?.isCodesClaimed)
+    );
+  }
   return (
     <MDBox
       sx={{
@@ -109,16 +146,20 @@ const Filters = ({ filters, setFilters }) => {
               Demo players
             </label>
           </MDBox>
+          <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
+            <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                checked={isClaimedCodes}
+                onChange={(event) => handleCheckboxCodesChange(event)}
+              />
+              Claimed codes
+            </label>
+          </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
-          <MDButton
-            variant='text'
-            disabled={
-              !playerUsernames.length &&
-              ((filters?.isDemo == null && isDemoChecked === false) || isDemoChecked === filters?.isDemo)
-            }
-            onClick={onSubmit}
-          >
+          <MDButton variant='text' disabled={checkActiveButton()} onClick={onSubmit}>
             Apply
           </MDButton>
         </Grid>

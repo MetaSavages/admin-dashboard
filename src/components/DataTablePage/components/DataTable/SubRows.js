@@ -5,15 +5,13 @@ function SubRows({ row, rowProps, subrowFetchData }) {
   const [subRows, setSubRows] = useState([]);
 
   useEffect(() => {
-    console.log('row', subrowFetchData);
     const fetchData = async () => {
       const result = await subrowFetchData(row.original);
-      console.log('result', result);
       setSubRows(result);
     };
     fetchData();
   }, [row.original.id, subrowFetchData]);
-  console.log('subRows', subRows);
+
   return (
     <>
       {subRows.map((x, i) => {

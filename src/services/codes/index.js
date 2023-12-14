@@ -29,6 +29,7 @@ export const getCodes = async (limit = 20, page = 1, filters) => {
           code_id: el.id,
           code: el.code,
           claimed_user: el.claimedUser ? el.claimedUser.nickname : '-',
+          user_id: el.claimedUser ? el.claimedUser.id : null,
           date_create: el.createdAt,
           date_claimed: el.updatedAt == el.createdAt ? '-' : el.updatedAt
         };

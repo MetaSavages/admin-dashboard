@@ -16,6 +16,9 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
       if (filters?.isDemo != null) {
         params['isDemo'] = filters.isDemo;
       }
+      if (filters?.isDemo != null) {
+        params['isCodesClaimed'] = filters.isCodesClaimed;
+      }
     }
 
     const unformattedData = await api.get('/admin/metrics/players', {
@@ -134,5 +137,23 @@ export const updatePlayerName = async (id, name) => {
   } catch (err) {
     console.error(`Error updating user:`, err);
     alert(`Error updating user: ${err.message}`);
+  }
+};
+
+export const getGameMetricsByPlayer = async (userId, startDate, endDate, gameType, metricType) => {
+  const api = useAxios();
+  const params = {
+    startDate,
+    endDate,
+    gameType,
+    metricType,
+    userId
+  };
+  try {
+    const response = await api.get(`/admin/metrics/metric-amounts-by-user`, { params: params });
+
+    return response.data;
+  } catch (err) {
+    console.error(`Error updating user:`, err);
   }
 };

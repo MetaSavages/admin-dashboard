@@ -1,12 +1,81 @@
 import { Icon } from '@mui/material';
+import { Link } from 'react-router-dom';
+
+import MDBox from 'components/MDBox';
+
 import { getCurrentUser } from 'services/auth';
 import { formatNumber, formatDuration } from 'layouts/player-management/helpers';
 
-export const playerColumnData = async () => {
+export const playerColumnData = async (navigate) => {
   const user = await getCurrentUser();
   let arr = [
     // { Header: 'ID', accessor: 'id', width: 100 },
-    { Header: 'Username', accessor: 'nickname', width: 100 },
+    {
+      Header: 'Username',
+      accessor: 'nickname',
+      width: 100,
+      Cell: (cellProps) => {
+        return (
+          <MDBox
+            component='td'
+            textAlign={cellProps.cell.column.align ? cellProps.cell.column.align : 'left'}
+            py={1.5}
+            pl={cellProps.cell.row.isExpanded ? 1.5 : 3}
+            sx={({ palette: { light }, typography: { size }, borders: { borderWidth } }) => ({
+              fontSize: size.sm,
+              fontWeight: cellProps.cell.row.isExpanded ? 600 : 400
+            })}
+          >
+            <Link
+              to={
+                cellProps.cell.row.isExpanded &&
+                cellProps.cell.row.original.isDemo &&
+                (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
+                  ? `/player-management/show/${cellProps.cell.row?.original?.id}`
+                  : ''
+              }
+              sx={{
+                verticalAlign: 'middle',
+                textDecoration: 'none',
+                cursor:
+                  cellProps.cell.row.isExpanded &&
+                  cellProps.cell.row.original.isDemo &&
+                  (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
+                    ? 'pointer'
+                    : 'default'
+              }}
+            >
+              <MDBox
+                display='inline-block'
+                width='max-content'
+                color='text'
+                sx={{
+                  verticalAlign: 'middle',
+
+                  textDecoration:
+                    cellProps.cell.row.isExpanded &&
+                    cellProps.cell.row.original.isDemo &&
+                    (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
+                      ? 'underline '
+                      : 'none',
+                  cursor:
+                    cellProps.cell.row.isExpanded &&
+                    cellProps.cell.row.original.isDemo &&
+                    (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
+                      ? 'pointer'
+                      : 'default'
+                }}
+              >
+                {cellProps.cell.row.original.nickname}
+              </MDBox>
+            </Link>
+          </MDBox>
+        );
+      },
+      SubCell: (cellProps) => {
+        return <>{cellProps.value}</>;
+      }
+    },
     {
       Header: 'Time Spent',
       accessor: 'time_spent',
@@ -68,9 +137,9 @@ export const playerColumnData = async () => {
         width: 5,
         Header: () => null,
         id: 'expander',
-        Cell: ({ row }) => (
-          <Icon {...row.getToggleRowExpandedProps()}>{row.isExpanded ? 'expand_less' : 'expand_more'}</Icon>
-        ),
+        Cell: ({ row }) => {
+          return <Icon {...row.getToggleRowExpandedProps()}>{row.isExpanded ? 'expand_less' : 'expand_more'}</Icon>;
+        },
         SubCell: () => null
       },
       ...arr
