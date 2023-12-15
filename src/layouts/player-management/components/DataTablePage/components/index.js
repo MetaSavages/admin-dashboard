@@ -90,6 +90,20 @@ function PlayerDataTable({
   onDelete
 }) {
   const [tableState, dispatchTableAction] = useReducer(tableReducer, defaultState);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 576);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 576);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const setQueryPageIndexHandler = ({ pageIndexValue }) => {
     dispatchTableAction({
       type: ACTION.PAGE_CHANGED,
@@ -239,7 +253,15 @@ function PlayerDataTable({
   return (
     <TableContainer sx={{ boxShadow: 'none' }}>
       {queryPageSize || canSearch ? (
-        <MDBox display='flex' justifyContent='space-between' alignItems='center' p={3}>
+        <MDBox
+          display='flex'
+          justifyContent='space-between'
+          p={3}
+          sx={{
+            flexDirection: isSmallScreen ? 'column' : 'row',
+            alignItems: isSmallScreen ? 'flex-start' : 'center'
+          }}
+        >
           {queryPageSize && (
             <MDBox display='flex' alignItems='center'>
               <Autocomplete
@@ -253,8 +275,8 @@ function PlayerDataTable({
                 sx={{ width: '5rem' }}
                 renderInput={(params) => <MDInput {...params} />}
               />
-              <MDTypography variant='caption' color='secondary'>
-                &nbsp;&nbsp;entries per page
+              <MDTypography variant='caption' color='secondary' sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                entries per page
               </MDTypography>
             </MDBox>
           )}

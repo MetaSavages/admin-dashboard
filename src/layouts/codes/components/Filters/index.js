@@ -1,4 +1,4 @@
-import { Checkbox, Grid, TextField } from '@mui/material';
+import { Checkbox, Grid, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MDBox from 'components/MDBox';
@@ -8,6 +8,7 @@ import { deleteCode } from 'services/codes';
 import MDInput from 'components/MDInput';
 
 import './index.css';
+import { useMaterialUIController } from 'context';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
@@ -15,6 +16,10 @@ const checkedIcon = <CheckBoxIcon fontSize='small' />;
 const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHeaderCheck }) => {
   const [search, setSearch] = useState('');
   const [isClaimed, setIsClaimed] = useState(false);
+  const [openDialogRemoveAllCodes, setOpenDialogRemoveAllCodes] = useState(false);
+  const [controller, dispatch] = useMaterialUIController();
+  const { darkMode } = controller;
+
   const onSubmit = async () => {
     if (arrayFromCodes.length > 0) {
       const deletePromises = arrayFromCodes.map((code) => deleteCode(code));
@@ -23,9 +28,11 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
         alert('Codes deleted successfully');
         setFilters(filters.length ? '' : 'd');
         setArrayFromCodes([]);
+        setHeaderCheck(false);
       } catch (error) {
         alert(error.message);
       }
+      handleCloseRemoveAllCodesDialog();
     }
   };
 
@@ -33,8 +40,8 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
     setSearch(e.target.value);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit() {
+    // e.preventDefault();
     const filter = {};
 
     if (search) {
@@ -53,68 +60,82 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
     setIsClaimed(isChecked);
   };
 
+  const handleCloseRemoveAllCodesDialog = () => {
+    setOpenDialogRemoveAllCodes(false);
+  };
+  console.log('darkMode', darkMode);
   return (
     <MDBox
       sx={{
-        width: '100%',
-        flexGrow: 1
+        marginTop: '20px'
       }}
     >
-      <Grid container spacing={2} justifyContent={'flex-end'} sx={{ paddingRight: '60px' }}>
-        <Grid item xs={12} lg={10}>
-          <Grid container spacing={2}>
-            <form autoComplete='off' onSubmit={handleSubmit} className='form-width-100'>
-              <MDBox sx={{ display: 'flex', alignItems: 'center' }}>
-                <Grid item xs={7}>
-                  <MDBox p={3}>
-                    <MDBox display='flex'>
-                      <MDInput
-                        className='remove-arrows-from-input'
-                        type='text'
-                        label='Code'
-                        fullWidth
-                        value={search}
-                        onChange={handleChange}
-                      />
-                    </MDBox>
-                  </MDBox>
-                </Grid>
-                <Grid item xs={3}>
-                  <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
-                    <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
-                      <Checkbox
-                        icon={icon}
-                        checkedIcon={checkedIcon}
-                        checked={isClaimed}
-                        onChange={(event) => handleCheckboxChange(event)}
-                      />
-                      Claimed Code
-                    </label>
-                  </MDBox>
-                </Grid>
-                <Grid item xs={2}>
-                  <MDBox ml={2} width='100%' display='flex' justifyContent='space-between'>
-                    <MDButton type='submit' variant='gradient' color='info'>
-                      Search
-                    </MDButton>
-                  </MDBox>
-                </Grid>
-              </MDBox>
-            </form>
-          </Grid>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} lg={6}>
+          <MDBox>
+            <MDInput
+              className='remove-arrows-from-input'
+              type='text'
+              label='Code'
+              fullWidth
+              value={search}
+              onChange={handleChange}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={5} sm={2.5}>
+          <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              checked={isClaimed}
+              onChange={(event) => handleCheckboxChange(event)}
+              sx={{ paddingLeft: '0px' }}
+            />
+            <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Claimed Code</label>
+          </MDBox>
+        </Grid>
+        <Grid item xs={4} sm={2}>
+          <MDBox ml={2} width='100%' display='flex' justifyContent='space-between'>
+            <MDButton variant='gradient' color='info' onClick={() => handleSubmit()}>
+              Search
+            </MDButton>
+          </MDBox>
         </Grid>
 
-        <Grid item xs={12} md={2}>
+        <Grid item xs={12} lg={3.5}>
           <MDButton
-            variant='text'
+            variant='outlined'
+            color={darkMode ? 'white' : 'grey'}
             disabled={arrayFromCodes.length > 0 ? false : true}
             sx={{ width: '200px', color: '#F44335' }}
-            onClick={onSubmit}
+            onClick={() => setOpenDialogRemoveAllCodes(true)}
           >
             Remove all codes
           </MDButton>
         </Grid>
       </Grid>
+      <Dialog
+        open={openDialogRemoveAllCodes}
+        onClose={handleCloseRemoveAllCodesDialog}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
+      >
+        <DialogTitle id='alert-dialog-title'>{`Delete promo codes`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-description'>
+            Are you sure you want to delete this all promo codes?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <MDButton variant='text' onClick={handleCloseRemoveAllCodesDialog}>
+            No
+          </MDButton>
+          <MDButton variant='text' color='error' onClick={() => onSubmit()}>
+            yes
+          </MDButton>
+        </DialogActions>
+      </Dialog>
     </MDBox>
   );
 };

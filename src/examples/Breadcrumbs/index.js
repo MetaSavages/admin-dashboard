@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // react-router-dom components
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // prop-types is a library for typechecking of props.
 import PropTypes from 'prop-types';
@@ -29,7 +29,12 @@ import MDTypography from 'components/MDTypography';
 
 function Breadcrumbs({ icon, title, route, light }) {
   const routes = route.slice(0, -1);
+  const navigate = useNavigate();
 
+  const handleReturnClick = () => {
+    // Go back to the previous page
+    history.goBack();
+  };
   return (
     <MDBox mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
@@ -39,6 +44,18 @@ function Breadcrumbs({ icon, title, route, light }) {
           }
         }}
       >
+        <MDBox onClick={() => navigate(-1)}>
+          <MDTypography
+            className='return-back'
+            component='span'
+            variant='body2'
+            color={light ? 'white' : 'dark'}
+            opacity={light ? 0.8 : 0.5}
+            sx={{ lineHeight: 0 }}
+          >
+            <Icon>undo</Icon>
+          </MDTypography>
+        </MDBox>
         <Link to='/'>
           <MDTypography
             component='span'
@@ -50,6 +67,7 @@ function Breadcrumbs({ icon, title, route, light }) {
             <Icon>{icon}</Icon>
           </MDTypography>
         </Link>
+
         {routes.map((el) => (
           <Link to={`/${el}`} key={el}>
             <MDTypography

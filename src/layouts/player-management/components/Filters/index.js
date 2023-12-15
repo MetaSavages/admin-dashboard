@@ -105,7 +105,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2} justifyContent={'flex-end'}>
-        <Grid item xs={4} md={4}>
+        <Grid item xs={12} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -134,28 +134,25 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={2} md={2}>
+        <Grid item xs={10} md={4} lg={3} xxl={2}>
           <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
-            <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                checked={isDemoChecked}
-                onChange={(event) => handleCheckboxChange(event)}
-              />
-              Demo players
-            </label>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              checked={isDemoChecked}
+              onChange={(event) => handleCheckboxChange(event)}
+              sx={{ height: '100%' }}
+            />
+            <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Demo players</label>
           </MDBox>
           <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
-            <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                checked={isClaimedCodes}
-                onChange={(event) => handleCheckboxCodesChange(event)}
-              />
-              Claimed codes
-            </label>
+            <Checkbox
+              icon={icon}
+              checkedIcon={checkedIcon}
+              checked={isClaimedCodes}
+              onChange={(event) => handleCheckboxCodesChange(event)}
+            />
+            <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Claimed codes</label>
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>

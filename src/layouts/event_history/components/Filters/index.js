@@ -20,10 +20,19 @@ const Filters = ({ filters, setFilters }) => {
   const [casinoOptions, setCasinoOptions] = useState([]);
   const [usernameInput, setUsernameInput] = useState('');
   const [countryOptions, setCountryOptions] = useState([]);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth < 992);
 
-  const setOptions = (value) => {
-    console.log(value);
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth < 992);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const updateUsernames = (event, value) => {
     setPlayerUsernames(value);
@@ -133,7 +142,6 @@ const Filters = ({ filters, setFilters }) => {
     eventTypeOptions.forEach((eventType) => {
       if (filters?.eventTypes) {
         filters.eventTypes.forEach((e) => {
-          console.log(e, eventType);
           if (e.id === eventType.id) {
             setEventTypes((prev) => [...prev, eventType]);
           }
@@ -158,7 +166,6 @@ const Filters = ({ filters, setFilters }) => {
     countryOptions.forEach((country) => {
       if (filters?.countries) {
         filters.countries.forEach((c) => {
-          console.log(c, country);
           if (c.name === country) {
             setCountries((prev) => [...prev, country]);
           }
@@ -166,6 +173,120 @@ const Filters = ({ filters, setFilters }) => {
       }
     });
   }, [countryOptions]);
+
+  function timeSection() {
+    return (
+      <>
+        <Grid item xs={12} sm={3} lg={2}>
+          <MDBox>
+            <DateTimePicker
+              label='From'
+              ampmInClock={false}
+              ampm={false}
+              showDaysOutsideCurrentMonth
+              format='DD/MM/YYYY hh:mm'
+              value={from}
+              onChange={handleFromChange}
+              sx={{
+                width: '100%'
+              }}
+              slotProps={{
+                layout: {
+                  sx: {
+                    [`.${pickersLayoutClasses.actionBar}`]: {
+                      display: 'none'
+                    }
+                  }
+                }
+              }}
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={12} sm={3} lg={2}>
+          <MDBox>
+            <DateTimePicker
+              label='To'
+              ampmInClock={false}
+              ampm={false}
+              showDaysOutsideCurrentMonth
+              format='DD/MM/YYYY hh:mm'
+              value={to}
+              onChange={handleToChange}
+              sx={{
+                width: '100%'
+              }}
+              slotProps={{
+                layout: {
+                  sx: {
+                    [`.${pickersLayoutClasses.actionBar}`]: {
+                      display: 'none'
+                    }
+                  }
+                }
+              }}
+            />
+          </MDBox>
+        </Grid>
+      </>
+    );
+  }
+
+  function sectionSubmit() {
+    return (
+      <>
+        <Grid item xs={2} sm={2} md={2}>
+          <MDBox>
+            <FormControlLabel
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0,
+                marginTop: '2px'
+              }}
+              control={
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  checked={demo}
+                  onClick={() => setDemo(!demo)}
+                  name='demo-users-checkbox'
+                  id='demo-users-checkbox'
+                />
+              }
+              label={
+                <label
+                  for='demo-users-checkbox'
+                  style={{
+                    fontSize: '14px',
+                    color: '#9A9CA6'
+                  }}
+                >
+                  {'Enable demo users'}
+                </label>
+              }
+            />
+          </MDBox>
+        </Grid>
+        <Grid item xs={1} md={1} lg={1} ml={3}>
+          <MDButton
+            variant='text'
+            disabled={
+              !playerUsernames.length &&
+              !eventTypes.length &&
+              !from &&
+              !to &&
+              !casinos.length &&
+              !countries.length &&
+              demo === filters?.demo
+            }
+            onClick={onSubmit}
+          >
+            Apply
+          </MDButton>
+        </Grid>
+      </>
+    );
+  }
 
   return (
     <MDBox
@@ -175,7 +296,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2}>
-        <Grid item xs={6} sm={4} md={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -200,12 +321,12 @@ const Filters = ({ filters, setFilters }) => {
                   {option.label}
                 </li>
               )}
-              renderInput={(params) => <TextField {...params} label='Event type' variant='standard' />}
+              renderInput={(params) => <TextField {...params} label='Event type1' variant='standard' />}
             />
           </MDBox>
         </Grid>
 
-        <Grid item xs={12} sm={4} md={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -241,51 +362,8 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={4} md={2}>
-          <MDBox>
-            <DateTimePicker
-              label='From'
-              ampmInClock={false}
-              ampm={false}
-              showDaysOutsideCurrentMonth
-              format='DD/MM/YYYY hh:mm'
-              value={from}
-              onChange={handleFromChange}
-              slotProps={{
-                layout: {
-                  sx: {
-                    [`.${pickersLayoutClasses.actionBar}`]: {
-                      display: 'none'
-                    }
-                  }
-                }
-              }}
-            />
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} sm={4} md={2}>
-          <MDBox>
-            <DateTimePicker
-              label='To'
-              ampmInClock={false}
-              ampm={false}
-              showDaysOutsideCurrentMonth
-              format='DD/MM/YYYY hh:mm'
-              value={to}
-              onChange={handleToChange}
-              slotProps={{
-                layout: {
-                  sx: {
-                    [`.${pickersLayoutClasses.actionBar}`]: {
-                      display: 'none'
-                    }
-                  }
-                }
-              }}
-            />
-          </MDBox>
-        </Grid>
-        <Grid item xs={12} sm={4} md={4}>
+        {isLargeScreen ? <></> : timeSection()}
+        <Grid item xs={12} sm={6} lg={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -313,7 +391,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={6} sm={4} md={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -342,6 +420,8 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
+
+        {isLargeScreen ? timeSection() : <></>}
         <Grid item xs={2} sm={2} md={2}>
           <MDBox>
             <FormControlLabel

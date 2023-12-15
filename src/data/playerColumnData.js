@@ -128,7 +128,8 @@ export const playerColumnData = async (navigate) => {
     { Header: 'kyc_status', accessor: 'kyc_status', width: 100 },
     {
       Header: 'Creation Date',
-      accessor: 'createdDate'
+      accessor: 'createdDate',
+      F
     }
   ];
   if (!user.role?.casino) {

@@ -43,8 +43,8 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
           color: darkMode ? 'rgb(210 218 209 / 56%)' : '#344767'
         }
       },
-      width: chartContainer.current.offsetWidth,
-      height: chartContainer.current.offsetHeight,
+      width: chartContainer?.current?.offsetWidth ? chartContainer.current.offsetWidth : '100%',
+      height: chartContainer?.current?.offsetHeight ? chartContainer.current.offsetHeight : '100%',
       borderRadius: '17px'
     };
     chartContainer.current.innerText = '';
@@ -63,7 +63,10 @@ const TradingViewChart = ({ from, handleFromChange, to, handleToChange, dataInfo
     baselineSeries.setData(data);
     chart.timeScale().fitContent();
     window.onresize = function () {
-      chart.resize(chartContainer.current.offsetWidth, chartContainer.current.offsetHeight);
+      chart.resize(
+        chartContainer?.current?.offsetWidth ? chartContainer?.current.offsetWidth : '100%',
+        chartContainer?.current?.offsetHeight ? chartContainer.current.offsetHeight : '100%'
+      );
       // chart.getVisibleRange();
     };
   }, [darkMode, data]);

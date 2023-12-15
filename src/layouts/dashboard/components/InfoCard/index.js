@@ -26,7 +26,7 @@ import MDTypography from 'components/MDTypography';
 
 function InfoCard({ color, icon, title, description }) {
   return (
-    <Card width={'4rem'}>
+    <Card width={'4rem'} sx={{ height: '100%' }}>
       <MDBox p={3} display='flex' justifyContent='space-between' alignItems='center'>
         <MDBox
           display='grid'
