@@ -44,7 +44,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           }
         }}
       >
-        <MDBox onClick={() => navigate(-1)}>
+        <MDBox sx={{cursor:'pointer'}} onClick={() => navigate(-1)}>
           <MDTypography
             className='return-back'
             component='span'
