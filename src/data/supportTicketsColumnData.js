@@ -24,67 +24,31 @@ const supportTicketsColumnData = [
   },
   {
     Header: 'First Name',
-    accessor: 'first_name'
+    accessor: 'firstName'
   },
   {
     Header: 'Last Name',
-    accessor: 'last_name'
+    accessor: 'lastName'
+  },
+  {
+    Header: 'Personal ID',
+    accessor: 'personalId'
   },
   {
     Header: 'Phone (optional)',
     accessor: 'phone'
   },
   {
-    Header: 'Reviewed',
-    accessor: 'reviewed'
+    Header: 'Reason',
+    accessor: 'reason'
   },
   {
-    Header: '',
-    accessor: 'message',
-    sorted: false,
-    Cell: ({ row }) => {
-      const [showMessageModal, setShowMessageModal] = useState(false);
-      const handleOpenMessageModal = () => setShowMessageModal(true);
-      const handleCloseMessageModal = () => {
-        setShowMessageModal(false);
-      };
-
-      return (
-        <>
-          <MDBox sx={{ display: 'flex', justifyContent: 'space-around' }}>
-            <MDTypography fontSize='0.875rem'>
-              <MDButton
-                size='small'
-                variant='text'
-                onClick={() => {
-                  handleOpenMessageModal();
-                }}
-              >
-                View Ticket
-              </MDButton>
-            </MDTypography>
-          </MDBox>
-          <Dialog
-            open={showMessageModal}
-            onClose={handleCloseMessageModal}
-            aria-labelledby='alert-dialog-title'
-            aria-describedby='alert-dialog-description'
-          >
-            <DialogTitle id='alert-dialog-title'>{`Ticket №${row.original.id}`}</DialogTitle>
-            <DialogActions>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <MDTypography sx={{ fontSize: '16px' }} px={3}>{`${row.original.message}`}</MDTypography>
-                </Grid>
-                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button onClick={handleCloseMessageModal}>Close</Button>
-                </Grid>
-              </Grid>
-            </DialogActions>
-          </Dialog>
-        </>
-      );
-    }
+    Header: 'Taken',
+    accessor: 'taken'
+  },
+  {
+    Header: 'Status',
+    accessor: 'status'
   },
   {
     Header: '',
@@ -101,11 +65,23 @@ const supportTicketsColumnData = [
         setReplyTicketId('');
       };
 
+      function formatDateFunc(date) {
+        const originalDate = new Date(date);
+
+        const addLeadingZero = (num) => (num < 10 ? `0${num}` : `${num}`);
+
+        const formatDate = `${originalDate.getDate()}.${
+          originalDate.getMonth() + 1
+        }.${originalDate.getFullYear()} ${originalDate.getHours()}:${addLeadingZero(originalDate.getMinutes())}`;
+
+        return formatDate;
+      }
+
       return (
         <>
-          <MDBox sx={{ display: 'flex', justifyContent: 'space-around' }}>
+          <MDBox sx={{ display: 'flex', justifyContent: 'center', marginRight: '20px', marginLeft: '-20px' }}>
             <Can I='update' a='casino'>
-              <Tooltip title='Reply'>
+              <Tooltip title='View & reply'>
                 <MDTypography fontSize='0.875rem'>
                   <MDButton
                     size='small'
@@ -115,7 +91,7 @@ const supportTicketsColumnData = [
                       setReplyTicketId(row.original.id);
                     }}
                   >
-                    Reply
+                    View & Reply
                   </MDButton>
                 </MDTypography>
               </Tooltip>
@@ -127,35 +103,78 @@ const supportTicketsColumnData = [
             aria-labelledby='alert-dialog-title'
             aria-describedby='alert-dialog-description'
           >
-            <DialogTitle id='alert-dialog-title'>{`Reply to Ticket №${row.original.id}`}</DialogTitle>
+            <DialogTitle id='alert-dialog-title'>{`${row.original.summary}`}</DialogTitle>
             <DialogActions>
-              <Grid container spacing={3}>
+              <Grid container spacing={3} px={3}>
                 <Grid item xs={12}>
-                  <MDTypography
-                    sx={{ fontSize: '16px', fontStyle: 'italic' }}
-                    px={3}
-                  >{`"${row.original.message}"`}</MDTypography>
+                  <MDTypography sx={{ fontSize: '16px' }}>{`${row.original.message}`}</MDTypography>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '10px' }}
+                >
+                  <MDTypography sx={{ fontSize: '14px', fontWeight: 600 }}>Replies:</MDTypography>
+                  {row.original.replies ? (
+                    row.original.replies.map((reply) => {
+                      return (
+                        <Grid
+                          item
+                          xs={12}
+                          sx={{
+                            borderRadius: '8px',
+                            border: '0.5px solid #414141',
+                            width: '100%',
+                            padding: '5px 10px'
+                          }}
+                        >
+                          <MDTypography
+                            sx={{
+                              fontSize: '12px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '5px',
+                              fontWeight: 500
+                            }}
+                          >
+                            {reply.adminReply
+                              ? reply.adminReply.firstName + ' ' + reply.adminReply.lastName
+                              : reply.userReply.nickname}
+                            <span style={{ fontSize: '10px', opacity: 0.9, fontWeight: 400 }}>
+                              {formatDateFunc(reply.createdAt)}
+                            </span>
+                          </MDTypography>
+                          <MDTypography sx={{ fontSize: '14px' }}>{`${reply.message}`}</MDTypography>
+                        </Grid>
+                      );
+                    })
+                  ) : (
+                    <MDTypography sx={{ fontSize: '14px' }}>No replies</MDTypography>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     sx={{ width: '100%' }}
                     multiline
                     rows={5}
-                    placeholder='Your reply...'
+                    placeholder='Write a reply...'
                     value={reply}
                     onChange={(e) => setReply(e.target.value)}
                   ></TextField>
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button
+                  <MDButton
                     onClick={async () => {
                       await sendReplyToTicket(replyTicketId, reply);
                       handleCloseModal();
                     }}
+                    color='info'
                   >
-                    Send
+                    Send reply
+                  </MDButton>
+                  <Button onClick={handleCloseModal} color='info'>
+                    Close
                   </Button>
-                  <Button onClick={handleCloseModal}>Close</Button>
                 </Grid>
               </Grid>
             </DialogActions>

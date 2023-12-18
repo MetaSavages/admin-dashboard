@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { Can } from 'context';
 import supportTicketsColumnData from 'data/supportTicketsColumnData';
 import dataSupportTickets from 'assets/mockData/dataSupportTickets';
+import { getTickets } from 'services/support';
 function SupportTickets() {
   const navigate = useNavigate();
   const onDelete = (id) => {
@@ -28,7 +29,7 @@ function SupportTickets() {
           title='Support Tickets'
           canSearch
           canFilter
-          fetchData={fetchData}
+          fetchData={getTickets}
           queryKey='support'
           columnData={supportTicketsColumnData}
           object={'support'}
