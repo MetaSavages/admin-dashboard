@@ -17,7 +17,7 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
         params['isDemo'] = filters.isDemo;
       }
       if (filters?.isDemo != null) {
-        params['isCodesClaimed'] = filters.isCodesClaimed;
+        params['isPromoCodeUser'] = filters.isPromoCodeUser;
       }
     }
 

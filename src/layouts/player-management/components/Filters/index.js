@@ -35,7 +35,7 @@ const Filters = ({ filters, setFilters }) => {
       setFilters({
         users: [],
         isDemo: isDemoChecked,
-        isCodesClaimed: isClaimedCodes
+        isPromoCodeUser: isClaimedCodes
       });
     }
   }, [playerUsernames]);
@@ -86,7 +86,7 @@ const Filters = ({ filters, setFilters }) => {
     setFilters({
       users: playerUsernames,
       isDemo: isDemoChecked,
-      isCodesClaimed: isClaimedCodes
+      isPromoCodeUser: isClaimedCodes
     });
   };
 
@@ -94,7 +94,7 @@ const Filters = ({ filters, setFilters }) => {
     return (
       !playerUsernames.length &&
       ((filters?.isDemo == null && isDemoChecked === false) || isDemoChecked === filters?.isDemo) &&
-      ((filters?.isCodesClaimed == null && isClaimedCodes === false) || isClaimedCodes === filters?.isCodesClaimed)
+      ((filters?.isPromoCodeUser == null && isClaimedCodes === false) || isClaimedCodes === filters?.isPromoCodeUser)
     );
   }
   return (
