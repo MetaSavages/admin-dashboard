@@ -50,8 +50,10 @@ const Filters = ({ filters, setFilters }) => {
         nickname: nickname,
         label: nickname
       };
+      setIsDemoChecked(true);
+      setIsClaimedCodes(true);
       setPlayerUsernames([params]);
-      setFilters({ users: [params] });
+      setFilters({ users: [params], isDemo: true, isPromoCodeUser: true });
       searchParams.delete('userId');
       searchParams.delete('nickname');
     }
