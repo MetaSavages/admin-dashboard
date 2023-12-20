@@ -79,6 +79,7 @@ function ShowPlayer() {
       setCrashLose(res.amount);
     });
   }
+  console.log('userrr', user);
 
   return (
     <>
@@ -90,7 +91,11 @@ function ShowPlayer() {
               sx={{
                 borderRadius: '12px',
                 boxShadow: (theme) => theme.shadows[4],
-                width: '50%',
+                width: {
+                  xs: '90%',
+                  lg: '70%',
+                  xl: '50%'
+                },
                 height: '100%',
                 overflow: 'hidden',
                 display: 'flex',
