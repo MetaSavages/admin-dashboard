@@ -15,6 +15,18 @@ export const playerColumnData = async (navigate) => {
       accessor: 'nickname',
       width: 100,
       Cell: (cellProps) => {
+        const isRegularUser =
+          !cellProps.cell.row.original.isDemo && !cellProps.cell.row.original.isPromoCodeUser ? true : false;
+        const isPromoCodeUser = cellProps.cell.row.original.isPromoCodeUser ? true : false;
+
+        let params = '';
+        if (!isRegularUser) {
+          if (isPromoCodeUser) {
+            params = '?isPromoCodeUser=true';
+          } else {
+            params = '?isDemo=true';
+          }
+        }
         return (
           <MDBox
             component='td'
@@ -29,9 +41,9 @@ export const playerColumnData = async (navigate) => {
             <Link
               to={
                 cellProps.cell.row.isExpanded &&
-                cellProps.cell.row.original.isDemo &&
+                // cellProps.cell.row.original.isDemo &&
                 (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
-                  ? `/player-management/show/${cellProps.cell.row?.original?.id}`
+                  ? `/player-management/show/${cellProps.cell.row.original?.id}${params}`
                   : ''
               }
               sx={{
@@ -39,7 +51,7 @@ export const playerColumnData = async (navigate) => {
                 textDecoration: 'none',
                 cursor:
                   cellProps.cell.row.isExpanded &&
-                  cellProps.cell.row.original.isDemo &&
+                  // cellProps.cell.row.original.isDemo &&
                   (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
                     ? 'pointer'
                     : 'default'
@@ -54,13 +66,13 @@ export const playerColumnData = async (navigate) => {
 
                   textDecoration:
                     cellProps.cell.row.isExpanded &&
-                    cellProps.cell.row.original.isDemo &&
+                    // cellProps.cell.row.original.isDemo &&
                     (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
                       ? 'underline '
                       : 'none',
                   cursor:
                     cellProps.cell.row.isExpanded &&
-                    cellProps.cell.row.original.isDemo &&
+                    // cellProps.cell.row.original.isDemo &&
                     (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
                       ? 'pointer'
                       : 'default'
@@ -116,19 +128,27 @@ export const playerColumnData = async (navigate) => {
       Header: 'wallet',
       accessor: 'wallet',
       width: 200,
-      Cell: ({ row }) => (
-        <>
-          {row.original.isDemo
-            ? process.env.REACT_APP_FRONTEND_URL + '?demoUser=' + row.original.wallet
-            : row.original.wallet}
-        </>
-      )
+      Cell: ({ row }) => {
+        return (
+          <>
+            {row.original.isDemo && !row.original.isPromoCodeUser
+              ? process.env.REACT_APP_FRONTEND_URL + '?demoUser=' + row.original.wallet
+              : row.original.wallet}
+          </>
+        );
+      }
     },
     { Header: 'location', accessor: 'location', width: 200 },
     { Header: 'kyc_status', accessor: 'kyc_status', width: 100 },
     {
       Header: 'Creation Date',
-      accessor: 'createdDate'
+      accessor: 'createdDate',
+      Cell: (cellProps) => (
+        <MDBox color='none' sx={{ marginRight: '20px' }}>
+          {cellProps.value}
+        </MDBox>
+      ),
+      SubCell: (cellProps) => <>{cellProps.value}</>
     }
   ];
   if (!user.role?.casino) {

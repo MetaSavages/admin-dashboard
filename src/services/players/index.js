@@ -39,7 +39,8 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
           location: x.u_lastLocation,
           kyc_status: x.u_kycState,
           isDemo: x.u_isDemo,
-          createdDate: x.createdDate
+          createdDate: x.createdDate,
+          isPromoCodeUser: x.u_isPromoCodeUser
         };
       }),
       meta: unformattedData.data.meta
@@ -88,10 +89,10 @@ export const getPlayerAggregated = async (user) => {
   }
 };
 
-export const getPlayer = async (id) => {
+export const getPlayer = async (id, params) => {
   const api = useAxios();
   try {
-    const res = await api.get(`/admin/metrics/players/?id=${id}&isDemo=true`);
+    const res = await api.get(`/admin/metrics/players/?id=${id}`, { params });
     return res.data.items[0];
   } catch (err) {
     console.log(err);

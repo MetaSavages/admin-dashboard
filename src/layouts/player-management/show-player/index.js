@@ -6,7 +6,7 @@ import SCT from 'examples/CustomTypography/SCT';
 import { Can } from 'context';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { getGameMetricsByPlayer, getPlayer } from 'services/players';
 import { formatNumber, formatDuration } from 'layouts/player-management/helpers';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
@@ -16,10 +16,21 @@ import { MetricsType } from 'constants/metricsType';
 function ShowPlayer() {
   const { id } = useParams();
   const [user, setUser] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+
   useEffect(() => {
-    getPlayer(id)
+    let params = {};
+    if (searchParams.get('isDemo')) {
+      params.isDemo = true;
+    } else if (searchParams.get('isPromoCodeUser')) {
+      params.isPromoCodeUser = true;
+    }
+
+    getPlayer(id, params)
       .then((res) => {
-        setUser(res);
+        if (res) {
+          setUser(res);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -79,7 +90,43 @@ function ShowPlayer() {
       setCrashLose(res.amount);
     });
   }
-  console.log('userrr', user);
+
+  function typeUser() {
+    if (!user) {
+      return '';
+    }
+
+    if (user.u_isDemo) {
+      return (
+        <TableRow>
+          <TableCell>
+            <SCT>Demo User:</SCT>
+          </TableCell>
+          <TableCell>
+            <SCT>True</SCT>
+          </TableCell>
+        </TableRow>
+      );
+    } else if (user.u_isPromoCodeUser) {
+      <TableRow>
+        <TableCell>
+          <SCT>Promo Code User:</SCT>
+        </TableCell>
+        <TableCell>
+          <SCT>True</SCT>
+        </TableCell>
+      </TableRow>;
+    } else {
+      <TableRow>
+        <TableCell>
+          <SCT>Real User:</SCT>
+        </TableCell>
+        <TableCell>
+          <SCT>True</SCT>
+        </TableCell>
+      </TableRow>;
+    }
+  }
 
   return (
     <>
@@ -111,6 +158,7 @@ function ShowPlayer() {
                     </TableCell>
                   </TableHead>
                   <TableBody>
+                    {typeUser()}
                     <TableRow>
                       <TableCell>
                         <SCT>Nickname:</SCT>
@@ -135,6 +183,51 @@ function ShowPlayer() {
                         <SCT>{user.u_walletId ? user.u_walletId : 'Did not fetch walletID'}</SCT>
                       </TableCell>
                     </TableRow>
+
+                    <TableRow>
+                      <TableCell>
+                        <SCT>First Name:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>
+                          {user.u_firstName !== undefined
+                            ? user.u_firstName !== null
+                              ? user.u_firstName
+                              : 'User does not have first name!'
+                            : 'Did not fetch first name'}
+                        </SCT>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <SCT>Last Name:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>
+                          {user.u_lastName !== undefined
+                            ? user.u_lastName !== null
+                              ? user.u_lastName
+                              : 'User does not have last name!'
+                            : 'Did not fetch last name'}
+                        </SCT>
+                      </TableCell>
+                    </TableRow>
+
+                    <TableRow>
+                      <TableCell>
+                        <SCT>Email:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>
+                          {user.u_email !== undefined
+                            ? user.u_email !== null
+                              ? user.u_email
+                              : 'User does not have an email!'
+                            : 'Did not fetch email'}
+                        </SCT>
+                      </TableCell>
+                    </TableRow>
+
                     <TableRow>
                       <TableCell>
                         <SCT>Location:</SCT>

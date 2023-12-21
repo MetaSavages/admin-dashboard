@@ -38,7 +38,7 @@ import form from 'layouts/player-management/components/schemas/form';
 import initialValues from 'layouts/player-management/components/schemas/initialValues';
 
 import { useState, useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
 
 import { getPlayer, updatePlayerName } from 'services/players';
@@ -48,14 +48,22 @@ function EditPlyer() {
   const { formId, formField } = form;
   const currentValidation = validations[0];
   const [user, setUser] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { id } = useParams();
   useEffect(() => {
-    getPlayer(id)
+    let params = {};
+    if (searchParams.get('isDemo')) {
+      params.isDemo = true;
+    } else if (searchParams.get('isPromoCodeUser')) {
+      params.isPromoCodeUser = true;
+    }
+
+    getPlayer(id, params)
       .then((res) => {
-        setUser(res);
-        console.log('res');
-        console.log(res);
+        if (res) {
+          setUser(res);
+        }
       })
       .catch((err) => {
         console.log(err);
