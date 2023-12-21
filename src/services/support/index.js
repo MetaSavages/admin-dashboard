@@ -31,12 +31,49 @@ export const getTickets = async () => {
   }
 };
 
-export const sendReplyToTicket = async (id, reply) => {
+export const sendReplyToTicket = async (id, reply, isTaken) => {
   const api = useAxios();
   try {
+    isTaken === 'Initial' && await api.post(`/support-message/take-ticket`, {
+      MessageId: id
+    });
     return await api.post(`/support-message/reply-as-admin`, {
       parentMessageId: id,
       message: reply
+    });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        action: '',
+        object: ''
+      }
+    };
+  }
+};
+
+export const closeTicket = async (id) => {
+  const api = useAxios();
+  try {
+    return await api.post(`/support-message/close-ticket`, {
+      MessageId: id,
+    });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        action: '',
+        object: ''
+      }
+    };
+  }
+};
+
+export const retakeTicket = async (id) => {
+  const api = useAxios();
+  try {
+    return await api.post(`/support-message/retake-ticket`, {
+      MessageId: id
     });
   } catch (err) {
     console.log(err);

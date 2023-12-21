@@ -7,7 +7,8 @@ import { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
 import { Can } from 'context';
 import MDButton from 'components/MDButton';
-import { sendReplyToTicket } from 'services/support';
+import { closeTicket, retakeTicket, sendReplyToTicket } from 'services/support';
+import CloseIcon from '@mui/icons-material/Close';
 
 const supportTicketsColumnData = [
   {
@@ -58,6 +59,7 @@ const supportTicketsColumnData = [
       const [showModal, setShowModal] = useState(false);
       const [replyTicketId, setReplyTicketId] = useState('');
       const [reply, setReply] = useState('');
+      const [replyError, setReplyError] = useState(false);
       const handleOpenModal = () => setShowModal(true);
       const handleCloseModal = () => {
         setShowModal(false);
@@ -76,6 +78,12 @@ const supportTicketsColumnData = [
 
         return formatDate;
       }
+
+      useEffect(() => {
+        if (reply !== '') {
+          setReplyError(false);
+        }
+      }, [reply]);
 
       return (
         <>
@@ -103,7 +111,23 @@ const supportTicketsColumnData = [
             aria-labelledby='alert-dialog-title'
             aria-describedby='alert-dialog-description'
           >
-            <DialogTitle id='alert-dialog-title'>{`${row.original.summary}`}</DialogTitle>
+            <DialogTitle id='alert-dialog-title'>
+              <MDTypography>{`${row.original.summary}`}</MDTypography>
+              <IconButton
+                aria-label='close'
+                onClick={() => {
+                  handleCloseModal();
+                }}
+                sx={{
+                  position: 'absolute',
+                  right: 8,
+                  top: 8,
+                  color: (theme) => theme.palette.grey[500]
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
             <DialogActions>
               <Grid container spacing={3} px={3}>
                 <Grid item xs={12}>
@@ -115,7 +139,7 @@ const supportTicketsColumnData = [
                   sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '10px' }}
                 >
                   <MDTypography sx={{ fontSize: '14px', fontWeight: 600 }}>Replies:</MDTypography>
-                  {row.original.replies ? (
+                  {row.original.replies.length > 0 ? (
                     row.original.replies.map((reply) => {
                       return (
                         <Grid
@@ -123,7 +147,7 @@ const supportTicketsColumnData = [
                           xs={12}
                           sx={{
                             borderRadius: '8px',
-                            border: '0.5px solid #414141',
+                            border: '0.5px solid #989898',
                             width: '100%',
                             padding: '5px 10px'
                           }}
@@ -149,32 +173,105 @@ const supportTicketsColumnData = [
                       );
                     })
                   ) : (
-                    <MDTypography sx={{ fontSize: '14px' }}>No replies</MDTypography>
+                    <MDTypography sx={{ fontSize: '14px', fontWeight: '300' }}>No replies</MDTypography>
                   )}
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    sx={{ width: '100%' }}
-                    multiline
-                    rows={5}
-                    placeholder='Write a reply...'
-                    value={reply}
-                    onChange={(e) => setReply(e.target.value)}
-                  ></TextField>
-                </Grid>
-                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <MDButton
-                    onClick={async () => {
-                      await sendReplyToTicket(replyTicketId, reply);
-                      handleCloseModal();
-                    }}
-                    color='info'
-                  >
-                    Send reply
-                  </MDButton>
-                  <Button onClick={handleCloseModal} color='info'>
-                    Close
-                  </Button>
+                {row.original.status != 'Finished' && (
+                  <Grid item xs={12}>
+                    <TextField
+                      sx={
+                        replyError
+                          ? { width: '100%', border: '1px solid red', borderRadius: '5px' }
+                          : { width: '100%', border: 'none' }
+                      }
+                      multiline
+                      rows={5}
+                      placeholder='Write a reply...'
+                      value={reply}
+                      onChange={(e) => setReply(e.target.value)}
+                    ></TextField>
+                    {row.original.status == 'Initial' && (
+                      <MDTypography
+                        sx={{
+                          fontSize: '12px',
+                          fontWeight: '300'
+                        }}
+                      >
+                        Replying to this ticket will automatically asign it to you.
+                      </MDTypography>
+                    )}
+                  </Grid>
+                )}
+                <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '15px' }}>
+                  {row.original.status != 'Finished' ? (
+                    <>
+                      <Grid item>
+                        <MDButton
+                          onClick={async () => {
+                            await closeTicket(row.original.id);
+                            handleCloseModal();
+                          }}
+                          color='secondary'
+                        >
+                          Close ticket
+                        </MDButton>
+                      </Grid>
+
+                      <Grid item>
+                        <MDButton
+                          onClick={async () => {
+                            {
+                              reply === '' ? setReplyError(true) : await sendReplyToTicket(replyTicketId, reply, row.original.status);
+                            }
+                          }}
+                          color='info'
+                        >
+                          Send reply
+                        </MDButton>
+                      </Grid>
+                    </>
+                  ) : (
+                    <Grid
+                      item
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        gap: '5px'
+                      }}
+                    >
+                      <MDTypography
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          width: '100%',
+                          textAlign: 'center',
+                          fontSize: '16px',
+                          fontWeight: '600',
+                          lineHeight: 1
+                        }}
+                      >
+                        Ticket closed!
+                      </MDTypography>
+                      {/* <MDTypography
+                        sx={{
+                          fontSize: '14px',
+                          fontWeight: 300,
+                          textDecoration: 'underline',
+                          cursor: 'pointer',
+                          lineHeight: 1
+                        }}
+                        onClick={async () => {
+                          await retakeTicket(row.original.id);
+                          handleCloseModal();
+                        }}
+                      >
+                        Retake ticket
+                      </MDTypography> */}
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
             </DialogActions>
