@@ -306,7 +306,9 @@ const routes = [
     key: 'support-tickets',
     icon: <Icon fontSize='medium'>support</Icon>,
     route: '/support-tickets',
-    component: <SupportTickets />
+    component: <SupportTickets />,
+    action: 'read',
+    object: 'support',
   },
   {
     type: 'collapse',
@@ -316,7 +318,8 @@ const routes = [
     icon: <Icon fontSize='medium'>local_activity</Icon>,
     route: '/promo-codes',
     component: <CodeManagement />,
-    action: 'code'
+    action: 'read',
+    object: 'promocode'
   },
   {
     type: 'divider',

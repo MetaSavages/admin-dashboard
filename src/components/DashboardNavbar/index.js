@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // react-router components
 import { useLocation, Link } from 'react-router-dom';
@@ -58,6 +58,10 @@ import {
 import MDAvatar from 'components/MDAvatar';
 import { Skeleton, Switch } from '@mui/material';
 import MDTypography from 'components/MDTypography';
+import Notifications from 'components/Notifications';
+import { io } from 'socket.io-client';
+import { getNotifications, markAllAsRead } from 'services/notifications';
+import { MenuItem } from '@mui/base';
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -65,6 +69,53 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode, name, email, role } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split('/').slice(1);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [notifications, setNotifications] = useState({});
+  const [isRead, setIsRead] = useState(false);
+  const menuRef = useRef(null);
+  useEffect(() => {
+    const value = `; ${document.cookie}`;
+    let parts = value.split(`; access_token=`);
+    if (parts.length === 2) {
+      parts = parts.pop().split(';').shift();
+    }
+    if (!parts) return;
+    const socket = io(process.env.REACT_APP_WEBSOCKET_URL, {
+      auth: {
+        token: parts
+      },
+      path: '/admin-socket'
+    });
+    socket.on('login', (notifications) => {
+      setNotificationCount(Number(notifications));
+    });
+    socket.on('notification', (notifications) => {
+      setNotificationCount(Number(notifications));
+    });
+  }, []);
+
+  useEffect(() => {
+    const getNotificationsData = async () => {
+      setNotifications(await getNotifications());
+    };
+    getNotificationsData();
+  }, [isRead]);
+
+  const handleNotificationScroll = async () => {
+    const paper = menuRef?.current?.children[2];
+    if (!paper) return;
+    const scrollPosition = paper.scrollTop;
+    const componentHeight = paper.scrollHeight - paper.clientHeight;
+    if (componentHeight - scrollPosition <= 100) {
+      const newNotifications = await getNotifications(notifications?.meta?.currentPage + 1);
+      console.log(newNotifications);
+      setNotifications({
+        data: [...notifications?.data, ...newNotifications?.data],
+        meta: newNotifications?.meta
+      });
+    }
+  };
+
   useEffect(() => {
     // Setting the navbar type
     if (fixedNavbar) {
@@ -103,25 +154,59 @@ function DashboardNavbar({ absolute, light, isMini }) {
   };
   const handleMiniSidenav = () => setMiniSidenav(dispatch, !miniSidenav);
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-  const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
+  const handleOpenMenu = (event) => {
+    const ev = event.currentTarget;
+    const getNotificationsData = async () => {
+      setNotifications(await getNotifications());
+      setOpenMenu(ev);
+    };
+    getNotificationsData();
+  };
   const handleCloseMenu = () => setOpenMenu(false);
-
   // Render the notifications menu
   const renderMenu = () => (
     <Menu
+      ref={menuRef}
       anchorEl={openMenu}
       anchorReference={null}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'left'
       }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left'
+      }}
       open={Boolean(openMenu)}
       onClose={handleCloseMenu}
-      sx={{ mt: 2 }}
+      onScrollCapture={handleNotificationScroll}
+      sx={{ mt: 2, height: '50%', overflowY: 'scroll' }}
     >
-      <NotificationItem icon={<Icon>email</Icon>} title='Check new messages' />
-      <NotificationItem icon={<Icon>podcasts</Icon>} title='Manage Podcast sessions' />
-      <NotificationItem icon={<Icon>shopping_cart</Icon>} title='Payment successfully completed' />
+      {notifications?.data?.length && (
+        <MDTypography
+          sx={{ fontSize: '13px', textAlign: 'right', cursor: 'pointer', color: '#7d7d7d' }}
+          onClick={() => {
+            markAllAsRead();
+            setIsRead(true);
+          }}
+        >
+          Mark all as read
+        </MDTypography>
+      )}
+      {notifications?.data?.length ? (
+        notifications?.data?.map((notification) => (
+          <NotificationItem
+            key={notification.id}
+            type={notification.type}
+            notification={notification}
+            darkMode={darkMode}
+          />
+        ))
+      ) : (
+        <MDTypography variant='button' fontWeight='regular' sx={{ ml: 1 }}>
+          No notifications
+        </MDTypography>
+      )}
     </Menu>
   );
 
@@ -165,20 +250,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
               >
                 {darkMode ? <Icon sx={iconsStyle}>light_mode</Icon> : <Icon sx={iconsStyle}>dark_mode</Icon>}
               </IconButton>
-              <IconButton
-                size='small'
-                disableRipple
-                color='inherit'
-                sx={navbarIconButton}
-                aria-controls='notification-menu'
-                aria-haspopup='true'
-                variant='contained'
-                onClick={handleOpenMenu}
-              >
-                <MDBadge badgeContent={9} color='error' size='xs' circular>
-                  <Icon sx={iconsStyle}>notifications</Icon>
-                </MDBadge>
-              </IconButton>
+              <Notifications
+                light={light}
+                darkMode={darkMode}
+                transparentNavbar={transparentNavbar}
+                handleOpenMenu={handleOpenMenu}
+                notificationCount={notificationCount}
+              />
               <IconButton
                 size='small'
                 disableRipple

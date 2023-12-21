@@ -28,8 +28,9 @@ export const getCodes = async (limit = 20, page = 1, filters) => {
         return {
           code_id: el.id,
           code: el.code,
-          claimed_user: el.claimedUser ? el.claimedUser.nickname : '',
-          date_create: el.createdAt
+          claimed_user: el.claimedUser ? el.claimedUser.nickname : '-',
+          date_create: el.createdAt,
+          date_claimed: el.updatedAt == el.createdAt ? '-' : el.updatedAt
         };
       });
     }

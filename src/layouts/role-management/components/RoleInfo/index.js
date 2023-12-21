@@ -45,6 +45,7 @@ function RoleInfo({ formData }) {
   const [open, setOpen] = useState(false);
   const [casinoOptions, setCasinoOptions] = useState([]);
   const [openCasino, setOpenCasino] = useState(false);
+  const [casinos, setCasinos] = useState(casinoV);
   const loading = open && roleOptions.length === 0;
 
   useEffect(() => {
@@ -58,19 +59,13 @@ function RoleInfo({ formData }) {
         value: null
       });
       setCasinoOptions(casinos);
+      
+      if (casinoV && casinoV.id) {
+        const selectedCasino = casinos.find(casino => casino.id === casinoV.id);
+        setCasinos(selectedCasino);
+      }
     });
-
-    if (casinoV === null) {
-      setCasinos({
-        blockChainId: null,
-        id: null,
-        label: 'All',
-        name: 'All',
-        provider: null,
-        value: null
-      });
-    }
-  }, []);
+  }, [casinoV]);
 
   useEffect(() => {
     setFieldValue(
@@ -95,10 +90,14 @@ function RoleInfo({ formData }) {
     );
   };
 
-  const [casinos, setCasinos] = useState(casinoV);
   const handleCasinos = (event, value) => {
-    setCasinos(value);
-    setFieldValue(casino.name, value.value);
+    if (value) {
+      setCasinos(value);
+      setFieldValue(casino.name, value.id || null); 
+    } else {
+      setCasinos(null);
+      setFieldValue(casino.name, null);
+    }
   };
 
   return (

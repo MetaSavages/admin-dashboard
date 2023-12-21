@@ -84,6 +84,10 @@ const codesColumnData = [
     accessor: 'date_create'
   },
   {
+    Header: 'Date Claimed',
+    accessor: 'date_claimed'
+  },
+  {
     Header: 'Actions',
     accessor: 'actions',
     sorted: false,
@@ -109,7 +113,7 @@ const codesColumnData = [
                 </NavLink>
               </Tooltip>
             </Can> */}
-            <Can I='delete' a='casino'>
+            <Can I='delete' a='promocode'>
               <Tooltip
                 title='Delete'
                 onClick={() => {

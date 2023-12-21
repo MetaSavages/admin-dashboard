@@ -30,11 +30,11 @@ import MDButton from 'components/MDButton';
 import { Icon } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, description, action }) {
+function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, description }) {
   const [gameProfit, setGameProfit] = useState(0);
 
   useEffect(() => {
-    setGameProfit(Number(gameWinsAmount) - Number(gameLoseAmount));
+    setGameProfit(Number(gameLoseAmount) - Number(gameWinsAmount));
   }, [gameWinsAmount, gameLoseAmount]);
 
   return (
@@ -97,39 +97,16 @@ function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, des
           </MDBox>
         </MDBox>
       </MDBox>
-      <MDBox p={3} ml={4} mr={4} mb={3}>
+      <MDBox p={3} ml={4} mr={4} mb={1}>
         <MDTypography display='flex' variant='h4' textTransform='capitalize' fontWeight='bold' justifyContent='center'>
           {gameProfit >= 0 ? `$${Math.floor(Number(gameProfit))}` : `-$${Math.floor(Math.abs(gameProfit))}`}
           {/* -${2 - 100} */}
         </MDTypography>
-        <MDBox mb={3} mt={-0.5} display='flex' justifyContent='center'>
+        <MDBox mt={-0.5} display='flex' justifyContent='center'>
           <MDTypography variant='subtitle2' component='p' color='info'>
-            Life time sales
+            Today's profit
           </MDTypography>
         </MDBox>
-        {action.type === 'external' ? (
-          <MDBox display='flex' justifyContent='space-between'>
-            <MuiLink href={action.route} target='_blank' rel='noreferrer'>
-              <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
-            </MuiLink>
-            <MuiLink href={action.route} target='_blank' rel='noreferrer'>
-              <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
-            </MuiLink>
-          </MDBox>
-        ) : (
-          <MDBox display='flex' justifyContent='space-around'>
-            <MDBox pr={3}>
-              <Link to={action.route}>
-                <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
-              </Link>
-            </MDBox>
-            <MDBox>
-              <Link to={action.route}>
-                <MDButton color={action.color ? action.color : 'dark'}>{action.label}</MDButton>
-              </Link>
-            </MDBox>
-          </MDBox>
-        )}
       </MDBox>
     </>
   );

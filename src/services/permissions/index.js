@@ -1,5 +1,17 @@
 import useAxios from 'hooks/useAxios';
 
+export const getPermissionOptions = async () => {
+  const api = useAxios();
+  try {
+    return await api.get('/admin/auth/permission-options');
+  } catch (err) {
+    console.log(err);
+    return {
+      data: []
+    };
+  }
+}
+
 export const getPermissions = async (limit = 20, page = 1) => {
   const api = useAxios();
   try {
@@ -49,12 +61,7 @@ export const createPermission = async (action, object) => {
     });
   } catch (err) {
     console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    return err.response;
   }
 };
 
@@ -67,12 +74,7 @@ export const updatePermission = async (id, action, object) => {
     });
   } catch (err) {
     console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    return err.response;
   }
 };
 

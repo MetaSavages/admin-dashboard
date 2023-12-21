@@ -45,15 +45,18 @@ function NewPermission() {
   const navigate = useNavigate();
   const submitForm = async (values, actions) => {
     const response = await createPermission(values.action, values.object);
-    if (response.status === 201) {
+    if (response.status === 200 || response.status === 201) {
       alert('Permission created successfully');
+      navigate('/permission-management');
+    } else if (response.status === 400){
+      alert('That permission already exists');
+      actions.setSubmitting(false);
+      actions.resetForm();
     } else {
       alert('Permission creation failed');
+      actions.setSubmitting(false);
+      actions.resetForm();
     }
-    // eslint-disable-next-line no-alert
-    actions.setSubmitting(false);
-    actions.resetForm();
-    navigate('/permission-management');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);

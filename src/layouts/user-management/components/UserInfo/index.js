@@ -30,10 +30,9 @@ import { ErrorMessage, Field } from 'formik';
 import MDInput from 'components/MDInput';
 import { getRoles } from 'services/roles';
 
-import { useMaterialUIController } from 'context';
 
 function UserInfo({ formData }) {
-  const [controller] = useMaterialUIController();
+  const prod = process.env.REACT_APP_ENV=== 'PROD';
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { firstName, lastName, role, email, password, repeatPassword } = formField;
   const {
@@ -151,6 +150,8 @@ function UserInfo({ formData }) {
             />
           </Grid>
         </Grid>
+
+        {!prod && (
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <FormField
@@ -177,6 +178,7 @@ function UserInfo({ formData }) {
             />
           </Grid>
         </Grid>
+        )}
       </MDBox>
     </MDBox>
   );
