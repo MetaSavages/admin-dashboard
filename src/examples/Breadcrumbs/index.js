@@ -22,14 +22,19 @@ import PropTypes from 'prop-types';
 // @mui material components
 import { Breadcrumbs as MuiBreadcrumbs } from '@mui/material';
 import Icon from '@mui/material/Icon';
+import IconButton from '@mui/material/IconButton';
 
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
+import { useMaterialUIController } from 'context';
+import { navbarDesktopMenu, navbarMobileMenu } from 'components/DashboardNavbar/styles';
 
-function Breadcrumbs({ icon, title, route, light }) {
+function Breadcrumbs({ icon, title, route, light, handleMiniSidenav, iconsStyle }) {
   const routes = route.slice(0, -1);
   const navigate = useNavigate();
+  const [controller] = useMaterialUIController();
+  const { miniSidenav } = controller;
 
   const handleReturnClick = () => {
     // Go back to the previous page
@@ -37,6 +42,16 @@ function Breadcrumbs({ icon, title, route, light }) {
   };
   return (
     <MDBox mr={{ xs: 0, xl: 8 }}>
+      {/* <IconButton sx={navbarDesktopMenu} onClick={handleMiniSidenav} size='small' disableRipple>
+        <Icon fontSize='medium' sx={iconsStyle}>
+          {miniSidenav ? 'menu_open' : 'menu'}
+        </Icon>
+      </IconButton>
+       <IconButton size='small' disableRipple color='inherit' sx={navbarMobileMenu} onClick={handleMiniSidenav}>
+                <Icon sx={iconsStyle} fontSize='medium'>
+                  {miniSidenav ? 'menu_open' : 'menu'}
+                </Icon>
+              </IconButton> */}
       <MuiBreadcrumbs
         sx={{
           '& .MuiBreadcrumbs-separator': {
@@ -44,7 +59,7 @@ function Breadcrumbs({ icon, title, route, light }) {
           }
         }}
       >
-        <MDBox sx={{cursor:'pointer'}} onClick={() => navigate(-1)}>
+        <MDBox sx={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
           <MDTypography
             className='return-back'
             component='span'
