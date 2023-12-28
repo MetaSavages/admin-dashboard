@@ -1,0 +1,15 @@
+.toolbar {
+  @media (max-width: 768px) {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    margin-left: 20px;
+  }
+  .profile-info {
+    @media (max-width: 768px) {
+      flex-direction: row;
+    }
+    .name-info {
+      margin-left: 10px;
+    }
+  }
+}

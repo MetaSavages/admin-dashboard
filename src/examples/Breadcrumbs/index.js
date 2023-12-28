@@ -28,7 +28,8 @@ import IconButton from '@mui/material/IconButton';
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import { useMaterialUIController } from 'context';
-import { navbarDesktopMenu, navbarMobileMenu } from 'components/DashboardNavbar/styles';
+
+import './index.scss';
 
 function Breadcrumbs({ icon, title, route, light, handleMiniSidenav, iconsStyle }) {
   const routes = route.slice(0, -1);
@@ -41,25 +42,16 @@ function Breadcrumbs({ icon, title, route, light, handleMiniSidenav, iconsStyle 
     history.goBack();
   };
   return (
-    <MDBox mr={{ xs: 0, xl: 8 }}>
-      {/* <IconButton sx={navbarDesktopMenu} onClick={handleMiniSidenav} size='small' disableRipple>
-        <Icon fontSize='medium' sx={iconsStyle}>
-          {miniSidenav ? 'menu_open' : 'menu'}
-        </Icon>
-      </IconButton>
-       <IconButton size='small' disableRipple color='inherit' sx={navbarMobileMenu} onClick={handleMiniSidenav}>
-                <Icon sx={iconsStyle} fontSize='medium'>
-                  {miniSidenav ? 'menu_open' : 'menu'}
-                </Icon>
-              </IconButton> */}
+    <MDBox className='breadcrumbs' mr={{ xs: 0, xl: 8 }}>
       <MuiBreadcrumbs
+        className='navigation'
         sx={{
           '& .MuiBreadcrumbs-separator': {
             color: ({ palette: { white, grey } }) => (light ? white.main : grey[600])
           }
         }}
       >
-        <MDBox sx={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+        <MDBox className='aaaaaa666' sx={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
           <MDTypography
             className='return-back'
             component='span'
@@ -84,7 +76,7 @@ function Breadcrumbs({ icon, title, route, light, handleMiniSidenav, iconsStyle 
         </Link>
 
         {routes.map((el) => (
-          <Link to={`/${el}`} key={el}>
+          <Link className='aaaaa444' to={`/${el}`} key={el}>
             <MDTypography
               component='span'
               variant='button'
@@ -108,7 +100,14 @@ function Breadcrumbs({ icon, title, route, light, handleMiniSidenav, iconsStyle 
           {title.replace('-', ' ')}
         </MDTypography>
       </MuiBreadcrumbs>
-      <MDTypography fontWeight='bold' textTransform='capitalize' variant='h6' color={light ? 'white' : 'dark'} noWrap>
+      <MDTypography
+        className='mt-10'
+        fontWeight='bold'
+        textTransform='capitalize'
+        variant='h6'
+        color={light ? 'white' : 'dark'}
+        noWrap
+      >
         {title.replace('-', ' ')}
       </MDTypography>
     </MDBox>
