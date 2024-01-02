@@ -3,8 +3,6 @@ import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
 import { NavLink } from 'react-router-dom';
 
-let casinoId = window.location.pathname.split('/')[2];
-
 const jetpackSessionsColumnData = [
   {
     Header: 'Table Id',

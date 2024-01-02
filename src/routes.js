@@ -94,6 +94,7 @@ import SlotsManagement from 'layouts/slots-managment';
 import EditSlot from 'layouts/slots-managment/edit-slot';
 import CodeManagement from 'layouts/codes';
 import NewCodes from 'layouts/codes/components/new-codes';
+import SupportTickets from 'layouts/support-tickets';
 
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
@@ -305,7 +306,7 @@ const routes = [
     key: 'support-tickets',
     icon: <Icon fontSize='medium'>support</Icon>,
     route: '/support-tickets',
-    component: <Sales />,
+    component: <SupportTickets />,
     action: 'read',
     object: 'support',
   },

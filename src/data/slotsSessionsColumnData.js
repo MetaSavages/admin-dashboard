@@ -1,10 +1,3 @@
-import { Icon, IconButton, Tooltip } from '@mui/material';
-import MDBox from 'components/MDBox';
-import MDTypography from 'components/MDTypography';
-import { NavLink } from 'react-router-dom';
-
-let casinoId = window.location.pathname.split('/')[2];
-
 const slotsSessionsColumnData = [
   {
     Header: 'Table Id',
