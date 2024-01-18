@@ -95,6 +95,8 @@ import EditSlot from 'layouts/slots-managment/edit-slot';
 import CodeManagement from 'layouts/codes';
 import NewCodes from 'layouts/codes/components/new-codes';
 import SupportTickets from 'layouts/support-tickets';
+import { Email } from '@mui/icons-material';
+import EmailSender from 'layouts/email';
 
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
@@ -320,6 +322,17 @@ const routes = [
     component: <CodeManagement />,
     action: 'read',
     object: 'promocode'
+  },
+  {
+    type: 'collapse',
+    noCollapse: true,
+    name: 'Email Sender',
+    key: 'email',
+    icon: <Icon fontSize='medium'>email</Icon>,
+    route: '/Email',
+    component: <EmailSender />,
+    action: 'read',
+    object: 'email'
   },
   {
     type: 'divider',
