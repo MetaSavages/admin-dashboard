@@ -1,60 +1,75 @@
 import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
-import { Navigate, useNavigate } from 'react-router-dom';
-import rolesColumnData from 'data/rolesColumnData';
-import { useState } from 'react';
-import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
+import { Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+
 import { Can } from 'context';
+import { getPlayers , getPlayerAggregated } from 'services/email';
+import { useEffect, useState } from 'react';
+import { Dialog, DialogActions, DialogTitle } from '@mui/material';
+import { Button } from '@mui/base';
+import emailColumnData from 'data/emailColumnData';
+import Filters from './components/Filters';
 
 function EmailSender() {
+
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [headerCheck, setHeaderCheck] = useState(false);
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-  const [deleteRoleId, setDeleteRoleId] = useState('');
-  const [filters, setFilters] = useState('');
+  const location = useLocation();
+  const [filters, setFilters] = useState({});
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [arrayOfPlayers, setArrayOfPlayers] = useState([]);
+
+
+  useEffect(() => {
+    setArrayOfPlayers([]);
+  }, [filters]);
+
+
+  const createEmail = async () => {
+    alert('Sending email');
+  };
+
   return (
     <>
       <Can I='read' a='email'>
         <DataTablePage
           title='Email Sender'
           createButton={
-            <MDButton variant='contained' color='info' onClick={() => navigate('/role-management/new-role')}>
-              Add Email
-            </MDButton>
+            <Can I='create' a='email'>
+              <MDButton variant='contained' color='info' onClick={() => createEmail()}>
+                Send Email
+              </MDButton>
+            </Can>
           }
           canSearch
           canFilter
-          // fetchData={}
-          queryKey='email'
-          columnData={rolesColumnData}
-          onDelete={(id) => {
-            setDeleteRoleId(id);
-            handleOpenModal();
-          }}
+          // fetchData={fetchData}
+          fetchData={getPlayers}
+          queryKey='players'
+          columnData={emailColumnData}
+          object={'email'}
+          // subrowFetchData={getPlayerAggregated}
           filters={filters}
+          filtersComponent={
+            <Filters
+              filters={filters}
+              setFilters={setFilters}
+              arrayOfPlayers={arrayOfPlayers}
+              setArrayOfPlayers={setArrayOfPlayers}
+              setHeaderCheck={setHeaderCheck}
+            />
+          }
           noActions
+          additionalData={{
+            arrayOfPlayers: arrayOfPlayers,
+            setArrayOfPlayers: (e) => setArrayOfPlayers(e),
+            headerCheck: headerCheck,
+            setHeaderCheck: setHeaderCheck
+          }}
         />
-        <Dialog
-          open={showModal}
-          onClose={handleCloseModal}
-          aria-labelledby='alert-dialog-title'
-          aria-describedby='alert-dialog-description'
-        >
-          <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this role?'}</DialogTitle>
-          <DialogActions>
-            <Button
-              onClick={async () => {
-                await deleteRole(deleteRoleId);
-                handleCloseModal();
-                setFilters(filters.length ? '' : 'd');
-              }}
-            >
-              Yes
-            </Button>
-            <Button onClick={handleCloseModal}>No</Button>
-          </DialogActions>
-        </Dialog>
       </Can>
       <Can not I='read' a='email'>
         <Navigate to='/dashboard' replace />

@@ -95,7 +95,6 @@ import EditSlot from 'layouts/slots-managment/edit-slot';
 import CodeManagement from 'layouts/codes';
 import NewCodes from 'layouts/codes/components/new-codes';
 import SupportTickets from 'layouts/support-tickets';
-import { Email } from '@mui/icons-material';
 import EmailSender from 'layouts/email';
 
 const routes = [
