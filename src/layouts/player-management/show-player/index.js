@@ -56,18 +56,6 @@ function ShowPlayer() {
     jetpack: null
   });
 
-  const [slotsWin, setSlotsWin] = useState(null);
-  const [rouletteWin, setRouletteWin] = useState(null);
-  const [blackjackWin, setBlackjackWin] = useState(null);
-  const [baccaratWin, setBaccaratWin] = useState(null);
-  const [crashWin, setCrashWin] = useState(null);
-
-  const [slotsLose, setSlotsLose] = useState(null);
-  const [rouletteLose, setRouletteLose] = useState(null);
-  const [blackjackLose, setBlackjackLose] = useState(null);
-  const [baccaratLose, setBaccaratLose] = useState(null);
-  const [crashLose, setCrashLose] = useState(null);
-
   function getUserGamesMetrics() {
     let todayTate = new Date();
     todayTate.setHours(0, 0, 0, 0);
@@ -77,83 +65,45 @@ function ShowPlayer() {
     dateTomorrow.setHours(24, 0, 0, 0);
     dateTomorrow = dateTomorrow.toJSON();
 
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, null, MetricsType.GameWin).then(
-      // getGameMetricsByPlayer(id, '2024-01-10T22:00:00.000Z', '2024-01-27T22:00:00.000Z', null, MetricsType.GameWin).then(
-      (res) => {
-        if (res.length > 0) {
-          const newState = {
-            slots: null,
-            roulette: null,
-            blackjack: null,
-            baccarat: null,
-            crash: null,
-            jetpack: null
-          };
-          res.forEach((item) => {
-            const key = item.game_type.toLowerCase();
-            if (newState.hasOwnProperty(key)) {
-              newState[key] = item.amount;
-            }
-          });
-          setGameWins(newState);
-        }
+    getGameMetricsByPlayer(id, todayTate, dateTomorrow, null, MetricsType.GameWin).then((res) => {
+      if (res.length > 0) {
+        const newState = {
+          slots: null,
+          roulette: null,
+          blackjack: null,
+          baccarat: null,
+          crash: null,
+          jetpack: null
+        };
+        res.forEach((item) => {
+          const key = item.game_type.toLowerCase();
+          if (newState.hasOwnProperty(key)) {
+            newState[key] = item.amount;
+          }
+        });
+        setGameWins(newState);
       }
-    );
+    });
 
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, null, MetricsType.GameLose).then(
-      // getGameMetricsByPlayer(id, '2024-01-10T22:00:00.000Z', '2024-01-27T22:00:00.000Z', null, MetricsType.GameWin).then(
-      (res) => {
-        if (res.length > 0) {
-          const newState = {
-            slots: null,
-            roulette: null,
-            blackjack: null,
-            baccarat: null,
-            crash: null,
-            jetpack: null
-          };
-          res.forEach((item) => {
-            const key = item.game_type.toLowerCase();
-            if (newState.hasOwnProperty(key)) {
-              newState[key] = item.amount;
-            }
-          });
-          setGameLose(newState);
-        }
+    getGameMetricsByPlayer(id, todayTate, dateTomorrow, null, MetricsType.GameLose).then((res) => {
+      if (res.length > 0) {
+        const newState = {
+          slots: null,
+          roulette: null,
+          blackjack: null,
+          baccarat: null,
+          crash: null,
+          jetpack: null
+        };
+        res.forEach((item) => {
+          const key = item.game_type.toLowerCase();
+          if (newState.hasOwnProperty(key)) {
+            newState[key] = item.amount;
+          }
+        });
+        setGameLose(newState);
       }
-    );
-
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Slots, MetricsType.GameWin).then((res) => {
-    //   setSlotsWin(res.amount);
-    // });
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Roulette, MetricsType.GameWin).then((res) => {
-    //   setRouletteWin(res.amount);
-    // });
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Blackjack, MetricsType.GameWin).then((res) => {
-    //   setBlackjackWin(res.amount);
-    // });
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Baccarat, MetricsType.GameWin).then((res) => {
-    //   setBaccaratWin(res.amount);
-    // });
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Crash, MetricsType.GameWin).then((res) => {
-    //   setCrashWin(res.amount);
-    // });
-
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Slots, MetricsType.GameLose).then((res) => {
-    //   setSlotsLose(res.amount);
-    // });
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Roulette, MetricsType.GameLose).then((res) => {
-    //   setRouletteLose(res.amount);
-    // });
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Blackjack, MetricsType.GameLose).then((res) => {
-    //   setBlackjackLose(res.amount);
-    // });
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Baccarat, MetricsType.GameLose).then((res) => {
-    //   setBaccaratLose(res.amount);
-    // });
-    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Crash, MetricsType.GameLose).then((res) => {
-    //   setCrashLose(res.amount);
-    // });
+    });
   }
 
   function typeUser() {
