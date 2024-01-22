@@ -95,6 +95,7 @@ import EditSlot from 'layouts/slots-managment/edit-slot';
 import CodeManagement from 'layouts/codes';
 import NewCodes from 'layouts/codes/components/new-codes';
 import SupportTickets from 'layouts/support-tickets';
+import EmailPreview from 'layouts/email-preview';
 
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
@@ -378,6 +379,12 @@ const routes = [
     key: 'new-player',
     route: '/player-management/new-player',
     component: <NewPlayer />
+  },
+  {
+    name: 'New Player',
+    key: 'new-player',
+    route: '/player-management/email-preview',
+    component: <EmailPreview />
   },
   {
     name: 'Show Player',
