@@ -1,27 +1,17 @@
 import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
-import { Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-
+import { Navigate } from 'react-router-dom';
 import { Can } from 'context';
-import { getPlayers , getPlayerAggregated } from 'services/email';
+import { getPlayers } from 'services/email';
 import { useEffect, useState } from 'react';
-import { Dialog, DialogActions, DialogTitle } from '@mui/material';
-import { Button } from '@mui/base';
 import emailColumnData from 'data/emailColumnData';
 import Filters from './components/Filters';
 
 function EmailSender() {
 
-  const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
-  const [headerCheck, setHeaderCheck] = useState(false);
-  const handleOpenModal = () => setShowModal(true);
-  const handleCloseModal = () => setShowModal(false);
-  const location = useLocation();
   const [filters, setFilters] = useState({});
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [headerCheck, setHeaderCheck] = useState(false);
   const [arrayOfPlayers, setArrayOfPlayers] = useState([]);
-
 
   useEffect(() => {
     setArrayOfPlayers([]);
@@ -31,6 +21,7 @@ function EmailSender() {
   const createEmail = async () => {
     alert('Sending email');
   };
+
 
   return (
     <>
@@ -46,12 +37,10 @@ function EmailSender() {
           }
           canSearch
           canFilter
-          // fetchData={fetchData}
           fetchData={getPlayers}
           queryKey='players'
           columnData={emailColumnData}
           object={'email'}
-          // subrowFetchData={getPlayerAggregated}
           filters={filters}
           filtersComponent={
             <Filters

@@ -13,9 +13,22 @@ const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const Filters = ({ filters, setFilters, arrayOfPlayers, setArrayOfPlayers, setHeaderCheck }) => {
   const [search, setSearch] = useState('');
-  const [isClaimed, setIsClaimed] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
   const onSubmit = async () => {
-    alert('Action email');
+    if (arrayOfPlayers.length > 0) {
+      const getAllChecked = arrayOfPlayers.map((id) =>
+        console.log('Email', id)
+      );
+      try {
+        await Promise.all(getAllChecked);
+        alert('Emails action successful');
+        setFilters(filters.length ? '' : 'd');
+        setArrayOfPlayers([]);
+      } catch (error) {
+        alert(error.message);
+      }
+    }
   };
 
   function handleChange(e) {
@@ -29,8 +42,8 @@ const Filters = ({ filters, setFilters, arrayOfPlayers, setArrayOfPlayers, setHe
     if (search) {
       filter.search = search;
     }
-    if (isClaimed) {
-      filter.isClaimed = true;
+    if (isChecked) {
+      filter.isChecked = true;
     }
     setArrayOfPlayers([]);
     setHeaderCheck(false);
@@ -38,8 +51,8 @@ const Filters = ({ filters, setFilters, arrayOfPlayers, setArrayOfPlayers, setHe
   }
 
   const handleCheckboxChange = (event) => {
-    const isChecked = event.target.checked;
-    setIsClaimed(isChecked);
+    const isCheckedBox = event.target.checked;
+    setIsChecked(isCheckedBox);
   };
 
   return (
@@ -74,10 +87,10 @@ const Filters = ({ filters, setFilters, arrayOfPlayers, setArrayOfPlayers, setHe
                       <Checkbox
                         icon={icon}
                         checkedIcon={checkedIcon}
-                        checked={isClaimed}
+                        checked={isChecked}
                         onChange={(event) => handleCheckboxChange(event)}
                       />
-                      Activate CheckBox
+                      Demo players
                     </label>
                   </MDBox>
                 </Grid>
@@ -100,7 +113,7 @@ const Filters = ({ filters, setFilters, arrayOfPlayers, setArrayOfPlayers, setHe
             sx={{ width: '200px', color: 'green' }}
             onClick={onSubmit}
           >
-            Do Some Action
+            Action Selected
           </MDButton>
         </Grid>
       </Grid>

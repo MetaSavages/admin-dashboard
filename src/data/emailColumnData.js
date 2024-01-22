@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { IconButton, Icon, Tooltip, Checkbox } from '@mui/material';
-import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
-import { useSearchParams } from 'react-router-dom';
+import { Checkbox } from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
@@ -21,7 +18,7 @@ const emailColumnData = [
           {...label}
           icon={icon}
           checkedIcon={checkedIcon}
-          checked={data?.data[0]?.additionalData?.headerCheck ? data?.data[0]?.additionalData?.headerCheck : false}
+          checked={data?.data[0]?.additionalData?.headerCheck ? true : false}
           onChange={(e) => {
             data.data[0].additionalData.setHeaderCheck(e.target.checked);
             if (e.target.checked) {

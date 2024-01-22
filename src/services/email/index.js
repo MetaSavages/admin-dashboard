@@ -1,6 +1,6 @@
 import useAxios from 'hooks/useAxios';
 
-export const getPlayers = async (limit = 20, page = 1, filters = '') => {
+export const getPlayers = async (limit = 20, page = 1, filters) => {
   const api = useAxios();
   try {
     const params = {
@@ -9,12 +9,14 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
       sortBy: 'createdAt:DESC'
     };
 
-    if (Object.keys(filters).length) {
-      if (filters.users.length) {
-        params['id'] = `${filters.users.map((u) => u.id).toString()}`;
-      }
-      if (filters?.isDemo != null) {
-        params['isDemo'] = filters.isDemo;
+    if (typeof filters == 'object') {
+      if (Object.keys(filters).length) {
+        if (filters?.search != null) {
+          params['search'] = filters.search;
+        }
+        if (filters?.isChecked != null) {
+          params['isDemo'] = filters.isChecked;
+        }
       }
     }
 
@@ -41,35 +43,6 @@ export const getPlayers = async (limit = 20, page = 1, filters = '') => {
       }),
       meta: unformattedData.data.meta
     };
-  } catch (err) {
-    console.log(err);
-    return {
-      data: [],
-      meta: {
-        totalItems: 0,
-        itemCount: 0,
-        itemsPerPage: 0,
-        totalPages: 0,
-        currentPage: 0
-      }
-    };
-  }
-};
-
-export const getPlayerAggregated = async (user) => {
-  const api = useAxios();
-  try {
-    const res = await api.get(`/admin/metrics/players/${user.id}`);
-    return res.data.map((x) => {
-      return {
-        nickname: x.casino_name,
-        time_spent: x.time_spent,
-        current_balance: x.current_balance,
-        starting_balance: x.starting_balance,
-        money_spent: x.money_spent,
-        money_cashed_out: x.money_cashed_out
-      };
-    });
   } catch (err) {
     console.log(err);
     return {
