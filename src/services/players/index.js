@@ -143,13 +143,16 @@ export const updatePlayerName = async (id, name) => {
 
 export const getGameMetricsByPlayer = async (userId, startDate, endDate, gameType, metricType) => {
   const api = useAxios();
-  const params = {
+  let params = {
     startDate,
     endDate,
-    gameType,
     metricType,
     userId
   };
+
+  if (gameType) {
+    params.gameType = gameType;
+  }
   try {
     const response = await api.get(`/admin/metrics/metric-amounts-by-user`, { params: params });
 

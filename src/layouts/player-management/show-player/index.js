@@ -38,6 +38,24 @@ function ShowPlayer() {
     getUserGamesMetrics();
   }, []);
 
+  const [gamesWins, setGameWins] = useState({
+    slots: null,
+    roulette: null,
+    blackjack: null,
+    baccarat: null,
+    crash: null,
+    jetpack: null
+  });
+
+  const [gamesLose, setGameLose] = useState({
+    slots: null,
+    roulette: null,
+    blackjack: null,
+    baccarat: null,
+    crash: null,
+    jetpack: null
+  });
+
   const [slotsWin, setSlotsWin] = useState(null);
   const [rouletteWin, setRouletteWin] = useState(null);
   const [blackjackWin, setBlackjackWin] = useState(null);
@@ -58,37 +76,84 @@ function ShowPlayer() {
     let dateTomorrow = new Date();
     dateTomorrow.setHours(24, 0, 0, 0);
     dateTomorrow = dateTomorrow.toJSON();
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Slots, MetricsType.GameWin).then((res) => {
-      setSlotsWin(res.amount);
-    });
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Roulette, MetricsType.GameWin).then((res) => {
-      setRouletteWin(res.amount);
-    });
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Blackjack, MetricsType.GameWin).then((res) => {
-      setBlackjackWin(res.amount);
-    });
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Baccarat, MetricsType.GameWin).then((res) => {
-      setBaccaratWin(res.amount);
-    });
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Crash, MetricsType.GameWin).then((res) => {
-      setCrashWin(res.amount);
-    });
 
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Slots, MetricsType.GameLose).then((res) => {
-      setSlotsLose(res.amount);
-    });
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Roulette, MetricsType.GameLose).then((res) => {
-      setRouletteLose(res.amount);
-    });
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Blackjack, MetricsType.GameLose).then((res) => {
-      setBlackjackLose(res.amount);
-    });
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Baccarat, MetricsType.GameLose).then((res) => {
-      setBaccaratLose(res.amount);
-    });
-    getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Crash, MetricsType.GameLose).then((res) => {
-      setCrashLose(res.amount);
-    });
+    getGameMetricsByPlayer(id, todayTate, dateTomorrow, null, MetricsType.GameWin).then(
+      // getGameMetricsByPlayer(id, '2024-01-10T22:00:00.000Z', '2024-01-27T22:00:00.000Z', null, MetricsType.GameWin).then(
+      (res) => {
+        if (res.length > 0) {
+          const newState = {
+            slots: null,
+            roulette: null,
+            blackjack: null,
+            baccarat: null,
+            crash: null,
+            jetpack: null
+          };
+          res.forEach((item) => {
+            const key = item.game_type.toLowerCase();
+            if (newState.hasOwnProperty(key)) {
+              newState[key] = item.amount;
+            }
+          });
+          setGameWins(newState);
+        }
+      }
+    );
+
+    getGameMetricsByPlayer(id, todayTate, dateTomorrow, null, MetricsType.GameLose).then(
+      // getGameMetricsByPlayer(id, '2024-01-10T22:00:00.000Z', '2024-01-27T22:00:00.000Z', null, MetricsType.GameWin).then(
+      (res) => {
+        if (res.length > 0) {
+          const newState = {
+            slots: null,
+            roulette: null,
+            blackjack: null,
+            baccarat: null,
+            crash: null,
+            jetpack: null
+          };
+          res.forEach((item) => {
+            const key = item.game_type.toLowerCase();
+            if (newState.hasOwnProperty(key)) {
+              newState[key] = item.amount;
+            }
+          });
+          setGameLose(newState);
+        }
+      }
+    );
+
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Slots, MetricsType.GameWin).then((res) => {
+    //   setSlotsWin(res.amount);
+    // });
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Roulette, MetricsType.GameWin).then((res) => {
+    //   setRouletteWin(res.amount);
+    // });
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Blackjack, MetricsType.GameWin).then((res) => {
+    //   setBlackjackWin(res.amount);
+    // });
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Baccarat, MetricsType.GameWin).then((res) => {
+    //   setBaccaratWin(res.amount);
+    // });
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Crash, MetricsType.GameWin).then((res) => {
+    //   setCrashWin(res.amount);
+    // });
+
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Slots, MetricsType.GameLose).then((res) => {
+    //   setSlotsLose(res.amount);
+    // });
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Roulette, MetricsType.GameLose).then((res) => {
+    //   setRouletteLose(res.amount);
+    // });
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Blackjack, MetricsType.GameLose).then((res) => {
+    //   setBlackjackLose(res.amount);
+    // });
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Baccarat, MetricsType.GameLose).then((res) => {
+    //   setBaccaratLose(res.amount);
+    // });
+    // getGameMetricsByPlayer(id, todayTate, dateTomorrow, GameType.Crash, MetricsType.GameLose).then((res) => {
+    //   setCrashLose(res.amount);
+    // });
   }
 
   function typeUser() {
@@ -299,7 +364,11 @@ function ShowPlayer() {
                         <SCT>Baccarat Win:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{baccaratWin !== null ? formatNumber(baccaratWin) : 'Did not fetch baccarat win'}</SCT>
+                        <SCT>
+                          {gamesWins.baccarat !== null
+                            ? formatNumber(gamesWins.baccarat)
+                            : 'Did not fetch baccarat win'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -307,7 +376,11 @@ function ShowPlayer() {
                         <SCT>Baccarat Lose:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{baccaratLose !== null ? formatNumber(baccaratLose) : 'Did not fetch baccarat lose'}</SCT>
+                        <SCT>
+                          {gamesLose.baccarat !== null
+                            ? formatNumber(gamesLose.baccarat)
+                            : 'Did not fetch baccarat lose'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -315,7 +388,11 @@ function ShowPlayer() {
                         <SCT>Blackjack Win:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{blackjackWin !== null ? formatNumber(blackjackWin) : 'Did not fetch blackjack win'}</SCT>
+                        <SCT>
+                          {gamesWins.blackjack !== null
+                            ? formatNumber(gamesWins.blackjack)
+                            : 'Did not fetch blackjack win'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -324,7 +401,9 @@ function ShowPlayer() {
                       </TableCell>
                       <TableCell>
                         <SCT>
-                          {blackjackLose !== null ? formatNumber(blackjackLose) : 'Did not fetch blackjack lose'}
+                          {gamesLose.blackjack !== null
+                            ? formatNumber(gamesLose.blackjack)
+                            : 'Did not fetch blackjack lose'}
                         </SCT>
                       </TableCell>
                     </TableRow>
@@ -333,7 +412,11 @@ function ShowPlayer() {
                         <SCT>Roulette Win:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{rouletteWin !== null ? formatNumber(rouletteWin) : 'Did not fetch roulette win'}</SCT>
+                        <SCT>
+                          {gamesWins.roulette !== null
+                            ? formatNumber(gamesWins.roulette)
+                            : 'Did not fetch roulette win'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -341,7 +424,11 @@ function ShowPlayer() {
                         <SCT>Roulette Lose:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{rouletteLose !== null ? formatNumber(rouletteLose) : 'Did not fetch roulette lose'}</SCT>
+                        <SCT>
+                          {gamesLose.roulette !== null
+                            ? formatNumber(gamesLose.roulette)
+                            : 'Did not fetch roulette lose'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -349,7 +436,9 @@ function ShowPlayer() {
                         <SCT>Crash Win:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{crashWin !== null ? formatNumber(crashWin) : 'Did not fetch crash win'}</SCT>
+                        <SCT>
+                          {gamesWins.crash !== null ? formatNumber(gamesWins.crash) : 'Did not fetch crash win'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
 
@@ -358,7 +447,9 @@ function ShowPlayer() {
                         <SCT>Crash Lose:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{crashLose !== null ? formatNumber(crashLose) : 'Did not fetch crash lose'}</SCT>
+                        <SCT>
+                          {gamesLose.crash !== null ? formatNumber(gamesLose.crash) : 'Did not fetch crash lose'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -366,7 +457,9 @@ function ShowPlayer() {
                         <SCT>Slots Win:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{slotsWin !== null ? formatNumber(slotsWin) : 'Did not fetch slots win'}</SCT>
+                        <SCT>
+                          {gamesWins.slots !== null ? formatNumber(gamesWins.slots) : 'Did not fetch slots win'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
                     <TableRow>
@@ -374,7 +467,29 @@ function ShowPlayer() {
                         <SCT>Slots Lose:</SCT>
                       </TableCell>
                       <TableCell>
-                        <SCT>{slotsLose !== null ? formatNumber(slotsLose) : 'Did not fetch slots lose'}</SCT>
+                        <SCT>
+                          {gamesLose.slots !== null ? formatNumber(gamesLose.slots) : 'Did not fetch slots lose'}
+                        </SCT>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <SCT>Jetpack Win:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>
+                          {gamesWins.jetpack !== null ? formatNumber(gamesWins.jetpack) : 'Did not fetch slots win'}
+                        </SCT>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>
+                        <SCT>Jetpack Lose:</SCT>
+                      </TableCell>
+                      <TableCell>
+                        <SCT>
+                          {gamesLose.jetpack !== null ? formatNumber(gamesLose.jetpack) : 'Did not fetch slots lose'}
+                        </SCT>
                       </TableCell>
                     </TableRow>
                   </TableBody>
