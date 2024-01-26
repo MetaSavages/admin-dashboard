@@ -3,10 +3,11 @@ import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { styled } from '@mui/material/styles';
+import { useMaterialUIController } from 'context';
 
 const MDTextareaRoot = styled(TextareaAutosize)(({ theme, ownerState }) => {
   const { palette, functions } = theme;
-  const { error, success, disabled } = ownerState;
+  const { error, success, disabled, darkMode } = ownerState;
 
   const { grey, transparent, error: colorError, success: colorSuccess } = palette;
   const { pxToRem } = functions;
@@ -28,7 +29,7 @@ const MDTextareaRoot = styled(TextareaAutosize)(({ theme, ownerState }) => {
   });
 
   return {
-    backgroundColor: disabled ? `${grey[200]} !important` : transparent.main,
+    backgroundColor: disabled ? (darkMode ? `${grey[700]} !important` : `${grey[200]} !important`) : transparent.main,
     color: palette.text.main,
     pointerEvents: disabled ? 'none' : 'auto',
     resize: 'vertical',
@@ -38,15 +39,19 @@ const MDTextareaRoot = styled(TextareaAutosize)(({ theme, ownerState }) => {
   };
 });
 
-const MDTextarea = forwardRef(({ error, success, disabled, ...rest }, ref) => (
-  <MDTextareaRoot
-    aria-label='empty textarea'
-    minRows={3}
-    ref={ref}
-    ownerState={{ error, success, disabled }}
-    {...rest}
-  />
-));
+const MDTextarea = forwardRef(({ error, success, disabled, ...rest }, ref) => {
+  const [controller] = useMaterialUIController();
+  const { darkMode } = controller;
+  return (
+    <MDTextareaRoot
+      aria-label='empty textarea'
+      minRows={3}
+      ref={ref}
+      ownerState={{ error, success, disabled, darkMode }}
+      {...rest}
+    />
+  );
+});
 
 MDTextarea.defaultProps = {
   error: false,
