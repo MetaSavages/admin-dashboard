@@ -4,7 +4,7 @@ import { date } from 'yup/lib/locale';
 export const getAllTemplates = async () => {
   const api = useAxios();
   try {
-    return await api.get('/sendgrid/get-all-templates?generations=dynamic&page_size=200');
+    return await api.get('/sendgrid/get-all-templates?generations=dynamic&pageSize=200');
   } catch (err) {
     console.error(err);
     throw new Error(err.response.data.message);
@@ -40,7 +40,7 @@ export const sendTemplateEmails = async (emails, templateId) => {
   try {
     return await api.post('/sendgrid/send-user-template-email', {
       emails,
-      template_id: templateId
+      templateId
     });
   } catch (err) {
     console.error(err);
@@ -48,12 +48,12 @@ export const sendTemplateEmails = async (emails, templateId) => {
   }
 };
 
-export const creteTemplate = async (templateName, htmlContent, subject, active, version_name, generation) => {
+export const creteTemplate = async (templateName, htmlContent, subject, active, versionName, generation) => {
   const api = useAxios();
   try {
     const data = {
-      template_name: templateName,
-      html_content: htmlContent,
+      templateName,
+      htmlContent,
       subject
     };
     if (generation) {
@@ -62,8 +62,8 @@ export const creteTemplate = async (templateName, htmlContent, subject, active, 
     if (active) {
       date.active = active;
     }
-    if (version_name) {
-      date.version_name = version_name;
+    if (versionName) {
+      date.versionName = versionName;
     }
     return await api.post('/sendgrid/crete-template', data);
   } catch (err) {
@@ -72,20 +72,12 @@ export const creteTemplate = async (templateName, htmlContent, subject, active, 
   }
 };
 
-export const editTemplate = async (
-  templateId,
-  templateName,
-  htmlContent,
-  subject,
-  active,
-  version_name,
-  generation
-) => {
+export const editTemplate = async (templateId, templateName, htmlContent, subject, active, versionName, generation) => {
   const api = useAxios();
   try {
     const data = {
-      template_name: templateName,
-      html_content: htmlContent,
+      templateName: templateName,
+      htmlContent: htmlContent,
       subject
     };
     if (generation) {
@@ -94,8 +86,8 @@ export const editTemplate = async (
     if (active) {
       date.active = active;
     }
-    if (version_name) {
-      date.version_name = version_name;
+    if (versionName) {
+      date.versionName = versionName;
     }
     return await api.patch(`/sendgrid/${templateId}`, data);
   } catch (err) {

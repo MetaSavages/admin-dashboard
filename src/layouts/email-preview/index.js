@@ -122,7 +122,7 @@ const EmailPreview = () => {
       }
 
       //TODO: To set property for emails
-      sendCustomEmail(['asd@abv.bg'], htmlContent, subject)
+      sendCustomEmail(['anton.tsirov@encorp.io'], htmlContent, subject)
         .then(() => {
           resetState();
         })
@@ -133,8 +133,8 @@ const EmailPreview = () => {
       if (!template || !template.template_id) {
         return;
       }
-       //TODO: To set property for emails
-      sendTemplateEmails([ 'asd@abv.bg'], template.template_id)
+      //TODO: To set property for emails
+      sendTemplateEmails(['anton.tsirov@encorp.io'], template.template_id)
         .then(() => {
           resetState();
         })
