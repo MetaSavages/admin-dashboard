@@ -18,7 +18,7 @@ import {
 } from 'services/email';
 import CodePreview from './components/code-preview';
 import { Autocomplete, TextField } from '@mui/material';
-import { useEmails } from 'context/emailContect';
+import { useEmails } from 'context/emailContext';
 
 const EmailPreview = () => {
   const [htmlContent, setHtmlContent] = useState('');
@@ -35,6 +35,7 @@ const EmailPreview = () => {
 
   // TODO: when we want to integrate with emails page
   const { selectedEmails } = useEmails();
+  console.log('selectedEmails', selectedEmails);
 
   useEffect(() => {
     fetchAllTemplates();

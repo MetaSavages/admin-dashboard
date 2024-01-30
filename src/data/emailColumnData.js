@@ -22,10 +22,10 @@ const emailColumnData = [
           onChange={(e) => {
             data.data[0].additionalData.setHeaderCheck(e.target.checked);
             if (e.target.checked) {
-              const allPlayers = data.data.map((item) => item.id);
-              data.data[0].additionalData.setArrayOfPlayers(allPlayers);
+              const allPlayers = data.data.map((item) => item.email);
+              data.data[0].additionalData.setArrayOfEmails(allPlayers);
             } else {
-              data.data[0].additionalData.setArrayOfPlayers([]);
+              data.data[0].additionalData.setArrayOfEmails([]);
             }
           }}
         />
@@ -38,16 +38,16 @@ const emailColumnData = [
           {...label}
           icon={icon}
           checkedIcon={checkedIcon}
-          checked={row.original.additionalData.arrayOfPlayers.some((el) => el == row.original.id)}
+          checked={row.original.additionalData.arrayOfEmails.some((el) => el == row.original.email)}
           onChange={(e) => {
             if (e.target.checked) {
-              row.original.additionalData.setArrayOfPlayers([
-                ...row.original.additionalData.arrayOfPlayers,
-                row.original.id
+              row.original.additionalData.setArrayOfEmails([
+                ...row.original.additionalData.arrayOfEmails,
+                row.original.email
               ]);
             } else {
-              const newArray = row.original.additionalData.arrayOfPlayers.filter((item) => item !== row.original.id);
-              row.original.additionalData.setArrayOfPlayers(newArray);
+              const newArray = row.original.additionalData.arrayOfEmails.filter((item) => item !== row.original.email);
+              row.original.additionalData.setArrayOfEmails(newArray);
             }
           }}
         />

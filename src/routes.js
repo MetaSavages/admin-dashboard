@@ -393,9 +393,9 @@ const routes = [
     component: <NewPlayer />
   },
   {
-    name: 'New Player',
-    key: 'new-player',
-    route: '/player-management/email-preview',
+    name: 'Email Preview',
+    key: 'email-preview',
+    route: '/email/email-preview',
     component: <EmailPreview />
   },
   {

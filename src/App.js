@@ -65,7 +65,7 @@ import { getCurrentUser } from 'services/auth';
 import { useNavigate } from 'react-router-dom';
 import { AbilityContext } from 'context';
 import { getUserAbilities } from 'config/ability';
-import { EmailProvider } from 'context/emailContect';
+import { EmailProvider } from 'context/emailContext';
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();

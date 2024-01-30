@@ -1,43 +1,40 @@
 import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
 import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Can } from 'context';
-import { getPlayers, getPlayersEmails } from 'services/email';
+import { getPlayers, getPlayersEmails, getPlayersWithEmails } from 'services/email';
 import { useEffect, useState } from 'react';
 import emailColumnData from 'data/emailColumnData';
 import Filters from './components/Filters';
 
 function EmailSender() {
 
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({});
   const [headerCheck, setHeaderCheck] = useState(false);
-  const [arrayOfPlayers, setArrayOfPlayers] = useState([]);
+  const [arrayOfEmails, setArrayOfEmails] = useState([]);
 
   useEffect(() => {
-    setArrayOfPlayers([]);
+    setArrayOfEmails([]);
   }, [filters]);
 
 
-  const createEmail = async () => {
-    alert('Sending email');
-  };
-
-
   return (
-    <>
+    <>  
       <Can I='read' a='email'>
         <DataTablePage
           title='Email Sender'
           createButton={
             <Can I='create' a='email'>
-              <MDButton variant='contained' color='info' onClick={() => createEmail()}>
+              <MDButton variant='contained' color='info' onClick={() => navigate('/email/email-preview')}>
                 Send Email
               </MDButton>
             </Can>
           }
           canSearch
           canFilter
-          fetchData={getPlayersEmails}
+          fetchData={getPlayersWithEmails}
           queryKey='players'
           columnData={emailColumnData}
           object={'email'}
@@ -46,15 +43,15 @@ function EmailSender() {
             <Filters
               filters={filters}
               setFilters={setFilters}
-              arrayOfPlayers={arrayOfPlayers}
-              setArrayOfPlayers={setArrayOfPlayers}
+              arrayOfEmails={arrayOfEmails}
+              setArrayOfEmails={setArrayOfEmails}
               setHeaderCheck={setHeaderCheck}
             />
           }
           noActions
           additionalData={{
-            arrayOfPlayers: arrayOfPlayers,
-            setArrayOfPlayers: (e) => setArrayOfPlayers(e),
+            arrayOfEmails: arrayOfEmails,
+            setArrayOfEmails: (e) => setArrayOfEmails(e),
             headerCheck: headerCheck,
             setHeaderCheck: setHeaderCheck
           }}

@@ -5,26 +5,28 @@ import MDBox from 'components/MDBox';
 import React, { useState } from 'react';
 import MDButton from 'components/MDButton';
 import MDInput from 'components/MDInput';
+import { useEmails } from 'context/emailContext';
+
 
 import './index.css';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const Filters = ({ filters, setFilters, arrayOfPlayers, setArrayOfPlayers, setHeaderCheck }) => {
+const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHeaderCheck }) => {
   const [search, setSearch] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const { setSelectedEmails } = useEmails();
+  // now using hardcoded value
+  filters.isSubscribed = true;
 
   const onSubmit = async () => {
-    if (arrayOfPlayers.length > 0) {
-      const getAllChecked = arrayOfPlayers.map((id) =>
-        console.log('Email', id)
-      );
+    if (arrayOfEmails.length != 0) {
       try {
-        await Promise.all(getAllChecked);
-        alert('Emails action successful');
-        setFilters(filters.length ? '' : 'd');
-        setArrayOfPlayers([]);
+      setSelectedEmails(arrayOfEmails);
+      setFilters(filters.length ? '' : 'd');
+      setArrayOfEmails([]);
+      alert('Emails saved successfully');
       } catch (error) {
         alert(error.message);
       }
@@ -45,7 +47,7 @@ const Filters = ({ filters, setFilters, arrayOfPlayers, setArrayOfPlayers, setHe
     if (isChecked) {
       filter.isChecked = true;
     }
-    setArrayOfPlayers([]);
+    setArrayOfEmails([]);
     setHeaderCheck(false);
     setFilters(filter);
   }
@@ -109,11 +111,11 @@ const Filters = ({ filters, setFilters, arrayOfPlayers, setArrayOfPlayers, setHe
         <Grid item xs={12} md={2}>
           <MDButton
             variant='text'
-            disabled={arrayOfPlayers.length > 0 ? false : true}
+            disabled={arrayOfEmails.length > 0 ? false : true}
             sx={{ width: '200px', color: 'green' }}
             onClick={onSubmit}
           >
-            Action Selected
+            Save Emails
           </MDButton>
         </Grid>
       </Grid>
