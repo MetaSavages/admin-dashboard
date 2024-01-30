@@ -2,7 +2,7 @@ import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
 import { Navigate } from 'react-router-dom';
 import { Can } from 'context';
-import { getPlayers } from 'services/email';
+import { getPlayers, getPlayersEmails } from 'services/email';
 import { useEffect, useState } from 'react';
 import emailColumnData from 'data/emailColumnData';
 import Filters from './components/Filters';
@@ -37,7 +37,7 @@ function EmailSender() {
           }
           canSearch
           canFilter
-          fetchData={getPlayers}
+          fetchData={getPlayersEmails}
           queryKey='players'
           columnData={emailColumnData}
           object={'email'}
