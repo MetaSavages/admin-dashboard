@@ -41,11 +41,13 @@ const EmailPreview = () => {
   }, []);
 
   function fetchAllTemplates() {
-    getAllTemplates().then((res) => {
-      if (Array.isArray(res?.data)) {
-        setTemplateOptions(res.data);
-      }
-    });
+    getAllTemplates()
+      .then((res) => {
+        if (Array.isArray(res?.data)) {
+          setTemplateOptions(res.data);
+        }
+      })
+      .catch((error) => {});
   }
 
   useEffect(() => {
@@ -60,22 +62,24 @@ const EmailPreview = () => {
 
   useEffect(() => {
     if (template) {
-      getTemplate(template.template_id).then((res) => {
-        if (Array.isArray(res?.data)) {
-          const templateData = res.data[0];
-          const versions = templateData.body.versions;
+      getTemplate(template.template_id)
+        .then((res) => {
+          if (Array.isArray(res?.data)) {
+            const templateData = res.data[0];
+            const versions = templateData.body.versions;
 
-          if (versions.length > 0) {
-            const htmlCode = versions[0].html_content;
-            setTemplateName(templateData.body.name);
-            setSubject(templateData.body.versions[0].subject);
-            setHtmlContent(htmlCode.replace(/\\n/g, '').replace(/\\"/g, '"'));
-          } else {
-            setSubject('');
-            setHtmlContent('');
+            if (versions.length > 0) {
+              const htmlCode = versions[0].html_content;
+              setTemplateName(templateData.body.name);
+              setSubject(templateData.body.versions[0].subject);
+              setHtmlContent(htmlCode.replace(/\\n/g, '').replace(/\\"/g, '"'));
+            } else {
+              setSubject('');
+              setHtmlContent('');
+            }
           }
-        }
-      });
+        })
+        .catch((error) => {});
     }
   }, [template, emailInteraction]);
 
