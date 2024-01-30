@@ -16,9 +16,8 @@ const checkedIcon = <CheckBoxIcon fontSize='small' />;
 const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHeaderCheck }) => {
   const [search, setSearch] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(true);
   const { setSelectedEmails } = useEmails();
-  // now using hardcoded value
-  filters.isSubscribed = true;
 
   const onSubmit = async () => {
     if (arrayOfEmails.length != 0) {
@@ -47,6 +46,10 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
     if (isChecked) {
       filter.isChecked = true;
     }
+    if (isSubscribed) {
+      filter.isSubscribed = true;
+    }
+    
     setArrayOfEmails([]);
     setHeaderCheck(false);
     setFilters(filter);
@@ -55,6 +58,11 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
   const handleCheckboxChange = (event) => {
     const isCheckedBox = event.target.checked;
     setIsChecked(isCheckedBox);
+  };
+
+  const handleCheckboxSub = (event) => {
+    const isCheckedBox = event.target.checked;
+    setIsSubscribed(isCheckedBox);
   };
 
   return (
@@ -75,7 +83,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                       <MDInput
                         className='remove-arrows-from-input'
                         type='text'
-                        label='Email'
+                        label='Search'
                         fullWidth
                         value={search}
                         onChange={handleChange}
@@ -89,10 +97,23 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                       <Checkbox
                         icon={icon}
                         checkedIcon={checkedIcon}
+                        checked={isSubscribed}
+                        onChange={(event) => handleCheckboxSub(event)}
+                      />
+                      Subscribed
+                    </label>
+                  </MDBox>
+                </Grid>
+                <Grid item xs={3}>
+                  <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
+                    <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
+                      <Checkbox
+                        icon={icon}
+                        checkedIcon={checkedIcon}
                         checked={isChecked}
                         onChange={(event) => handleCheckboxChange(event)}
                       />
-                      Demo players
+                      Demo
                     </label>
                   </MDBox>
                 </Grid>

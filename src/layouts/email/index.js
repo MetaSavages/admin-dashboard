@@ -28,7 +28,7 @@ function EmailSender() {
           createButton={
             <Can I='create' a='email'>
               <MDButton variant='contained' color='info' onClick={() => navigate('/email/email-preview')}>
-                Send Email
+                Send To Saved Emails
               </MDButton>
             </Can>
           }
