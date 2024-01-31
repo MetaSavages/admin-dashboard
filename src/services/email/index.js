@@ -67,7 +67,7 @@ export const creteTemplate = async (templateName, htmlContent, subject, active, 
     if (versionName) {
       date.versionName = versionName;
     }
-    return await api.post('/sendgrid/crete-template', data);
+    return await api.post('/sendgrid/create-template', data);
   } catch (err) {
     console.error(err);
     throw new Error(err.response.data.message);
@@ -177,6 +177,7 @@ export const getPlayersWithEmails = async (limit = 20, page = 1, filters) => {
 export const getPlayersEmails = async (filters) => {
   const api = useAxios();
   const params = {};
+  filters.emailOnly = true;
   try {
     if (typeof filters == 'object') {
       if (Object.keys(filters).length) {
@@ -202,23 +203,7 @@ export const getPlayersEmails = async (filters) => {
     console.log(unformattedData);
 
     return {
-      data: unformattedData.data.map((x) => {
-        return {
-          id: x.id,
-          nickname: x.nickname,
-          time_spent: x.time_spent,
-          email: x.email,
-          current_balance: x.current_balance,
-          starting_balance: x.starting_balance,
-          money_spent: x.money_spent,
-          money_cashed_out: x.money_cashed_out,
-          wallet: x.walletId,
-          location: x.lastLocation,
-          kyc_status: x.kycState,
-          isDemo: x.isDemo,
-          createdDate: x.createdDate
-        };
-      }),
+      data: unformattedData,
     };
   } catch (err) {
     console.log(err);

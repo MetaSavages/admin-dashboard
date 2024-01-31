@@ -32,10 +32,7 @@ const EmailPreview = () => {
   const [templateOptions, setTemplateOptions] = useState([]);
   const [template, setTemplate] = useState('');
   const loading = open && templateOptions.length === 0;
-
-  // TODO: when we want to integrate with emails page
-  const { selectedEmails } = useEmails();
-  console.log('selectedEmails', selectedEmails);
+  const { selectedEmails, setSelectedEmails } = useEmails();
 
   useEffect(() => {
     fetchAllTemplates();
@@ -125,11 +122,11 @@ const EmailPreview = () => {
       if (disabledSendButton()) {
         return;
       }
-
-      //TODO: To set property for emails
-      sendCustomEmail(['anton.tsirov@encorp.io'], htmlContent, subject)
+      sendCustomEmail(selectedEmails, htmlContent, subject)
         .then(() => {
           resetState();
+          setSelectedEmails([])
+          alert('You successfully sent emails.');
         })
         .catch((error) => {
           alert(error.message);
@@ -138,10 +135,11 @@ const EmailPreview = () => {
       if (!template || !template.template_id) {
         return;
       }
-      //TODO: To set property for emails
-      sendTemplateEmails(['anton.tsirov@encorp.io'], template.template_id)
+      sendTemplateEmails(selectedEmails, template.template_id)
         .then(() => {
           resetState();
+          setSelectedEmails([])
+          alert('You successfully sent emails.');
         })
         .catch((error) => {
           alert(error.message);

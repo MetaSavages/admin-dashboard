@@ -16,10 +16,11 @@ const checkedIcon = <CheckBoxIcon fontSize='small' />;
 const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHeaderCheck }) => {
   const [search, setSearch] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(true);
+  const [isSubscribed, setIsSubscribed] = useState(false);
   const { setSelectedEmails } = useEmails();
 
-  const onSubmit = async () => {
+  const onSubmit = async (event) => {
+    event.preventDefault();
     if (arrayOfEmails.length != 0) {
       try {
       setSelectedEmails(arrayOfEmails);

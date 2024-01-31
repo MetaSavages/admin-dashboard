@@ -3,10 +3,11 @@ import MDButton from 'components/MDButton';
 import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Can } from 'context';
-import { getPlayers, getPlayersEmails, getPlayersWithEmails } from 'services/email';
+import { getPlayersEmails, getPlayersWithEmails } from 'services/email';
 import { useEffect, useState } from 'react';
 import emailColumnData from 'data/emailColumnData';
 import Filters from './components/Filters';
+import { useEmails } from 'context/emailContext';
 
 function EmailSender() {
 
@@ -14,10 +15,21 @@ function EmailSender() {
   const [filters, setFilters] = useState({});
   const [headerCheck, setHeaderCheck] = useState(false);
   const [arrayOfEmails, setArrayOfEmails] = useState([]);
+  const { setSelectedEmails } = useEmails();
 
   useEffect(() => {
     setArrayOfEmails([]);
   }, [filters]);
+
+  const saveAllEmails = async () => {
+    try {
+      const emails = await getPlayersEmails(filters);
+      setSelectedEmails(emails.data.data);
+      alert('Emails saved successfully');
+    } catch (error) {
+      alert(error.message);
+    }
+  }
 
 
   return (
@@ -27,10 +39,14 @@ function EmailSender() {
           title='Email Sender'
           createButton={
             <Can I='create' a='email'>
+              <MDButton variant='contained' color='success' onClick={() => saveAllEmails()}>
+                Save All Emails For Current Filters
+              </MDButton>
               <MDButton variant='contained' color='info' onClick={() => navigate('/email/email-preview')}>
                 Send To Saved Emails
               </MDButton>
             </Can>
+            
           }
           canSearch
           canFilter
