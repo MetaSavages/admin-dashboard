@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import MDBox from 'components/MDBox';
 import MDTextarea from 'components/MDTextarea';
 import MDTypography from 'components/MDTypography';

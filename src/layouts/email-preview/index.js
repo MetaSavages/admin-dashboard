@@ -4,7 +4,7 @@ import { Can } from 'context';
 import DashboardLayout from 'examples/LayoutContainers/DashboardLayout';
 import React, { useEffect, useState } from 'react';
 import { Card } from '@mui/material';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import MDInput from 'components/MDInput';
 import MDButton from 'components/MDButton';
 import {
@@ -46,7 +46,9 @@ const EmailPreview = () => {
           setTemplateOptions(res.data);
         }
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   useEffect(() => {
@@ -287,7 +289,7 @@ const EmailPreview = () => {
 
   return (
     <>
-      <Can I='read' a='player'>
+      <Can I='create' a='email'>
         <DashboardLayout>
           <DashboardNavbar />
           <MDBox display='flex' justifyContent='center' width='100%' marginTop='3%'>
@@ -337,8 +339,9 @@ const EmailPreview = () => {
                 >
                   Create email
                 </MDButton>
-
+                <Can I='update' a='email'>
                 <MDButton
+                  I='update' a='email'
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'
                   variant='gradient'
@@ -347,7 +350,9 @@ const EmailPreview = () => {
                 >
                   Edit email
                 </MDButton>
-                <MDButton
+                </Can>
+                <Can I='delete' a='email'>
+                <MDButton 
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'
                   variant='gradient'
@@ -356,6 +361,7 @@ const EmailPreview = () => {
                 >
                   Delete email
                 </MDButton>
+                </Can>
               </MDBox>
               {emailInteraction == 'send-custom-email' || emailInteraction == 'create-email' ? (
                 ''
@@ -424,7 +430,7 @@ const EmailPreview = () => {
           </MDBox>
         </DashboardLayout>
       </Can>
-      <Can not I='read' a='player'>
+      <Can not I='create' a='email'>
         <Navigate to='/dashboard' replace />
       </Can>
     </>
