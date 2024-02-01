@@ -265,7 +265,7 @@ const EmailPreview = () => {
         <MDButton
           type='submit'
           variant='gradient'
-          color='success'
+          color='warning'
           onClick={handleEditTemplate}
           disabled={disabledEditButton()}
         >
@@ -277,7 +277,7 @@ const EmailPreview = () => {
         <MDButton
           type='submit'
           variant='gradient'
-          color='success'
+          color='error'
           onClick={handleDeleteTemplate}
           disabled={template.template_id ? false : true}
         >
@@ -316,7 +316,7 @@ const EmailPreview = () => {
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'
                   variant='gradient'
-                  color={emailInteraction == 'send-template-email' ? 'success' : 'info'}
+                  color={emailInteraction == 'send-template-email' ? 'primary' : 'secondary'}
                   onClick={() => setEmailInteraction('send-template-email')}
                 >
                   Send template emails
@@ -325,7 +325,7 @@ const EmailPreview = () => {
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'
                   variant='gradient'
-                  color={emailInteraction == 'send-custom-email' ? 'success' : 'info'}
+                  color={emailInteraction == 'send-custom-email' ? 'primary' : 'secondary'}
                   onClick={() => setEmailInteraction('send-custom-email')}
                 >
                   Send custom emails
@@ -334,7 +334,7 @@ const EmailPreview = () => {
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'
                   variant='gradient'
-                  color={emailInteraction == 'create-email' ? 'success' : 'info'}
+                  color={emailInteraction == 'create-email' ? 'success' : 'secondary'}
                   onClick={() => setEmailInteraction('create-email')}
                 >
                   Create email
@@ -345,7 +345,7 @@ const EmailPreview = () => {
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'
                   variant='gradient'
-                  color={emailInteraction == 'edit-email' ? 'success' : 'info'}
+                  color={emailInteraction == 'edit-email' ? 'warning' : 'secondary'}
                   onClick={() => setEmailInteraction('edit-email')}
                 >
                   Edit email
@@ -356,7 +356,7 @@ const EmailPreview = () => {
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'
                   variant='gradient'
-                  color={emailInteraction == 'delete-email' ? 'success' : 'info'}
+                  color={emailInteraction == 'delete-email' ? 'error' : 'secondary'}
                   onClick={() => setEmailInteraction('delete-email')}
                 >
                   Delete email

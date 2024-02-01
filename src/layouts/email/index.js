@@ -42,8 +42,8 @@ function EmailSender() {
               <MDButton variant='contained' color='success' onClick={() => saveAllEmails()}>
                 Save All Emails For Current Filters
               </MDButton>
-              <MDButton variant='contained' color='info' onClick={() => navigate('/email/email-preview')}>
-                Send To Saved Emails
+              <MDButton variant='contained' color='primary' onClick={() => navigate('/email/email-preview')}>
+                Go to templates
               </MDButton>
             </Can>
             
