@@ -19,6 +19,7 @@ import {
 import CodePreview from './components/code-preview';
 import { Autocomplete, TextField } from '@mui/material';
 import { useEmails } from 'context/emailContext';
+import MDTypography from 'components/MDTypography';
 
 const EmailPreview = () => {
   const [htmlContent, setHtmlContent] = useState('');
@@ -125,7 +126,7 @@ const EmailPreview = () => {
       sendCustomEmail(selectedEmails, htmlContent, subject)
         .then(() => {
           resetState();
-          setSelectedEmails([])
+          setSelectedEmails([]);
           alert('You successfully sent emails.');
         })
         .catch((error) => {
@@ -138,7 +139,7 @@ const EmailPreview = () => {
       sendTemplateEmails(selectedEmails, template.template_id)
         .then(() => {
           resetState();
-          setSelectedEmails([])
+          setSelectedEmails([]);
           alert('You successfully sent emails.');
         })
         .catch((error) => {
@@ -149,13 +150,13 @@ const EmailPreview = () => {
   function disabledSendButton() {
     let result = false;
     if (emailInteraction == 'send-template-email') {
-      if (htmlContent.length <= 0 || subject.length <= 0 || !template) {
+      if (htmlContent.length <= 0 || subject.length <= 0 || !template || selectedEmails.length <= 0) {
         result = true;
       } else {
         result = false;
       }
     } else {
-      if (htmlContent.length <= 0 || subject.length <= 0) {
+      if (htmlContent.length <= 0 || subject.length <= 0 || selectedEmails.length <= 0) {
         result = true;
       } else {
         result = false;
@@ -289,7 +290,6 @@ const EmailPreview = () => {
       <Can I='read' a='player'>
         <DashboardLayout>
           <DashboardNavbar />
-
           <MDBox display='flex' justifyContent='center' width='100%' marginTop='3%'>
             <Card
               className='aaaaaa'
@@ -305,6 +305,10 @@ const EmailPreview = () => {
                 padding: '10px'
               }}
             >
+              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex' justifyContent=''>
+                <MDTypography>Emails selected: {selectedEmails.length} </MDTypography>
+              </MDBox>
+
               <MDBox ml={2} mt={2} mb={3} width='100%' display='flex' justifyContent=''>
                 <MDButton
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
