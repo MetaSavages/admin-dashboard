@@ -38,7 +38,7 @@ function CodeManagement() {
 
   useEffect(() => {
     handleGetCodes();
-  }, [queryPageIndex, queryPageSize]);
+  }, [queryPageIndex, queryPageSize, filters]);
 
   useEffect(() => {
     checkHeaderCheckToRowChecks();
@@ -46,7 +46,6 @@ function CodeManagement() {
 
   function checkHeaderCheckToRowChecks() {
     let isAllCodesIncluded = false;
-
     if (codesPerPage?.length > 0) {
       isAllCodesIncluded = codesPerPage.every((obj) => arrayFromCodes.includes(obj.code));
     }

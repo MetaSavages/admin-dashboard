@@ -48,7 +48,7 @@ const codesColumnData = [
               const allCodes = data.data.map((item) => item.code);
               data.data[0].additionalData.setHeaderCheck(true);
               data.data[0].additionalData.setArrayFromCodes((old) => {
-                return [...old, ...allCodes];
+                return [...new Set([...old, ...allCodes])];
               });
             } else {
               const existingCodes = data.data.map((item) => item.code);
