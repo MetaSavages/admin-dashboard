@@ -60,12 +60,13 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
         flexGrow: 1
       }}
     >
-      <Grid container spacing={2} justifyContent={'flex-end'} sx={{ paddingRight: '60px' }}>
-        <Grid item xs={12} lg={10}>
+      <Grid container spacing={2} justifyContent={'center'} alignItems={'center'}
+      sx={{ marginBottom: '-3.5%' }} >
+        <Grid item xs={12} lg={12} sx={{ padding: '0 !important' }}>
           <Grid container spacing={2}>
             <form autoComplete='off' onSubmit={handleSubmit} className='form-width-100'>
-              <MDBox sx={{ display: 'flex', alignItems: 'center' }}>
-                <Grid item xs={7}>
+              <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'center' }}>
+                <Grid item xs={6}>
                   <MDBox p={3}>
                     <MDBox display='flex'>
                       <MDInput
@@ -79,7 +80,7 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
                     </MDBox>
                   </MDBox>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={2}>
                   <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
                     <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
                       <Checkbox
@@ -93,26 +94,25 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
                   </MDBox>
                 </Grid>
                 <Grid item xs={2}>
-                  <MDBox ml={2} width='100%' display='flex' justifyContent='space-between'>
+                  <MDBox ml={2}>
                     <MDButton type='submit' variant='gradient' color='info'>
                       Search
                     </MDButton>
                   </MDBox>
                 </Grid>
+                  <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'flex-end' ,alignItems: 'center'}}>
+                    <MDButton
+                      variant='text'
+                      disabled={arrayFromCodes.length > 0 ? false : true}
+                      sx={{ width: '200px', color: '#F44335' }}
+                      onClick={onSubmit}
+                    >
+                      Remove codes
+                    </MDButton>
+                </Grid>
               </MDBox>
             </form>
           </Grid>
-        </Grid>
-
-        <Grid item xs={12} md={2}>
-          <MDButton
-            variant='text'
-            disabled={arrayFromCodes.length > 0 ? false : true}
-            sx={{ width: '200px', color: '#F44335' }}
-            onClick={onSubmit}
-          >
-            Remove all codes
-          </MDButton>
         </Grid>
       </Grid>
     </MDBox>

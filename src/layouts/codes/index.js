@@ -83,8 +83,8 @@ function CodeManagement() {
               {/* <MDButton variant='contained' color='info' onClick={() => navigate('/promo-codes/new-codes')}>
                 Add Codes
               </MDButton> */}
-              <MDButton variant='contained' color='info' onClick={() => createPromoCode()}>
-                Add Codes
+              <MDButton variant='contained' color='success' onClick={() => createPromoCode()}>
+                Create new Code
               </MDButton>
             </Can>
           }
