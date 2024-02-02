@@ -163,9 +163,11 @@ function DataTable({
   }, [RES_DATA, additionalData]);
 
   useMemo(() => {
-    additionalData.queryPageIndex = queryPageIndex;
-    additionalData.queryPageSize = queryPageSize;
-    additionalData.queryTotalPageCount = queryTotalPageCount;
+    if (additionalData) {
+      additionalData.queryPageIndex = queryPageIndex;
+      additionalData.queryPageSize = queryPageSize;
+      additionalData.queryTotalPageCount = queryTotalPageCount;
+    }
   }, [queryPageIndex, queryPageSize, queryTotalPageCount]);
 
   const navigate = useNavigate();
