@@ -64,7 +64,7 @@ const Filters = ({ filters, setFilters }) => {
         flexGrow: 1
       }}
     >
-      <Grid container spacing={2} justifyContent='flex-end'>
+      <Grid container spacing={2} justifyContent='space-between' padding='0 5%'>
         <Grid item sm={4}>
           <MDBox>
             <Autocomplete

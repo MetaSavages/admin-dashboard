@@ -126,7 +126,7 @@ const Filters = ({ filters, setFilters }) => {
         flexGrow: 1
       }}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent='space-between'>
         <Grid item xs={4} sm={4} md={3}>
           <MDBox>
             <Autocomplete
@@ -229,7 +229,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={1} paddingLeft='0 !important'>
           <MDButton variant='text' disabled={!playerUsernames.length && !eventTypes.length && !from && !to}>
             Apply
           </MDButton>
