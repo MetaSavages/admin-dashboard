@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { IconButton, Icon, Tooltip, Checkbox } from '@mui/material';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
@@ -22,7 +22,19 @@ const codesColumnData = [
   {
     width: 20,
     Header: (data) => {
-      console.log();
+      if (data?.data.length > 0) {
+        const moreData = data.data[0].additionalData;
+        if (
+          moreData.queryPageIndex !== undefined &&
+          moreData.queryPageIndex !== null &&
+          moreData.queryPageSize !== undefined &&
+          moreData.queryPageSize !== null
+        ) {
+          moreData.setQueryPageIndex(moreData.queryPageIndex);
+          moreData.setQueryPageSize(moreData.queryPageSize);
+        }
+      }
+
       return (
         <Checkbox
           sx={{ marginLeft: '25px' }}
@@ -34,9 +46,17 @@ const codesColumnData = [
             data.data[0].additionalData.setHeaderCheck(e.target.checked);
             if (e.target.checked) {
               const allCodes = data.data.map((item) => item.code);
-              data.data[0].additionalData.setArrayFromCodes(allCodes);
+              data.data[0].additionalData.setHeaderCheck(true);
+              data.data[0].additionalData.setArrayFromCodes((old) => {
+                return [...old, ...allCodes];
+              });
             } else {
-              data.data[0].additionalData.setArrayFromCodes([]);
+              const existingCodes = data.data.map((item) => item.code);
+              const currentCodesInSet = data.data[0].additionalData.arrayFromCodes;
+              const validCodes = currentCodesInSet.filter((code) => !existingCodes.includes(code));
+
+              data.data[0].additionalData.setArrayFromCodes(validCodes);
+              data.data[0].additionalData.setHeaderCheck(false);
             }
           }}
         />
