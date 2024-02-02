@@ -74,7 +74,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
       }}
     >
       <Grid container spacing={2} justifyContent={'center'} alignItems={'center'}
-      sx={{ marginBottom: '-3.5%' }} >
+      sx={{ marginBottom: '-3.5%' }}>
         <Grid item xs={12} lg={12} sx={{ padding: '0 !important' }}>
           <Grid container spacing={2}>
             <form autoComplete='on' onSubmit={handleSubmit} className='form-width-100'>
@@ -125,7 +125,6 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                       Search
                     </MDButton>
                   </MDBox>
-
                 </Grid>
                 <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'flex-end' ,alignItems: 'center'}}>
                   <MDButton
@@ -141,8 +140,6 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
             </form>
           </Grid>
         </Grid>
-
-
       </Grid>
     </MDBox>
   );
