@@ -337,7 +337,7 @@ const EmailPreview = () => {
                   color={emailInteraction == 'create-email' ? 'success' : 'secondary'}
                   onClick={() => setEmailInteraction('create-email')}
                 >
-                  Create email
+                  Create template
                 </MDButton>
                 <Can I='update' a='email'>
                 <MDButton
@@ -348,7 +348,7 @@ const EmailPreview = () => {
                   color={emailInteraction == 'edit-email' ? 'warning' : 'secondary'}
                   onClick={() => setEmailInteraction('edit-email')}
                 >
-                  Edit email
+                  Edit template
                 </MDButton>
                 </Can>
                 <Can I='delete' a='email'>
@@ -359,7 +359,7 @@ const EmailPreview = () => {
                   color={emailInteraction == 'delete-email' ? 'error' : 'secondary'}
                   onClick={() => setEmailInteraction('delete-email')}
                 >
-                  Delete email
+                  Delete template
                 </MDButton>
                 </Can>
               </MDBox>
