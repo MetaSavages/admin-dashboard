@@ -25,11 +25,38 @@ import MDTypography from 'components/MDTypography';
 import InputLabel from '@mui/material/InputLabel';
 // NewUser page components
 import FormField from 'layouts/casinos/components/FormField';
+import { FormControl, MenuItem, Select } from '@mui/material';
+import { getProviders } from 'services/casinos';
 
 function CasinoInfo({ formData, title }) {
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { name, currency } = formField;
   const { name: nameV, currency: currencyV } = values;
+  const [providers, setProviders] = useState([]);
+
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const options = (await getProviders()).data;
+        if (options && options.providers) {
+          setProviders(options.providers);
+        } else {
+          console.log('Something happened: ' + options);
+        }
+      } catch (error) {
+        console.log(error);
+        alert('Error fetching providers');
+      }
+    };
+    
+    fetchOptions();
+  }, []);
+
+  const handleProviderChange = (event) => {
+    setFieldValue(currency.name, event.target.value);
+  };
+
   return (
     <MDBox>
       <MDBox lineHeight={0}>
@@ -49,17 +76,31 @@ function CasinoInfo({ formData, title }) {
             />
           </Grid>
         </Grid>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={{ marginTop: '0.1%' }}>
           <Grid item xs={24} sm={12}>
-            <FormField
-              type={currency.type}
-              label={currency.label}
-              name={currency.name}
-              value={currencyV}
-              placeholder={currency.placeholder}
-              error={errors.currency && touched.currency}
-              success={currencyV && !errors.currency}
-            />
+            <FormControl fullWidth>
+              <InputLabel htmlFor={currency.name} shrink={true} 
+              sx={{ fontSize: '19px !important'}} >
+                {currency.label} 
+                </InputLabel>
+              <Select
+                value={currencyV}
+                onChange={handleProviderChange}
+                error={errors.provider_name && touched.provider_name}
+                inputProps={{
+                  name: currency.name,
+                  id: currency.name,
+                }}
+                sx={{ minHeight: '36px', marginTop: '18px' }}
+              >
+                {providers.map((item) => (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.provider_name && touched.provider_name && <div style={{color:'#f44335'}}>{errors.provider_name}</div>}
+            </FormControl>
           </Grid>
         </Grid>
       </MDBox>

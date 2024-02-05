@@ -44,7 +44,7 @@ function PermissionInfo({ formData, title }) {
           setActionOptions(options.actions);
           setObjectOptions(options.objects);
         } else {
-          console.log('Something happend: ' + options);
+          console.log('Something happened: ' + options);
         }
       } catch (error) {
         console.log(error);

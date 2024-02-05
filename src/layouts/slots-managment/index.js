@@ -3,8 +3,6 @@ import MDButton from 'components/MDButton';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import dataCasinos from 'assets/mockData/dataCasinos';
-import { getCasinos } from 'services/casinos';
-import { casinosColumnData } from 'data/casinosColumnData';
 import { Can } from 'context';
 import { getSlots } from 'services/slots';
 import { slotsColumnData } from 'data/slotsColumnData';

@@ -34,6 +34,24 @@ export const getRoles = async (limit = 20, page = 1) => {
   }
 };
 
+export const getAllRoles = async () => {
+  const api = useAxios();
+  try {
+    const unformattedData = await api.get('/admin/auth/roles-all');
+    unformattedData.data = unformattedData.data.map((role) => {
+    return role;
+    });
+    return {
+      data: unformattedData.data,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      data: []
+    };
+  }
+};
+
 export const getRole = async (id) => {
   const api = useAxios();
   try {

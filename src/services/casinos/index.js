@@ -1,5 +1,17 @@
 import useAxios from 'hooks/useAxios';
 
+export const getProviders = async () => {
+  const api = useAxios();
+  try {
+    return await api.get('/admin/casinos/providers');
+  } catch (err) {
+    console.log(err);
+    return {
+      data: []
+    };
+  }
+};
+
 export const getCasinos = async () => {
   const api = useAxios();
   try {
@@ -27,6 +39,27 @@ export const getCasinos = async () => {
         totalPages: 0,
         currentPage: 0
       }
+    };
+  }
+};
+
+export const getAllCasinos = async () => {
+  const api = useAxios();
+  try {
+    const unformattedData = await api.get('/admin/casinos/all');
+
+      const data = unformattedData.data.map((casino) => {
+        return {
+          ...casino,
+          value: casino?.id ? casino.id : '-',
+          label: casino?.name ? casino.name : '-'
+        };
+      });
+      return data;
+  } catch (err) {
+    console.log(err);
+    return {
+      data: []
     };
   }
 };

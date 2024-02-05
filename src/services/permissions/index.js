@@ -37,6 +37,21 @@ export const getPermissions = async (limit = 20, page = 1) => {
   }
 };
 
+export const getAllPermissions = async () => {
+  const api = useAxios();
+  try {
+    const unformattedData = await api.get('/admin/auth/permissions-all');
+    return {
+      data: unformattedData.data,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      data: []
+    };
+  }
+};
+
 export const getPermission = async (id) => {
   const api = useAxios();
   try {
