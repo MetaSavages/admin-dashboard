@@ -10,16 +10,46 @@ import Filters from './components/Filters';
 import { useEmails } from 'context/emailContext';
 
 function EmailSender() {
-
   const navigate = useNavigate();
   const [filters, setFilters] = useState({});
   const [headerCheck, setHeaderCheck] = useState(false);
   const [arrayOfEmails, setArrayOfEmails] = useState([]);
   const { setSelectedEmails } = useEmails();
 
+  const [queryPageIndex, setQueryPageIndex] = useState(0);
+  const [queryPageSize, setQueryPageSize] = useState(0);
+  const [emailsPerPage, setEmailsPerPage] = useState(null);
+
   useEffect(() => {
     setArrayOfEmails([]);
   }, [filters]);
+
+  useEffect(() => {
+    handleGetEmails();
+  }, [queryPageIndex, queryPageSize, filters]);
+
+  useEffect(() => {
+    checkHeaderCheckToRowChecks();
+  }, [emailsPerPage, arrayOfEmails]);
+
+  function checkHeaderCheckToRowChecks() {
+    let isAllEmailsIncluded = false;
+    if (emailsPerPage?.length > 0) {
+      isAllEmailsIncluded = emailsPerPage.every((obj) => arrayOfEmails.includes(obj.email));
+    }
+    setHeaderCheck(isAllEmailsIncluded);
+  }
+
+  function handleGetEmails() {
+    const nextPage = queryPageIndex + 1;
+    getPlayersWithEmails(queryPageSize, nextPage, filters)
+      .then((result) => {
+        if (result?.data?.length > 0) {
+          setEmailsPerPage(result.data);
+        }
+      })
+      .catch(() => {});
+  }
 
   const saveAllEmails = async () => {
     try {
@@ -29,11 +59,10 @@ function EmailSender() {
     } catch (error) {
       alert(error.message);
     }
-  }
-
+  };
 
   return (
-    <>  
+    <>
       <Can I='read' a='email'>
         <DataTablePage
           title='Email Sender'
@@ -46,7 +75,6 @@ function EmailSender() {
                 Go to templates
               </MDButton>
             </Can>
-            
           }
           canSearch
           canFilter
@@ -69,7 +97,10 @@ function EmailSender() {
             arrayOfEmails: arrayOfEmails,
             setArrayOfEmails: (e) => setArrayOfEmails(e),
             headerCheck: headerCheck,
-            setHeaderCheck: setHeaderCheck
+            setHeaderCheck,
+            setQueryPageIndex,
+            setQueryPageSize,
+            setEmailsPerPage
           }}
         />
       </Can>

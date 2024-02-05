@@ -11,21 +11,42 @@ const emailColumnData = [
   {
     width: 20,
     Header: (data) => {
-      console.log();
+      if (data?.data.length > 0) {
+        const moreData = data.data[0].additionalData;
+
+        if (
+          moreData.queryPageIndex !== undefined &&
+          moreData.queryPageIndex !== null &&
+          moreData.queryPageSize !== undefined &&
+          moreData.queryPageSize !== null
+        ) {
+          moreData.setQueryPageIndex(moreData.queryPageIndex);
+          moreData.setQueryPageSize(moreData.queryPageSize);
+        }
+      }
+
       return (
         <Checkbox
           sx={{ marginLeft: '25px' }}
           {...label}
           icon={icon}
           checkedIcon={checkedIcon}
-          checked={data?.data[0]?.additionalData?.headerCheck ? true : false}
+          checked={data?.data[0]?.additionalData?.headerCheck ? data?.data[0]?.additionalData?.headerCheck : false}
           onChange={(e) => {
             data.data[0].additionalData.setHeaderCheck(e.target.checked);
             if (e.target.checked) {
-              const allPlayers = data.data.map((item) => item.email);
-              data.data[0].additionalData.setArrayOfEmails(allPlayers);
+              const allEmails = data.data.map((item) => item.email);
+              data.data[0].additionalData.setHeaderCheck(true);
+              data.data[0].additionalData.setArrayOfEmails((old) => {
+                return [...new Set([...old, ...allEmails])];
+              });
             } else {
-              data.data[0].additionalData.setArrayOfEmails([]);
+              const existingEmails = data.data.map((item) => item.email);
+              const currentEmailsInSet = data.data[0].additionalData.arrayOfEmails;
+              const validEmails = currentEmailsInSet.filter((email) => !existingEmails.includes(email));
+
+              data.data[0].additionalData.setArrayOfEmails(validEmails);
+              data.data[0].additionalData.setHeaderCheck(false);
             }
           }}
         />
@@ -75,7 +96,7 @@ const emailColumnData = [
   {
     Header: 'KYC Status',
     accessor: 'kyc_status'
-  },
+  }
 ];
 
 export default emailColumnData;

@@ -119,10 +119,9 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
               <MDBox sx={{ display: 'flex', alignItems: 'center' }}>
                 <Grid item xs={6}>
                   <MDBox p={3}>
-                    <MDBox display='flex'>
+                    <MDBox display='flex' justifyContent='end' className='1111'>
                       <Autocomplete
-                        sx={{ width: '100%' }}
-                        className='aaaaaaaaaaaa'
+                        sx={{ width: '230px' }}
                         multiple
                         limitTags={2}
                         options={emailOptions}

@@ -161,6 +161,14 @@ function DataTable({
       return RES_DATA.data;
     }
   }, [RES_DATA, additionalData]);
+  
+  useMemo(() => {
+    if (additionalData) {
+      additionalData.queryPageIndex = queryPageIndex;
+      additionalData.queryPageSize = queryPageSize;
+      additionalData.queryTotalPageCount = queryTotalPageCount;
+    }
+  }, [queryPageIndex, queryPageSize, queryTotalPageCount]);
 
   const navigate = useNavigate();
   const {
