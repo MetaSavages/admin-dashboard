@@ -129,6 +129,9 @@ export const getPlayersWithEmails = async (limit = 20, page = 1, filters) => {
         if (filters?.isSubscribed != null) {
           params['isSubscribed'] = filters.isSubscribed;
         }
+        if (filters.emails.length) {
+          params['id'] = `${filters.emails.map((u) => u.id).toString()}`;
+        }
       }
     }
 
@@ -173,7 +176,6 @@ export const getPlayersWithEmails = async (limit = 20, page = 1, filters) => {
   }
 };
 
-
 export const getPlayersEmails = async (filters) => {
   const api = useAxios();
   const params = {};
@@ -203,13 +205,12 @@ export const getPlayersEmails = async (filters) => {
     console.log(unformattedData);
 
     return {
-      data: unformattedData,
+      data: unformattedData
     };
   } catch (err) {
     console.log(err);
     return {
-      data: [],
+      data: []
     };
   }
 };
-

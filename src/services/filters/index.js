@@ -65,13 +65,14 @@ export const getAllCasinos = async () => {
   }
 };
 
-export const getAllPlayers = async (nickname, isDemo = false) => {
+export const getAllPlayers = async (nickname, isDemo = false, isEmail = false) => {
   const api = useAxios();
   try {
     const unformattedData = await api.get('/user/autocomplete', {
       params: {
         search: nickname,
-        demo: isDemo
+        demo: isDemo,
+        email: isEmail
       }
     });
 
@@ -111,6 +112,41 @@ export const getAllCountries = async () => {
     const uniqueData = [...new Set(data)].filter((c) => c != null);
 
     return uniqueData;
+  } catch (err) {
+    console.log(err);
+    return {
+      data: [],
+      meta: {
+        totalItems: 0,
+        itemCount: 0,
+        itemsPerPage: 0,
+        totalPages: 0,
+        currentPage: 0
+      }
+    };
+  }
+};
+
+export const getAllPlayersByEmails = async (email, isDemo = false, isSubscribed = false) => {
+  const api = useAxios();
+  try {
+    const unformattedData = await api.get('/user/email-autocomplete', {
+      params: {
+        search: email,
+        demo: isDemo,
+        isSubscribed
+      }
+    });
+
+    const data = unformattedData.data.data.map((user) => {
+      return {
+        ...user,
+        value: user?.id ? user.id : '-',
+        label: user?.email ? user.email : '-'
+      };
+    });
+
+    return data;
   } catch (err) {
     console.log(err);
     return {

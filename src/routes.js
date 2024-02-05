@@ -329,7 +329,7 @@ const routes = [
     name: 'Email Sender',
     key: 'email',
     icon: <Icon fontSize='medium'>email</Icon>,
-    route: '/Email',
+    route: '/email',
     component: <EmailSender />,
     action: 'read',
     object: 'email'
