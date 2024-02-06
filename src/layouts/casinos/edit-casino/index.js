@@ -36,7 +36,6 @@ import CasinoInfo from 'layouts/casinos/components/CasinoInfo';
 import validations from 'layouts/casinos/components/schemas/validations';
 import form from 'layouts/casinos/components/schemas/form';
 import { useEffect, useState } from 'react';
-import { getPermission } from 'services/permissions';
 import { editCasino, getCasino } from 'services/casinos';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
@@ -73,6 +72,7 @@ function EditCasino() {
       navigate('/casinos');
     } else {
       alert('Casino update failed');
+      actions.setSubmitting(false);
     }
   };
   const handleSubmit = (values, actions) => {
