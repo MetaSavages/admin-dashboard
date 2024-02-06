@@ -86,7 +86,7 @@ function CasinoInfo({ formData, title }) {
               <Select
                 value={currencyV}
                 onChange={handleProviderChange}
-                error={errors.provider_name && touched.provider_name}
+                error={errors.currency && touched.currency}
                 inputProps={{
                   name: currency.name,
                   id: currency.name,
@@ -99,7 +99,7 @@ function CasinoInfo({ formData, title }) {
                   </MenuItem>
                 ))}
               </Select>
-              {errors.provider_name && touched.provider_name && <div style={{color:'#f44335'}}>{errors.provider_name}</div>}
+              {errors.provider_name && touched.provider_name && <div style={{fontSize:'0.75rem',color:'#f44335'}}>{errors.provider_name}</div>}
             </FormControl>
           </Grid>
         </Grid>

@@ -12,6 +12,21 @@ export const getProviders = async () => {
   }
 };
 
+export const getCasino = async (id) => {
+  const api = useAxios();
+  try {
+    return await api.get(`/admin/casinos/${id}`);
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        name: '',
+        provider: ''
+      }
+    };
+  }
+};
+
 export const getCasinos = async () => {
   const api = useAxios();
   try {
@@ -77,6 +92,24 @@ export const createCasino = async (name, provider) => {
       data: {
         action: '',
         object: ''
+      }
+    };
+  }
+};
+
+export const editCasino = async (id, name, provider) => {
+  const api = useAxios();
+  try {
+    return await api.put(`/admin/casinos/${id}`,{
+      name: name,
+      provider: provider
+    });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        name: '',
+        provider: ''
       }
     };
   }
