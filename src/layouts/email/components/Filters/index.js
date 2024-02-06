@@ -21,7 +21,6 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
   const [searchEmails, setSearchEmails] = useState([]);
   const [emailsInput, setEmailsInput] = useState('');
   const { setSelectedEmails } = useEmails();
-  console.log('filters', filters);
 
   useEffect(() => {
     emailOptions.forEach((email) => {
@@ -35,7 +34,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
 
   const handleEmailInput = (event) => {
     setEmailsInput(event.target.value);
-    // console.log('filters', filters);
+    
     if (event.target.value.length > 2) {
       const filter = {};
       if (isChecked) {
