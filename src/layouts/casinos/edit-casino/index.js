@@ -63,7 +63,6 @@ function EditCasino() {
   }, []);
 
   const submitForm = async (values, actions) => {
-    console.log(values);
     const response = await editCasino(id, values.casino_name, values.provider_name);
     if (response.status === 201 || response.status === 200) {
       alert('Casino updated successfully');

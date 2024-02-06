@@ -31,7 +31,7 @@ import { getProviders } from 'services/casinos';
 function CasinoInfo({ formData, title }) {
   const { formField, values, errors, touched, setFieldValue, isSubmitting } = formData;
   const { name, currency } = formField;
-  const { name: nameV, currency: currencyV } = values;
+  const { casino_name: nameV, provider_name: currencyV } = values;
   const [providers, setProviders] = useState([]);
 
 
