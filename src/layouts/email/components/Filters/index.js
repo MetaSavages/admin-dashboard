@@ -21,6 +21,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
   const [searchEmails, setSearchEmails] = useState([]);
   const [emailsInput, setEmailsInput] = useState('');
   const { setSelectedEmails } = useEmails();
+  console.log('filters', filters);
 
   useEffect(() => {
     emailOptions.forEach((email) => {
@@ -34,8 +35,16 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
 
   const handleEmailInput = (event) => {
     setEmailsInput(event.target.value);
+    // console.log('filters', filters);
     if (event.target.value.length > 2) {
-      getAllPlayersByEmails(event.target.value, filters?.isDemo, filters?.isSubscribed).then((players) => {
+      const filter = {};
+      if (isChecked) {
+        filter.isDemo = true;
+      }
+      if (isSubscribed) {
+        filter.isSubscribed = true;
+      }
+      getAllPlayersByEmails(event.target.value, filter?.isDemo, filter?.isSubscribed).then((players) => {
         setEmailOptions(players);
       });
     } else if (event.target.value.length < 2) {
