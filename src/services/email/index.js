@@ -129,7 +129,7 @@ export const getPlayersWithEmails = async (limit = 20, page = 1, filters) => {
         if (filters?.isSubscribed != null) {
           params['isSubscribed'] = filters.isSubscribed;
         }
-        if (filters.emails.length) {
+        if (filters?.emails?.length) {
           params['id'] = `${filters.emails.map((u) => u.id).toString()}`;
         }
       }
