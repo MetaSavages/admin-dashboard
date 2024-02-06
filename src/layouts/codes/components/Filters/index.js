@@ -63,14 +63,22 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
   const handleCloseRemoveAllCodesDialog = () => {
     setOpenDialogRemoveAllCodes(false);
   };
-  console.log('darkMode', darkMode);
+
+  function disabledSearchButton() {
+    return (
+      ((filters?.isClaimed == null && isClaimed === false) || isClaimed === filters?.isClaimed) &&
+      ((filters?.search == null && search?.length <= 0) || search === filters?.search)
+    );
+  }
+
   return (
     <MDBox
       sx={{
+        width: '100%',
         marginTop: '20px'
       }}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} justifyContent={'flex-end'}>
         <Grid item xs={12} sm={6} lg={6}>
           <MDBox>
             <MDInput
@@ -97,7 +105,7 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
         </Grid>
         <Grid item xs={4} sm={2}>
           <MDBox ml={2} width='100%' display='flex' justifyContent='space-between'>
-            <MDButton variant='gradient' color='info' onClick={() => handleSubmit()}>
+            <MDButton variant='text' disabled={disabledSearchButton()} onClick={() => handleSubmit()}>
               Search
             </MDButton>
           </MDBox>
@@ -124,7 +132,7 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
         <DialogTitle id='alert-dialog-title'>{`Delete promo codes`}</DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>
-            Are you sure you want to delete this all promo codes?
+            Are you sure you want to delete all promo codes?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

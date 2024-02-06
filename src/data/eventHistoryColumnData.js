@@ -50,7 +50,11 @@ const eventHistoryColumnData = [
     Header: 'Timestamp',
     accessor: 'timestamp',
     Cell: ({ row }) => {
-      return <MDBox sx={{ paddingRight: '20px' }}>{row.original.timestamp}</MDBox>;
+      return (
+        <MDTypography fontSize='0.875rem' sx={{ paddingRight: '20px' }}>
+          {row.original.timestamp}
+        </MDTypography>
+      );
     }
   }
 ];

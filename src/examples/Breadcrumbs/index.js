@@ -51,7 +51,7 @@ function Breadcrumbs({ icon, title, route, light, handleMiniSidenav, iconsStyle 
           }
         }}
       >
-        <MDBox className='aaaaaa666' sx={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
+        <MDBox sx={{ cursor: 'pointer' }} onClick={() => navigate(-1)}>
           <MDTypography
             className='return-back'
             component='span'
@@ -76,7 +76,7 @@ function Breadcrumbs({ icon, title, route, light, handleMiniSidenav, iconsStyle 
         </Link>
 
         {routes.map((el) => (
-          <Link className='aaaaa444' to={`/${el}`} key={el}>
+          <Link to={`/${el}`} key={el}>
             <MDTypography
               component='span'
               variant='button'

@@ -231,63 +231,6 @@ const Filters = ({ filters, setFilters }) => {
     );
   }
 
-  function sectionSubmit() {
-    return (
-      <>
-        <Grid item xs={2} sm={2} md={2}>
-          <MDBox>
-            <FormControlLabel
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0,
-                marginTop: '2px'
-              }}
-              control={
-                <Checkbox
-                  icon={icon}
-                  checkedIcon={checkedIcon}
-                  checked={demo}
-                  onClick={() => setDemo(!demo)}
-                  name='demo-users-checkbox'
-                  id='demo-users-checkbox'
-                />
-              }
-              label={
-                <label
-                  for='demo-users-checkbox'
-                  style={{
-                    fontSize: '14px',
-                    color: '#9A9CA6'
-                  }}
-                >
-                  {'Enable demo users'}
-                </label>
-              }
-            />
-          </MDBox>
-        </Grid>
-        <Grid item xs={1} md={1} lg={1} ml={3}>
-          <MDButton
-            variant='text'
-            disabled={
-              !playerUsernames.length &&
-              !eventTypes.length &&
-              !from &&
-              !to &&
-              !casinos.length &&
-              !countries.length &&
-              demo === filters?.demo
-            }
-            onClick={onSubmit}
-          >
-            Apply
-          </MDButton>
-        </Grid>
-      </>
-    );
-  }
-
   return (
     <MDBox
       sx={{
