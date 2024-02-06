@@ -40,7 +40,7 @@ export const playerColumnData = async (navigate) => {
           >
             <Link
               to={
-                cellProps.cell.row.isExpanded &&
+                // cellProps.cell.row.isExpanded &&
                 // cellProps.cell.row.original.isDemo &&
                 (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
                   ? `/player-management/show/${cellProps.cell.row.original?.id}${params}`
@@ -50,7 +50,7 @@ export const playerColumnData = async (navigate) => {
                 verticalAlign: 'middle',
                 textDecoration: 'none',
                 cursor:
-                  cellProps.cell.row.isExpanded &&
+                  // cellProps.cell.row.isExpanded &&
                   // cellProps.cell.row.original.isDemo &&
                   (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
                     ? 'pointer'
@@ -65,13 +65,13 @@ export const playerColumnData = async (navigate) => {
                   verticalAlign: 'middle',
 
                   textDecoration:
-                    cellProps.cell.row.isExpanded &&
+                    // cellProps.cell.row.isExpanded &&
                     // cellProps.cell.row.original.isDemo &&
                     (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
                       ? 'underline '
                       : 'none',
                   cursor:
-                    cellProps.cell.row.isExpanded &&
+                    // cellProps.cell.row.isExpanded &&
                     // cellProps.cell.row.original.isDemo &&
                     (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
                       ? 'pointer'
