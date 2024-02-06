@@ -89,8 +89,6 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
     if (searchEmails.length > 0) {
       filter.emails = searchEmails;
     }
-    console.log('filter', filter);
-    // isSubscribedToNewsletter: isSubscribed,
     setArrayOfEmails([]);
     setHeaderCheck(false);
     setFilters(filter);

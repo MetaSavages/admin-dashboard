@@ -139,8 +139,6 @@ export const getPlayersWithEmails = async (limit = 20, page = 1, filters) => {
       params: params
     });
 
-    console.log(unformattedData);
-
     return {
       data: unformattedData.data.data.map((x) => {
         return {
@@ -202,13 +200,11 @@ export const getPlayersEmails = async (filters) => {
       params: params
     });
 
-    console.log(unformattedData);
-
     return {
       data: unformattedData
     };
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return {
       data: []
     };
