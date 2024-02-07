@@ -35,6 +35,20 @@ const EmailPreview = () => {
   const loading = open && templateOptions.length === 0;
   const { selectedEmails, setSelectedEmails } = useEmails();
 
+  const [selectedName, setSelectedName] = useState('');
+  const [selectedData, setSelectedData] = useState([]);
+
+  const handleNameChange = (event) => {
+    const name = event.target.value;
+    setSelectedName(name);
+    // Find the corresponding data based on the selected name
+    const selectedEmail = selectedEmails.find(email => email.name === name);
+    setSelectedData(selectedEmail ? selectedEmail.emails : null);
+    console.log(selectedEmail);
+  };
+
+  console.log(selectedEmails);
+
   useEffect(() => {
     fetchAllTemplates();
   }, []);
@@ -307,11 +321,17 @@ const EmailPreview = () => {
                 padding: '10px'
               }}
             >
-              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex' justifyContent=''>
-                <MDTypography>Emails selected: {selectedEmails.length} </MDTypography>
+              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex'>
+                <MDTypography>Email Groups: {selectedEmails.length} </MDTypography>
+                <select value={selectedName} onChange={handleNameChange} style={{ marginLeft: '5px' }}>
+                <option value={selectedName}>Select an Email Group</option>
+                {selectedEmails.map(email => (
+                  <option key={email.name} value={email.name}>{email.name}</option>
+                ))}
+              </select>
               </MDBox>
 
-              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex' justifyContent=''>
+              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex'>
                 <MDButton
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'

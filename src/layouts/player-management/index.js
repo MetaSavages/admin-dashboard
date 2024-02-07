@@ -74,7 +74,6 @@ function PlayerManagement() {
         setUserId(data.walletId);
         setAlertVisible(true);
       }
-      console.log(JSON.stringify(data, null, 2));
     } catch (error) {
       console.error('Error fetching data:', error);
     }

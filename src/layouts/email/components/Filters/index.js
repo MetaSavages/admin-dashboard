@@ -4,8 +4,6 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MDBox from 'components/MDBox';
 import React, { useEffect, useState } from 'react';
 import MDButton from 'components/MDButton';
-import MDInput from 'components/MDInput';
-import { useEmails } from 'context/emailContext';
 
 import './index.css';
 import { getAllPlayersByEmails } from 'services/filters';
@@ -13,14 +11,13 @@ import { getAllPlayersByEmails } from 'services/filters';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHeaderCheck }) => {
+const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHeaderCheck, onSave }) => {
   const [search, setSearch] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [emailOptions, setEmailOptions] = useState([]);
   const [searchEmails, setSearchEmails] = useState([]);
   const [emailsInput, setEmailsInput] = useState('');
-  const { setSelectedEmails } = useEmails();
 
   useEffect(() => {
     emailOptions.forEach((email) => {
@@ -50,24 +47,6 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
       setEmailOptions([]);
     }
   };
-
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    if (arrayOfEmails.length != 0) {
-      try {
-        setSelectedEmails(arrayOfEmails);
-        setFilters(filters.length ? '' : 'd');
-        setArrayOfEmails([]);
-        alert('Emails saved successfully');
-      } catch (error) {
-        alert(error.message);
-      }
-    }
-  };
-
-  function handleChange(e) {
-    setSearch(e.target.value);
-  }
 
   const updateEmails = (event, value) => {
     setSearchEmails(value);
@@ -199,7 +178,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                     variant='text'
                     disabled={arrayOfEmails.length > 0 ? false : true}
                     sx={{ width: '140px', color: 'green' }}
-                    onClick={onSubmit}
+                    onClick={onSave}
                   >
                     Save Emails
                   </MDButton>
