@@ -41,7 +41,7 @@ import { useState, useEffect } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
 
-import { getPlayer, updatePlayerName } from 'services/players';
+import { getPlayerWithoutParams, updatePlayerName } from 'services/players';
 import { Can } from 'context';
 
 function EditPlyer() {
@@ -52,14 +52,14 @@ function EditPlyer() {
 
   const { id } = useParams();
   useEffect(() => {
-    let params = {};
+    let params = { isDemo: false };
     if (searchParams.get('isDemo')) {
       params.isDemo = true;
     } else if (searchParams.get('isPromoCodeUser')) {
       params.isPromoCodeUser = true;
     }
 
-    getPlayer(id, params)
+    getPlayerWithoutParams(id, params)
       .then((res) => {
         if (res) {
           setUser(res);
@@ -89,7 +89,7 @@ function EditPlyer() {
                 <Grid item xs={12} lg={8}>
                   <Formik
                     initialValues={{
-                      nickname: user?.u_nickname || ''
+                      nickname: user?.nickname || ''
                     }}
                     validationSchema={currentValidation}
                     onSubmit={handleSubmit}

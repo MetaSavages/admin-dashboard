@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import useAxios from 'hooks/useAxios';
 import Slider from 'react-slick';
+
 export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
   const api = useAxios();
   try {
@@ -10,56 +11,68 @@ export const getEventsHistory = async (limit = 20, page = 1, filters = '') => {
       page: page,
       sortBy: 'createdAt:DESC'
     };
-
-    if (Object.keys(filters).length) {
-      if (filters.users.length) {
-        params['filter.user.id'] = `$in:${filters.users.map((u) => u.id).toString()}`;
-      }
-      if (filters.eventTypes.length) {
-        params['filter.type.id'] = `$in:${filters.eventTypes.map((e) => e.id).toString()}`;
-      }
-      if (filters.casinos.length) {
-        params['filter.casino.id'] = `$in:${filters.casinos.map((c) => c.id).toString()}`;
-      }
-      if (filters.countries.length) {
-        params['filter.country'] = `$in:${filters.countries.map((c) => c).toString()}`;
-      }
-      if (filters.from) {
-        timeFilter.push(`$gte:${filters.from.format('YYYY-MM-DDTHH:mm:ssZ')}`);
-      }
-      if (filters.to) {
-        timeFilter.push(`$lte:${filters.to.format('YYYY-MM-DDTHH:mm:ssZ')}`);
-      }
-      if (filters.demo) {
-        params['filter.user.isDemo'] = `true`;
-      } else {
-        params['filter.user.isDemo'] = `false`;
-      }
-    }
-    if (timeFilter.length) {
-      params['filter.createdAt'] = timeFilter;
-    }
-    const res = await api.get('/admin/metrics', {
-      params: params
-    });
-
-    const data = res.data.data.map((event) => {
+    if (filters.doNotFetchDate) {
       return {
-        ...event,
-        casino: event?.casino?.name ? event.casino.name : '-',
-        username: event?.user?.nickname != null ? event.user.nickname : '-',
-        timestamp: event?.createdAt ? event.createdAt : '-',
-        event_type: event?.type?.name ? event.type.name : '-',
-        event_type_id: event?.type?.id ? event.type.id : '-',
-        amount: event?.payload?.amount != null ? event.payload.amount : '-',
-        gameType: event?.payload?.gameType ? event.payload.gameType : '-',
-        country: event?.country ? event.country : '-'
+        data: [],
+        meta: {
+          totalItems: 0,
+          itemCount: 0,
+          itemsPerPage: 0,
+          totalPages: 0,
+          currentPage: 0
+        }
       };
-    });
-    return {
-      data: data,
-      meta: res.data.meta
-    };
+    } else {
+      if (Object.keys(filters).length) {
+        if (filters.users.length) {
+          params['filter.user.id'] = `$in:${filters.users.map((u) => u.id).toString()}`;
+        }
+        if (filters.eventTypes.length) {
+          params['filter.type.id'] = `$in:${filters.eventTypes.map((e) => e.id).toString()}`;
+        }
+        if (filters.casinos.length) {
+          params['filter.casino.id'] = `$in:${filters.casinos.map((c) => c.id).toString()}`;
+        }
+        if (filters.countries.length) {
+          params['filter.country'] = `$in:${filters.countries.map((c) => c).toString()}`;
+        }
+        if (filters.from) {
+          timeFilter.push(`$gte:${filters.from.format('YYYY-MM-DDTHH:mm:ssZ')}`);
+        }
+        if (filters.to) {
+          timeFilter.push(`$lte:${filters.to.format('YYYY-MM-DDTHH:mm:ssZ')}`);
+        }
+        if (filters.demo) {
+          params['filter.user.isDemo'] = `true`;
+        } else {
+          params['filter.user.isDemo'] = `false`;
+        }
+      }
+      if (timeFilter.length) {
+        params['filter.createdAt'] = timeFilter;
+      }
+      const res = await api.get('/admin/metrics', {
+        params: params
+      });
+
+      const data = res.data.data.map((event) => {
+        return {
+          ...event,
+          casino: event?.casino?.name ? event.casino.name : '-',
+          username: event?.user?.nickname != null ? event.user.nickname : '-',
+          timestamp: event?.createdAt ? event.createdAt : '-',
+          event_type: event?.type?.name ? event.type.name : '-',
+          event_type_id: event?.type?.id ? event.type.id : '-',
+          amount: event?.payload?.amount != null ? event.payload.amount : '-',
+          gameType: event?.payload?.gameType ? event.payload.gameType : '-',
+          country: event?.country ? event.country : '-'
+        };
+      });
+      return {
+        data: data,
+        meta: res.data.meta
+      };
+    }
   } catch (err) {
     console.log(err);
     return {

@@ -109,6 +109,26 @@ export const getPlayer = async (id, params) => {
   }
 };
 
+export const getPlayerWithoutParams = async (id) => {
+  const api = useAxios();
+  try {
+    const res = await api.get(`/user/player/${id}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    return {
+      data: [],
+      meta: {
+        totalItems: 0,
+        itemCount: 0,
+        itemsPerPage: 0,
+        totalPages: 0,
+        currentPage: 0
+      }
+    };
+  }
+};
+
 export const deletePlayer = async (id) => {
   const api = useAxios();
   try {

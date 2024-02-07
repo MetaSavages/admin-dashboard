@@ -1,19 +1,24 @@
 import { Autocomplete, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
+import { useParams } from 'react-router-dom';
+
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MDBox from 'components/MDBox';
 import React, { useState, useEffect } from 'react';
 import MDButton from 'components/MDButton';
+import dayjs from 'dayjs'; // Import dayjs
 
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { pickersLayoutClasses } from '@mui/x-date-pickers';
 
 import { getAllCasinos, getAllPlayers, getEventTypes, getAllCountries } from '../../../../services/filters/index';
 import CheckBox from '@mui/icons-material/CheckBox';
+import { getUser } from 'services/users';
+import { getPlayerWithoutParams } from 'services/players';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const Filters = ({ filters, setFilters, onlyForSpecificUser = false }) => {
+const FiltersForOneUser = ({ filters, setFilters, onlyForSpecificUser = false }) => {
   const [open, setOpen] = useState(false);
   const [usernameOptions, setUsernameOptions] = useState([]);
   const [eventTypeOptions, setEventTypeOptions] = useState([]);
@@ -21,11 +26,44 @@ const Filters = ({ filters, setFilters, onlyForSpecificUser = false }) => {
   const [usernameInput, setUsernameInput] = useState('');
   const [countryOptions, setCountryOptions] = useState([]);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth < 992);
+  const [eventTypes, setEventTypes] = useState([]);
+  const [casinos, setCasinos] = useState([]);
+  const [playerUsernames, setPlayerUsernames] = useState([]);
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
+  const [countries, setCountries] = useState([]);
+  const [demo, setDemo] = useState(false);
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
       setIsLargeScreen(window.innerWidth < 992);
     };
+
+    const endOfToday = dayjs().hour(0).minute(0).second(0);
+    setTo(endOfToday);
+
+    const startOfTwoDaysBefore = dayjs().subtract(1, 'day').hour(0).minute(0).second(0);
+    setFrom(startOfTwoDaysBefore);
+
+    getPlayerWithoutParams(id)
+      .then((res) => {
+        setFilters((oldFilters) => {
+          return {
+            ...oldFilters,
+            doNotFetchDate: false,
+            from: startOfTwoDaysBefore,
+            to: endOfToday,
+            users: [res]
+          };
+        });
+
+        setUser(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     window.addEventListener('resize', handleResize);
 
@@ -50,24 +88,9 @@ const Filters = ({ filters, setFilters, onlyForSpecificUser = false }) => {
     setCountries(value);
   };
 
-  const handleUsernameInput = (event) => {
-    setUsernameInput(event.target.value);
-    if (event.target.value.length > 2) {
-      getAllPlayers(event.target.value, filters?.demo).then((players) => {
-        setUsernameOptions(players);
-      });
-    } else if (event.target.value.length < 2) {
-      setUsernameOptions([]);
-    }
-  };
+  // useEffect(() => {
 
-  const [eventTypes, setEventTypes] = useState([]);
-  const [casinos, setCasinos] = useState([]);
-  const [playerUsernames, setPlayerUsernames] = useState([]);
-  const [from, setFrom] = useState(null);
-  const [to, setTo] = useState(null);
-  const [countries, setCountries] = useState([]);
-  const [demo, setDemo] = useState(false);
+  // }, []);
 
   const handleFromChange = (date) => {
     if (to) {
@@ -281,43 +304,6 @@ const Filters = ({ filters, setFilters, onlyForSpecificUser = false }) => {
               //     setOpen(false);
               //   }}
               limitTags={2}
-              options={usernameOptions}
-              disableCloseOnSelect
-              value={playerUsernames}
-              onChange={updateUsernames}
-              isOptionEqualToValue={(option, value) => option.value === value.value}
-              getOptionLabel={(option) => option.label}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
-                  {option.label}
-                </li>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label='Player username'
-                  variant='standard'
-                  value={usernameInput}
-                  onChange={handleUsernameInput}
-                />
-              )}
-            />
-          </MDBox>
-        </Grid>
-        {isLargeScreen ? <></> : timeSection()}
-        <Grid item xs={12} sm={6} lg={4}>
-          <MDBox>
-            <Autocomplete
-              multiple
-              //   open={open}
-              //   onOpen={() => {
-              //     setOpen(true);
-              //   }}
-              //   onClose={() => {
-              //     setOpen(false);
-              //   }}
-              limitTags={2}
               options={countryOptions}
               disableCloseOnSelect
               value={countries}
@@ -334,6 +320,7 @@ const Filters = ({ filters, setFilters, onlyForSpecificUser = false }) => {
             />
           </MDBox>
         </Grid>
+        {isLargeScreen ? <></> : timeSection()}
         <Grid item xs={12} sm={6} lg={4}>
           <MDBox>
             <Autocomplete
@@ -386,7 +373,7 @@ const Filters = ({ filters, setFilters, onlyForSpecificUser = false }) => {
               }
               label={
                 <label
-                  for='demo-users-checkbox'
+                  htmlFor='demo-users-checkbox'
                   style={{
                     fontSize: '14px',
                     color: '#9A9CA6'
@@ -420,4 +407,4 @@ const Filters = ({ filters, setFilters, onlyForSpecificUser = false }) => {
   );
 };
 
-export default Filters;
+export default FiltersForOneUser;
