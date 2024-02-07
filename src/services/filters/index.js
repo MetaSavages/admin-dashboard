@@ -142,7 +142,8 @@ export const getAllPlayersByEmails = async (email, isDemo = false, isSubscribed 
       return {
         ...user,
         value: user?.id ? user.id : '-',
-        label: user?.email ? user.email : '-'
+        label: (user?.nickname ? user.nickname + ', ' : '') +
+              (user?.email ? user.email : '-')
       };
     });
 
