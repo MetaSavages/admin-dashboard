@@ -102,10 +102,15 @@ function EmailSender() {
     try {
       setGroupName(values.groupName);
       const emails = await getPlayersEmails(filters);
+      if (emails.data.data.length === 0) {
+        alert('No emails found for the current filters');
+        return;
+      } else {
       const emailObject = {name: values.groupName, emails: emails.data.data};
       setSelectedEmails([...selectedEmails, emailObject]);
       setAlertVisible(true);
       setAllMail(false);
+      }
     } catch (error) {
       alert(error.message);
     }

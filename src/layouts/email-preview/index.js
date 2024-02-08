@@ -20,8 +20,12 @@ import CodePreview from './components/code-preview';
 import { Autocomplete, TextField } from '@mui/material';
 import { useEmails } from 'context/emailContext';
 import MDTypography from 'components/MDTypography';
+import { useMaterialUIController } from 'context';
 
-const EmailPreview = () => {
+const EmailPreview = () => {  
+  const [controller] = useMaterialUIController();
+  const { darkMode } = controller;
+
   const [htmlContent, setHtmlContent] = useState('');
   const [htmlError, setHtmlError] = useState('');
   const [subject, setSubject] = useState('');
@@ -33,21 +37,20 @@ const EmailPreview = () => {
   const [templateOptions, setTemplateOptions] = useState([]);
   const [template, setTemplate] = useState('');
   const loading = open && templateOptions.length === 0;
-  const { selectedEmails, setSelectedEmails } = useEmails();
 
+  const { selectedEmails, setSelectedEmails } = useEmails();
   const [selectedName, setSelectedName] = useState('');
   const [selectedData, setSelectedData] = useState([]);
 
   const handleNameChange = (event) => {
     const name = event.target.value;
     setSelectedName(name);
-    // Find the corresponding data based on the selected name
     const selectedEmail = selectedEmails.find(email => email.name === name);
+    if (!selectedEmail) {
+      setSelectedData([]);
+    }
     setSelectedData(selectedEmail ? selectedEmail.emails : null);
-    console.log(selectedEmail);
   };
-
-  console.log(selectedEmails);
 
   useEffect(() => {
     fetchAllTemplates();
@@ -61,7 +64,7 @@ const EmailPreview = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -139,10 +142,13 @@ const EmailPreview = () => {
       if (disabledSendButton()) {
         return;
       }
-      sendCustomEmail(selectedEmails, htmlContent, subject)
+      sendCustomEmail(selectedData, htmlContent, subject)
         .then(() => {
           resetState();
-          setSelectedEmails([]);
+          const updatedSelectedEmails = selectedEmails.filter(email => email.name !== selectedName);
+          setSelectedEmails(updatedSelectedEmails);
+          setSelectedName('');
+          setSelectedData([]);
           alert('You successfully sent emails.');
         })
         .catch((error) => {
@@ -152,10 +158,13 @@ const EmailPreview = () => {
       if (!template || !template.template_id) {
         return;
       }
-      sendTemplateEmails(selectedEmails, template.template_id)
+      sendTemplateEmails(selectedData, template.template_id)
         .then(() => {
           resetState();
-          setSelectedEmails([]);
+          const updatedSelectedEmails = selectedEmails.filter(email => email.name !== selectedName);
+          setSelectedEmails(updatedSelectedEmails);
+          setSelectedName('');
+          setSelectedData([]);
           alert('You successfully sent emails.');
         })
         .catch((error) => {
@@ -177,6 +186,9 @@ const EmailPreview = () => {
       } else {
         result = false;
       }
+    }
+    if (!selectedName || !selectedData || selectedData.length <= 0) {
+      result = true;
     }
     return result;
   }
@@ -321,17 +333,30 @@ const EmailPreview = () => {
                 padding: '10px'
               }}
             >
-              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex'>
-                <MDTypography>Email Groups: {selectedEmails.length} </MDTypography>
-                <select value={selectedName} onChange={handleNameChange} style={{ marginLeft: '5px' }}>
-                <option value={selectedName}>Select an Email Group</option>
+              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex' sx={{justifyContent:'space-between'}}>
+                <MDTypography>Groups: {selectedEmails.length} </MDTypography>
+                <select value={selectedName} onChange={handleNameChange} 
+                  style={{
+                    appearance: 'none',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    borderRadius: '8px',
+                    padding: '9px 16px',
+                    fontSize: '16px',
+                    border: '1px solid rgba(128, 128, 128, 0.5)',
+                    outline: 'none',
+                    width: '50%',
+                    color: darkMode ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}>
+                <option value={selectedEmails.name}>Select an Email Group</option>
                 {selectedEmails.map(email => (
                   <option key={email.name} value={email.name}>{email.name}</option>
                 ))}
               </select>
+              <MDTypography sx={{paddingRight:'1%'}}>{selectedData ? selectedData.length : '0'}: Emails  </MDTypography>
               </MDBox>
 
-              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex'>
+              <MDBox ml={2} mt={2} mb={3} width='100%' display='flex' sx={{justifyContent:'space-between'}}>
                 <MDButton
                   sx={{ marginRight: '10px', marginBottom: '10px' }}
                   type='submit'
