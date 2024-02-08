@@ -98,7 +98,7 @@ function EmailSender() {
     }
   };
 
-  const onSaveAll = async (values, actions) => {
+  const onSaveAll = async (values) => {
     try {
       setGroupName(values.groupName);
       const emails = await getPlayersEmails(filters);
@@ -108,29 +108,20 @@ function EmailSender() {
       setAllMail(false);
     } catch (error) {
       alert(error.message);
-      actions.resetForm();
     }
-    actions.setSubmitting(false);
-    actions.resetForm();
   };
 
-  const onSave = async (e, values, actions) => {
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
+  const onSave = async (values) => {
     if (arrayOfEmails.length != 0) {
       try {
         setGroupName(values.groupName);
         const emailObject = {name: values.groupName, emails: arrayOfEmails};
         setSelectedEmails([...selectedEmails, emailObject]);
-        setFilters(filters.length ? '' : 'd');
         setArrayOfEmails([]);
+        setAlertVisible(true);
       } catch (error) {
         alert(error.message);
-        actions.resetForm();
       }
-      actions.setSubmitting(false);
-      actions.resetForm();
     }
   };
 
