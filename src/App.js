@@ -65,6 +65,7 @@ import { getCurrentUser } from 'services/auth';
 import { useNavigate } from 'react-router-dom';
 import { AbilityContext } from 'context';
 import { getUserAbilities } from 'config/ability';
+import { EmailProvider } from 'context/emailContext';
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -192,6 +193,36 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <CacheProvider value={rtlCache}>
           <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+            <EmailProvider>
+              <CssBaseline enableColorScheme />
+              {layout === 'dashboard' && (
+                <>
+                  <Sidenav
+                    color={sidenavColor}
+                    brand={brand}
+                    brandName='Toka City'
+                    routes={routes}
+                    onMouseEnter={handleOnMouseEnter}
+                    onMouseLeave={handleOnMouseLeave}
+                  />
+                  <Configurator />
+                </>
+              )}
+              {layout === 'vr' && <Configurator />}
+              <Routes>
+                {getRoutes(routes)}
+                <Route path='*' element={<Navigate to='/dashboard' replace />} />
+              </Routes>
+            </EmailProvider>
+          </ThemeProvider>
+        </CacheProvider>
+      </QueryClientProvider>
+    </AbilityContext.Provider>
+  ) : (
+    <AbilityContext.Provider value={ability}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={darkMode ? themeDark : theme}>
+          <EmailProvider>
             <CssBaseline enableColorScheme />
             {layout === 'dashboard' && (
               <>
@@ -211,33 +242,7 @@ export default function App() {
               {getRoutes(routes)}
               <Route path='*' element={<Navigate to='/dashboard' replace />} />
             </Routes>
-          </ThemeProvider>
-        </CacheProvider>
-      </QueryClientProvider>
-    </AbilityContext.Provider>
-  ) : (
-    <AbilityContext.Provider value={ability}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={darkMode ? themeDark : theme}>
-          <CssBaseline enableColorScheme />
-          {layout === 'dashboard' && (
-            <>
-              <Sidenav
-                color={sidenavColor}
-                brand={brand}
-                brandName='Toka City'
-                routes={routes}
-                onMouseEnter={handleOnMouseEnter}
-                onMouseLeave={handleOnMouseLeave}
-              />
-              <Configurator />
-            </>
-          )}
-          {layout === 'vr' && <Configurator />}
-          <Routes>
-            {getRoutes(routes)}
-            <Route path='*' element={<Navigate to='/dashboard' replace />} />
-          </Routes>
+          </EmailProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </AbilityContext.Provider>
