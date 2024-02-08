@@ -1,5 +1,4 @@
 import useAxios from 'hooks/useAxios';
-import { getEventsHistory } from 'services/analytics';
 
 export const getEventTypes = async () => {
   const api = useAxios();
