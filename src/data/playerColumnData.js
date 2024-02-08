@@ -1,12 +1,93 @@
 import { Icon } from '@mui/material';
+import { Link } from 'react-router-dom';
+
+import MDBox from 'components/MDBox';
+
 import { getCurrentUser } from 'services/auth';
 import { formatNumber, formatDuration } from 'layouts/player-management/helpers';
 
-export const playerColumnData = async () => {
+export const playerColumnData = async (navigate) => {
   const user = await getCurrentUser();
   let arr = [
     // { Header: 'ID', accessor: 'id', width: 100 },
-    { Header: 'Username', accessor: 'nickname', width: 100 },
+    {
+      Header: 'Username',
+      accessor: 'nickname',
+      width: 100,
+      Cell: (cellProps) => {
+        const isRegularUser =
+          !cellProps.cell.row.original.isDemo && !cellProps.cell.row.original.isPromoCodeUser ? true : false;
+        const isPromoCodeUser = cellProps.cell.row.original.isPromoCodeUser ? true : false;
+
+        let params = '';
+        if (!isRegularUser) {
+          if (isPromoCodeUser) {
+            params = '?isPromoCodeUser=true';
+          } else {
+            params = '?isDemo=true';
+          }
+        }
+        return (
+          <MDBox
+            component='td'
+            textAlign={cellProps.cell.column.align ? cellProps.cell.column.align : 'left'}
+            py={1.5}
+            pl={cellProps.cell.row.isExpanded ? 1.5 : 3}
+            sx={({ palette: { light }, typography: { size }, borders: { borderWidth } }) => ({
+              fontSize: size.sm,
+              fontWeight: cellProps.cell.row.isExpanded ? 600 : 400
+            })}
+          >
+            <Link
+              to={
+                // cellProps.cell.row.isExpanded &&
+                // cellProps.cell.row.original.isDemo &&
+                (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
+                  ? `/player-management/show/${cellProps.cell.row.original?.id}${params}`
+                  : ''
+              }
+              sx={{
+                verticalAlign: 'middle',
+                textDecoration: 'none',
+                cursor:
+                  // cellProps.cell.row.isExpanded &&
+                  // cellProps.cell.row.original.isDemo &&
+                  (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
+                    ? 'pointer'
+                    : 'default'
+              }}
+            >
+              <MDBox
+                display='inline-block'
+                width='max-content'
+                color='text'
+                sx={{
+                  verticalAlign: 'middle',
+
+                  textDecoration:
+                    // cellProps.cell.row.isExpanded &&
+                    // cellProps.cell.row.original.isDemo &&
+                    (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
+                      ? 'underline '
+                      : 'none',
+                  cursor:
+                    // cellProps.cell.row.isExpanded &&
+                    // cellProps.cell.row.original.isDemo &&
+                    (cellProps.cell.column?.id === 'nickname' || cellProps.cell.column?.id === 'username')
+                      ? 'pointer'
+                      : 'default'
+                }}
+              >
+                {cellProps.cell.row.original.nickname}
+              </MDBox>
+            </Link>
+          </MDBox>
+        );
+      },
+      SubCell: (cellProps) => {
+        return <>{cellProps.value}</>;
+      }
+    },
     {
       Header: 'Time Spent',
       accessor: 'time_spent',
@@ -47,19 +128,27 @@ export const playerColumnData = async () => {
       Header: 'wallet',
       accessor: 'wallet',
       width: 200,
-      Cell: ({ row }) => (
-        <>
-          {row.original.isDemo
-            ? process.env.REACT_APP_FRONTEND_URL + '?demoUser=' + row.original.wallet
-            : row.original.wallet}
-        </>
-      )
+      Cell: ({ row }) => {
+        return (
+          <>
+            {row.original.isDemo && !row.original.isPromoCodeUser
+              ? process.env.REACT_APP_FRONTEND_URL + '?demoUser=' + row.original.wallet
+              : row.original.wallet}
+          </>
+        );
+      }
     },
     { Header: 'location', accessor: 'location', width: 200 },
     { Header: 'kyc_status', accessor: 'kyc_status', width: 100 },
     {
       Header: 'Creation Date',
-      accessor: 'createdDate'
+      accessor: 'createdDate',
+      Cell: (cellProps) => (
+        <MDBox color='none' sx={{ marginRight: '20px' }}>
+          {cellProps.value}
+        </MDBox>
+      ),
+      SubCell: (cellProps) => <>{cellProps.value}</>
     }
   ];
   if (!user.role?.casino) {
@@ -68,9 +157,9 @@ export const playerColumnData = async () => {
         width: 5,
         Header: () => null,
         id: 'expander',
-        Cell: ({ row }) => (
-          <Icon {...row.getToggleRowExpandedProps()}>{row.isExpanded ? 'expand_less' : 'expand_more'}</Icon>
-        ),
+        Cell: ({ row }) => {
+          return <Icon {...row.getToggleRowExpandedProps()}>{row.isExpanded ? 'expand_less' : 'expand_more'}</Icon>;
+        },
         SubCell: () => null
       },
       ...arr

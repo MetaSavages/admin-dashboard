@@ -61,7 +61,8 @@ import MDTypography from 'components/MDTypography';
 import Notifications from 'components/Notifications';
 import { io } from 'socket.io-client';
 import { getNotifications, markAllAsRead } from 'services/notifications';
-import { MenuItem } from '@mui/base';
+
+import './index.scss';
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -228,64 +229,80 @@ function DashboardNavbar({ absolute, light, isMini }) {
       color='inherit'
       sx={(theme) => navbar(theme, { transparentNavbar, absolute, light, darkMode })}
     >
-      <Toolbar sx={(theme) => navbarContainer(theme)}>
-        <MDBox color='inherit' mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
-          <Breadcrumbs icon='home' title={route[route.length - 1]} route={route} light={light} />
+      <Toolbar className='toolbar' sx={(theme) => navbarContainer(theme)}>
+        <MDBox display='flex' flexDirection='row'>
           <IconButton sx={navbarDesktopMenu} onClick={handleMiniSidenav} size='small' disableRipple>
-            <Icon fontSize='medium' sx={iconsStyle}>
-              {miniSidenav ? 'menu_open' : 'menu'}
-            </Icon>
+            <MDBox sx={{ marginRight: '20px' }}>
+              <Icon fontSize='medium' sx={iconsStyle}>
+                {miniSidenav ? 'menu_open' : 'menu'}
+              </Icon>
+            </MDBox>
           </IconButton>
+          <IconButton size='small' disableRipple color='inherit' sx={navbarMobileMenu} onClick={handleMiniSidenav}>
+            <MDBox sx={{ marginRight: '20px' }}>
+              <Icon sx={iconsStyle} fontSize='medium'>
+                {miniSidenav ? 'menu_open' : 'menu'}
+              </Icon>
+            </MDBox>
+          </IconButton>
+          <MDBox color='inherit' mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
+            <Breadcrumbs
+              icon='home'
+              title={route[route.length - 1]}
+              route={route}
+              light={light}
+              handleMiniSidenav={handleMiniSidenav}
+              iconsStyle={iconsStyle}
+            />
+          </MDBox>
         </MDBox>
+
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox color={light ? 'white' : 'inherit'}>
-              <IconButton
-                size='small'
-                color='inherit'
-                sx={navbarIconButton}
-                variant='contained'
-                disableRipple
-                onClick={handleDarkMode}
-              >
-                {darkMode ? <Icon sx={iconsStyle}>light_mode</Icon> : <Icon sx={iconsStyle}>dark_mode</Icon>}
-              </IconButton>
-              <Notifications
-                light={light}
-                darkMode={darkMode}
-                transparentNavbar={transparentNavbar}
-                handleOpenMenu={handleOpenMenu}
-                notificationCount={notificationCount}
-              />
-              <IconButton
-                size='small'
-                disableRipple
-                color='inherit'
-                sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
-              {/* <Link to='/authentication/sign-in/basic'>
-                <IconButton sx={navbarIconButton} size='small' disableRipple>
-                  <MDAvatar src='https://i.pravatar.cc/150?img=3' alt='user-avatar' />
-                </IconButton>
-              </Link> */}
-            </MDBox>
-            <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-              <IconButton size='small' disableRipple color='inherit' sx={navbarMobileMenu} onClick={handleMiniSidenav}>
-                <Icon sx={iconsStyle} fontSize='medium'>
-                  {miniSidenav ? 'menu_open' : 'menu'}
-                </Icon>
-              </IconButton>
+            <MDBox className='profile-info' flexDirection='column' sx={(theme) => navbarRow(theme, { isMini })}>
               {!(name && role) ? (
                 <Skeleton variant='text' width={100} height={20} />
               ) : (
-                <MDBox>
+                <MDBox className='name-info'>
                   <MDTypography variant='h6'>{name}</MDTypography>
                   <MDTypography variant='subtitle2'>{role.name}</MDTypography>
                 </MDBox>
               )}
+              <MDBox>
+                <MDBox color={light ? 'white' : 'inherit'}>
+                  <IconButton
+                    size='small'
+                    color='inherit'
+                    sx={navbarIconButton}
+                    variant='contained'
+                    disableRipple
+                    onClick={handleDarkMode}
+                  >
+                    {darkMode ? <Icon sx={iconsStyle}>light_mode</Icon> : <Icon sx={iconsStyle}>dark_mode</Icon>}
+                  </IconButton>
+                  <Notifications
+                    light={light}
+                    darkMode={darkMode}
+                    transparentNavbar={transparentNavbar}
+                    handleOpenMenu={handleOpenMenu}
+                    notificationCount={notificationCount}
+                  />
+                  <IconButton
+                    size='small'
+                    disableRipple
+                    color='inherit'
+                    sx={navbarIconButton}
+                    onClick={handleConfiguratorOpen}
+                  >
+                    <Icon sx={iconsStyle}>settings</Icon>
+                  </IconButton>
+                  {/* <Link to='/authentication/sign-in/basic'>
+                <IconButton sx={navbarIconButton} size='small' disableRipple>
+                  <MDAvatar src='https://i.pravatar.cc/150?img=3' alt='user-avatar' />
+                </IconButton>
+              </Link> */}
+                </MDBox>
+              </MDBox>
             </MDBox>
             {renderMenu()}
           </MDBox>

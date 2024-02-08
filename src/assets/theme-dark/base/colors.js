@@ -87,6 +87,7 @@ const colors = {
   },
 
   grey: {
+    main: '#7b809a',
     100: '#f8f9fa',
     200: '#f0f2f5',
     300: '#dee2e6',

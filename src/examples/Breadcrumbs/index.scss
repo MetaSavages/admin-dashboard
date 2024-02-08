@@ -1,0 +1,14 @@
+.breadcrumbs {
+  .navigation {
+    // height: 30px;
+    line-height: 2.625 !important;
+    // @media (max-width: 768px) {
+    //   height: 40px;
+    // }
+  }
+  .mt-10 {
+    @media (max-width: 768px) {
+      margin-top: 10px;
+    }
+  }
+}

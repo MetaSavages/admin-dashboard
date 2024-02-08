@@ -23,8 +23,10 @@ import DataTablePage from 'components/DataTablePage';
 import { getEventsHistory } from 'services/analytics';
 import eventHistoryColumnData from 'data/eventHistoryColumnData';
 import { Can } from 'context';
+import DataTablePageWithoutLayout from 'components/DataTablePage/WithoutLayout';
+import FiltersForOneUser from './components/FiltersForOneUser';
 
-function EventHistory() {
+function EventHistory({ withoutLayout = false, onlyForSpecificUser = false }) {
   const location = useLocation();
   const { search } = location;
 
@@ -32,11 +34,11 @@ function EventHistory() {
     users: queryString.parse(search)?.userId ? [{ id: queryString.parse(search)?.userId }] : [],
     eventTypes: queryString.parse(search)?.eventType ? [{ id: Number(queryString.parse(search)?.eventType) }] : [],
     casinos: queryString.parse(search)?.casinoId ? [{ id: queryString.parse(search)?.casinoId }] : [],
-    countries: queryString.parse(search)?.country ? [queryString.parse(search)?.country] : []
+    countries: queryString.parse(search)?.country ? [queryString.parse(search)?.country] : [],
+    doNotFetchDate: onlyForSpecificUser
   });
 
   const getGameInfo = (row) => {
-    console.log(row);
     return [{ username: row.amount, event_type: row.gameType }];
   };
 
@@ -44,18 +46,43 @@ function EventHistory() {
     <>
       <Can I='read' a='metric'>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DataTablePage
-            title='Event History'
-            canFilter
-            filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
-            fetchData={getEventsHistory}
-            queryKey={'metrics'}
-            columnData={eventHistoryColumnData}
-            object={'metrics'}
-            noActions
-            subrowFetchData={getGameInfo}
-            filters={filters}
-          />
+          {withoutLayout ? (
+            <DataTablePageWithoutLayout
+              title='Event History'
+              canFilter
+              filtersComponent={
+                onlyForSpecificUser ? (
+                  <FiltersForOneUser
+                    filters={filters}
+                    setFilters={setFilters}
+                    onlyForSpecificUser={onlyForSpecificUser}
+                  />
+                ) : (
+                  <Filters filters={filters} setFilters={setFilters} />
+                )
+              }
+              fetchData={getEventsHistory}
+              queryKey={'metrics'}
+              columnData={eventHistoryColumnData}
+              object={'metrics'}
+              noActions
+              subrowFetchData={getGameInfo}
+              filters={filters}
+            />
+          ) : (
+            <DataTablePage
+              title='Event History'
+              canFilter
+              filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+              fetchData={getEventsHistory}
+              queryKey={'metrics'}
+              columnData={eventHistoryColumnData}
+              object={'metrics'}
+              noActions
+              subrowFetchData={getGameInfo}
+              filters={filters}
+            />
+          )}
         </LocalizationProvider>
       </Can>
       <Can not I='read' a='metric'>

@@ -1,5 +1,8 @@
 import { Icon } from '@mui/material';
+
+import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
+
 const eventHistoryColumnData = [
   {
     width: 5,
@@ -41,11 +44,18 @@ const eventHistoryColumnData = [
   },
   {
     Header: 'Country',
-    accessor: 'country',
+    accessor: 'country'
   },
   {
     Header: 'Timestamp',
-    accessor: 'timestamp'
+    accessor: 'timestamp',
+    Cell: ({ row }) => {
+      return (
+        <MDTypography fontSize='0.875rem' sx={{ paddingRight: '20px' }}>
+          {row.original.timestamp}
+        </MDTypography>
+      );
+    }
   }
 ];
 
