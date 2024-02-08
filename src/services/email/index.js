@@ -112,32 +112,31 @@ export const deleteTemplate = async (templateId) => {
 
 export const getPlayersWithEmails = async (limit = 20, page = 1, filters) => {
   const api = useAxios();
-  const params = {
+  const params = new URLSearchParams({
     limit: limit,
     page: page,
     sortBy: 'createdAt:DESC'
-  };
+  });
+
   try {
-    if (typeof filters == 'object') {
-      if (Object.keys(filters).length) {
-        if (filters?.search != null) {
-          params['search'] = filters.search;
-        }
-        if (filters?.isChecked != null) {
-          params['isDemo'] = filters.isChecked;
-        }
-        if (filters?.isSubscribed != null) {
-          params['isSubscribed'] = filters.isSubscribed;
-        }
-        if (filters?.emails?.length) {
-          params['id'] = `${filters.emails.map((u) => u.id).toString()}`;
-        }
+    if (typeof filters == 'object' && Object.keys(filters).length) {
+      if (filters.search != null) {
+        params.append('search', filters.search);
+      }
+      if (filters.isChecked != null) {
+        params.append('isDemo', String(filters.isChecked));
+      }
+      if (filters.isSubscribed != null) {
+        params.append('isSubscribed', String(filters.isSubscribed));
+      }
+      if (filters.emails?.length) {
+        filters.emails.forEach((u) => {
+          params.append('ids', u.id);
+        });
       }
     }
 
-    const unformattedData = await api.get('/admin/users/newsletter-pagination', {
-      params: params
-    });
+    const unformattedData = await api.get(`/admin/users/newsletter-pagination?${params.toString()}`);
 
     return {
       data: unformattedData.data.data.map((x) => {
