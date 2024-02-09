@@ -183,14 +183,6 @@ function DataTable({
     }
   }, [queryPageIndex, queryPageSize, queryTotalPageCount]);
 
-  useMemo(() => {
-    if (additionalData) {
-      additionalData.queryPageIndex = queryPageIndex;
-      additionalData.queryPageSize = queryPageSize;
-      additionalData.queryTotalPageCount = queryTotalPageCount;
-    }
-  }, [queryPageIndex, queryPageSize, queryTotalPageCount]);
-
   const navigate = useNavigate();
   const {
     getTableProps,

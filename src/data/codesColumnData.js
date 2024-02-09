@@ -22,6 +22,18 @@ const codesColumnData = [
   {
     width: 20,
     Header: (data) => {
+      if (data?.data.length > 0) {
+        const moreData = data.data[0].additionalData;
+        if (
+          moreData.queryPageIndex !== undefined &&
+          moreData.queryPageIndex !== null &&
+          moreData.queryPageSize !== undefined &&
+          moreData.queryPageSize !== null
+        ) {
+          moreData.setQueryPageIndex(moreData.queryPageIndex);
+          moreData.setQueryPageSize(moreData.queryPageSize);
+        }
+      }
       return (
         <Checkbox
           sx={{ marginLeft: '25px' }}
