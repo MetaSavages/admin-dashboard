@@ -36,7 +36,6 @@ import CasinoInfo from 'layouts/casinos/components/CasinoInfo';
 import validations from 'layouts/casinos/components/schemas/validations';
 import form from 'layouts/casinos/components/schemas/form';
 import initialValues from 'layouts/casinos/components/schemas/initialValues';
-import { createPermission } from 'services/permissions';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { createCasino } from 'services/casinos';
 import { Can } from 'context';
@@ -45,17 +44,15 @@ function NewCasino() {
   const { formId, formField } = form;
   const navigate = useNavigate();
   const submitForm = async (values, actions) => {
-    console.log(values);
-    const response = await createCasino(values.casino_name, values.provider_name);
+    const response = await createCasino(values.casino_name, values.provider_name === '' ? null : values.provider_name);
     if (response.status === 201) {
       alert('Casino added successfully');
+      navigate('/casinos');
     } else {
       alert('Failed to add casino');
     }
-    // eslint-disable-next-line no-alert
     actions.setSubmitting(false);
     actions.resetForm();
-    navigate('/casinos');
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);

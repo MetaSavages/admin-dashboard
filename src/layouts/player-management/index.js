@@ -18,7 +18,7 @@ import CopyToClipboardButton from 'layouts/player-management/components/CopyToCl
 import { Dialog, DialogTitle, DialogContent, Button, DialogActions } from '@mui/material';
 
 import MDAlert from 'components/MDAlert';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { getPlayers, getPlayerAggregated } from 'services/players';
 import { playerColumnData } from 'data/playerColumnData';
 import Filters from './components/Filters';
@@ -42,7 +42,7 @@ function PlayerManagement() {
   const [cols, setCols] = useState(null);
 
   useEffect(() => {
-    playerColumnData().then((res) => {
+    playerColumnData(navigate).then((res) => {
       setCols(res);
     });
   }, [filters]);

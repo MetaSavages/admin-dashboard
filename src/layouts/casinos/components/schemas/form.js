@@ -25,7 +25,7 @@ const form = {
     currency: {
       name: 'provider_name',
       label: 'Provider',
-      type: 'text',
+      type: 'select',
       errorMsg: 'Provider is required.'
     }
   }

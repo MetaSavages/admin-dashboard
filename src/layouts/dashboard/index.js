@@ -189,9 +189,9 @@ function Dashboard() {
     dots: true,
     infinite: true,
     slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 6000
+    slidesToScroll: 1
+    // autoplay: true,
+    // autoplaySpeed: 6000
   };
 
   const CustomSlider = styled(Slider)(() => {
@@ -229,29 +229,35 @@ function Dashboard() {
 
   useEffect(() => {
     getGameStats('game_win').then((res) => {
-      let wins = res.map((m) => {
-        m[0] === 12
-          ? setCorrectMonths((prev) => [...prev, months[0]])
-          : setCorrectMonths((prev) => [...prev, months[m[0]]]);
-        return m[1];
-      });
-      setGameWins(wins);
+      if (res?.length > 0) {
+        let wins = res.map((m) => {
+          m[0] === 12
+            ? setCorrectMonths((prev) => [...prev, months[0]])
+            : setCorrectMonths((prev) => [...prev, months[m[0]]]);
+          return m[1];
+        });
+        setGameWins(wins);
+      }
     });
 
     getGameStats('game_lose').then((res) => {
-      let loses = res.map((m) => {
-        return m[1];
-      });
-      setGameLoses(loses);
+      if (res?.length > 0) {
+        let loses = res.map((m) => {
+          return m[1];
+        });
+        setGameLoses(loses);
+      }
     });
   }, []);
 
   useEffect(() => {
     getNewRegistrations().then((res) => {
-      let registrations = res.map((m) => {
-        return m.count;
-      });
-      setNewRegistrations(registrations);
+      if (res?.length > 0) {
+        let registrations = res.map((m) => {
+          return m.count;
+        });
+        setNewRegistrations(registrations);
+      }
     });
   }, []);
 
@@ -439,16 +445,16 @@ function Dashboard() {
         </MDBox>
         <MDBox display='flex' justifyContent='space-between' alignItems='center'>
           <Grid container spacing={2} direction='row' justify='center' alignItems='stretch'>
-            <Grid item xs={2}>
+            <Grid item xs={12} sm={6} md={4} xxl={2}>
               <InfoCard color='info' icon='trending_up' title='Total game wins' description={`${gameWin}`} />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={12} sm={6} md={4} xxl={2}>
               <InfoCard color='info' icon='trending_up' title='Total game loses' description={`${gameLose}`} />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={12} sm={6} md={4} xxl={2}>
               <InfoCard color='info' icon='trending_up' title='Total game bets' description={`${gameBet}`} />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={12} sm={6} md={4} xxl={2}>
               <InfoCard
                 color='info'
                 icon='trending_up'
@@ -456,7 +462,7 @@ function Dashboard() {
                 description={registrationStart}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={12} sm={6} md={4} xxl={2}>
               <InfoCard
                 color='info'
                 icon='trending_up'
@@ -464,7 +470,7 @@ function Dashboard() {
                 description={baccarat.sessionStart}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={12} sm={6} md={4} xxl={2}>
               <InfoCard
                 color='info'
                 icon='trending_up'
@@ -474,9 +480,10 @@ function Dashboard() {
             </Grid>
           </Grid>
         </MDBox>
+
         <MDBox mt={5}>
           <Grid container spacing={3} direction='row' justify='center' alignItems='stretch'>
-            <Grid item xs={8}>
+            <Grid item xs={12} lg={8}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   {allBets.length > 0 ? (
@@ -519,9 +526,9 @@ function Dashboard() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} lg={4}>
               <Grid container spacing={3}>
-                <Grid item xs={12} mt={3} className='aaaaaaaaaaaaaaaaaa'>
+                <Grid item xs={12} mt={3}>
                   <Card sx={{ padding: '30px', marginBottom: '20px' }}>
                     <CustomSlider {...settings}>
                       <div>

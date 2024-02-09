@@ -69,7 +69,7 @@ function CasinoCard({ allBets, gameWinsAmount, gameLoseAmount, image, title, des
       </MDBox>
       <MDBox px={3}>
         <MDBox display='flex' justifyContent='space-around' alignItems='center' ml={4} mr={3} mt={2}>
-          <MDBox display='flex' alignItems='center' pr={5}>
+          <MDBox display='flex' alignItems='center' pr={{ xs: 5, md: 2 }}>
             <Icon fontSize='large' color='info'>
               business_center
             </Icon>

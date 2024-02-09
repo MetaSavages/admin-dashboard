@@ -36,24 +36,26 @@ import CasinoInfo from 'layouts/casinos/components/CasinoInfo';
 import validations from 'layouts/casinos/components/schemas/validations';
 import form from 'layouts/casinos/components/schemas/form';
 import { useEffect, useState } from 'react';
-import { updatePermission, getPermission } from 'services/permissions';
+import { editCasino, getCasino } from 'services/casinos';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { Skeleton } from '@mui/material';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogContent, DialogActions } from '@mui/material';
 import MDTypography from 'components/MDTypography';
 import { Can } from 'context';
+
 function EditCasino() {
   const { id } = useParams();
   const { formId, formField } = form;
-  const [initialValues, setInitalValues] = useState(null);
+  const [initialValues, setInitialValues] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const navigate = useNavigate();
+
   useEffect(() => {
-    getPermission(id).then((response) => {
+    getCasino(id).then((response) => {
       const { data } = response;
-      setInitalValues({
+      setInitialValues({
         [formField.name.name]: data.name,
         [formField.currency.name]: data.currency
       });
@@ -61,16 +63,16 @@ function EditCasino() {
   }, []);
 
   const submitForm = async (values, actions) => {
-    // const response = await updatePermission(id, values.name, values.currency);
-    // if (response.status === 201) {
-    //   alert('Casino updated successfully');
-    // } else {
-    //   alert('Casino update failed');
-    // }
-    // eslint-disable-next-line no-alert
-    actions.setSubmitting(false);
-    actions.resetForm();
-    navigate('/casinos');
+    const response = await editCasino(id, values.casino_name, values.provider_name);
+    if (response.status === 201 || response.status === 200) {
+      alert('Casino updated successfully');
+      actions.setSubmitting(false);
+      actions.resetForm();
+      navigate('/casinos');
+    } else {
+      alert('Casino update failed');
+      actions.setSubmitting(false);
+    }
   };
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);

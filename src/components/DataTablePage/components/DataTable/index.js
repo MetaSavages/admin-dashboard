@@ -37,7 +37,6 @@ import MDPagination from 'components/MDPagination';
 
 // Material Dashboard 2 PRO React examples
 import DataTableHeadCell from 'components/DataTablePage/components/DataTable/DataTableHeadCell';
-import DataTableBodyCell from 'components/DataTablePage/components/DataTable/DataTableBodyCell';
 import MDButton from 'components/MDButton';
 import { Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, IconButton } from '@mui/material';
 import userColumnsData from 'data/usersColumnData';
@@ -99,6 +98,20 @@ function DataTable({
   const handleCloseDelete = () => setOpenDelete(false);
   defaultState.queryPageSize = defaultPageSize;
   const [tableState, dispatchTableAction] = useReducer(tableReducer, defaultState);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 576);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 576);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const setQueryPageIndexHandler = ({ pageIndexValue }) => {
     dispatchTableAction({
       type: ACTION.PAGE_CHANGED,
@@ -162,6 +175,14 @@ function DataTable({
     }
   }, [RES_DATA, additionalData]);
   
+  useMemo(() => {
+    if (additionalData) {
+      additionalData.queryPageIndex = queryPageIndex;
+      additionalData.queryPageSize = queryPageSize;
+      additionalData.queryTotalPageCount = queryTotalPageCount;
+    }
+  }, [queryPageIndex, queryPageSize, queryTotalPageCount]);
+
   useMemo(() => {
     if (additionalData) {
       additionalData.queryPageIndex = queryPageIndex;
@@ -256,7 +277,15 @@ function DataTable({
   return (
     <TableContainer sx={{ boxShadow: 'none' }}>
       {queryPageSize || canSearch ? (
-        <MDBox display='flex' justifyContent='space-between' alignItems='center' p={3}>
+        <MDBox
+          display='flex'
+          justifyContent='space-between'
+          p={3}
+          sx={{
+            flexDirection: isSmallScreen ? 'column' : 'row',
+            alignItems: isSmallScreen ? 'flex-start' : 'center'
+          }}
+        >
           {queryPageSize && (
             <MDBox display='flex' alignItems='center'>
               <Autocomplete
@@ -270,8 +299,8 @@ function DataTable({
                 sx={{ width: '5rem' }}
                 renderInput={(params) => <MDInput {...params} />}
               />
-              <MDTypography variant='caption' color='secondary'>
-                &nbsp;&nbsp;entries per page
+              <MDTypography variant='caption' color='secondary' sx={{ paddingLeft: '10px', paddingRight: '10px' }}>
+                entries per page
               </MDTypography>
             </MDBox>
           )}

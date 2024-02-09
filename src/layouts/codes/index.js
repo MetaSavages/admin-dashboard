@@ -20,6 +20,9 @@ function CodeManagement() {
   const [filters, setFilters] = useState({});
   const [searchParams, setSearchParams] = useSearchParams();
   const [arrayFromCodes, setArrayFromCodes] = useState([]);
+  const [queryPageIndex, setQueryPageIndex] = useState(0);
+  const [queryPageSize, setQueryPageSize] = useState(0);
+  const [codesPerPage, setCodesPerPage] = useState(null);
 
   useEffect(() => {
     if (searchParams.get('code')) {
@@ -33,18 +36,21 @@ function CodeManagement() {
     setArrayFromCodes([]);
   }, [filters]);
 
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: [],
-          meta: {
-            totalItems: 20
-          }
-        });
-      }, 100);
-    });
-  };
+  useEffect(() => {
+    handleGetCodes();
+  }, [queryPageIndex, queryPageSize, filters]);
+
+  useEffect(() => {
+    checkHeaderCheckToRowChecks();
+  }, [codesPerPage, arrayFromCodes]);
+
+  function checkHeaderCheckToRowChecks() {
+    let isAllCodesIncluded = false;
+    if (codesPerPage?.length > 0) {
+      isAllCodesIncluded = codesPerPage.every((obj) => arrayFromCodes.includes(obj.code));
+    }
+    setHeaderCheck(isAllCodesIncluded);
+  }
 
   const createPromoCode = async () => {
     const response = await createCodes(1);
@@ -56,6 +62,16 @@ function CodeManagement() {
     }
   };
 
+  function handleGetCodes() {
+    const nextPage = queryPageIndex + 1;
+    getCodes(queryPageSize, nextPage, filters)
+      .then((result) => {
+        if (result?.data?.length > 0) {
+          setCodesPerPage(result.data);
+        }
+      })
+      .catch(() => {});
+  }
   return (
     <>
       <Can I='read' a='promocode'>
@@ -67,14 +83,13 @@ function CodeManagement() {
               {/* <MDButton variant='contained' color='info' onClick={() => navigate('/promo-codes/new-codes')}>
                 Add Codes
               </MDButton> */}
-              <MDButton variant='contained' color='info' onClick={() => createPromoCode()}>
-                Add Codes
+              <MDButton variant='contained' color='success' onClick={() => createPromoCode()}>
+                Create new Code
               </MDButton>
             </Can>
           }
           canSearch
           canFilter
-          // fetchData={fetchData}
           fetchData={getCodes}
           queryKey='codes'
           columnData={codesColumnData}
@@ -97,7 +112,9 @@ function CodeManagement() {
             arrayFromCodes: arrayFromCodes,
             setArrayFromCodes: (e) => setArrayFromCodes(e),
             headerCheck: headerCheck,
-            setHeaderCheck: setHeaderCheck
+            setHeaderCheck,
+            setQueryPageIndex,
+            setQueryPageSize
           }}
         />
         <Dialog
