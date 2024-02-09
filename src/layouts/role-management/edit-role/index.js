@@ -30,7 +30,7 @@ import DashboardNavbar from 'components/DashboardNavbar';
 import Footer from 'examples/Footer';
 
 // services
-import { getAllCasinos } from 'services/filters';
+import { getAllCasinos } from 'services/casinos';
 
 // NewUser page components
 import RoleInfo from 'layouts/role-management/components/RoleInfo';

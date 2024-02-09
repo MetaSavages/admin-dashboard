@@ -8,8 +8,9 @@ import MDButton from 'components/MDButton';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { pickersLayoutClasses } from '@mui/x-date-pickers';
 
-import { getAllCasinos, getAllPlayers, getEventTypes, getAllCountries } from '../../../../services/filters/index';
-import CheckBox from '@mui/icons-material/CheckBox';
+import { getAllPlayers, getEventTypes, getAllCountries } from '../../../../services/filters/index';
+import { getAllCasinos } from '../../../../services/casinos/index';
+
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 

@@ -106,8 +106,8 @@ const Filters = ({ filters, setFilters }) => {
         flexGrow: 1
       }}
     >
-      <Grid container spacing={2} justifyContent={'flex-end'}>
-        <Grid item xs={12} md={4}>
+      <Grid container spacing={2} justifyContent={'space-between'} alignItems={'stretch'}>
+        <Grid item xs={7} md={4}>
           <MDBox>
             <Autocomplete
               multiple
@@ -136,7 +136,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={10} md={4} lg={3} xxl={3}>
+        <Grid item xs={3} md={2}>
           <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
             <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
               <Checkbox

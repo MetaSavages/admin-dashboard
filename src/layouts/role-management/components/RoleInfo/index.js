@@ -22,17 +22,14 @@ import Grid from '@mui/material/Grid';
 // Material Dashboard 2 PRO React components
 import MDBox from 'components/MDBox';
 import MDTypography from 'components/MDTypography';
-import InputLabel from '@mui/material/InputLabel';
 // NewUser page components
 import FormField from 'layouts/role-management/components/FormField';
-import { FormControl } from '@mui/material';
-import { ErrorMessage, Field } from 'formik';
+import { ErrorMessage } from 'formik';
 import { Autocomplete, TextField, Checkbox } from '@mui/material';
-import { getPermissions } from 'services/permissions';
+import { getAllPermissions } from 'services/permissions';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { item } from 'components/Sidenav/styles/sidenavItem';
-import { getAllCasinos } from 'services/filters';
+import { getAllCasinos } from 'services/casinos';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
@@ -74,7 +71,7 @@ function RoleInfo({ formData }) {
         return item?.value ? item.value : item;
       })
     );
-    getPermissions().then((res) => {
+    getAllPermissions().then((res) => {
       setRoleOptions(res.data.map((item) => ({ value: item.id, name: `${item.action}: ${item.object}` })));
     });
   }, []);

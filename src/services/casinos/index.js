@@ -1,5 +1,32 @@
 import useAxios from 'hooks/useAxios';
 
+export const getProviders = async () => {
+  const api = useAxios();
+  try {
+    return await api.get('/admin/casinos/providers');
+  } catch (err) {
+    console.log(err);
+    return {
+      data: []
+    };
+  }
+};
+
+export const getCasino = async (id) => {
+  const api = useAxios();
+  try {
+    return await api.get(`/admin/casinos/${id}`);
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        name: '',
+        provider: ''
+      }
+    };
+  }
+};
+
 export const getCasinos = async () => {
   const api = useAxios();
   try {
@@ -31,6 +58,27 @@ export const getCasinos = async () => {
   }
 };
 
+export const getAllCasinos = async () => {
+  const api = useAxios();
+  try {
+    const unformattedData = await api.get('/admin/casinos/all');
+
+      const data = unformattedData.data.map((casino) => {
+        return {
+          ...casino,
+          value: casino?.id ? casino.id : '-',
+          label: casino?.name ? casino.name : '-'
+        };
+      });
+      return data;
+  } catch (err) {
+    console.log(err);
+    return {
+      data: []
+    };
+  }
+};
+
 export const createCasino = async (name, provider) => {
   const api = useAxios();
   try {
@@ -44,6 +92,24 @@ export const createCasino = async (name, provider) => {
       data: {
         action: '',
         object: ''
+      }
+    };
+  }
+};
+
+export const editCasino = async (id, name, provider) => {
+  const api = useAxios();
+  try {
+    return await api.put(`/admin/casinos/${id}`,{
+      name: name,
+      provider: provider
+    });
+  } catch (err) {
+    console.log(err);
+    return {
+      data: {
+        name: '',
+        provider: ''
       }
     };
   }

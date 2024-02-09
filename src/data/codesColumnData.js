@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { IconButton, Icon, Tooltip, Checkbox } from '@mui/material';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -33,9 +33,17 @@ const codesColumnData = [
             data.data[0].additionalData.setHeaderCheck(e.target.checked);
             if (e.target.checked) {
               const allCodes = data.data.map((item) => item.code);
-              data.data[0].additionalData.setArrayFromCodes(allCodes);
+              data.data[0].additionalData.setHeaderCheck(true);
+              data.data[0].additionalData.setArrayFromCodes((old) => {
+                return [...new Set([...old, ...allCodes])];
+              });
             } else {
-              data.data[0].additionalData.setArrayFromCodes([]);
+              const existingCodes = data.data.map((item) => item.code);
+              const currentCodesInSet = data.data[0].additionalData.arrayFromCodes;
+              const validCodes = currentCodesInSet.filter((code) => !existingCodes.includes(code));
+
+              data.data[0].additionalData.setArrayFromCodes(validCodes);
+              data.data[0].additionalData.setHeaderCheck(false);
             }
           }}
         />

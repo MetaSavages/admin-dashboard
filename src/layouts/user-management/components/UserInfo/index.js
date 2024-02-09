@@ -28,7 +28,7 @@ import FormField from 'layouts/user-management/components/FormField';
 import { Autocomplete } from '@mui/material';
 import { ErrorMessage, Field } from 'formik';
 import MDInput from 'components/MDInput';
-import { getRoles } from 'services/roles';
+import { getAllRoles } from 'services/roles';
 
 
 function UserInfo({ formData }) {
@@ -45,7 +45,7 @@ function UserInfo({ formData }) {
   } = values;
 
   useEffect(() => {
-    getRoles().then((res) => {
+    getAllRoles().then((res) => {
       setRoleOptions(res.data.map((item) => ({ value: item.id, name: item.name })));
     });
   }, []);

@@ -53,7 +53,9 @@ const Filters = ({ filters, setFilters }) => {
         sx={{
           display: 'flex',
           flexGrow: 1,
-          justifyContent: 'flex-end'
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '0 5%'
         }}
       >
         <Grid item xs={7} sm={4} md={6}>
