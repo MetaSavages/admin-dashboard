@@ -36,7 +36,6 @@ const NotificationItem = forwardRef(({ type, notification, darkMode, ...rest }, 
   const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState('');
   useEffect(() => {
-    console.log(notification);
     switch (type) {
       case 'PROMO_CODE_REGISTRATION':
         if (notification?.user?.promoCode?.code != null) {
