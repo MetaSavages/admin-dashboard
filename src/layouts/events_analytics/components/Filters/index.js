@@ -58,7 +58,7 @@ const Filters = ({ filters, setFilters }) => {
           padding: '0 5%'
         }}
       >
-        <Grid item xs={7} sm={4} md={6}>
+        <Grid item xs={7} sm={4} md={8}>
           <MDBox>
             <Autocomplete
               multiple
