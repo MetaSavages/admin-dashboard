@@ -95,6 +95,8 @@ import EditSlot from 'layouts/slots-managment/edit-slot';
 import CodeManagement from 'layouts/codes';
 import NewCodes from 'layouts/codes/components/new-codes';
 import SupportTickets from 'layouts/support-tickets';
+import EmailPreview from 'layouts/email-preview';
+import EmailSender from 'layouts/email';
 
 const routes = [
   { type: 'title', title: 'Home', key: 'title-home' },
@@ -322,6 +324,17 @@ const routes = [
     object: 'promocode'
   },
   {
+    type: 'collapse',
+    noCollapse: true,
+    name: 'Email Sender',
+    key: 'email',
+    icon: <Icon fontSize='medium'>email</Icon>,
+    route: '/email',
+    component: <EmailSender />,
+    action: 'read',
+    object: 'email'
+  },
+  {
     type: 'divider',
     key: 'divider-0'
   },
@@ -378,6 +391,12 @@ const routes = [
     key: 'new-player',
     route: '/player-management/new-player',
     component: <NewPlayer />
+  },
+  {
+    name: 'Email Preview',
+    key: 'email-preview',
+    route: '/email/email-preview',
+    component: <EmailPreview />
   },
   {
     name: 'Show Player',

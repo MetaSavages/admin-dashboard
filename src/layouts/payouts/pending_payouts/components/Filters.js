@@ -156,7 +156,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
+        <Grid item xs={12} sm={6} lg={3}>
           <MDBox>
             <Autocomplete
               multiple
@@ -185,7 +185,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={4} md={2.5}>
+        <Grid item xs={12} sm={5} lg={2.3}>
           <MDBox>
             <DateTimePicker
               label='From'
@@ -195,6 +195,9 @@ const Filters = ({ filters, setFilters }) => {
               format='DD/MM/YYYY hh:mm'
               value={from}
               onChange={handleFromChange}
+              sx={{
+                width: '100%'
+              }}
               slotProps={{
                 layout: {
                   sx: {
@@ -207,7 +210,7 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={12} sm={4} md={2.5}>
+        <Grid item xs={12} sm={5} lg={2.3}>
           <MDBox>
             <DateTimePicker
               label='To'
@@ -217,6 +220,9 @@ const Filters = ({ filters, setFilters }) => {
               format='DD/MM/YYYY hh:mm'
               value={to}
               onChange={handleToChange}
+              sx={{
+                width: '100%'
+              }}
               slotProps={{
                 layout: {
                   sx: {

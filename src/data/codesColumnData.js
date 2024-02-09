@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { IconButton, Icon, Tooltip, Checkbox } from '@mui/material';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
@@ -22,19 +22,6 @@ const codesColumnData = [
   {
     width: 20,
     Header: (data) => {
-      if (data?.data.length > 0) {
-        const moreData = data.data[0].additionalData;
-        if (
-          moreData.queryPageIndex !== undefined &&
-          moreData.queryPageIndex !== null &&
-          moreData.queryPageSize !== undefined &&
-          moreData.queryPageSize !== null
-        ) {
-          moreData.setQueryPageIndex(moreData.queryPageIndex);
-          moreData.setQueryPageSize(moreData.queryPageSize);
-        }
-      }
-
       return (
         <Checkbox
           sx={{ marginLeft: '25px' }}
@@ -97,7 +84,52 @@ const codesColumnData = [
   },
   {
     Header: 'Claimed User',
-    accessor: 'claimed_user'
+    accessor: 'claimed_user',
+    Cell: (cellProps) => {
+      const isCodeClaimed =
+        cellProps.cell.row.original.claimed_user !== null && cellProps.cell.row.original.claimed_user !== '-';
+
+      return (
+        <MDBox
+          component='td'
+          textAlign={cellProps.cell.column.align ? cellProps.cell.column.align : 'left'}
+          py={1.5}
+          pl={cellProps.cell.row.isExpanded ? 1.5 : 3}
+          sx={({ palette: { light }, typography: { size }, borders: { borderWidth } }) => ({
+            fontSize: size.sm,
+            fontWeight: cellProps.cell.row.isExpanded ? 600 : 400
+          })}
+        >
+          <Link
+            to={
+              isCodeClaimed
+                ? `/player-management?userId=${cellProps.cell.row.original.user_id}&nickname=${cellProps.cell.row.original.claimed_user}`
+                : ''
+            }
+            sx={{
+              verticalAlign: 'middle',
+              textDecoration: 'none',
+              cursor: isCodeClaimed ? 'pointer' : 'default'
+            }}
+          >
+            <MDBox
+              display='inline-block'
+              width='max-content'
+              color='text'
+              sx={{
+                verticalAlign: 'middle',
+
+                textDecoration: isCodeClaimed ? 'underline ' : 'none',
+                cursor: isCodeClaimed ? 'pointer' : 'default'
+              }}
+            >
+              {cellProps.cell.row.original.claimed_user}
+            </MDBox>
+          </Link>
+        </MDBox>
+      );
+    },
+    SubCell: () => null
   },
   {
     Header: 'Date Create',

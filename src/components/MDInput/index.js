@@ -20,10 +20,13 @@ import PropTypes from 'prop-types';
 
 // Custom styles for MDInput
 import MDInputRoot from 'components/MDInput/MDInputRoot';
+import { useMaterialUIController } from 'context';
 
-const MDInput = forwardRef(({ error, success, disabled, ...rest }, ref) => (
-  <MDInputRoot {...rest} ref={ref} ownerState={{ error, success, disabled }} />
-));
+const MDInput = forwardRef(({ error, success, disabled, ...rest }, ref) => {
+  const [controller] = useMaterialUIController();
+  const { darkMode } = controller;
+  return <MDInputRoot {...rest} ref={ref} ownerState={{ error, success, disabled, darkMode }} />;
+});
 
 // Setting default values for the props of MDInput
 MDInput.defaultProps = {
