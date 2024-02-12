@@ -181,6 +181,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   // Render the notifications menu
   const renderMenu = () => (
     <Menu
+    className='aaaaaaaa'
       ref={menuRef}
       anchorEl={openMenu}
       anchorReference={null}
@@ -195,7 +196,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       open={Boolean(openMenu)}
       onClose={handleCloseMenu}
       onScrollCapture={handleNotificationScroll}
-      sx={{ mt: 2, height: '50%', overflowY: 'scroll' }}
+      sx={{ mt: 2, height: '50%' }}
     >
       {notifications?.data?.length && (
         <MDTypography
