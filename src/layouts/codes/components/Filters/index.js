@@ -119,7 +119,7 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
             sx={{ width: '100%', color: '#F44335' }}
             onClick={() => setOpenDialogRemoveAllCodes(true)}
           >
-            Remove all codes
+            Remove codes
           </MDButton>
         </Grid>
       </Grid>
