@@ -180,7 +180,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                     sx={{ width: '140px', color: 'green' }}
                     onClick={onSave}
                   >
-                    Save Emails
+                    Create Group
                   </MDButton>
                 </Grid>
               </MDBox>

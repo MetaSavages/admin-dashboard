@@ -54,6 +54,7 @@ function EmailSender() {
   const handleCloseModal = () => {
     setShowModal(false);
     setAlertVisible(false);
+    setAllMail(false);
   };
 
   useEffect(() => {
@@ -86,17 +87,6 @@ function EmailSender() {
       })
       .catch(() => {});
   }
-
-  const saveAllEmails = async () => {
-    try {
-      const emails = await getPlayersEmails(filters);
-      setSelectedEmails(emails.data.data);
-      alert('Emails saved successfully');
-      setAlertVisible(true);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
 
   const onSaveAll = async (values) => {
     try {
@@ -138,7 +128,7 @@ function EmailSender() {
           createButton={
             <Can I='create' a='email'>
               <MDButton variant='contained' color='success' onClick={() => handleOpenModalAll()}>
-                Save All Emails For Current Filters
+                Create Group From All Emails For Current Filters
               </MDButton>
               <MDButton variant='contained' color='primary' onClick={() => navigate('/email/email-preview')}>
                 Go to templates
@@ -184,7 +174,7 @@ function EmailSender() {
         <DialogTitle>
           <MDBox lineHeight={0} display='flex' justifyContent='center'>
             <MDTypography variant='h5' sx={{ width: '100%' }} display='flex' justifyContent='center'>
-              Create a Group of Emails
+              Create a Group {allMail ? 'from All Filtered Emails' : `of Selected ${arrayOfEmails.length} Emails`} 
               <button
                 onClick={handleCloseModal}
                 className='close'
