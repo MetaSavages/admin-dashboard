@@ -107,7 +107,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'stretch'}>
-        <Grid item xs={7} md={4}>
+        <Grid item xs={5} md={5}>
           <MDBox>
             <Autocomplete
               multiple
@@ -136,9 +136,8 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={3} md={2}>
-          <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
-            <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
+        <Grid item xs={5} md={4}>
+          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
               <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
@@ -146,9 +145,7 @@ const Filters = ({ filters, setFilters }) => {
                 onChange={(event) => handleCheckboxChange(event)}
                 sx={{ height: '100%' }}
               />
-              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Demo players</label>
-            </MDBox>
-            <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
+              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer', paddingRight:'5%' }}>Demo players</label>
               <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
@@ -156,7 +153,6 @@ const Filters = ({ filters, setFilters }) => {
                 onChange={(event) => handleCheckboxCodesChange(event)}
               />
               <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Claimed codes</label>
-            </MDBox>
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>

@@ -4,8 +4,6 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MDBox from 'components/MDBox';
 import React, { useEffect, useState } from 'react';
 import MDButton from 'components/MDButton';
-import MDInput from 'components/MDInput';
-import { useEmails } from 'context/emailContext';
 
 import './index.css';
 import { getAllPlayersByEmails } from 'services/filters';
@@ -13,14 +11,13 @@ import { getAllPlayersByEmails } from 'services/filters';
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHeaderCheck }) => {
+const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHeaderCheck, onSave }) => {
   const [search, setSearch] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [emailOptions, setEmailOptions] = useState([]);
   const [searchEmails, setSearchEmails] = useState([]);
   const [emailsInput, setEmailsInput] = useState('');
-  const { setSelectedEmails } = useEmails();
 
   useEffect(() => {
     emailOptions.forEach((email) => {
@@ -50,24 +47,6 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
       setEmailOptions([]);
     }
   };
-
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    if (arrayOfEmails.length != 0) {
-      try {
-        setSelectedEmails(arrayOfEmails);
-        setFilters(filters.length ? '' : 'd');
-        setArrayOfEmails([]);
-        alert('Emails saved successfully');
-      } catch (error) {
-        alert(error.message);
-      }
-    }
-  };
-
-  function handleChange(e) {
-    setSearch(e.target.value);
-  }
 
   const updateEmails = (event, value) => {
     setSearchEmails(value);
@@ -124,11 +103,11 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
           <Grid container spacing={2}>
             <form autoComplete='on' onSubmit={handleSubmit} className='form-width-100'>
               <MDBox sx={{ display: 'flex', alignItems: 'center' }}>
-                <Grid item xs={6}>
+                <Grid item xs={6} md={6}>
                   <MDBox p={3}>
-                    <MDBox display='flex' justifyContent='end' className='1111'>
+                    <MDBox display='flex' justifyContent='center'>
                       <Autocomplete
-                        sx={{ width: '230px' }}
+                        sx={{ width: '90%' }}
                         multiple
                         limitTags={2}
                         options={emailOptions}
@@ -151,7 +130,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                         renderInput={(params) => (
                           <TextField
                             {...params}
-                            label='Player email or Wallet ID'
+                            label='Player email or username'
                             variant='standard'
                             value={emailsInput}
                             onChange={handleEmailInput}
@@ -161,7 +140,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                     </MDBox>
                   </MDBox>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={2} md={2}>
                   <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
                     <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
                       <Checkbox
@@ -174,7 +153,7 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                     </label>
                   </MDBox>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={2} md={2}>
                   <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
                     <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>
                       <Checkbox
@@ -187,21 +166,21 @@ const Filters = ({ filters, setFilters, arrayOfEmails, setArrayOfEmails, setHead
                     </label>
                   </MDBox>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={2} md={2}>
                   <MDBox ml={2} width='100%' display='flex' justifyContent='space-between'>
                     <MDButton type='submit' variant='gradient' color='info'>
                       Search
                     </MDButton>
                   </MDBox>
                 </Grid>
-                <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                <Grid item xs={2} md={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <MDButton
                     variant='text'
                     disabled={arrayOfEmails.length > 0 ? false : true}
                     sx={{ width: '140px', color: 'green' }}
-                    onClick={onSubmit}
+                    onClick={onSave}
                   >
-                    Save Emails
+                    Create Group
                   </MDButton>
                 </Grid>
               </MDBox>

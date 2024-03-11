@@ -78,8 +78,8 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
         marginTop: '20px'
       }}
     >
-      <Grid container spacing={2} justifyContent={'flex-end'}>
-        <Grid item xs={12} sm={6} lg={6}>
+      <Grid container spacing={2} justifyContent={'space-between'}>
+        <Grid item xs={12} sm={6} lg={6} md={6}>
           <MDBox>
             <MDInput
               className='remove-arrows-from-input'
@@ -91,7 +91,7 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
             />
           </MDBox>
         </Grid>
-        <Grid item xs={5} sm={2.5}>
+        <Grid item xs={5} lg={2} sm={2.5} md={2}>
           <MDBox sx={{ display: 'flex', alignItems: 'center', padding: '2px' }}>
             <Checkbox
               icon={icon}
@@ -103,23 +103,23 @@ const Filters = ({ filters, setFilters, arrayFromCodes, setArrayFromCodes, setHe
             <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Claimed Code</label>
           </MDBox>
         </Grid>
-        <Grid item xs={4} sm={2}>
-          <MDBox ml={2} width='100%' display='flex' justifyContent='space-between'>
+        <Grid item xs={4} lg={2} sm={2} md={2} sx={{ margin:'auto' }}>
+          <MDBox ml={2} width='100%' display='flex'>
             <MDButton variant='text' disabled={disabledSearchButton()} onClick={() => handleSubmit()}>
               Search
             </MDButton>
           </MDBox>
         </Grid>
 
-        <Grid item xs={12} lg={3.5}>
+        <Grid item xs={12} lg={2} md={2}>
           <MDButton
             variant='outlined'
             color={darkMode ? 'white' : 'grey'}
             disabled={arrayFromCodes.length > 0 ? false : true}
-            sx={{ width: '200px', color: '#F44335' }}
+            sx={{ width: '100%', color: '#F44335' }}
             onClick={() => setOpenDialogRemoveAllCodes(true)}
           >
-            Remove all codes
+            Remove codes
           </MDButton>
         </Grid>
       </Grid>
