@@ -1,26 +1,36 @@
+import React, { useState, useEffect } from 'react';
 import DataTablePage from 'components/DataTablePage';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Can } from 'context';
 import supportTicketsColumnData from 'data/supportTicketsColumnData';
 import dataSupportTickets from 'assets/mockData/dataSupportTickets';
 import { getTickets } from 'services/support';
+
 function SupportTickets() {
-  const navigate = useNavigate();
-  const onDelete = (id) => {
-    console.log(id);
-  };
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataSupportTickets.rows,
-          meta: {
-            totalItems: 100
-          }
-        });
-      }, 100);
-    });
-  };
+
+    // const [tickets, setTickets] = useState([]);
+    
+    // useEffect(() => {
+    //   // Fetch tickets data from the API
+    //   const fetchData = async () => {
+    //     try {
+    //       const ticketsData = await getTickets(); // Assuming getTickets is a function that fetches data
+    //       setTickets(ticketsData);
+    //     } catch (error) {
+    //       console.error('Error fetching tickets:', error);
+    //     }
+    //   };
+  
+    //   fetchData();
+    // }, []); 
+
+  // useEffect(() => {
+  //   if (searchParams.get('code')) {
+  //     setFilters(filters.length ? '' : 'd');
+  //     searchParams.delete('code');
+  //   }
+  //   setSearchParams(searchParams);
+  // }, [location.search]);    
 
   return (
     <>
@@ -30,6 +40,7 @@ function SupportTickets() {
           canSearch
           canFilter
           fetchData={getTickets}
+          // data={tickets} 
           queryKey='support'
           columnData={supportTicketsColumnData}
           object={'support'}

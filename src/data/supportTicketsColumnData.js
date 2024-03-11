@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
 import { Can } from 'context';
 import MDButton from 'components/MDButton';
-import { closeTicket, retakeTicket, sendReplyToTicket } from 'services/support';
+import { closeTicket, retakeTicket, takeTicket, sendReplyToTicket } from 'services/support';
 import CloseIcon from '@mui/icons-material/Close';
 
 const supportTicketsColumnData = [
@@ -99,7 +99,7 @@ const supportTicketsColumnData = [
                       setReplyTicketId(row.original.id);
                     }}
                   >
-                    View & Reply
+                    View
                   </MDButton>
                 </MDTypography>
               </Tooltip>
@@ -112,7 +112,7 @@ const supportTicketsColumnData = [
             aria-describedby='alert-dialog-description'
           >
             <DialogTitle id='alert-dialog-title'>
-              <MDTypography>{`${row.original.summary}`}</MDTypography>
+              <MDTypography sx={{ wordWrap: 'break-word', width: '90%' }}>{`${row.original.summary}`}</MDTypography>
               <IconButton
                 aria-label='close'
                 onClick={() => {
@@ -131,7 +131,7 @@ const supportTicketsColumnData = [
             <DialogActions>
               <Grid container spacing={3} px={3}>
                 <Grid item xs={12}>
-                  <MDTypography sx={{ fontSize: '16px' }}>{`${row.original.message}`}</MDTypography>
+                  <MDTypography sx={{ fontSize: '16px', wordWrap: 'break-word' }}>{`${row.original.message}`}</MDTypography>
                 </Grid>
                 <Grid
                   item
@@ -149,7 +149,9 @@ const supportTicketsColumnData = [
                             borderRadius: '8px',
                             border: '0.5px solid #989898',
                             width: '100%',
-                            padding: '5px 10px'
+                            padding: '5px 10px',
+                            textAlign: reply.adminReply ? 'right' : 'left',
+                            backgroundColor: reply.adminReply ? 'primary' : 'transparent',
                           }}
                         >
                           <MDTypography
@@ -157,6 +159,7 @@ const supportTicketsColumnData = [
                               fontSize: '12px',
                               display: 'flex',
                               alignItems: 'center',
+                              justifyContent: reply.adminReply ? 'end' : 'start',                              
                               gap: '5px',
                               fontWeight: 500
                             }}
@@ -197,7 +200,7 @@ const supportTicketsColumnData = [
                           fontWeight: '300'
                         }}
                       >
-                        Replying to this ticket will automatically asign it to you.
+                        Make sure you take the ticket before replying!
                       </MDTypography>
                     )}
                   </Grid>
@@ -211,9 +214,9 @@ const supportTicketsColumnData = [
                             await closeTicket(row.original.id);
                             handleCloseModal();
                           }}
-                          color='secondary'
+                          color='error'
                         >
-                          Close ticket
+                          End ticket
                         </MDButton>
                       </Grid>
 
@@ -221,14 +224,27 @@ const supportTicketsColumnData = [
                         <MDButton
                           onClick={async () => {
                             {
-                              reply === '' ? setReplyError(true) : await sendReplyToTicket(replyTicketId, reply, row.original.status);
+                              row.original.taken === 'Taken' ? await retakeTicket(replyTicketId) : await takeTicket(replyTicketId);
+                            }
+                          }}
+                          color='primary'
+                        >
+                          {row.original.taken === 'Taken' ? 'Steal' : 'Take'} Ticket
+                        </MDButton>
+                      </Grid>
+
+                      <Grid item>
+                        <MDButton
+                          onClick={async () => {
+                            {
+                              reply === '' ? setReplyError(true) : await sendReplyToTicket(replyTicketId, reply);
                             }
                           }}
                           color='info'
                         >
                           Send reply
                         </MDButton>
-                      </Grid>
+                      </Grid>                      
                     </>
                   ) : (
                     <Grid
@@ -255,21 +271,6 @@ const supportTicketsColumnData = [
                       >
                         Ticket closed!
                       </MDTypography>
-                      {/* <MDTypography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 300,
-                          textDecoration: 'underline',
-                          cursor: 'pointer',
-                          lineHeight: 1
-                        }}
-                        onClick={async () => {
-                          await retakeTicket(row.original.id);
-                          handleCloseModal();
-                        }}
-                      >
-                        Retake ticket
-                      </MDTypography> */}
                     </Grid>
                   )}
                 </Grid>
