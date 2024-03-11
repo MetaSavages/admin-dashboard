@@ -1,36 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import DataTablePage from 'components/DataTablePage';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { Can } from 'context';
 import supportTicketsColumnData from 'data/supportTicketsColumnData';
-import dataSupportTickets from 'assets/mockData/dataSupportTickets';
 import { getTickets } from 'services/support';
 
 function SupportTickets() {
 
-    // const [tickets, setTickets] = useState([]);
-    
-    // useEffect(() => {
-    //   // Fetch tickets data from the API
-    //   const fetchData = async () => {
-    //     try {
-    //       const ticketsData = await getTickets(); // Assuming getTickets is a function that fetches data
-    //       setTickets(ticketsData);
-    //     } catch (error) {
-    //       console.error('Error fetching tickets:', error);
-    //     }
-    //   };
-  
-    //   fetchData();
-    // }, []); 
+    const [filters, setFilters] = useState({});
+    const [searchParams, setSearchParams] = useSearchParams();
 
-  // useEffect(() => {
-  //   if (searchParams.get('code')) {
-  //     setFilters(filters.length ? '' : 'd');
-  //     searchParams.delete('code');
-  //   }
-  //   setSearchParams(searchParams);
-  // }, [location.search]);    
+    useEffect(() => {
+      if (searchParams.get('support')) {
+       setFilters({
+              ...filters,
+              refresh: filters?.refresh ? !filters.refresh : true
+            });
+        searchParams.delete('support');
+      }
+      setSearchParams(searchParams);
+    }, [location.search]);    
 
   return (
     <>
@@ -40,12 +29,11 @@ function SupportTickets() {
           canSearch
           canFilter
           fetchData={getTickets}
-          // data={tickets} 
           queryKey='support'
           columnData={supportTicketsColumnData}
           object={'support'}
           noActions
-          //filtersComponent={<Filters filters={filters} setFilters={setFilters} />} <Filters
+          filters={filters}
         />
       </Can>
       <Can not I='read' a='support'>

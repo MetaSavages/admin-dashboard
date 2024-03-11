@@ -39,13 +39,8 @@ export const sendReplyToTicket = async (id, reply) => {
       message: reply
     });
   } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    console.error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -56,13 +51,8 @@ export const takeTicket = async (id) => {
       MessageId: id
     });
   } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    console.error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -73,13 +63,8 @@ export const retakeTicket = async (id) => {
       MessageId: id
     });
   } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    console.error(err);
+    throw new Error(err.message);
   }
 };
 
@@ -90,12 +75,7 @@ export const closeTicket = async (id) => {
       MessageId: id,
     });
   } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    console.error(err);
+    throw new Error(err.message);
   }
 };

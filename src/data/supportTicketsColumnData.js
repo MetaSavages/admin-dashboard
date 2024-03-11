@@ -1,14 +1,15 @@
 import React from 'react';
-import { IconButton, Icon, Tooltip, TextField, Grid } from '@mui/material';
+import { IconButton, Tooltip, TextField, Grid } from '@mui/material';
 import MDBox from 'components/MDBox';
-import { NavLink } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import MDTypography from 'components/MDTypography';
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
+import { Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { Can } from 'context';
 import MDButton from 'components/MDButton';
 import { closeTicket, retakeTicket, takeTicket, sendReplyToTicket } from 'services/support';
 import CloseIcon from '@mui/icons-material/Close';
+import { useMaterialUIController } from 'context';
 
 const supportTicketsColumnData = [
   {
@@ -56,10 +57,13 @@ const supportTicketsColumnData = [
     accessor: 'actions',
     sorted: false,
     Cell: ({ row }) => {
+      const [controller] = useMaterialUIController();
+      const { darkMode } = controller;
       const [showModal, setShowModal] = useState(false);
       const [replyTicketId, setReplyTicketId] = useState('');
       const [reply, setReply] = useState('');
       const [replyError, setReplyError] = useState(false);
+      const [searchParams, setSearchParams] = useSearchParams();
       const handleOpenModal = () => setShowModal(true);
       const handleCloseModal = () => {
         setShowModal(false);
@@ -131,7 +135,9 @@ const supportTicketsColumnData = [
             <DialogActions>
               <Grid container spacing={3} px={3}>
                 <Grid item xs={12}>
-                  <MDTypography sx={{ fontSize: '16px', wordWrap: 'break-word' }}>{`${row.original.message}`}</MDTypography>
+                  <MDTypography
+                    sx={{ fontSize: '16px', wordWrap: 'break-word' }}
+                  >{`${row.original.message}`}</MDTypography>
                 </Grid>
                 <Grid
                   item
@@ -151,7 +157,13 @@ const supportTicketsColumnData = [
                             width: '100%',
                             padding: '5px 10px',
                             textAlign: reply.adminReply ? 'right' : 'left',
-                            backgroundColor: reply.adminReply ? 'primary' : 'transparent',
+                            backgroundColor: reply.adminReply
+                              ? darkMode
+                                ? '#141d47'
+                                : '#ebeefc'
+                              : darkMode
+                              ? '#2a3457'
+                              : '#e1f2fc'
                           }}
                         >
                           <MDTypography
@@ -159,7 +171,7 @@ const supportTicketsColumnData = [
                               fontSize: '12px',
                               display: 'flex',
                               alignItems: 'center',
-                              justifyContent: reply.adminReply ? 'end' : 'start',                              
+                              justifyContent: reply.adminReply ? 'end' : 'start',
                               gap: '5px',
                               fontWeight: 500
                             }}
@@ -211,8 +223,14 @@ const supportTicketsColumnData = [
                       <Grid item>
                         <MDButton
                           onClick={async () => {
-                            await closeTicket(row.original.id);
-                            handleCloseModal();
+                            await closeTicket(row.original.id)
+                              .then(() => {
+                                searchParams.set('support', replyTicketId);
+                                setSearchParams(searchParams);
+                              })
+                              .catch((error) => {
+                                alert('Could not close ticket!');
+                              });
                           }}
                           color='error'
                         >
@@ -223,8 +241,24 @@ const supportTicketsColumnData = [
                       <Grid item>
                         <MDButton
                           onClick={async () => {
-                            {
-                              row.original.taken === 'Taken' ? await retakeTicket(replyTicketId) : await takeTicket(replyTicketId);
+                            if (row.original.taken === 'Taken') {
+                              await retakeTicket(replyTicketId)
+                                .then(() => {
+                                  searchParams.set('support', replyTicketId);
+                                  setSearchParams(searchParams);
+                                })
+                                .catch((error) => {
+                                  alert('You cannot steal your own ticket!');
+                                });
+                            } else {
+                              await takeTicket(replyTicketId)
+                                .then(() => {
+                                  searchParams.set('support', replyTicketId);
+                                  setSearchParams(searchParams);
+                                })
+                                .catch((error) => {
+                                  alert('Something went wrong, while taking the ticket!');
+                                });
                             }
                           }}
                           color='primary'
@@ -236,15 +270,25 @@ const supportTicketsColumnData = [
                       <Grid item>
                         <MDButton
                           onClick={async () => {
-                            {
-                              reply === '' ? setReplyError(true) : await sendReplyToTicket(replyTicketId, reply);
+                            if (reply === '') {
+                              setReplyError(true);
+                            } else {
+                              await sendReplyToTicket(replyTicketId, reply)
+                                .then(() => {
+                                  setReply('');
+                                  searchParams.set('support', replyTicketId);
+                                  setSearchParams(searchParams);
+                                })
+                                .catch((error) => {
+                                  alert('Make sure you have taken the ticket before replying!');
+                                });
                             }
                           }}
                           color='info'
                         >
                           Send reply
                         </MDButton>
-                      </Grid>                      
+                      </Grid>
                     </>
                   ) : (
                     <Grid
