@@ -94,10 +94,18 @@ function DashboardNavbar({ absolute, light, isMini }) {
       setNotificationCount(Number(notifications));
     });
   }, []);
-
   useEffect(() => {
     const getNotificationsData = async () => {
-      setNotifications(await getNotifications());
+      getNotifications()
+        .then((res) => {
+          if (res?.data.length > 0) {
+            const unseenData = res.data.filter((data) => data.seen === false);
+            setNotificationCount(unseenData.length);
+          }
+
+          setNotifications(res);
+        })
+        .catch((error) => {});
     };
     getNotificationsData();
   }, [isRead]);
@@ -109,7 +117,13 @@ function DashboardNavbar({ absolute, light, isMini }) {
     const componentHeight = paper.scrollHeight - paper.clientHeight;
     if (componentHeight - scrollPosition <= 100) {
       const newNotifications = await getNotifications(notifications?.meta?.currentPage + 1);
-      console.log(newNotifications);
+
+      if (newNotifications?.data.length > 0) {
+        const unseenData = newNotifications.data.filter((data) => data.seen === false);
+
+        setNotificationCount(unseenData.length);
+      }
+
       setNotifications({
         data: [...notifications?.data, ...newNotifications?.data],
         meta: newNotifications?.meta
@@ -167,6 +181,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   // Render the notifications menu
   const renderMenu = () => (
     <Menu
+    className='aaaaaaaa'
       ref={menuRef}
       anchorEl={openMenu}
       anchorReference={null}
@@ -181,7 +196,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       open={Boolean(openMenu)}
       onClose={handleCloseMenu}
       onScrollCapture={handleNotificationScroll}
-      sx={{ mt: 2, height: '50%', overflowY: 'scroll' }}
+      sx={{ mt: 2, height: '50%' }}
     >
       {notifications?.data?.length && (
         <MDTypography

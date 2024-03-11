@@ -41,7 +41,7 @@ const FiltersForOneUser = ({ filters, setFilters, onlyForSpecificUser = false })
       setIsLargeScreen(window.innerWidth < 992);
     };
 
-    const endOfToday = dayjs().hour(0).minute(0).second(0);
+    const endOfToday = dayjs().hour(23).minute(59).second(59);
     setTo(endOfToday);
 
     const startOfTwoDaysBefore = dayjs().subtract(1, 'day').hour(0).minute(0).second(0);
@@ -178,7 +178,7 @@ const FiltersForOneUser = ({ filters, setFilters, onlyForSpecificUser = false })
       eventTypes,
       casinos,
       countries,
-      users: playerUsernames,
+      users: [user],
       from,
       to,
       demo
