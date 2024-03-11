@@ -39,10 +39,10 @@ export const getAllRoles = async () => {
   try {
     const unformattedData = await api.get('/admin/auth/roles-all');
     unformattedData.data = unformattedData.data.map((role) => {
-    return role;
+      return role;
     });
     return {
-      data: unformattedData.data,
+      data: unformattedData.data
     };
   } catch (err) {
     console.log(err);
@@ -104,12 +104,6 @@ export const deleteRole = async (id) => {
   try {
     return await api.delete(`/admin/auth/roles/${id}`, {});
   } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        name: '',
-        permissions: []
-      }
-    };
+    throw new Error(err.message);
   }
 };

@@ -10,7 +10,7 @@ export const getPermissionOptions = async () => {
       data: []
     };
   }
-}
+};
 
 export const getPermissions = async (limit = 20, page = 1) => {
   const api = useAxios();
@@ -42,7 +42,7 @@ export const getAllPermissions = async () => {
   try {
     const unformattedData = await api.get('/admin/auth/permissions-all');
     return {
-      data: unformattedData.data,
+      data: unformattedData.data
     };
   } catch (err) {
     console.log(err);
@@ -98,12 +98,6 @@ export const deletePermission = async (id) => {
   try {
     return await api.delete(`/admin/auth/permissions/${id}`);
   } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        action: '',
-        object: ''
-      }
-    };
+    throw new Error(err.message);
   }
 };

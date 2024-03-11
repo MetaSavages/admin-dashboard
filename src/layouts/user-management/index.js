@@ -49,9 +49,18 @@ function UserManagement() {
           <DialogActions>
             <MDButton
               onClick={async () => {
-                await deleteUser(deleteUserId);
+                await deleteUser(deleteUserId)
+                  .then(() => {
+                    setFilters({
+                      ...filters,
+                      refresh: filters?.refresh ? !filters.refresh : true
+                    });
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                    alert('Something went wrong, please try again!');
+                  });
                 handleCloseModal();
-                setFilters(filters.length ? '' : 'd');
               }}
             >
               Yes

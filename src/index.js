@@ -16,6 +16,8 @@ Coded by www.creative-tim.com
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+// import { ToastContainer } from 'react-toastify';
+
 import App from 'App';
 
 // Material Dashboard 2 PRO React Context Provider
@@ -25,6 +27,7 @@ ReactDOM.render(
   <BrowserRouter>
     <MaterialUIControllerProvider>
       <App />
+      {/* <ToastContainer /> */}
     </MaterialUIControllerProvider>
   </BrowserRouter>,
   document.getElementById('root')

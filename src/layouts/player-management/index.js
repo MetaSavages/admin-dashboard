@@ -67,6 +67,10 @@ function PlayerManagement() {
   const submitForm = async (values, actions) => {
     try {
       const response = await axiosInstance.post('admin/users/create-demo-user', values);
+      setFilters({
+        ...filters,
+        refresh: filters?.refresh ? !filters.refresh : true
+      });
       const data = response.data;
       console.log(data);
       if (data) {
@@ -80,7 +84,7 @@ function PlayerManagement() {
     actions.setSubmitting(false);
     actions.resetForm();
   };
-
+  console.log('filtersssssssssssss', filters);
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };
@@ -229,13 +233,18 @@ function PlayerManagement() {
         <DialogActions>
           <Button
             onClick={() => {
-              deletePlayer(deleteRoleId);
+              deletePlayer(deleteRoleId)
+                .then(() => {
+                  setFilters({
+                    ...filters,
+                    isDemo: true,
+                    refresh: filters?.refresh ? !filters.refresh : true
+                  });
+                })
+                .catch((error) => {
+                  alert(`Error deleting user: ${error.message}`);
+                });
               handleCloseDeleteModal();
-              setFilters({
-                ...filters,
-                isDemo: true,
-                refresh: filters?.length ? true : false
-              });
             }}
           >
             Yes

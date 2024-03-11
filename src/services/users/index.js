@@ -96,18 +96,7 @@ export const deleteUser = async (id) => {
   try {
     return await api.delete(`/admin/users/${id}`);
   } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        role: {
-          id: '',
-          name: ''
-        }
-      }
-    };
+    throw new Error(err.message);
   }
 };
 

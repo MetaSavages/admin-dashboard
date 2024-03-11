@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton, Icon, Tooltip } from '@mui/material';
 import MDBox from 'components/MDBox';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import MDTypography from 'components/MDTypography';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
@@ -34,6 +34,7 @@ const rolesColumnData = [
       const handleOpenModal = () => setShowModal(true);
       const handleCloseModal = () => setShowModal(false);
       const [deleteRoleId, setDeleteRoleId] = useState(row.original.id);
+      const [searchParams, setSearchParams] = useSearchParams();
 
       return (
         <>
@@ -74,9 +75,19 @@ const rolesColumnData = [
             <DialogActions>
               <Button
                 onClick={async () => {
-                  await deleteRole(deleteRoleId);
+                  searchParams.set('role-management', deleteRoleId);
+
+                  await deleteRole(deleteRoleId)
+                    .then(() => {
+                      setSearchParams(searchParams);
+                    })
+                    .catch((error) => {
+                      console.error(error);
+
+                      alert('Something went wrong, please try again!');
+                    });
+
                   handleCloseModal();
-                  window.location.reload();
                 }}
               >
                 Yes

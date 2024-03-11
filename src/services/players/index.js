@@ -137,7 +137,7 @@ export const deletePlayer = async (id) => {
     });
   } catch (err) {
     console.error(`Error deleting user:`, err);
-    alert(`Error deleting user: ${err.message}`);
+    throw new Error(err.message);
   }
 };
 
