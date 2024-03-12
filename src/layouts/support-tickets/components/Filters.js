@@ -6,17 +6,50 @@ import React, { useState, useEffect } from 'react';
 import MDButton from 'components/MDButton';
 import { getAllPlayers } from 'services/filters';
 import { useSearchParams } from 'react-router-dom';
+import { useMaterialUIController } from 'context';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const Filters = ({ filters, setFilters }) => {
+    
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [controller] = useMaterialUIController();
+  const { darkMode } = controller;
+
   const [usernameOptions, setUsernameOptions] = useState([]);
   const [usernameInput, setUsernameInput] = useState('');
-  const [isDemoChecked, setIsDemoChecked] = useState(false);
-  const [isClaimedCodes, setIsClaimedCodes] = useState(false);
   const [playerUsernames, setPlayerUsernames] = useState([]);
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [isDemoChecked, setIsDemoChecked] = useState(false);
+  const [isMyTicket, setIsMyTicket] = useState(false);
+  const [isTaken, setIsTaken] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedReason, setSelectedReason] = useState('');
+
+  const handleStatusChange = (event) => {
+    const status = event.target.value;
+    setSelectedStatus(status);
+  };
+
+  const handleReasonChange = (event) => {
+    const reason = event.target.value;
+    setSelectedReason(reason);
+  };
+
+    const Reasons = {
+        Kyc: 'kyc',
+        Other: 'other',
+        Deposit: 'deposit',
+        Withdraw: 'withdraw',
+        PromoCode: 'promo-code'
+    };
+
+    const Statuses = {
+        Initial: 'initial',
+        Progress: 'progress',
+        Finished: 'finished'
+    };
 
   // fetch options
   useEffect(() => {
@@ -35,7 +68,10 @@ const Filters = ({ filters, setFilters }) => {
       setFilters({
         users: [],
         isDemo: isDemoChecked,
-        isPromoCodeUser: isClaimedCodes
+        isTaken: isTaken,
+        isAdminTicket: isMyTicket,
+        status: selectedStatus,
+        reason: selectedReason
       });
     }
   }, [playerUsernames]);
@@ -51,26 +87,41 @@ const Filters = ({ filters, setFilters }) => {
         label: nickname
       };
       setIsDemoChecked(true);
-      setIsClaimedCodes(true);
       setPlayerUsernames([params]);
-      setFilters({ users: [params], isDemo: true, isPromoCodeUser: true });
+      setFilters({ users: [params], isDemo: true });
       searchParams.delete('userId');
       searchParams.delete('nickname');
     }
     setSearchParams(searchParams);
   }, [location.search]);
 
-  const updateUsernames = (event, value) => {
-    setPlayerUsernames(value);
-  };
+  // Checkbox change handlers
+
   const handleCheckboxChange = (event) => {
     const isChecked = event.target.checked;
     setIsDemoChecked(isChecked);
   };
 
-  const handleCheckboxCodesChange = (event) => {
+  const handleCheckboxMyTicketChange = (event) => {
     const isChecked = event.target.checked;
-    setIsClaimedCodes(isChecked);
+    setIsMyTicket(isChecked);
+  };
+
+  const handleCheckboxTakenChange = (event) => {
+    const isChecked = event.target.checked;
+    setIsTaken(isChecked);
+  };
+
+  useEffect(() => {
+    if (isMyTicket) {
+        setIsTaken(true);
+    }
+    }, [isMyTicket]);
+
+  // Username autocomplete handlers
+
+  const updateUsernames = (event, value) => {
+    setPlayerUsernames(value);
   };
 
   const handleUsernameInput = (event) => {
@@ -84,21 +135,30 @@ const Filters = ({ filters, setFilters }) => {
     }
   };
 
+  // Submit handler
+
   const onSubmit = () => {
     setFilters({
       users: playerUsernames,
       isDemo: isDemoChecked,
-      isPromoCodeUser: isClaimedCodes
+      isTaken: isTaken,
+      isAdminTicket: isMyTicket,
+      status: selectedStatus,
+      reason: selectedReason
     });
   };
 
   function checkActiveButton() {
     return (
       !playerUsernames.length &&
+      ((filters?.isTaken == null && isTaken === false) || isTaken === filters?.isTaken) &&
       ((filters?.isDemo == null && isDemoChecked === false) || isDemoChecked === filters?.isDemo) &&
-      ((filters?.isPromoCodeUser == null && isClaimedCodes === false) || isClaimedCodes === filters?.isPromoCodeUser)
+      ((filters?.isAdminTicket == null && isMyTicket === false) || isMyTicket === filters?.isAdminTicket) &&
+      ((filters?.status == null && selectedStatus === '') || selectedStatus === filters?.status) &&
+      ((filters?.reason == null && selectedReason === '') || selectedReason === filters?.reason) 
     );
   }
+
   return (
     <MDBox
       sx={{
@@ -107,7 +167,7 @@ const Filters = ({ filters, setFilters }) => {
       }}
     >
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'stretch'}>
-        <Grid item xs={5} md={5}>
+        <Grid item xs={5} md={2.5}>
           <MDBox>
             <Autocomplete
               multiple
@@ -127,7 +187,7 @@ const Filters = ({ filters, setFilters }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label='Player username or admin ID'
+                  label='Player username'
                   variant='standard'
                   value={usernameInput}
                   onChange={handleUsernameInput}
@@ -136,26 +196,81 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={5} md={4}>
-          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
+        <Grid item xs={5} md={5}>
+          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-around' }}>
+            <div>
               <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
                 checked={isDemoChecked}
                 onChange={(event) => handleCheckboxChange(event)}
-                sx={{ height: '100%' }}
               />
-              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer', paddingRight:'5%' }}>Demo players</label>
+              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Demo players</label>
+              </div>
+              <div>
               <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
-                checked={isClaimedCodes}
-                onChange={(event) => handleCheckboxCodesChange(event)}
+                checked={isMyTicket}
+                onChange={(event) => handleCheckboxMyTicketChange(event)}
               />
-              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Claimed codes</label>
+              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>My Tickets</label>
+              </div>
+              <div>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                checked={isTaken}
+                onChange={(event) => handleCheckboxTakenChange(event)}
+                disabled={isMyTicket}
+              />
+              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Taken</label>
+              </div>
           </MDBox>
         </Grid>
-        <Grid item xs={2} md={2}>
+        <Grid item xs={5} md={3.5}>
+          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
+          <select value={selectedReason.key} onChange={handleStatusChange} 
+                  style={{
+                    appearance: 'none',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    borderRadius: '8px',
+                    padding: '9px 16px',
+                    fontSize: '16px',
+                    border: '1px solid rgba(128, 128, 128, 0.5)',
+                    outline: 'none',
+                    width: '50%',
+                    color: darkMode ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}>
+                <option value=''>Reason</option>
+                {Object.keys(Reasons).map(key => (
+                    <option key={key} value={key}>{Reasons[key]}</option>
+                ))}
+              </select>
+
+              <select value={selectedStatus.key} onChange={handleReasonChange} 
+                  style={{
+                    margin: '0 0 0 10px',
+                    appearance: 'none',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    borderRadius: '8px',
+                    padding: '9px 16px',
+                    fontSize: '16px',
+                    border: '1px solid rgba(128, 128, 128, 0.5)',
+                    outline: 'none',
+                    width: '50%',
+                    color: darkMode ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}>
+                <option value=''>Status</option>
+                {Object.keys(Statuses).map(key => (
+                    <option key={key} value={key}>{Statuses[key]}</option>
+                ))}
+              </select>
+          </MDBox>
+        </Grid>
+        <Grid item xs={2} md={1}>
           <MDButton variant='text' disabled={checkActiveButton()} onClick={onSubmit}>
             Apply
           </MDButton>

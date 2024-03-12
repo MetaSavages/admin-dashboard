@@ -137,15 +137,17 @@ const Filters = ({ filters, setFilters }) => {
           </MDBox>
         </Grid>
         <Grid item xs={5} md={4}>
-          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
+          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-around' }}>
+            <div>
               <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
                 checked={isDemoChecked}
                 onChange={(event) => handleCheckboxChange(event)}
-                sx={{ height: '100%' }}
               />
-              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer', paddingRight:'5%' }}>Demo players</label>
+              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Demo players</label>
+              </div>
+              <div>
               <Checkbox
                 icon={icon}
                 checkedIcon={checkedIcon}
@@ -153,6 +155,7 @@ const Filters = ({ filters, setFilters }) => {
                 onChange={(event) => handleCheckboxCodesChange(event)}
               />
               <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Claimed codes</label>
+              </div>
           </MDBox>
         </Grid>
         <Grid item xs={2} md={2}>
