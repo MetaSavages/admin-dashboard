@@ -4,6 +4,7 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import { Can } from 'context';
 import supportTicketsColumnData from 'data/supportTicketsColumnData';
 import { getTickets } from 'services/support';
+import Filters from './components/Filters';
 
 function SupportTickets() {
 
@@ -33,6 +34,7 @@ function SupportTickets() {
           columnData={supportTicketsColumnData}
           object={'support'}
           noActions
+          filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
           filters={filters}
         />
       </Can>
