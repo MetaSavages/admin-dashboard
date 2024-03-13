@@ -1,11 +1,38 @@
 import useAxios from 'hooks/useAxios';
 
-export const getTickets = async () => {
+export const getTickets = async (limit = 20, page = 1, filters = '') => {
   const api = useAxios();
   try {
-    const result = await api.get(`/support-message/tickets`, {});
+    const params = {
+      limit: limit,
+      page: page,
+      sortBy: 'createdAt:DESC'
+    };
 
-    const data = result.data.map((ticket) => {
+    if (Object.keys(filters).length) {
+      if (filters.users.length) {
+        params['id'] = `${filters.users.map((u) => u.id).toString()}`;
+      }
+      if (filters?.isDemo != null) {
+        params['isUserDemo'] = filters.isDemo;
+      }
+      if (filters?.isTaken != null) {
+        params['taken'] = filters.isTaken;
+      }
+      if (filters?.isAdminTicket == true) {
+        params['takenByAdmin'] = true;
+      }
+      if (filters?.reason != '') {
+        params['reason'] = filters.reason;
+      }
+      if (filters?.status != '') {
+        params['status'] = filters.status;
+      }
+    }
+
+    const result = await api.get(`/support-message/tickets`, { params: params });
+
+    const data = result.data.data.map((ticket) => {
         return {
             ...ticket,
             reason: ticket.reason ? ticket.reason.charAt(0).toUpperCase() + ticket.reason.slice(1) : '',
@@ -17,15 +44,19 @@ export const getTickets = async () => {
     return {
       data: data,
       meta: {
-        totalItems: result.data.length
+        totalItems: result.data.meta.totalItems
       }
     };
   } catch (err) {
     console.log(err);
     return {
-      data: {
-        action: '',
-        object: ''
+      data: {},
+      meta: {
+        totalItems: 0,
+        itemCount: 0,
+        itemsPerPage: 0,
+        totalPages: 0,
+        currentPage: 0
       }
     };
   }

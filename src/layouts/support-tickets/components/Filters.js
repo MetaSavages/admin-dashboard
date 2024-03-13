@@ -38,17 +38,17 @@ const Filters = ({ filters, setFilters }) => {
   };
 
     const Reasons = {
-        Kyc: 'kyc',
-        Other: 'other',
-        Deposit: 'deposit',
-        Withdraw: 'withdraw',
-        PromoCode: 'promo-code'
+        kyc: 'Kyc',
+        other: 'Other',
+        deposit: 'Deposit',
+        withdraw: 'Withdraw',
+        'promo-code': 'PromoCode'
     };
 
     const Statuses = {
-        Initial: 'initial',
-        Progress: 'progress',
-        Finished: 'finished'
+        initial: 'Initial',
+        progress: 'Progress',
+        finished: 'Finished'
     };
 
   // fetch options
@@ -230,7 +230,7 @@ const Filters = ({ filters, setFilters }) => {
         </Grid>
         <Grid item xs={5} md={3.5}>
           <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
-          <select value={selectedReason.key} onChange={handleStatusChange} 
+          <select value={selectedReason.key} onChange={handleReasonChange} 
                   style={{
                     appearance: 'none',
                     backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -249,7 +249,7 @@ const Filters = ({ filters, setFilters }) => {
                 ))}
               </select>
 
-              <select value={selectedStatus.key} onChange={handleReasonChange} 
+              <select value={selectedStatus.key} onChange={handleStatusChange} 
                   style={{
                     margin: '0 0 0 10px',
                     appearance: 'none',
