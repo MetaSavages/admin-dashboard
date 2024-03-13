@@ -13,10 +13,10 @@ export const getTickets = async (limit = 20, page = 1, filters = '') => {
       if (filters.users.length) {
         params['id'] = `${filters.users.map((u) => u.id).toString()}`;
       }
-      if (filters?.isDemo != null) {
-        params['isUserDemo'] = filters.isDemo;
+      if (filters?.isDemo != '') {
+        params['demoUser'] = filters.isDemo;
       }
-      if (filters?.isTaken != null) {
+      if (filters?.isTaken != '') {
         params['taken'] = filters.isTaken;
       }
       if (filters?.isAdminTicket == true) {

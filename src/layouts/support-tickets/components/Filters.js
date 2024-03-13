@@ -17,13 +17,13 @@ const Filters = ({ filters, setFilters }) => {
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
 
-  const [usernameOptions, setUsernameOptions] = useState([]);
   const [usernameInput, setUsernameInput] = useState('');
+  const [usernameOptions, setUsernameOptions] = useState([]);
   const [playerUsernames, setPlayerUsernames] = useState([]);
 
-  const [isDemoChecked, setIsDemoChecked] = useState(false);
+  const [isTaken, setIsTaken] = useState('');
   const [isMyTicket, setIsMyTicket] = useState(false);
-  const [isTaken, setIsTaken] = useState(false);
+  const [isDemoChecked, setIsDemoChecked] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedReason, setSelectedReason] = useState('');
 
@@ -35,6 +35,16 @@ const Filters = ({ filters, setFilters }) => {
   const handleReasonChange = (event) => {
     const reason = event.target.value;
     setSelectedReason(reason);
+  };
+
+  const handlePlayerChange = (event) => {
+    const player = event.target.value;
+    setIsDemoChecked(player);
+  };
+
+  const handleTypeChange = (event) => {
+    const type = event.target.value;
+    setIsTaken(type);
   };
 
     const Reasons = {
@@ -49,6 +59,16 @@ const Filters = ({ filters, setFilters }) => {
         initial: 'Initial',
         progress: 'Progress',
         finished: 'Finished'
+    };
+
+    const Types = {
+      true: 'Taken',
+      false: 'Free',
+    };
+
+    const Players = {
+      true: 'Demo',
+      false: 'non-Demo',
     };
 
   // fetch options
@@ -97,19 +117,9 @@ const Filters = ({ filters, setFilters }) => {
 
   // Checkbox change handlers
 
-  const handleCheckboxChange = (event) => {
-    const isChecked = event.target.checked;
-    setIsDemoChecked(isChecked);
-  };
-
   const handleCheckboxMyTicketChange = (event) => {
     const isChecked = event.target.checked;
     setIsMyTicket(isChecked);
-  };
-
-  const handleCheckboxTakenChange = (event) => {
-    const isChecked = event.target.checked;
-    setIsTaken(isChecked);
   };
 
   useEffect(() => {
@@ -196,42 +206,50 @@ const Filters = ({ filters, setFilters }) => {
             />
           </MDBox>
         </Grid>
-        <Grid item xs={5} md={5}>
-          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-around' }}>
-            <div>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                checked={isDemoChecked}
-                onChange={(event) => handleCheckboxChange(event)}
-              />
-              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Demo players</label>
-              </div>
-              <div>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                checked={isMyTicket}
-                onChange={(event) => handleCheckboxMyTicketChange(event)}
-              />
-              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>My Tickets</label>
-              </div>
-              <div>
-              <Checkbox
-                icon={icon}
-                checkedIcon={checkedIcon}
-                checked={isTaken}
-                onChange={(event) => handleCheckboxTakenChange(event)}
-                disabled={isMyTicket}
-              />
-              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>Taken</label>
-              </div>
-          </MDBox>
-        </Grid>
-        <Grid item xs={5} md={3.5}>
+        <Grid item xs={5} md={6.5}>
           <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-between' }}>
+          <select value={isDemoChecked} onChange={handlePlayerChange} 
+                  style={{
+                    appearance: 'none',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    borderRadius: '8px',
+                    padding: '9px 16px',
+                    fontSize: '16px',
+                    border: '1px solid rgba(128, 128, 128, 0.5)',
+                    outline: 'none',
+                    width: '50%',
+                    color: darkMode ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}>
+                <option value=''>Players</option>
+                {Object.keys(Players).map(key => (
+                    <option key={key} value={key}>{Players[key]}</option>
+                ))}
+          </select>
+
+          <select value={isTaken} onChange={handleTypeChange} disabled={isMyTicket}
+                  style={{
+                    margin: '0 0 0 10px',
+                    appearance: 'none',
+                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    borderRadius: '8px',
+                    padding: '9px 16px',
+                    fontSize: '16px',
+                    border: '1px solid rgba(128, 128, 128, 0.5)',
+                    outline: 'none',
+                    width: '50%',
+                    color: darkMode ? 'white' : 'black',
+                    textAlign: 'center',
+                  }}>
+                <option value=''>Types</option>
+                {Object.keys(Types).map(key => (
+                    <option key={key} value={key}>{Types[key]}</option>
+                ))}
+          </select>
+
           <select value={selectedReason.key} onChange={handleReasonChange} 
                   style={{
+                    margin: '0 0 0 10px',
                     appearance: 'none',
                     backgroundColor: 'rgba(0, 0, 0, 0.1)',
                     borderRadius: '8px',
@@ -268,6 +286,19 @@ const Filters = ({ filters, setFilters }) => {
                     <option key={key} value={key}>{Statuses[key]}</option>
                 ))}
               </select>
+          </MDBox>
+        </Grid>
+        <Grid item xs={5} md={2}>
+          <MDBox sx={{ display: 'flex', alignItems: 'center', justifyContent:'space-around' }}>
+              <div>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                checked={isMyTicket}
+                onChange={(event) => handleCheckboxMyTicketChange(event)}
+              />
+              <label style={{ fontSize: '14px', color: '#adb3ba', cursor: 'pointer' }}>My Tickets</label>
+              </div>
           </MDBox>
         </Grid>
         <Grid item xs={2} md={1}>
