@@ -8,6 +8,7 @@ import { Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { Can } from 'context';
 import MDButton from 'components/MDButton';
 import { closeTicket, retakeTicket, takeTicket, sendReplyToTicket } from 'services/support';
+import { getCurrentUser } from 'services/auth';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMaterialUIController } from 'context';
 
@@ -59,6 +60,7 @@ const supportTicketsColumnData = [
     Cell: ({ row }) => {
       const [controller] = useMaterialUIController();
       const { darkMode } = controller;
+      const [adminID , setAdminId] = useState('');
       const [showModal, setShowModal] = useState(false);
       const [replyTicketId, setReplyTicketId] = useState('');
       const [reply, setReply] = useState('');
@@ -88,6 +90,16 @@ const supportTicketsColumnData = [
           setReplyError(false);
         }
       }, [reply]);
+
+      useEffect(() => {
+        getCurrentUser()
+          .then((user) => {
+            setAdminId(user.id);
+          })
+          .catch((err) => {
+            console.log(err);
+          });      
+      }, []);
 
       return (
         <>
@@ -262,6 +274,7 @@ const supportTicketsColumnData = [
                             }
                           }}
                           color='primary'
+                          disabled={row.original.taker?.id == adminID ? true : false}
                         >
                           {row.original.taken === 'Taken' ? 'Steal' : 'Take'} Ticket
                         </MDButton>

@@ -4,8 +4,6 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import MDBox from 'components/MDBox';
 import React, { useState, useEffect } from 'react';
 import MDButton from 'components/MDButton';
-import { getAllPlayers } from 'services/filters';
-import { useSearchParams } from 'react-router-dom';
 import { useMaterialUIController } from 'context';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
@@ -13,19 +11,41 @@ const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const Filters = ({ filters, setFilters }) => {
     
-  const [searchParams, setSearchParams] = useSearchParams();
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
-
-  const [usernameInput, setUsernameInput] = useState('');
-  const [usernameOptions, setUsernameOptions] = useState([]);
-  const [playerUsernames, setPlayerUsernames] = useState([]);
 
   const [isTaken, setIsTaken] = useState('');
   const [isMyTicket, setIsMyTicket] = useState(false);
   const [isDemoChecked, setIsDemoChecked] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedReason, setSelectedReason] = useState('');
+  const [playerUsernames, setPlayerUsernames] = useState('');
+
+    const Reasons = {
+      kyc: 'Kyc',
+      other: 'Other',
+      deposit: 'Deposit',
+      withdraw: 'Withdraw',
+      'promo-code': 'PromoCode'
+    };
+
+    const Statuses = {
+      initial: 'Initial',
+      progress: 'Progress',
+      finished: 'Finished'
+    };
+
+    const Types = {
+      true: 'Taken',
+      false: 'Free',
+    };
+
+    const Players = {
+      true: 'Demo',
+      false: 'non-Demo',
+    };
+
+  // Select change handlers
 
   const handleStatusChange = (event) => {
     const status = event.target.value;
@@ -47,74 +67,6 @@ const Filters = ({ filters, setFilters }) => {
     setIsTaken(type);
   };
 
-    const Reasons = {
-        kyc: 'Kyc',
-        other: 'Other',
-        deposit: 'Deposit',
-        withdraw: 'Withdraw',
-        'promo-code': 'PromoCode'
-    };
-
-    const Statuses = {
-        initial: 'Initial',
-        progress: 'Progress',
-        finished: 'Finished'
-    };
-
-    const Types = {
-      true: 'Taken',
-      false: 'Free',
-    };
-
-    const Players = {
-      true: 'Demo',
-      false: 'non-Demo',
-    };
-
-  // fetch options
-  useEffect(() => {
-    // fetch player usernames
-    usernameOptions.forEach((username) => {
-      if (filters?.users) {
-        if (filters.users.includes(username.value)) {
-          setPlayerUsernames((prev) => [...prev, username]);
-        }
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!playerUsernames.length) {
-      setFilters({
-        users: [],
-        isDemo: isDemoChecked,
-        isTaken: isTaken,
-        isAdminTicket: isMyTicket,
-        status: selectedStatus,
-        reason: selectedReason
-      });
-    }
-  }, [playerUsernames]);
-
-  useEffect(() => {
-    if (searchParams.get('userId')) {
-      const nickname = searchParams.get('nickname');
-      const userId = searchParams.get('userId');
-      const params = {
-        id: userId,
-        value: userId,
-        nickname: nickname,
-        label: nickname
-      };
-      setIsDemoChecked(true);
-      setPlayerUsernames([params]);
-      setFilters({ users: [params], isDemo: true });
-      searchParams.delete('userId');
-      searchParams.delete('nickname');
-    }
-    setSearchParams(searchParams);
-  }, [location.search]);
-
   // Checkbox change handlers
 
   const handleCheckboxMyTicketChange = (event) => {
@@ -128,28 +80,17 @@ const Filters = ({ filters, setFilters }) => {
     }
     }, [isMyTicket]);
 
-  // Username autocomplete handlers
+  // Username search handlers
 
-  const updateUsernames = (event, value) => {
-    setPlayerUsernames(value);
-  };
-
-  const handleUsernameInput = (event) => {
-    setUsernameInput(event.target.value);
-    if (event.target.value.length > 2) {
-      getAllPlayers(event.target.value, filters?.isDemo).then((players) => {
-        setUsernameOptions(players);
-      });
-    } else if (event.target.value.length < 2) {
-      setUsernameOptions([]);
-    }
+  const updateUsernames = (event) => {
+    setPlayerUsernames(event.target.value);
   };
 
   // Submit handler
 
   const onSubmit = () => {
     setFilters({
-      users: playerUsernames,
+      player: playerUsernames,
       isDemo: isDemoChecked,
       isTaken: isTaken,
       isAdminTicket: isMyTicket,
@@ -160,12 +101,12 @@ const Filters = ({ filters, setFilters }) => {
 
   function checkActiveButton() {
     return (
-      !playerUsernames.length &&
-      ((filters?.isTaken == null && isTaken === false) || isTaken === filters?.isTaken) &&
-      ((filters?.isDemo == null && isDemoChecked === false) || isDemoChecked === filters?.isDemo) &&
-      ((filters?.isAdminTicket == null && isMyTicket === false) || isMyTicket === filters?.isAdminTicket) &&
-      ((filters?.status == null && selectedStatus === '') || selectedStatus === filters?.status) &&
-      ((filters?.reason == null && selectedReason === '') || selectedReason === filters?.reason) 
+      ((filters?.isTaken == undefined && isTaken === false) || isTaken === filters?.isTaken) &&
+      ((filters?.isDemo == undefined && isDemoChecked === false) || isDemoChecked === filters?.isDemo) &&
+      ((filters?.isAdminTicket == undefined && isMyTicket === false) || isMyTicket === filters?.isAdminTicket) &&
+      ((filters?.status == undefined && selectedStatus === '') || selectedStatus === filters?.status) &&
+      ((filters?.reason == undefined && selectedReason === '') || selectedReason === filters?.reason) &&
+      ((filters?.player == undefined && playerUsernames === '') || playerUsernames === filters?.player)
     );
   }
 
@@ -179,30 +120,11 @@ const Filters = ({ filters, setFilters }) => {
       <Grid container spacing={2} justifyContent={'space-between'} alignItems={'stretch'}>
         <Grid item xs={5} md={2.5}>
           <MDBox>
-            <Autocomplete
-              multiple
-              limitTags={2}
-              options={usernameOptions}
-              disableCloseOnSelect
-              value={playerUsernames}
-              onChange={updateUsernames}
-              isOptionEqualToValue={(option, value) => option.value === value.value}
-              getOptionLabel={(option) => option.label}
-              renderOption={(props, option, { selected }) => (
-                <li {...props}>
-                  <Checkbox icon={icon} checkedIcon={checkedIcon} style={{ marginRight: 8 }} checked={selected} />
-                  {option.label}
-                </li>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label='Player username'
-                  variant='standard'
-                  value={usernameInput}
-                  onChange={handleUsernameInput}
-                />
-              )}
+            <TextField
+                label='Player username'
+                variant='standard'
+                value={playerUsernames}
+                onChange={updateUsernames}
             />
           </MDBox>
         </Grid>

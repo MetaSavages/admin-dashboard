@@ -10,8 +10,8 @@ export const getTickets = async (limit = 20, page = 1, filters = '') => {
     };
 
     if (Object.keys(filters).length) {
-      if (filters.users.length) {
-        params['id'] = `${filters.users.map((u) => u.id).toString()}`;
+      if (filters.player !== '') {
+        params['search'] = filters.player;
       }
       if (filters?.isDemo != '') {
         params['demoUser'] = filters.isDemo;
