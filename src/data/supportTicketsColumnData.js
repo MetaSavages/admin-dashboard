@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { Can } from 'context';
 import MDButton from 'components/MDButton';
-import { closeTicket, retakeTicket, takeTicket, sendReplyToTicket } from 'services/support';
+import { closeTicket, retakeTicket, takeTicket, getTicket, sendReplyToTicket } from 'services/support';
 import { getCurrentUser } from 'services/auth';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMaterialUIController } from 'context';
@@ -60,17 +60,32 @@ const supportTicketsColumnData = [
     Cell: ({ row }) => {
       const [controller] = useMaterialUIController();
       const { darkMode } = controller;
-      const [adminID , setAdminId] = useState('');
+      const [adminID, setAdminId] = useState('');
       const [showModal, setShowModal] = useState(false);
       const [replyTicketId, setReplyTicketId] = useState('');
       const [reply, setReply] = useState('');
       const [replyError, setReplyError] = useState(false);
       const [searchParams, setSearchParams] = useSearchParams();
-      const handleOpenModal = () => setShowModal(true);
+      const [replyTicket, setReplyTicket] = useState({ replies: [] });
+
+      const handleOpenModal = () => {
+        getReplyTicket(row.original.id);
+        setShowModal(true);
+      };
+
       const handleCloseModal = () => {
         setShowModal(false);
         setReply('');
         setReplyTicketId('');
+      };
+
+      const getReplyTicket = async (id) => {
+        try {
+          const ticket = await getTicket(id);
+          setReplyTicket(ticket);
+        } catch (err) {
+          console.log(err);
+        }
       };
 
       function formatDateFunc(date) {
@@ -98,7 +113,7 @@ const supportTicketsColumnData = [
           })
           .catch((err) => {
             console.log(err);
-          });      
+          });
       }, []);
 
       return (
@@ -157,8 +172,8 @@ const supportTicketsColumnData = [
                   sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '10px' }}
                 >
                   <MDTypography sx={{ fontSize: '14px', fontWeight: 600 }}>Replies:</MDTypography>
-                  {row.original.replies.length > 0 ? (
-                    row.original.replies.map((reply) => {
+                  {replyTicket.replies.length > 0 ? (
+                    replyTicket.replies.map((reply) => {
                       return (
                         <Grid
                           item
@@ -260,8 +275,7 @@ const supportTicketsColumnData = [
                         </MDButton>
                       </Grid>
 
-                      <Grid item 
-                      sx={{visibility: row.original.taker?.id == adminID ? 'hidden' : 'visible'}}>
+                      <Grid item sx={{ visibility: row.original.taker?.id == adminID ? 'hidden' : 'visible' }}>
                         <MDButton
                           onClick={async () => {
                             if (row.original.taken === 'Taken') {
@@ -297,15 +311,15 @@ const supportTicketsColumnData = [
                             if (reply === '') {
                               setReplyError(true);
                             } else {
-                              await sendReplyToTicket(replyTicketId, reply)
-                                .then(() => {
-                                  setReply('');
-                                  searchParams.set('support', replyTicketId);
-                                  setSearchParams(searchParams);
-                                })
-                                .catch((error) => {
-                                  alert('Make sure you have taken the ticket before replying!');
-                                });
+                              try {
+                                await sendReplyToTicket(replyTicketId, reply);
+                                searchParams.set('support', replyTicketId);
+                                setSearchParams(searchParams);
+                                await getReplyTicket(replyTicketId);
+                                setReply('');
+                              } catch (error) {
+                                alert('Make sure you have taken the ticket before replying!');
+                              }
                             }
                           }}
                           color='info'

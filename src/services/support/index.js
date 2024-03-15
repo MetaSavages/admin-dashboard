@@ -62,6 +62,17 @@ export const getTickets = async (limit = 20, page = 1, filters = '') => {
   }
 };
 
+export const getTicket = async (id) => {
+  const api = useAxios();
+  try {
+    const result = await api.get(`/support-message/ticket/${id}`);
+    return result.data;
+  } catch (err) {
+    console.error(err);
+    throw new Error(err.message);
+  }
+};
+
 export const sendReplyToTicket = async (id, reply) => {
   const api = useAxios();
   try {
