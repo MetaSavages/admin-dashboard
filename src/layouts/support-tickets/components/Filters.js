@@ -77,6 +77,8 @@ const Filters = ({ filters, setFilters }) => {
   useEffect(() => {
     if (isMyTicket) {
         setIsTaken(true);
+    } else {
+        setIsTaken('');
     }
     }, [isMyTicket]);
 

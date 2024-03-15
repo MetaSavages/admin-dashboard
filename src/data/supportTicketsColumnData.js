@@ -227,6 +227,16 @@ const supportTicketsColumnData = [
                         Make sure you take the ticket before replying!
                       </MDTypography>
                     )}
+                    {row.original.status != 'Initial' && row.original.taker?.id != adminID && (
+                      <MDTypography
+                        sx={{
+                          fontSize: '12px',
+                          fontWeight: '300'
+                        }}
+                      >
+                        Ticket is taken by: {row.original.taker?.firstName} {row.original.taker?.lastName}
+                      </MDTypography>
+                    )}
                   </Grid>
                 )}
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '15px' }}>
@@ -250,7 +260,8 @@ const supportTicketsColumnData = [
                         </MDButton>
                       </Grid>
 
-                      <Grid item>
+                      <Grid item 
+                      sx={{visibility: row.original.taker?.id == adminID ? 'hidden' : 'visible'}}>
                         <MDButton
                           onClick={async () => {
                             if (row.original.taken === 'Taken') {
