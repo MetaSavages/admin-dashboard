@@ -266,7 +266,7 @@ const supportTicketsColumnData = [
                                 setSearchParams(searchParams);
                               })
                               .catch((error) => {
-                                alert('Could not close ticket!');
+                                alert('Make sure you have taken the ticket before closing it!');
                               });
                           }}
                           color='error'
