@@ -92,10 +92,10 @@ const Filters = ({ filters, setFilters }) => {
 
   const onSubmit = () => {
     setFilters({
-      player: playerUsernames,
-      isDemo: isDemoChecked,
-      isTaken: isTaken,
-      isAdminTicket: isMyTicket,
+      search: playerUsernames,
+      demoUser: isDemoChecked,
+      taken: isTaken,
+      takenByAdmin: isMyTicket,
       status: selectedStatus,
       reason: selectedReason
     });
@@ -103,12 +103,12 @@ const Filters = ({ filters, setFilters }) => {
 
   function checkActiveButton() {
     return (
-      ((filters?.isTaken == undefined && isTaken === false) || isTaken === filters?.isTaken) &&
-      ((filters?.isDemo == undefined && isDemoChecked === false) || isDemoChecked === filters?.isDemo) &&
-      ((filters?.isAdminTicket == undefined && isMyTicket === false) || isMyTicket === filters?.isAdminTicket) &&
+      ((filters?.taken == undefined && isTaken === false) || isTaken === filters?.taken) &&
+      ((filters?.demoUser == undefined && isDemoChecked === false) || isDemoChecked === filters?.demoUser) &&
+      ((filters?.takenByAdmin == undefined && isMyTicket === false) || isMyTicket === filters?.takenByAdmin) &&
       ((filters?.status == undefined && selectedStatus === '') || selectedStatus === filters?.status) &&
       ((filters?.reason == undefined && selectedReason === '') || selectedReason === filters?.reason) &&
-      ((filters?.player == undefined && playerUsernames === '') || playerUsernames === filters?.player)
+      ((filters?.search == undefined && playerUsernames === '') || playerUsernames === filters?.search)
     );
   }
 

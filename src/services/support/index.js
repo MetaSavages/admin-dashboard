@@ -9,26 +9,17 @@ export const getTickets = async (limit = 20, page = 1, filters = '') => {
       sortBy: 'createdAt:DESC'
     };
 
-    if (Object.keys(filters).length) {
-      if (filters.player !== '') {
-        params['search'] = filters.player;
+    Object.keys(filters).forEach(key => {
+      if (key === 'takenByAdmin') {
+        if (filters[key] === 'true') {
+          params[key] = true;
+        } else if (filters[key] === 'false') {
+          delete params[key];
+        }
+      } else if (filters[key] !== '') {
+        params[key] = filters[key];
       }
-      if (filters?.isDemo != '') {
-        params['demoUser'] = filters.isDemo;
-      }
-      if (filters?.isTaken != '') {
-        params['taken'] = filters.isTaken;
-      }
-      if (filters?.isAdminTicket == true) {
-        params['takenByAdmin'] = true;
-      }
-      if (filters?.reason != '') {
-        params['reason'] = filters.reason;
-      }
-      if (filters?.status != '') {
-        params['status'] = filters.status;
-      }
-    }
+    });
 
     const result = await api.get(`/support-message/tickets`, { params: params });
 
