@@ -60,7 +60,6 @@ export const getTicket = async (id) => {
     return result.data;
   } catch (err) {
     console.error(err);
-    throw new Error(err.message);
   }
 };
 
@@ -73,7 +72,6 @@ export const sendReplyToTicket = async (id, reply) => {
     });
   } catch (err) {
     console.error(err);
-    throw new Error(err.message);
   }
 };
 
@@ -85,7 +83,6 @@ export const takeTicket = async (id) => {
     });
   } catch (err) {
     console.error(err);
-    throw new Error(err.message);
   }
 };
 
@@ -97,7 +94,6 @@ export const retakeTicket = async (id) => {
     });
   } catch (err) {
     console.error(err);
-    throw new Error(err.message);
   }
 };
 
@@ -109,6 +105,5 @@ export const closeTicket = async (id) => {
     });
   } catch (err) {
     console.error(err);
-    throw new Error(err.message);
   }
 };
