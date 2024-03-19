@@ -10,12 +10,8 @@ export const getTickets = async (limit = 20, page = 1, filters = '') => {
     };
 
     Object.keys(filters).forEach(key => {
-      if (key === 'takenByAdmin') {
-        if (filters[key] === 'true') {
-          params[key] = true;
-        } else if (filters[key] === 'false') {
-          delete params[key];
-        }
+      if (key === 'takenByAdmin' && filters[key] === false) {
+        delete params[key];
       } else if (filters[key] !== '') {
         params[key] = filters[key];
       }
