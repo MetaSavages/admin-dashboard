@@ -259,16 +259,16 @@ const supportTicketsColumnData = [
                     <>
                       <Grid item>
                         <MDButton
-                          onClick={async () => {
-                            await closeTicket(row.original.id)
-                              .then(() => {
+                            onClick={async () => {
+                              try {
+                                await closeTicket(row.original.id);
                                 searchParams.set('support', replyTicketId);
                                 setSearchParams(searchParams);
-                              })
-                              .catch((error) => {
+                              } catch (error) {
                                 alert('Make sure you have taken the ticket before closing it!');
-                              });
-                          }}
+                                console.error(error);
+                              }
+                            }}
                           color='error'
                         >
                           End ticket
@@ -277,27 +277,24 @@ const supportTicketsColumnData = [
 
                       <Grid item sx={{ visibility: row.original.taker?.id == adminID ? 'hidden' : 'visible' }}>
                         <MDButton
-                          onClick={async () => {
-                            if (row.original.taken === 'Taken') {
-                              await retakeTicket(replyTicketId)
-                                .then(() => {
-                                  searchParams.set('support', replyTicketId);
-                                  setSearchParams(searchParams);
-                                })
-                                .catch((error) => {
+                            onClick={async () => {
+                              try {
+                                if (row.original.taken === 'Taken') {
+                                  await retakeTicket(replyTicketId);
+                                } else {
+                                  await takeTicket(replyTicketId);
+                                }
+                                searchParams.set('support', replyTicketId);
+                                setSearchParams(searchParams);
+                              } catch (error) {
+                                if (row.original.taken === 'Taken') {
                                   alert('You cannot steal your own ticket!');
-                                });
-                            } else {
-                              await takeTicket(replyTicketId)
-                                .then(() => {
-                                  searchParams.set('support', replyTicketId);
-                                  setSearchParams(searchParams);
-                                })
-                                .catch((error) => {
-                                  alert('Something went wrong, while taking the ticket!');
-                                });
-                            }
-                          }}
+                                } else {
+                                  alert('Something went wrong while taking the ticket!');
+                                }
+                                console.error(error);
+                              }
+                            }}
                           color='primary'
                           disabled={row.original.taker?.id == adminID ? true : false}
                         >
@@ -319,6 +316,7 @@ const supportTicketsColumnData = [
                                 setReply('');
                               } catch (error) {
                                 alert('Make sure you have taken the ticket before replying!');
+                                console.error(error);
                               }
                             }
                           }}
