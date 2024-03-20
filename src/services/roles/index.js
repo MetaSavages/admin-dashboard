@@ -101,9 +101,5 @@ export const updateRole = async (id, name, permissions, casinoId) => {
 
 export const deleteRole = async (id) => {
   const api = useAxios();
-  try {
-    return await api.delete(`/admin/auth/roles/${id}`, {});
-  } catch (err) {
-    throw new Error(err.message);
-  }
+  return await api.delete(`/admin/auth/roles/${id}`, {});
 };

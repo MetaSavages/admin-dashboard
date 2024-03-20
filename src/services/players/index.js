@@ -131,14 +131,9 @@ export const getPlayerWithoutParams = async (id) => {
 
 export const deletePlayer = async (id) => {
   const api = useAxios();
-  try {
-    return await api.delete('admin/users', {
-      data: { userId: id }
-    });
-  } catch (err) {
-    console.error(`Error deleting user:`, err);
-    throw new Error(err.message);
-  }
+  return await api.delete('admin/users', {
+    data: { userId: id }
+  });
 };
 
 export const updatePlayerName = async (id, name) => {

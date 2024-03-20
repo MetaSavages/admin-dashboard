@@ -73,16 +73,14 @@ const permissionsColumnData = [
                 onClick={async () => {
                   searchParams.set('permission-management', deletePermissionId);
 
-                  await deletePermission(deletePermissionId)
-                    .then(() => {
-                      setSearchParams(searchParams);
-                    })
-                    .catch((error) => {
-                      console.error(error);
+                  try {
+                    await deletePermission(deletePermissionId);
+                    setSearchParams(searchParams);
+                  } catch (error) {
+                    console.error(error);
 
-                      alert('Something went wrong, please try again!');
-                    });
-
+                    alert('Something went wrong, please try again!');
+                  }
                   handleCloseModal();
                 }}
               >

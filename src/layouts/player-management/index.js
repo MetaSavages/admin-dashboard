@@ -84,7 +84,7 @@ function PlayerManagement() {
     actions.setSubmitting(false);
     actions.resetForm();
   };
-  console.log('filtersssssssssssss', filters);
+
   const handleSubmit = (values, actions) => {
     submitForm(values, actions);
   };
@@ -232,18 +232,18 @@ function PlayerManagement() {
         <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this user?'}</DialogTitle>
         <DialogActions>
           <Button
-            onClick={() => {
-              deletePlayer(deleteRoleId)
-                .then(() => {
-                  setFilters({
-                    ...filters,
-                    isDemo: true,
-                    refresh: filters?.refresh ? !filters.refresh : true
-                  });
-                })
-                .catch((error) => {
-                  alert(`Error deleting user: ${error.message}`);
+            onClick={async () => {
+              try {
+                await deletePlayer(deleteRoleId);
+                setFilters({
+                  ...filters,
+                  isDemo: true,
+                  refresh: filters?.refresh ? !filters.refresh : true
                 });
+              } catch (error) {
+                alert(`Error deleting user: ${error.message}`);
+              }
+
               handleCloseDeleteModal();
             }}
           >

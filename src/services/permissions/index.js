@@ -95,9 +95,5 @@ export const updatePermission = async (id, action, object) => {
 
 export const deletePermission = async (id) => {
   const api = useAxios();
-  try {
-    return await api.delete(`/admin/auth/permissions/${id}`);
-  } catch (err) {
-    throw new Error(err.message);
-  }
+  return await api.delete(`/admin/auth/permissions/${id}`);
 };

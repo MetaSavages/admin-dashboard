@@ -77,16 +77,14 @@ const rolesColumnData = [
                 onClick={async () => {
                   searchParams.set('role-management', deleteRoleId);
 
-                  await deleteRole(deleteRoleId)
-                    .then(() => {
-                      setSearchParams(searchParams);
-                    })
-                    .catch((error) => {
-                      console.error(error);
+                  try {
+                    await deleteRole(deleteRoleId);
+                    setSearchParams(searchParams);
+                  } catch (error) {
+                    console.error(error);
 
-                      alert('Something went wrong, please try again!');
-                    });
-
+                    alert('Something went wrong, please try again!');
+                  }
                   handleCloseModal();
                 }}
               >

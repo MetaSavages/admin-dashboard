@@ -49,17 +49,16 @@ function UserManagement() {
           <DialogActions>
             <MDButton
               onClick={async () => {
-                await deleteUser(deleteUserId)
-                  .then(() => {
-                    setFilters({
-                      ...filters,
-                      refresh: filters?.refresh ? !filters.refresh : true
-                    });
-                  })
-                  .catch((error) => {
-                    console.error(error);
-                    alert('Something went wrong, please try again!');
+                try {
+                  await deleteUser(deleteUserId);
+                  setFilters({
+                    ...filters,
+                    refresh: filters?.refresh ? !filters.refresh : true
                   });
+                } catch (error) {
+                  console.error(error.message);
+                  alert('Something went wrong, please try again!');
+                }
                 handleCloseModal();
               }}
             >
