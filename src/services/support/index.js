@@ -51,55 +51,35 @@ export const getTickets = async (limit = 20, page = 1, filters = '') => {
 
 export const getTicket = async (id) => {
   const api = useAxios();
-  try {
-    const result = await api.get(`/support-message/ticket/${id}`);
-    return result.data;
-  } catch (err) {
-    console.error(err);
-  }
+  const result = await api.get(`/support-message/ticket/${id}`);
+  return result.data;
 };
 
 export const sendReplyToTicket = async (id, reply) => {
   const api = useAxios();
-  try {
-    return await api.post(`/support-message/reply-as-admin`, {
-      parentMessageId: id,
-      message: reply
-    });
-  } catch (err) {
-    console.error(err);
-  }
+  return await api.post(`/support-message/reply-as-admin`, {
+    parentMessageId: id,
+    message: reply
+  });
 };
 
 export const takeTicket = async (id) => {
   const api = useAxios();
-  try {
-    return await api.post(`/support-message/take-ticket`, {
-      MessageId: id
-    });
-  } catch (err) {
-    console.error(err);
-  }
+  return await api.post(`/support-message/take-ticket`, {
+    MessageId: id
+  });
 };
 
 export const retakeTicket = async (id) => {
   const api = useAxios();
-  try {
-    return await api.post(`/support-message/retake-ticket`, {
-      MessageId: id
-    });
-  } catch (err) {
-    console.error(err);
-  }
+  return await api.post(`/support-message/retake-ticket`, {
+    MessageId: id
+  });
 };
 
 export const closeTicket = async (id) => {
   const api = useAxios();
-  try {
-    return await api.post(`/support-message/close-ticket`, {
-      MessageId: id,
-    });
-  } catch (err) {
-    console.error(err);
-  }
+  return await api.post(`/support-message/close-ticket`, {
+    MessageId: id,
+  });
 };
