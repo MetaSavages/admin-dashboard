@@ -67,6 +67,10 @@ function PlayerManagement() {
   const submitForm = async (values, actions) => {
     try {
       const response = await axiosInstance.post('admin/users/create-demo-user', values);
+      setFilters({
+        ...filters,
+        refresh: filters?.refresh ? !filters.refresh : true
+      });
       const data = response.data;
       console.log(data);
       if (data) {
@@ -228,14 +232,19 @@ function PlayerManagement() {
         <DialogTitle id='alert-dialog-title'>{'Are you sure you want to delete this user?'}</DialogTitle>
         <DialogActions>
           <Button
-            onClick={() => {
-              deletePlayer(deleteRoleId);
+            onClick={async () => {
+              try {
+                await deletePlayer(deleteRoleId);
+                setFilters({
+                  ...filters,
+                  isDemo: true,
+                  refresh: filters?.refresh ? !filters.refresh : true
+                });
+              } catch (error) {
+                alert(`Error deleting user: ${error.message}`);
+              }
+
               handleCloseDeleteModal();
-              setFilters({
-                ...filters,
-                isDemo: true,
-                refresh: filters?.length ? true : false
-              });
             }}
           >
             Yes

@@ -161,7 +161,6 @@ const codesColumnData = [
       const handleCloseModal = () => setShowModal(false);
       const [deletePromoCode, setDeletePromoCode] = useState('');
       const [searchParams, setSearchParams] = useSearchParams();
-      const [firstObjectKey, setFirstObjectKey] = useState();
 
       return (
         <>
@@ -183,7 +182,6 @@ const codesColumnData = [
                 onClick={() => {
                   handleOpenModal();
                   setDeletePromoCode(row.original.code);
-                  setFirstObjectKey(getFirstObjectKey(row.original));
                 }}
               >
                 <IconButton size='small' color='error'>

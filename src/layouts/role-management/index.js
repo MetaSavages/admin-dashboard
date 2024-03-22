@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react';
 import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { getRoles, deleteRole } from 'services/roles';
 import rolesColumnData from 'data/rolesColumnData';
-import { useState } from 'react';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
 import { Can } from 'context';
 
@@ -14,6 +14,19 @@ function RoleManagement() {
   const handleCloseModal = () => setShowModal(false);
   const [deleteRoleId, setDeleteRoleId] = useState('');
   const [filters, setFilters] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('role-management')) {
+      setFilters({
+        ...filters,
+        refresh: filters?.refresh ? !filters.refresh : true
+      });
+      searchParams.delete('role-management');
+    }
+    setSearchParams(searchParams);
+  }, [location.search]);
+
   return (
     <>
       <Can I='read' a='role'>
@@ -46,9 +59,15 @@ function RoleManagement() {
           <DialogActions>
             <Button
               onClick={async () => {
-                await deleteRole(deleteRoleId);
+                await deleteRole(deleteRoleId).catch((error) => {
+                  console.error(error);
+                });
+
                 handleCloseModal();
-                setFilters(filters.length ? '' : 'd');
+                setFilters({
+                  ...filters,
+                  refresh: filters?.refresh ? !filters.refresh : true
+                });
               }}
             >
               Yes

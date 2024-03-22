@@ -39,10 +39,10 @@ export const getAllRoles = async () => {
   try {
     const unformattedData = await api.get('/admin/auth/roles-all');
     unformattedData.data = unformattedData.data.map((role) => {
-    return role;
+      return role;
     });
     return {
-      data: unformattedData.data,
+      data: unformattedData.data
     };
   } catch (err) {
     console.log(err);
@@ -101,15 +101,5 @@ export const updateRole = async (id, name, permissions, casinoId) => {
 
 export const deleteRole = async (id) => {
   const api = useAxios();
-  try {
-    return await api.delete(`/admin/auth/roles/${id}`, {});
-  } catch (err) {
-    console.log(err);
-    return {
-      data: {
-        name: '',
-        permissions: []
-      }
-    };
-  }
+  return await api.delete(`/admin/auth/roles/${id}`, {});
 };

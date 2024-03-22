@@ -1,9 +1,9 @@
 import DataTablePage from 'components/DataTablePage';
 import MDButton from 'components/MDButton';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { getPermissions, deletePermission } from 'services/permissions';
 import permissionsColumnData from 'data/permissionsColumnData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
 import { Can } from 'context';
 
@@ -14,6 +14,18 @@ function PermissionManagement() {
   const handleCloseModal = () => setShowModal(false);
   const [deletePermissionId, setDeletePermissionId] = useState('');
   const [filters, setFilters] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('permission-management')) {
+      setFilters({
+        ...filters,
+        refresh: filters?.refresh ? !filters.refresh : true
+      });
+      searchParams.delete('permission-management');
+    }
+    setSearchParams(searchParams);
+  }, [location.search]);
 
   return (
     <>
@@ -53,7 +65,10 @@ function PermissionManagement() {
               onClick={async () => {
                 await deletePermission(deletePermissionId);
                 handleCloseModal();
-                setFilters(filters.length ? '' : 'd');
+                setFilters({
+                  ...filters,
+                  refresh: filters?.refresh ? !filters.refresh : true
+                });
               }}
             >
               Yes

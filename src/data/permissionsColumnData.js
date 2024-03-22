@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton, Icon, Tooltip } from '@mui/material';
 import MDBox from 'components/MDBox';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import MDTypography from 'components/MDTypography';
 import { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
@@ -30,6 +30,7 @@ const permissionsColumnData = [
       const handleOpenModal = () => setShowModal(true);
       const handleCloseModal = () => setShowModal(false);
       const [deletePermissionId, setDeletePermissionId] = useState(row.original.id);
+      const [searchParams, setSearchParams] = useSearchParams();
 
       return (
         <>
@@ -70,9 +71,17 @@ const permissionsColumnData = [
             <DialogActions>
               <Button
                 onClick={async () => {
-                  await deletePermission(deletePermissionId);
+                  searchParams.set('permission-management', deletePermissionId);
+
+                  try {
+                    await deletePermission(deletePermissionId);
+                    setSearchParams(searchParams);
+                  } catch (error) {
+                    console.error(error);
+
+                    alert('Something went wrong, please try again!');
+                  }
                   handleCloseModal();
-                  window.location.reload();
                 }}
               >
                 Yes
