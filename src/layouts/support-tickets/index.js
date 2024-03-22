@@ -1,26 +1,26 @@
+import React, { useState, useEffect } from 'react';
 import DataTablePage from 'components/DataTablePage';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { Can } from 'context';
 import supportTicketsColumnData from 'data/supportTicketsColumnData';
-import dataSupportTickets from 'assets/mockData/dataSupportTickets';
 import { getTickets } from 'services/support';
+import Filters from './components/Filters';
+
 function SupportTickets() {
-  const navigate = useNavigate();
-  const onDelete = (id) => {
-    console.log(id);
-  };
-  const fetchData = () => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: dataSupportTickets.rows,
-          meta: {
-            totalItems: 100
-          }
-        });
-      }, 100);
-    });
-  };
+
+    const [filters, setFilters] = useState({});
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+      if (searchParams.get('support')) {
+       setFilters({
+              ...filters,
+              refresh: filters?.refresh ? !filters.refresh : true
+            });
+        searchParams.delete('support');
+      }
+      setSearchParams(searchParams);
+    }, [location.search]);    
 
   return (
     <>
@@ -34,7 +34,8 @@ function SupportTickets() {
           columnData={supportTicketsColumnData}
           object={'support'}
           noActions
-          //filtersComponent={<Filters filters={filters} setFilters={setFilters} />} <Filters
+          filtersComponent={<Filters filters={filters} setFilters={setFilters} />}
+          filters={filters}
         />
       </Can>
       <Can not I='read' a='support'>

@@ -1,14 +1,16 @@
 import React from 'react';
-import { IconButton, Icon, Tooltip, TextField, Grid } from '@mui/material';
+import { IconButton, Tooltip, TextField, Grid } from '@mui/material';
 import MDBox from 'components/MDBox';
-import { NavLink } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import MDTypography from 'components/MDTypography';
 import { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, Button, DialogActions } from '@mui/material';
+import { Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { Can } from 'context';
 import MDButton from 'components/MDButton';
-import { closeTicket, retakeTicket, sendReplyToTicket } from 'services/support';
+import { closeTicket, retakeTicket, takeTicket, getTicket, sendReplyToTicket } from 'services/support';
+import { getCurrentUser } from 'services/auth';
 import CloseIcon from '@mui/icons-material/Close';
+import { useMaterialUIController } from 'context';
 
 const supportTicketsColumnData = [
   {
@@ -56,15 +58,34 @@ const supportTicketsColumnData = [
     accessor: 'actions',
     sorted: false,
     Cell: ({ row }) => {
+      const [controller] = useMaterialUIController();
+      const { darkMode } = controller;
+      const [adminID, setAdminId] = useState('');
       const [showModal, setShowModal] = useState(false);
       const [replyTicketId, setReplyTicketId] = useState('');
       const [reply, setReply] = useState('');
       const [replyError, setReplyError] = useState(false);
-      const handleOpenModal = () => setShowModal(true);
+      const [searchParams, setSearchParams] = useSearchParams();
+      const [replyTicket, setReplyTicket] = useState({ replies: [] });
+
+      const handleOpenModal = () => {
+        getReplyTicket(row.original.id);
+        setShowModal(true);
+      };
+
       const handleCloseModal = () => {
         setShowModal(false);
         setReply('');
         setReplyTicketId('');
+      };
+
+      const getReplyTicket = async (id) => {
+        try {
+          const ticket = await getTicket(id);
+          setReplyTicket(ticket);
+        } catch (err) {
+          console.log(err);
+        }
       };
 
       function formatDateFunc(date) {
@@ -85,6 +106,16 @@ const supportTicketsColumnData = [
         }
       }, [reply]);
 
+      useEffect(() => {
+        getCurrentUser()
+          .then((user) => {
+            setAdminId(user.id);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, []);
+
       return (
         <>
           <MDBox sx={{ display: 'flex', justifyContent: 'center', marginRight: '20px', marginLeft: '-20px' }}>
@@ -99,7 +130,7 @@ const supportTicketsColumnData = [
                       setReplyTicketId(row.original.id);
                     }}
                   >
-                    View & Reply
+                    View
                   </MDButton>
                 </MDTypography>
               </Tooltip>
@@ -112,7 +143,7 @@ const supportTicketsColumnData = [
             aria-describedby='alert-dialog-description'
           >
             <DialogTitle id='alert-dialog-title'>
-              <MDTypography>{`${row.original.summary}`}</MDTypography>
+              <MDTypography sx={{ wordWrap: 'break-word', width: '90%' }}>{`${row.original.summary}`}</MDTypography>
               <IconButton
                 aria-label='close'
                 onClick={() => {
@@ -131,7 +162,9 @@ const supportTicketsColumnData = [
             <DialogActions>
               <Grid container spacing={3} px={3}>
                 <Grid item xs={12}>
-                  <MDTypography sx={{ fontSize: '16px' }}>{`${row.original.message}`}</MDTypography>
+                  <MDTypography
+                    sx={{ fontSize: '16px', wordWrap: 'break-word' }}
+                  >{`${row.original.message}`}</MDTypography>
                 </Grid>
                 <Grid
                   item
@@ -139,8 +172,8 @@ const supportTicketsColumnData = [
                   sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '10px' }}
                 >
                   <MDTypography sx={{ fontSize: '14px', fontWeight: 600 }}>Replies:</MDTypography>
-                  {row.original.replies.length > 0 ? (
-                    row.original.replies.map((reply) => {
+                  {replyTicket.replies.length > 0 ? (
+                    replyTicket.replies.map((reply) => {
                       return (
                         <Grid
                           item
@@ -149,7 +182,15 @@ const supportTicketsColumnData = [
                             borderRadius: '8px',
                             border: '0.5px solid #989898',
                             width: '100%',
-                            padding: '5px 10px'
+                            padding: '5px 10px',
+                            textAlign: reply.adminReply ? 'right' : 'left',
+                            backgroundColor: reply.adminReply
+                              ? darkMode
+                                ? '#141d47'
+                                : '#ebeefc'
+                              : darkMode
+                              ? '#2a3457'
+                              : '#e1f2fc'
                           }}
                         >
                           <MDTypography
@@ -157,6 +198,7 @@ const supportTicketsColumnData = [
                               fontSize: '12px',
                               display: 'flex',
                               alignItems: 'center',
+                              justifyContent: reply.adminReply ? 'end' : 'start',
                               gap: '5px',
                               fontWeight: 500
                             }}
@@ -197,7 +239,17 @@ const supportTicketsColumnData = [
                           fontWeight: '300'
                         }}
                       >
-                        Replying to this ticket will automatically asign it to you.
+                        Make sure you take the ticket before replying!
+                      </MDTypography>
+                    )}
+                    {row.original.status != 'Initial' && row.original.taker?.id != adminID && (
+                      <MDTypography
+                        sx={{
+                          fontSize: '12px',
+                          fontWeight: '300'
+                        }}
+                      >
+                        Ticket is taken by: {row.original.taker?.firstName} {row.original.taker?.lastName}
                       </MDTypography>
                     )}
                   </Grid>
@@ -207,21 +259,65 @@ const supportTicketsColumnData = [
                     <>
                       <Grid item>
                         <MDButton
-                          onClick={async () => {
-                            await closeTicket(row.original.id);
-                            handleCloseModal();
-                          }}
-                          color='secondary'
+                            onClick={async () => {
+                              try {
+                                await closeTicket(row.original.id);
+                                searchParams.set('support', replyTicketId);
+                                setSearchParams(searchParams);
+                              } catch (error) {
+                                alert('Make sure you have taken the ticket before closing it!');
+                                console.error(error);
+                              }
+                            }}
+                          color='error'
                         >
-                          Close ticket
+                          End ticket
+                        </MDButton>
+                      </Grid>
+
+                      <Grid item sx={{ visibility: row.original.taker?.id == adminID ? 'hidden' : 'visible' }}>
+                        <MDButton
+                            onClick={async () => {
+                              try {
+                                if (row.original.taken === 'Taken') {
+                                  await retakeTicket(replyTicketId);
+                                } else {
+                                  await takeTicket(replyTicketId);
+                                }
+                                searchParams.set('support', replyTicketId);
+                                setSearchParams(searchParams);
+                              } catch (error) {
+                                if (row.original.taken === 'Taken') {
+                                  alert('You cannot steal your own ticket!');
+                                } else {
+                                  alert('Something went wrong while taking the ticket!');
+                                }
+                                console.error(error);
+                              }
+                            }}
+                          color='primary'
+                          disabled={row.original.taker?.id == adminID ? true : false}
+                        >
+                          {row.original.taken === 'Taken' ? 'Steal' : 'Take'} Ticket
                         </MDButton>
                       </Grid>
 
                       <Grid item>
                         <MDButton
                           onClick={async () => {
-                            {
-                              reply === '' ? setReplyError(true) : await sendReplyToTicket(replyTicketId, reply, row.original.status);
+                            if (reply === '') {
+                              setReplyError(true);
+                            } else {
+                              try {
+                                await sendReplyToTicket(replyTicketId, reply);
+                                searchParams.set('support', replyTicketId);
+                                setSearchParams(searchParams);
+                                await getReplyTicket(replyTicketId);
+                                setReply('');
+                              } catch (error) {
+                                alert('Make sure you have taken the ticket before replying!');
+                                console.error(error);
+                              }
                             }
                           }}
                           color='info'
@@ -255,21 +351,6 @@ const supportTicketsColumnData = [
                       >
                         Ticket closed!
                       </MDTypography>
-                      {/* <MDTypography
-                        sx={{
-                          fontSize: '14px',
-                          fontWeight: 300,
-                          textDecoration: 'underline',
-                          cursor: 'pointer',
-                          lineHeight: 1
-                        }}
-                        onClick={async () => {
-                          await retakeTicket(row.original.id);
-                          handleCloseModal();
-                        }}
-                      >
-                        Retake ticket
-                      </MDTypography> */}
                     </Grid>
                   )}
                 </Grid>
